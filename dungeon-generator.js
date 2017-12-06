@@ -14,7 +14,9 @@ const space = {
     pillar: { colour: "#000000", type: "PILLAR" },
     wall: { colour: "#000000", type: "WALL" },
     enemy: { colour: "#bf1428", type: "ENEMY" },
-    pickup: { colour: "#f49542", type: "PICKUP" }
+    pickup: { colour: "#f49542", type: "PICKUP" },
+    entrance: { colour: "#71f442", type: "ENTRANCE" },
+    exit: { colour: "#6316e0", type: "EXIT" }
 };
 
 /** The x/y position to space type mappings. */
@@ -148,19 +150,52 @@ function applyPatterns()
     // Get the current pattern.
     const pattern = patterns[i];
 
-    // Check this pattern against every space in the dungeon.
-    for (var x = 0; x < dungeonSpaceSize; x++)
+    // TODO Check if the pattern has a min/max property, if so then:
+    //   - Ignore chance.
+    //   - Find every pattern which matches the space. None of these can overlap!
+    //   - Let x be a random number between min and max.
+    //   - Pick x matching spaces and apply and call onMatch.
+    if (pattern.min && pattern.max)
     {
-      for (var y = 0; y < dungeonSpaceSize; y++)
+      // The list of all spaces which match the pattern.
+      let matchingSpaces = [];
+
+       // Check this pattern against every space in the dungeon.
+      for (var x = 0; x < dungeonSpaceSize; x++)
       {
-        // Check whether the pattern matches the current space, and check whether we should apply it based on chance.
-        if (doesPatternMatchSpace(pattern, x, y) && Math.random() <= pattern.chance)
+        for (var y = 0; y < dungeonSpaceSize; y++)
         {
-          // The pattern matched the current space.
-          pattern.onMatch(x, y);
+          // Check whether the pattern matches the current space, and check whether we should apply it based on chance.
+          if (doesPatternMatchSpace(pattern, x, y))
+          {
+            // TODO Check for overlap!
+            matchingSpaces.push({ x, y });
+          }
         }
-      }
-    } 
+      } 
+
+      // TODO Pick a random number between min and max, pick that many random matches and apply them.
+    }
+    else if (pattern.chance)
+    {
+      // Check this pattern against every space in the dungeon.
+      for (var x = 0; x < dungeonSpaceSize; x++)
+      {
+        for (var y = 0; y < dungeonSpaceSize; y++)
+        {
+          // Check whether the pattern matches the current space, and check whether we should apply it based on chance.
+          if (doesPatternMatchSpace(pattern, x, y) && Math.random() <= pattern.chance)
+          {
+            // The pattern matched the current space.
+            pattern.onMatch(x, y);
+          }
+        }
+      } 
+    }
+    else
+    {
+      console.log("need to specify chance or min/max value for pattern: " + pattern.name);
+    }
   }
 }
 
@@ -195,12 +230,12 @@ function overlaps(room, rooms)
   {
     var a = rooms[i];
     var b = room;
-
+    // Check for an overlap.
     if(a.x < (b.x + b.width) && (a.x + a.width) > b.x && a.y < (b.y + b.height) && (a.y + a.height) > b.y) {
+      // There was an overlap!
       return true;
     }
   }
-
   // There were no overlaps.
   return false;
 };
@@ -210,9 +245,8 @@ function overlaps(room, rooms)
  */
 function roomIsWithinDungeonBounds(room)
 {
-  var min = 1;
-  var max = (dungeonSize / spaceSize) - 2;
-
+  var min                = 1;
+  var max                = (dungeonSize / spaceSize) - 2;
   var inVerticalBounds   = room.y >= min && (room.y + room.height) <= max;
   var inHorizontalBounds = room.x >= min && (room.x + room.width) <= max;
 
@@ -230,7 +264,6 @@ function setSpace(type, x, y, width, height)
     {
       // Add the space to our space mappings.
       spaces[posX+"-"+posY] = type.type;
-
       // Draw the space on the dungeon area SVG.
       var rect = document.createElementNS("http://www.w3.org/2000/svg", 'rect');
       rect.setAttributeNS(null, 'x', posX * spaceSize);
@@ -249,5 +282,8 @@ function setSpace(type, x, y, width, height)
  */
 function getSpace(x, y)
 {
-  return spaces[x+"-"+y] || space.wall.type;
+  // Is this position outside the dungeon area?
+  const isOutOfBounds = x < 0 || x >= dungeonSpaceSize || y < 0 || y >= dungeonSpaceSize;
+  // If this position is out of bounds then return 'OOB'. Otherwise, return the space type.
+  return isOutOfBounds ? "OOB" : spaces[x+"-"+y] || space.wall.type;
 };
