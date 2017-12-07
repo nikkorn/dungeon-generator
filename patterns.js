@@ -91,26 +91,21 @@ patterns.push({
     min: 1,
     max: 1,
     matches: [
-      [-1, -4, "WALL"],
       [-1, -3, "WALL"],
       [-1, -2, "WALL"],
       [-1, -1, "WALL"],
       [-1, 0, "ROOM,CORRIDOR"],
-      [0, -4, "WALL"],
       [0, -3, "WALL"],
       [0, -2, "WALL"],
       [0, -1, "WALL"],
       [0, 0, "ROOM,CORRIDOR"],
-      [1, -4, "WALL"],
       [1, -3, "WALL"],
       [1, -2, "WALL"],
       [1, -1, "WALL"],
       [1, 0, "ROOM,CORRIDOR"]
     ],
     onMatch: function (x, y) {
-      setSpace(space.exit, x, y - 3);
-      setSpace(space.corridor, x, y - 2);
-      setSpace(space.door, x, y - 1);
+      setSpace(space.exit, x, y - 1);
     }
 });
 
@@ -119,21 +114,41 @@ patterns.push({
     name: "vertical-pillar-corridor",
     chance: 0.1,
     matches: [
-      [0, 2, "CORRIDOR"],
-      [0, 1, "CORRIDOR"],
-      [0, 0, "CORRIDOR"],
-      [0, -1, "CORRIDOR"],
-      [0, -2, "CORRIDOR"],
+	    [-2, 3, "WALL"],
+      [-2, 2, "WALL"],
+      [-2, 1, "WALL"],
+      [-2, 0, "WALL"],
+      [-2, -1, "WALL"],
+      [-2, -2, "WALL"],
+	    [-2, -3, "WALL"],
+	    [-1, 3, "WALL"],
       [-1, 2, "WALL"],
       [-1, 1, "WALL"],
       [-1, 0, "WALL"],
       [-1, -1, "WALL"],
       [-1, -2, "WALL"],
+	    [-1, -3, "WALL"],
+	    [0, 3, "CORRIDOR"],
+      [0, 2, "CORRIDOR"],
+      [0, 1, "CORRIDOR"],
+      [0, 0, "CORRIDOR"],
+      [0, -1, "CORRIDOR"],
+      [0, -2, "CORRIDOR"],
+	    [0, -3, "CORRIDOR"],
+	    [1, 3, "WALL"],
       [1, 2, "WALL"],
       [1, 1, "WALL"],
       [1, 0, "WALL"],
       [1, -1, "WALL"],
-      [1, -2, "WALL"]
+      [1, -2, "WALL"],
+	    [1, 3, "WALL"],
+	    [2, 3, "WALL"],
+      [2, 2, "WALL"],
+      [2, 1, "WALL"],
+      [2, 0, "WALL"],
+      [2, -1, "WALL"],
+      [2, -2, "WALL"],
+	    [2, 3, "WALL"]
     ],
     onMatch: function (x, y) {
       setSpace(space.room, x - 1, y - 2, 3, 5);
