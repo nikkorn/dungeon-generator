@@ -53,7 +53,7 @@ function generateRooms()
 {
   var rooms = [];
   var tryNo = 0;
-
+  // Generate as many rooms as we need.
   while (rooms.length < roomCount && tryNo++ < maxTry)
   {
     // Create a randomly sized/positioned room.
@@ -63,13 +63,11 @@ function generateRooms()
       width : Math.floor((Math.random() * (maxRoomSize - minRoomSize)) + minRoomSize),
       height : Math.floor((Math.random() * (maxRoomSize - minRoomSize)) + minRoomSize)
     };
-
     // Set the room centre.
     room.centre = {
       x: room.x + Math.floor(room.width / 2),
       y: room.y + Math.floor(room.height / 2)
     };
-
     // Check that the room is within the bounds of the dungeon
     // area and that it does not overlap an existing room.
     if (roomIsWithinDungeonBounds(room) && !overlaps(room, rooms))
@@ -77,7 +75,7 @@ function generateRooms()
       rooms.push(room);
     }
   }
-
+  // Return the created rooms.
   return rooms;
 }
 
@@ -150,31 +148,46 @@ function applyPatterns()
     // Get the current pattern.
     const pattern = patterns[i];
 
-    // TODO Check if the pattern has a min/max property, if so then:
-    //   - Ignore chance.
-    //   - Find every pattern which matches the space. None of these can overlap!
-    //   - Let x be a random number between min and max.
-    //   - Pick x matching spaces and apply and call onMatch.
+    // Check if the pattern has a min/max property, if so then we are only 
+    // matching N times, where N >= min and N <= max. Otherwise, if there is
+    // only a chance value then we randomly choose whether to apply it to
+    // each matching space in turn.
     if (pattern.min && pattern.max)
     {
-      // The list of all spaces which match the pattern.
-      let matchingSpaces = [];
-
-       // Check this pattern against every space in the dungeon.
-      for (var x = 0; x < dungeonSpaceSize; x++)
+      // Pick how many patterns we are going to apply based on the pattern min/max values.
+      const pick = Math.floor(Math.random() * pattern.max) + pattern.min;
+      // A function used to find all matches for the current pattern and applies a random one.
+      const matchAndApplyPattern = function ()
       {
-        for (var y = 0; y < dungeonSpaceSize; y++)
+        // The list of all spaces which match the pattern.
+        let matchingSpaces = [];
+        // Check this pattern against every space in the dungeon.
+        for (var x = 0; x < dungeonSpaceSize; x++)
         {
-          // Check whether the pattern matches the current space, and check whether we should apply it based on chance.
-          if (doesPatternMatchSpace(pattern, x, y))
+          for (var y = 0; y < dungeonSpaceSize; y++)
           {
-            // TODO Check for overlap!
-            matchingSpaces.push({ x, y });
+            // Check whether the pattern matches the current space, and check whether we should apply it based on chance.
+            if (doesPatternMatchSpace(pattern, x, y))
+            {
+              matchingSpaces.push({ x, y });
+            }
           }
         }
-      } 
-
-      // TODO Pick a random number between min and max, pick that many random matches and apply them.
+        // If there were no matching spaces then we cannot apply the pattern.
+        if (matchingSpaces.length == 0)
+        {
+          console.log("no space matches pattern: " + pattern.name);
+        } 
+        // Pick a random matching space ...
+        const matchingSpace = matchingSpaces[Math.floor(Math.random() * matchingSpaces.length)];
+        // ... And apply the pattern.
+        pattern.onMatch(matchingSpace.x, matchingSpace.y);
+      };
+      // Apply the pattern randomly as many times as we need. 
+      for (var p = 0; p < pick; p++)
+      {
+        matchAndApplyPattern();
+      }
     }
     else if (pattern.chance)
     {
