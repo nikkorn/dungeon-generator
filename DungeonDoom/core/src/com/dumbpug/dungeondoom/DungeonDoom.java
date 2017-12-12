@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.PointLight;
 import com.badlogic.gdx.graphics.g3d.utils.FirstPersonCameraController;
+import com.dumbpug.dungeondoom.level.FloorTile;
 import com.dumbpug.dungeondoom.level.Wall;
 
 /**
@@ -26,7 +27,8 @@ public class DungeonDoom extends ApplicationAdapter {
 	public Model model;
 	public ModelInstance instance;
 	
-	private ArrayList<Wall> walls = new ArrayList<Wall>();
+	private ArrayList<Wall> walls           = new ArrayList<Wall>();
+	private ArrayList<FloorTile> floorTiles = new ArrayList<FloorTile>();
 
 	@Override
 	public void create() {
@@ -44,6 +46,8 @@ public class DungeonDoom extends ApplicationAdapter {
 		cam.update();
 		
 		createWalls();
+		
+		createFloorTiles();
         
         camController = new FirstPersonCameraController(cam);
         Gdx.input.setInputProcessor(camController);
@@ -63,6 +67,19 @@ public class DungeonDoom extends ApplicationAdapter {
 			}
 		}
 	}
+	
+	/**
+	 * Create some floor tiles.
+	 */
+	public void createFloorTiles() {
+		for (int z = 0; z < 10; z++) {
+			for (int x = 0; x < 10; x++) {
+				FloorTile tile = new FloorTile(null);
+				tile.setCellPosition(z, x);
+				this.floorTiles.add(tile);
+			}
+		}
+	}
 
 	@Override
 	public void render() {
@@ -74,6 +91,9 @@ public class DungeonDoom extends ApplicationAdapter {
         modelBatch.begin(cam);
         for (Wall wall : this.walls) {
         	wall.render(modelBatch, environment);
+        }
+        for (FloorTile tile : this.floorTiles) {
+        	tile.render(modelBatch, environment);
         }
         modelBatch.end();
 	}
