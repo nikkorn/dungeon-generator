@@ -1,4 +1,4 @@
-package com.dumbpug.dungeondoom;
+package com.dumbpug.dungeondoom.level;
 
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -15,7 +15,11 @@ import com.badlogic.gdx.graphics.g3d.model.Node;
 import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
+import com.dumbpug.dungeondoom.Constants;
 
+/**
+ * A cell-sized section of wall.
+ */
 public class Wall {
 	
 	/** The materials to use in creating the wall sides. */
@@ -45,21 +49,21 @@ public class Wall {
 		meshBuilder.rect(0f, 0f, 0f,   0f, 5f, 0f,  5f, 5f, 0f,  5f, 0f, 0f,  0f, 1f, 0f);
 		
 		Node node = modelBuilder.node();
-		node.translation.set(5, 0, 0);
+		node.translation.set(5f, 0f, 0f);
 		node.rotation.set(Vector3.Y, -90);
 		
 		meshBuilder = modelBuilder.part("right", GL20.GL_TRIANGLES, Usage.Position | Usage.Normal | Usage.TextureCoordinates, material);
 		meshBuilder.rect(0f, 0f, 0f,   0f, 5f, 0f,  5f, 5f, 0f,  5f, 0f, 0f,  0f, 1f, 0f);
 		
 		node = modelBuilder.node();
-		node.translation.set(5, 0, 5);
+		node.translation.set(5f, 0f, 5f);
 		node.rotation.set(Vector3.Y, -180);
 		
 		meshBuilder = modelBuilder.part("bottom", GL20.GL_TRIANGLES, Usage.Position | Usage.Normal | Usage.TextureCoordinates, material);
 		meshBuilder.rect(0f, 0f, 0f,   0f, 5f, 0f,  5f, 5f, 0f,  5f, 0f, 0f,  0f, 1f, 0f);
 		
 		node = modelBuilder.node();
-		node.translation.set(0, 0, 5);
+		node.translation.set(0f, 0f, 5f);
 		node.rotation.set(Vector3.Y, -270);
 		
 		meshBuilder = modelBuilder.part("left", GL20.GL_TRIANGLES, Usage.Position | Usage.Normal | Usage.TextureCoordinates, material);
@@ -68,6 +72,15 @@ public class Wall {
 		Model model = modelBuilder.end();
 		
 		this.instance = new ModelInstance(model);
+	}
+	
+	/**
+	 * Set the cell position of this wall.
+	 * @param x
+	 * @param z
+	 */
+	public void setCellPosition(int x, int z) {
+		this.instance.transform.setToTranslation(x * Constants.CELL_SIZE, 0f, z * Constants.CELL_SIZE);
 	}
 	
 	/**

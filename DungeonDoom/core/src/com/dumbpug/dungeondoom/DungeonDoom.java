@@ -1,5 +1,7 @@
 package com.dumbpug.dungeondoom;
 
+import java.util.ArrayList;
+import java.util.Random;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -11,6 +13,7 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.FirstPersonCameraController;
+import com.dumbpug.dungeondoom.level.Wall;
 
 /**
  * The main game class.
@@ -22,7 +25,8 @@ public class DungeonDoom extends ApplicationAdapter {
 	public ModelBatch modelBatch;
 	public Model model;
 	public ModelInstance instance;
-	private Wall wall;
+	
+	private ArrayList<Wall> walls = new ArrayList<Wall>();
 
 	@Override
 	public void create() {
@@ -39,10 +43,25 @@ public class DungeonDoom extends ApplicationAdapter {
 		cam.far = 300f;
 		cam.update();
 		
-        wall = new Wall(null, null, null, null);
+		createWalls();
         
         camController = new FirstPersonCameraController(cam);
         Gdx.input.setInputProcessor(camController);
+	}
+	
+	/**
+	 * Randomly create some walls.
+	 */
+	public void createWalls() {
+		for (int z = 0; z < 10; z++) {
+			for (int x = 0; x < 10; x++) {
+				if (new Random().nextInt(3) == 1) {
+					Wall wall = new Wall(null, null, null, null);
+					wall.setCellPosition(z, x);
+					this.walls.add(wall);
+				}
+			}
+		}
 	}
 
 	@Override
@@ -53,7 +72,9 @@ public class DungeonDoom extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
  
         modelBatch.begin(cam);
-        wall.render(modelBatch, environment);
+        for (Wall wall : this.walls) {
+        	wall.render(modelBatch, environment);
+        }
         modelBatch.end();
 	}
 	
