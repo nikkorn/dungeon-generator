@@ -13,10 +13,10 @@ const space = {
     door: { colour: "#9e46ce", type: "DOOR" },
     pillar: { colour: "#000000", type: "PILLAR" },
     wall: { colour: "#000000", type: "WALL" },
-    enemy: { colour: "#bf1428", type: "ENEMY" },
     pickup: { colour: "#f49542", type: "PICKUP" },
     entrance: { colour: "#71f442", type: "ENTRANCE" },
-    exit: { colour: "#6316e0", type: "EXIT" }
+    exit: { colour: "#6316e0", type: "EXIT" },
+    reachableWall: { colour: "#353c47", type: "REACHABLE-WALL" },
 };
 
 /** The x/y position to space type mappings. */
@@ -27,8 +27,9 @@ let spaces = {};
  */
 function generate()
 {
-  // Clear the spaces.
+  // Clear the spaces and reachable walls.
   spaces = {};
+  walls  = [];
 
   // Clear the dungeon SVG
   document.getElementById('dungeon').innerHTML = "<rect width=\"600\" height=\"600\" style=\"fill:rgb(0,0,0)\" />";
@@ -44,6 +45,9 @@ function generate()
 
   // Go over every space in the dungeon area and compare a series of patterns to the position.
   applyPatterns();
+
+  // Determine which walls are actually reachable (not surrounded by other walls)
+  findReachableWalls();
 }
 
 /**
@@ -254,6 +258,40 @@ function overlaps(room, rooms)
 };
 
 /**
+ * Find all reachable walls.
+ * These are walls which are reachable by the player.
+ */
+function findReachableWalls()
+{
+  // Helper function to determine whether the space at 
+  // the specified position is a wall or unreachable.
+  const isReachable = function (x, y) {
+    const target = getSpace(x, y);
+    return target !== space.wall.type && target !== space.reachableWall.type && target !== "OOB";
+  };
+
+  // Find any walls which have anything other than walls or the dungeon edge on each side.
+  for (var x = 0; x < dungeonSpaceSize; x++)
+  {
+    for (var y = 0; y < dungeonSpaceSize; y++)
+    {
+      // Get the type of the current space.
+      const spaceType = getSpace(x, y);
+
+      // Is the current space a wall?
+      if (spaceType === space.wall.type)
+      {
+        if (isReachable(x + 1, y) || isReachable(x - 1, y) || isReachable(x, y + 1) || isReachable(x, y - 1)) 
+        {
+          // This wall is reachable by entities within the dungeon! Set the reachable wall.
+          setSpace(space.reachableWall, x, y);
+        }
+      }
+    }
+  }
+}
+
+/**
  * Gets whether a room is within the bounds of the dungeon area.
  */
 function roomIsWithinDungeonBounds(room)
@@ -262,7 +300,7 @@ function roomIsWithinDungeonBounds(room)
   var max                = (dungeonSize / spaceSize) - 2;
   var inVerticalBounds   = room.y >= min && (room.y + room.height) <= max;
   var inHorizontalBounds = room.x >= min && (room.x + room.width) <= max;
-
+  // Return whether the entire room is withing the horizontal and vertical dungeon bounds.
   return inVerticalBounds && inHorizontalBounds;
 };
 

@@ -154,30 +154,6 @@ patterns.push({
       setSpace(space.room, x - 1, y - 2, 3, 5);
       setSpace(space.pillar, x, y + 1);
       setSpace(space.pillar, x, y - 1);
-      // Maybe sneak an enemy between the pillars.
-      if (Math.random() <= 0.15) {
-          setSpace(space.enemy, x, y);
-      }
-    }
-});
-
-// Add basic enemy.
-patterns.push({
-    name: "enemy",
-    chance: 0.03,
-    matches: [
-      [0, 1, "ROOM"],
-      [0, 0, "ROOM"],
-      [0, -1, "ROOM"],
-      [-1, 1, "ROOM"],
-      [-1, 0, "ROOM"],
-      [-1, -1, "ROOM"],
-      [1, 1, "ROOM"],
-      [1, 0, "ROOM"],
-      [1, -1, "ROOM"]
-    ],
-    onMatch: function (x, y) {
-      setSpace(space.enemy, x, y);
     }
 });
 
@@ -188,6 +164,7 @@ patterns.push({
     matches: [
       [0, 1, "WALL"],
       [0, 0, "WALL"],
+      [-1, 0, "WALL"],
       [0, -1, "WALL"],
       [1, 0, "ROOM"]
     ],
@@ -203,6 +180,7 @@ patterns.push({
     matches: [
       [0, 1, "WALL"],
       [0, 0, "WALL"],
+      [1, 0, "WALL"],
       [0, -1, "WALL"],
       [-1, 0, "ROOM"]
     ],
