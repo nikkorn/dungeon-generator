@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.PointLight;
 import com.badlogic.gdx.graphics.g3d.utils.FirstPersonCameraController;
+import com.dumbpug.dungeondoom.level.Enemy;
 import com.dumbpug.dungeondoom.level.FloorTile;
 import com.dumbpug.dungeondoom.level.Wall;
 
@@ -29,6 +30,7 @@ public class DungeonDoom extends ApplicationAdapter {
 	
 	private ArrayList<Wall> walls           = new ArrayList<Wall>();
 	private ArrayList<FloorTile> floorTiles = new ArrayList<FloorTile>();
+	private Enemy enemy;
 
 	@Override
 	public void create() {
@@ -48,6 +50,10 @@ public class DungeonDoom extends ApplicationAdapter {
 		createWalls();
 		
 		createFloorTiles();
+		
+		 // Create a test enemy.
+		enemy = new Enemy(null);
+		enemy.setCellPosition(4, 4);
         
         camController = new FirstPersonCameraController(cam);
         Gdx.input.setInputProcessor(camController);
@@ -95,6 +101,7 @@ public class DungeonDoom extends ApplicationAdapter {
         for (FloorTile tile : this.floorTiles) {
         	tile.render(modelBatch, environment);
         }
+        enemy.render(modelBatch, environment);
         modelBatch.end();
 	}
 	
