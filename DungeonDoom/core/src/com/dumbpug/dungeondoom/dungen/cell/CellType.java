@@ -12,5 +12,6 @@ public enum CellType {
 	REACHABLE_WALL,
 	PICKUP,
 	ENTRANCE,
-	EXIT
+	EXIT, 
+	OOB
 }
