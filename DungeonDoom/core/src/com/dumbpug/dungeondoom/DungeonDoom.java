@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.g3d.utils.FirstPersonCameraController;
 import com.dumbpug.dungeondoom.dungen.Configuration;
 import com.dumbpug.dungeondoom.dungen.Dungeon;
 import com.dumbpug.dungeondoom.dungen.DungeonGenerator;
+import com.dumbpug.dungeondoom.dungen.cell.CellType;
 import com.dumbpug.dungeondoom.dungen.cell.ICell;
 import com.dumbpug.dungeondoom.level.Enemy;
 import com.dumbpug.dungeondoom.level.FloorTile;
@@ -81,8 +82,8 @@ public class DungeonDoom extends ApplicationAdapter {
 			for (int x = 0; x < config.width; x++) {
 				// Get the dungeon call at this position.
 				ICell cell = dungeon.getCellAt(x, y);
-				// Crudely make a piece of wall where we have no cell.
-				if (cell == null) {
+				// Make a piece of wall where we have a reachable wall.
+				if (cell != null && cell.getType() == CellType.REACHABLE_WALL) {
 					Wall wall = new Wall(null, null, null, null);
 					wall.setCellPosition(x, y);
 					wallModelInstances.add(wall.getModelInstance());

@@ -43,7 +43,8 @@ public class DungeonGenerator {
 		
 		// TODO Go over every space in the dungeon area and compare a series of patterns to the position.
 		
-		// TODO Determine which walls are actually reachable (not surrounded by other walls)
+		// Determine which walls are actually reachable (not surrounded by other walls)
+		this.findReachableWalls();
 		
 		// Return our generated dungeon.
 		return new Dungeon(configuration, this.cells);
@@ -169,6 +170,45 @@ public class DungeonGenerator {
 	      setCell(new Corridor(), x, y);
 	    }
 	}
+	
+	/**
+	 * Find all reachable walls.
+	 * These are walls which are reachable by the player.
+	 */
+	private void findReachableWalls()
+	{
+	  // Find any walls which have anything other than walls or the dungeon edge on each side.
+	  for (int x = 0; x < this.configuration.width; x++) {
+	    for (int y = 0; y < this.configuration.height; y++) {
+	      // Get the type of the current space.
+	      CellType currentCellType = this.getCell(x, y).getType();
+	      // Is the current space a wall?
+	      if (currentCellType == CellType.WALL) {
+	    	// Are we surrounded by any cells an entity can be is
+	        if (isCellReachable(x + 1, y) || isCellReachable(x - 1, y) || isCellReachable(x, y + 1) || isCellReachable(x, y - 1)) {
+	          // This wall is reachable by entities within the dungeon! Set the reachable wall.
+	          this.setCell(new ReachableWall(), x, y);
+	        }
+	      }
+	    }
+	  }
+	}
+	
+	/**
+	 * Determines whether the cell at the specified position is reachable.
+	 * @param x
+	 * @param y
+	 * @return is reachable
+	 */
+	private boolean isCellReachable(int x, int y) {
+		// Get the cell at the position.
+		ICell target = this.getCell(x, y);
+		// return whether this is this a reachable cell?
+		return target.getType() != CellType.WALL && 
+			target.getType() != CellType.REACHABLE_WALL && 
+			target.getType() != CellType.OOB;
+	}
+	
 	
 	/**
 	 * Set the cell at the specified position.
