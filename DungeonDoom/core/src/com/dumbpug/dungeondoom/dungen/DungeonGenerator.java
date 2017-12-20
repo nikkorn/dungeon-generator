@@ -45,7 +45,8 @@ public class DungeonGenerator {
 		
 		// TODO Determine which walls are actually reachable (not surrounded by other walls)
 		
-		return null;
+		// Return our generated dungeon.
+		return new Dungeon(configuration, this.cells);
 	}
 
 	/**

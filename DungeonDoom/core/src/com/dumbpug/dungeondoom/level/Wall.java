@@ -3,10 +3,8 @@ package com.dumbpug.dungeondoom.level;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
-import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
-import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.FloatAttribute;
@@ -84,11 +82,8 @@ public class Wall {
 	}
 	
 	/**
-	 * Render the wall segment.
-	 * @param modelBatch
-	 * @param environment
+	 * Get the model instance.
+	 * @return model instance
 	 */
-	public void render(ModelBatch modelBatch, Environment environment) {
-		modelBatch.render(instance, environment);
-	}
+	public ModelInstance getModelInstance() { return this.instance; }
 }

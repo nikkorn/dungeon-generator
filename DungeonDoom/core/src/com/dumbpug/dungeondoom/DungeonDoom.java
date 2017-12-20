@@ -1,18 +1,21 @@
 package com.dumbpug.dungeondoom;
 
 import java.util.ArrayList;
-import java.util.Random;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Environment;
-import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.graphics.g3d.ModelCache;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.PointLight;
 import com.badlogic.gdx.graphics.g3d.utils.FirstPersonCameraController;
+import com.dumbpug.dungeondoom.dungen.Configuration;
+import com.dumbpug.dungeondoom.dungen.Dungeon;
+import com.dumbpug.dungeondoom.dungen.DungeonGenerator;
+import com.dumbpug.dungeondoom.dungen.cell.ICell;
 import com.dumbpug.dungeondoom.level.Enemy;
 import com.dumbpug.dungeondoom.level.FloorTile;
 import com.dumbpug.dungeondoom.level.Wall;
@@ -24,18 +27,19 @@ public class DungeonDoom extends ApplicationAdapter {
 	public Environment environment;
 	public PerspectiveCamera cam;
 	public FirstPersonCameraController camController;
-	public ModelBatch modelBatch;
-	public Model model;
-	public ModelInstance instance;
 	
-	private ArrayList<Wall> walls           = new ArrayList<Wall>();
+	public ModelBatch modelBatch;
+	
+	private ModelCache wallModelCache = new ModelCache();;
+	
 	private ArrayList<FloorTile> floorTiles = new ArrayList<FloorTile>();
+	
 	private Enemy enemy;
 
 	@Override
 	public void create() {
 		environment = new Environment();
-		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.2f, 0.2f, 0.2f, 1f));
+		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 1f, 1f, 1f, 5f));
 		environment.add(new PointLight().set(1f, 0.2f, 0.2f, 22.5f, 5f, 22.5f, 100f));
 		
 		modelBatch = new ModelBatch();
@@ -47,9 +51,14 @@ public class DungeonDoom extends ApplicationAdapter {
 		cam.far = 300f;
 		cam.update();
 		
-		createWalls();
+		// Create a test dungeon, with a default configuration.
+		Dungeon dungeon = new DungeonGenerator().generate();
 		
-		createFloorTiles();
+		// Create the dungeon walls.
+		createDungeonWalls(dungeon);
+		
+		// Create the dungeon floor tiles.
+		//createFloorTiles(dungeon.getConfiguration().width, dungeon.getConfiguration().height);
 		
 		 // Create a test enemy.
 		enemy = new Enemy(null);
@@ -60,28 +69,40 @@ public class DungeonDoom extends ApplicationAdapter {
 	}
 	
 	/**
-	 * Randomly create some walls.
+	 * Randomly create some dungeon walls.
 	 */
-	public void createWalls() {
-		for (int z = 0; z < 10; z++) {
-			for (int x = 0; x < 10; x++) {
-				if (new Random().nextInt(3) == 1) {
+	public void createDungeonWalls(Dungeon dungeon) {
+		// Get the dungeon configuration.
+		Configuration config = dungeon.getConfiguration();
+		// Create a list to hold our wall model instances.
+		ArrayList<ModelInstance> wallModelInstances = new ArrayList<ModelInstance>();
+		// Go over the entire area of the dungeon and draw some sweet walls.
+		for (int y = 0; y < config.height; y++) {
+			for (int x = 0; x < config.width; x++) {
+				// Get the dungeon call at this position.
+				ICell cell = dungeon.getCellAt(x, y);
+				// Crudely make a piece of wall where we have no cell.
+				if (cell == null) {
 					Wall wall = new Wall(null, null, null, null);
-					wall.setCellPosition(z, x);
-					this.walls.add(wall);
+					wall.setCellPosition(x, y);
+					wallModelInstances.add(wall.getModelInstance());
 				}
 			}
 		}
+		// Create the wall model cache.
+		this.wallModelCache.begin();
+		this.wallModelCache.add(wallModelInstances);
+		this.wallModelCache.end();
 	}
 	
 	/**
 	 * Create some floor tiles.
 	 */
-	public void createFloorTiles() {
-		for (int z = 0; z < 10; z++) {
-			for (int x = 0; x < 10; x++) {
+	public void createFloorTiles(int width, int height) {
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
 				FloorTile tile = new FloorTile(null);
-				tile.setCellPosition(z, x);
+				tile.setCellPosition(x, y);
 				this.floorTiles.add(tile);
 			}
 		}
@@ -95,13 +116,15 @@ public class DungeonDoom extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
  
         modelBatch.begin(cam);
-        for (Wall wall : this.walls) {
-        	wall.render(modelBatch, environment);
-        }
+  
+        modelBatch.render(this.wallModelCache, environment);
+        
         for (FloorTile tile : this.floorTiles) {
         	tile.render(modelBatch, environment);
         }
+        
         enemy.render(modelBatch, environment);
+        
         modelBatch.end();
 	}
 	
