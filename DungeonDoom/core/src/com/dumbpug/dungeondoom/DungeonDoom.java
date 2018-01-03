@@ -31,9 +31,7 @@ public class DungeonDoom extends ApplicationAdapter {
 	
 	public ModelBatch modelBatch;
 	
-	private ModelCache wallModelCache = new ModelCache();;
-	
-	private ArrayList<FloorTile> floorTiles = new ArrayList<FloorTile>();
+	private ModelCache modelCache = new ModelCache();
 	
 	private Enemy enemy;
 
@@ -55,11 +53,15 @@ public class DungeonDoom extends ApplicationAdapter {
 		// Create a test dungeon, with a default configuration.
 		Dungeon dungeon = new DungeonGenerator().generate();
 		
+		this.modelCache.begin();
+		
 		// Create the dungeon walls.
 		createDungeonWalls(dungeon);
 		
 		// Create the dungeon floor tiles.
-		//createFloorTiles(dungeon.getConfiguration().width, dungeon.getConfiguration().height);
+		createFloorTiles(dungeon);
+		
+		this.modelCache.end();
 		
 		 // Create a test enemy.
 		enemy = new Enemy(null);
@@ -90,23 +92,33 @@ public class DungeonDoom extends ApplicationAdapter {
 				}
 			}
 		}
-		// Create the wall model cache.
-		this.wallModelCache.begin();
-		this.wallModelCache.add(wallModelInstances);
-		this.wallModelCache.end();
+		// Add our wall models to our model cache.
+		this.modelCache.add(wallModelInstances);
 	}
 	
 	/**
 	 * Create some floor tiles.
 	 */
-	public void createFloorTiles(int width, int height) {
-		for (int y = 0; y < height; y++) {
-			for (int x = 0; x < width; x++) {
-				FloorTile tile = new FloorTile(null);
-				tile.setCellPosition(x, y);
-				this.floorTiles.add(tile);
+	public void createFloorTiles(Dungeon dungeon) {
+		//Get the dungeon configuration.
+		Configuration config = dungeon.getConfiguration();
+		// Create a list to hold our floor model instances.
+		ArrayList<ModelInstance> floorModelInstances = new ArrayList<ModelInstance>();
+		// Go over the entire area of the dungeon and draw some sweet walls.
+		for (int y = 0; y < config.height; y++) {
+			for (int x = 0; x < config.width; x++) {
+				// Get the dungeon call at this position.
+				ICell cell = dungeon.getCellAt(x, y);
+				// Make a piece of floor where we need it.
+				if (cell != null && cell.getType() != CellType.WALL && cell.getType() != CellType.REACHABLE_WALL) {
+					FloorTile tile = new FloorTile(null);
+					tile.setCellPosition(x, y);
+					floorModelInstances.add(tile.getModelInstance());
+				}
 			}
 		}
+		// Add our floor tile models to our model cache.
+		this.modelCache.add(floorModelInstances);
 	}
 
 	@Override
@@ -118,11 +130,7 @@ public class DungeonDoom extends ApplicationAdapter {
  
         modelBatch.begin(cam);
   
-        modelBatch.render(this.wallModelCache, environment);
-        
-        for (FloorTile tile : this.floorTiles) {
-        	tile.render(modelBatch, environment);
-        }
+        modelBatch.render(this.modelCache, environment);
         
         enemy.render(modelBatch, environment);
         
