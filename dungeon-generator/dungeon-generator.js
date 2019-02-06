@@ -1,7 +1,7 @@
 const spaceSize        = 10;
-const dungeonSize      = 600;
-const maxRoomSize      = 15;
-const minRoomSize      = 5;
+const dungeonSize      = 400;
+const maxRoomSize      = 10;
+const minRoomSize      = 4;
 const roomCount        = 10;
 const maxTry           = 1000;
 const dungeonSpaceSize = dungeonSize / spaceSize;
