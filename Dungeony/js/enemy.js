@@ -1,4 +1,4 @@
-function Enemy({ x, y, movements }) {
+function Enemy({ x, y, type, movements }) {
     /**
      * The enemy position.
      */
@@ -12,6 +12,10 @@ function Enemy({ x, y, movements }) {
      * The current enemy movement index. 
      */
     this.currentMovementIndex = 0;
+    /**
+     * The enemy type.
+     */
+    this.type = type;
 
     /**
      * Move the player.
@@ -25,6 +29,10 @@ function Enemy({ x, y, movements }) {
      * Get the next enemy movement.
      */
     this.getNextMovement = function() {
+        if (!this.movements) {
+            return;
+        }
+
         const movement = this.movements[this.currentMovementIndex];
 
         // Have we looped round to the initial movement?
@@ -54,5 +62,12 @@ function Enemy({ x, y, movements }) {
      */
     this.getSize = function() {
         return CHARACTER_SIZE;
+    };
+
+    /**
+     * Gets the enemy type.
+     */
+    this.getType = function() {
+        return this.type;
     };
 };

@@ -16,6 +16,7 @@ const levels = {
             { 
                 x: 50, 
                 y: 10,
+                type: ENEMY_TYPE.WALKER,
                 movements: [
                     { x: 1, y: 0 },
                     { x: 1, y: 0 },
@@ -96,6 +97,11 @@ const levels = {
                     { x: -1, y: 0 },
                     { x: -1, y: 0 }
                 ]
+            },
+            { 
+                x: 100, 
+                y: 10,
+                type: ENEMY_TYPE.FOLLOWER
             }
         ]
     }

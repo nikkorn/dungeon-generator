@@ -63,11 +63,25 @@ function handlePlayerMovement()
 function handleEnemyMovement() 
 {
     for (const enemy of enemies) {
-        // Get the next enemy movement.
-        const nextEnemyMovement = enemy.getNextMovement();
+        // How the enemy behaves depends on its type.
+        switch (enemy.getType()) {
+            case ENEMY_TYPE.WALKER:
+                // Get the next enemy movement.
+                const nextEnemyMovement = enemy.getNextMovement();
 
-        // Try to move the enemy along his path.
-        handleCharacterMovement(enemy, nextEnemyMovement.x, nextEnemyMovement.y);
+                // Try to move the enemy along his path.
+                handleCharacterMovement(enemy, nextEnemyMovement.x, nextEnemyMovement.y);
+                break;
+
+            case ENEMY_TYPE.FOLLOWER:
+                // Follow the player.
+                const enemyOffsetX = player.getX() > enemy.getX() ? CHARACTER_MOVEMENT * 0.5 : CHARACTER_MOVEMENT * -0.5;
+                const enemyOffsetY = player.getY() > enemy.getY() ? CHARACTER_MOVEMENT * 0.5 : CHARACTER_MOVEMENT * -0.5;
+
+                // Try to move the enemy towards the player.
+                handleCharacterMovement(enemy, enemyOffsetX, enemyOffsetY);
+                break;
+        }
     }
 };
 
@@ -89,14 +103,20 @@ function handleCharacterMovement(character, xCharacterOffset, yCharacterOffset)
         if (doSquaresIntersect(character.getX() + xCharacterOffset, character.getY(), 
             character.getSize(), character.getSize(), entity.getX(), entity.getY(), entity.getSize(), entity.getSize())) {
             intersectsEntityOnXAxis = true;
+            break;
+        }
+    }
+
+    // Check whether our player would intersect a wall if moving on the y axis.
+    for (const entity of entities) {
+        // Do nothing if the current entity is the character.
+        if (entity === character) {
+            continue;
         }
 
         if (doSquaresIntersect(character.getX(), character.getY() + yCharacterOffset, 
             character.getSize(), character.getSize(), entity.getX(), entity.getY(), entity.getSize(), entity.getSize())) {
             intersectsEntityOnYAxis = true;
-        }
-
-        if (intersectsEntityOnXAxis || intersectsEntityOnYAxis) {
             break;
         }
     }
