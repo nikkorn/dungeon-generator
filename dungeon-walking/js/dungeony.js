@@ -74,7 +74,10 @@ function handleEnemyMovement()
                 break;
 
             case ENEMY_TYPE.FOLLOWER:
-                // Follow the player.
+                // TODO Check whether player is close enough to follow. If not then do nothing.
+
+                // Follow the player at only half the player speed.
+                // TODO Add PLAYER_MOVEMENT and slower ENEMY_MOVEMENT.
                 const enemyOffsetX = player.getX() > enemy.getX() ? CHARACTER_MOVEMENT * 0.5 : CHARACTER_MOVEMENT * -0.5;
                 const enemyOffsetY = player.getY() > enemy.getY() ? CHARACTER_MOVEMENT * 0.5 : CHARACTER_MOVEMENT * -0.5;
 
