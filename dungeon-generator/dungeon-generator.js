@@ -1,8 +1,9 @@
 const spaceSize        = 10;
-const dungeonSize      = 400;
-const maxRoomSize      = 10;
+const dungeonSize      = 600;
+const maxRoomSize      = 15;
 const minRoomSize      = 4;
-const roomCount        = 10;
+const roomBuffer       = 2; // The minimum number of spaces allowed between each room.
+const roomCount        = 15;
 const maxTry           = 1000;
 const dungeonSpaceSize = dungeonSize / spaceSize;
 
@@ -240,6 +241,8 @@ function doesPatternMatchSpace(pattern, x, y)
 
 /**
  * Gets whether the specified room interacts with an other rooms.
+ * @param room The room to be generated.
+ * @param rooms The existing rooms.
  */
 function overlaps(room, rooms)
 {
@@ -247,8 +250,13 @@ function overlaps(room, rooms)
   {
     var a = rooms[i];
     var b = room;
-    // Check for an overlap.
-    if(a.x < (b.x + b.width) && (a.x + a.width) > b.x && a.y < (b.y + b.height) && (a.y + a.height) > b.y) {
+
+    // Check for an overlap on each index independently.
+    const overlapOnX = a.x < (b.x + b.width + roomBuffer) && (a.x + a.width + roomBuffer) > b.x;
+    const overlapOnY = a.y < (b.y + b.height + roomBuffer) && (a.y + a.height + roomBuffer) > b.y;
+
+    // Check for an overlap on both axis.
+    if(overlapOnX && overlapOnY) {
       // There was an overlap!
       return true;
     }
