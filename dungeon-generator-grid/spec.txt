@@ -1,0 +1,213 @@
+Generation happens by placing pre-made rooms made up of multiples of 7*7 tiles, where 7*7 tiles is 1 dungeon grid cell.
+
+All rooms will hang of the player spawn room.
+
+Each room will have:
+    - A width and height in dungeon grid cells.
+    - relative x/y positioned contents.
+    - The type of door that is made between it and the existing dungeon grid cell that it attaches to.
+    - Info regarding which positions that other rooms can attach to by linking a direction (NSWE) to a relative dungeon grid cell x/y in the room. 
+
+
+OR
+
+Each room will be represented by an array of 7*7 dungeon grid cells, where each cell has:
+    - An x/y dungeon grid cell position relative to .
+    - relative x/y positioned contents.
+    - The type of door that is made between it and the existing dungeon grid cell that it attaches to.
+    - Info regarding which positions that other rooms can attach to by linking a direction (NSWE) to a relative dungeon grid cell x/y in the room. 
+
+
+OR
+
+Each room will be represented by an array of 7*7 dungeon grid cells, where each cell has:
+    - Whether the cell is the entrance cell (links up to an existing room)
+    - If the entrance cell, the direction at which it attaches to an existing room.
+    - If the entrance cell, the type of door that is generated at which it attaches to an existing room.
+    - A x/y dungeon grid cell positions relative to the entrance cell where the entrance cell has a dungeon cell position of 0/0.
+    - relative x/y positioned contents.
+    - The type of door that is made between it and the existing dungeon grid cell that it attaches to.
+
+Example room definition that is an empty room that is made up of 3*1 cells and bolts on to a room to the east of it:
+[
+    {
+        position: { 
+            x: 0, 
+            y: 0 
+        }
+        entrance: Direction.EAST
+        contents: []
+    },
+    {
+        position: { 
+            x: -1, 
+            y: 0 
+        }
+        contents: []
+    },
+    {
+        position: { 
+            x: -2, 
+            y: 0 
+        }
+        contents: []
+    }
+]
+
+Slightly better definition:
+{
+    name: "empty_3*1_room",
+    door: Door.THREE_KEYS
+    blocking: [
+        { x: -3, y: 0 }
+    ],
+    cells: {
+        {
+            position: { x: 0, y: 0 },
+            entrance: Direction.EAST,
+            contents: []
+        },
+        {
+            position: { x: -1, y: 0 },
+            contents: []
+        },
+        {
+            position: { x: -2, y: 0 },
+            contents: []
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Simple with possible doors on each side, if an adjacent room is not generated then the door wont exist.
+### ###
+#     #
+#     #
+
+#     #
+#     #
+### ###
+
+Room with only one door, good for restricting access.
+### ###
+#     #
+#     #
+#     # 
+#     #
+#     #
+#######
+
+Coridoor.
+### ###
+#     #
+#     #
+#     # 
+#     #
+#     #
+### ###
+
+Double room 14*7 with a few possible doors
+### ##########
+#            #
+#            #
+#             
+#            #
+#            #
+########## ###
+
