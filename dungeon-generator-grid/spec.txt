@@ -10,6 +10,8 @@ Each room will be represented by an array of 7*7 dungeon grid cells, where each 
     - relative x/y positioned contents.
     - The type of door that is made between it and the existing dungeon grid cell that it attaches to.
 
+Rooms have an optional range, which defines the range at which it can be generated, based on its entracne cell position.
+
 Example:
 
 {

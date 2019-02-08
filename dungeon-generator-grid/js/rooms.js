@@ -72,6 +72,7 @@ roomGroups.push(
 rooms.push(
     {
         id: "shop_east",
+        range: { min: 2 , max: 10 },
         cells: [
             {
                 position: { x: 0, y: 0 },
@@ -89,6 +90,7 @@ rooms.push(
 rooms.push(
     {
         id: "shop_west",
+        range: { min: 2 , max: 10 },
         cells: [
             {
                 position: { x: 0, y: 0 },
