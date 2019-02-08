@@ -1,24 +1,6 @@
 Generation happens by placing pre-made rooms made up of multiples of 7*7 tiles, where 7*7 tiles is 1 dungeon grid cell.
 
-All rooms will hang of the player spawn room.
-
-Each room will have:
-    - A width and height in dungeon grid cells.
-    - relative x/y positioned contents.
-    - The type of door that is made between it and the existing dungeon grid cell that it attaches to.
-    - Info regarding which positions that other rooms can attach to by linking a direction (NSWE) to a relative dungeon grid cell x/y in the room. 
-
-
-OR
-
-Each room will be represented by an array of 7*7 dungeon grid cells, where each cell has:
-    - An x/y dungeon grid cell position relative to .
-    - relative x/y positioned contents.
-    - The type of door that is made between it and the existing dungeon grid cell that it attaches to.
-    - Info regarding which positions that other rooms can attach to by linking a direction (NSWE) to a relative dungeon grid cell x/y in the room. 
-
-
-OR
+All rooms will hang of the player spawn room which will be at cell position 0/0.
 
 Each room will be represented by an array of 7*7 dungeon grid cells, where each cell has:
     - Whether the cell is the entrance cell (links up to an existing room)
@@ -28,43 +10,15 @@ Each room will be represented by an array of 7*7 dungeon grid cells, where each 
     - relative x/y positioned contents.
     - The type of door that is made between it and the existing dungeon grid cell that it attaches to.
 
-Example room definition that is an empty room that is made up of 3*1 cells and bolts on to a room to the east of it:
-[
-    {
-        position: { 
-            x: 0, 
-            y: 0 
-        }
-        entrance: Direction.EAST
-        contents: []
-    },
-    {
-        position: { 
-            x: -1, 
-            y: 0 
-        }
-        contents: []
-    },
-    {
-        position: { 
-            x: -2, 
-            y: 0 
-        }
-        contents: []
-    }
-]
+Example:
 
-Slightly better definition:
 {
     name: "empty_3*1_room",
-    door: Door.THREE_KEYS
-    blocking: [
-        { x: -3, y: 0 }
-    ],
     cells: {
         {
             position: { x: 0, y: 0 },
             entrance: Direction.EAST,
+            door: Door.THREE_KEYS,
             contents: []
         },
         {
@@ -73,11 +27,21 @@ Slightly better definition:
         },
         {
             position: { x: -2, y: 0 },
+            blocked: [
+                Direction.EAST
+            ],
             contents: []
         }
     }
 }
 
+TERMINOLOGY
+
+CELL
+A cell is tile-based position in a dungeon that can be empty or be made up of a square collection of tiles that represent all or part of a room.
+
+ANCHOR
+An empty cell at which an entrance cell of a room can be placed, it also defines in which direction this link happens.
 
 
 
