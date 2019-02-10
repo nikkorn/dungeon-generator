@@ -104,7 +104,7 @@ rooms.push(
 
 /**
  * Get a room by its id.
- * @param {*} id The room id.
+ * @param id The room id.
  */
 function getRoom(id)
 {
@@ -117,4 +117,12 @@ function getRoom(id)
 
     // We did not find the room.
     return null;
-} 
+}
+
+/**
+ * Get the entrance direction for the specifid room. 
+ * @param room The room. 
+ */
+function getRoomEntranceDirection(room) {
+    return room.cells.find(cell => cell.entrance).entrance;
+}

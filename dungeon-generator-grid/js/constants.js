@@ -3,9 +3,6 @@
 // GENERAL
 //============================================================================
 
-/** The number of cells that make up the dungeon horizontally and vertically. */
-const DUNGEON_CELL_SIZE = 15;
-
 /** The number of tiles that make up a cell horizontally and vertically. */
 const CELL_TILE_SIZE = 5;
 

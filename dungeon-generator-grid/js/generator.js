@@ -27,16 +27,21 @@ function Generator() {
 
 		// While we need to populate our dungeon with rooms find a room and bolt it on.
 		while (getRoomCount() < MAX_ROOMS_COUNT && roomGenerationFailureCount < MAX_ROOM_GENERATE_RETRY) {
+			// Find all available anchors and pick any random one.
+			const anchor = getRandomItem(findAvailableAnchors());
 
-			// TODO Find all available anchors and pick any random one as A.
-
-			// TODO Get all rooms as X where the entrance matches the direction of A.
+			// Get all rooms where the entrance matches the direction of the anchor.
+			const attachableRooms = rooms.filter(room => getRoomEntranceDirection(room) === anchor.getJoinDirection()); 
 
 			// TODO MAYBE Randomly pick a room rarity and filter X by that rarity.
 
-			// TODO Pick rooms randomly from X until R is found where carRoomBeGenerated(R).
+			// Randomly pick a generatable room definition.
+			const generatableRoom = attachableRooms.find(room => canRoomBeGenerated(room, anchor))
 
-			// TODO Call addRoom(aX, aY, R) where aX and aY are the x/y positions of A.
+			// Generate a room if we have a valid generatable room definition.
+			if (generatableRoom) {
+				addRoom(anchor.getX(), anchor.getY(), generatableRoom);
+			}
 		}
 
 		// TODO Check we have a valid dungeon by checking that:
@@ -47,29 +52,94 @@ function Generator() {
 	};
 
 	/**
-	 * Find all available anchors.
+	 * Get the cell at the x/y position, or undefined if a cell does not exist at the position.
+	 * @param x The x position. 
+	 * @param y The y position.
+	 * @returns The cell at the x/y position, or undefined if a cell does not exist at the position. 
 	 */
-	this.findAvailableAnchors = function() {
-
+	this.getCellAt = function(x, y) {
+		return this.cells[getPositionKey(x, y)];
 	};
 
 	/**
-	 * Gets whether the room can be generated at the specified position.
-	 * @param {*} x The dungeon cell x position at which to place the room entrance cell.
-	 * @param {*} y The dungeon cell y position at which to place the room entrance cell.
-	 * @param {*} room The room to check.
-	 * @returns Whether the room can be generated at the position.
+	 * Find all available anchors.
 	 */
-	this.carRoomBeGenerated = function(room, x, y) {
-		// TODO Find the room group that the room is in (if there is one) and return false
-		// if the number of rooms that belong to the same category and that have already been
-		// generated meet the max for the group.
+	this.findAvailableAnchors = function() {
+		// Create an array to store all of the available anchors.
+		const anchors = [];
 
-		// TODO If the room has a max then return false if the count has already been met.
+		// A function to get whether an x/y cell position is free.
+		const isCellPositionFree = (x, y) => !this.cells[getPositionKey(x, y)];
 
-		// TODO Return false 
+		// Iterate over all existing cells and get all adjacent cell positions as anchors that are not blocked.
+		for (const cell of Object.values(this.cells)) {
+			// Get the position of the cell.
+			const cellX = cell.getX();
+			const cellY = cell.getY(); 
 
-		// The room can be generated
+			// Can we create an anchor above?
+			if (isCellPositionFree(cellX, cellY + 1) && cell.isJoinableAt(DIRECTION.NORTH)) {
+				anchors.push(new Anchor(cellX, cellY + 1, DIRECTION.SOUTH));
+			}
+
+			// Can we create an anchor below?
+			if (isCellPositionFree(cellX, cellY - 1) && cell.isJoinableAt(DIRECTION.SOUTH)) {
+				anchors.push(new Anchor(cellX, cellY - 1, DIRECTION.NORTH));
+			}
+
+			// Can we create an anchor to the left?
+			if (isCellPositionFree(cellX - 1, cellY) && cell.isJoinableAt(DIRECTION.WEST)) {
+				anchors.push(new Anchor(cellX - 1, cellY, DIRECTION.EAST));
+			}
+
+			// Can we create an anchor to the right?
+			if (isCellPositionFree(cellX + 1, cellY) && cell.isJoinableAt(DIRECTION.EAST)) {
+				anchors.push(new Anchor(cellX + 1, cellY, DIRECTION.WEST));
+			}
+		}
+
+		// Return all of the anchors that were found.
+		return anchors;
+	};
+
+	/**
+	 * Gets whether the room can be generated at the specified anchor.
+	 * @param room The room to check.
+	 * @param anchor The anchor.
+	 * @returns Whether the room can be generated at the anchor.
+	 */
+	this.canRoomBeGenerated = function(room, anchor) {
+		// Find the room group that the room is in (if there is one).
+		const roomGroup = roomGroups.find(group => group.rooms.includes(room.id));
+
+		// Return false if the number of rooms that belong to the same category 
+		// and that have already been generated meet the max for the group.
+		if (roomGroup && roomGroup.max) {
+			// Get the total number of times that rooms in the same group have been generated.
+			const roomGroupGenerationCount = roomGroup.rooms
+				.map(roomId => this.roomCounts[roomId] || 0)
+				.reduce((total, roomCount) => total + roomCount, 0);
+
+			// Have we met the group max?
+			if (roomGroupGenerationCount >= roomGroup.max) {
+				return false;
+			}
+		}
+
+		// If the room has a max then return false if the count has already been met.
+		if (room.max && (this.roomCounts[room.id] || 0) >= room.max) {
+			return false;
+		}
+
+		// Check to make sure that all of the cell positions that will be taken up by the room are available.
+		for (const cell of room.cells) {
+			if (!isCellPositionFree(cell.getX() + anchor.getX(), cell.getY() + anchor.getY())) {
+				// The cell position is taken!
+				return false;
+			}
+		}
+
+		// The room can be generated!
 		return true;
 	};
 
@@ -84,12 +154,12 @@ function Generator() {
 		this.roomCounts[room.id] = (this.roomCounts[room.id] || 0) + 1;
 
 		// Add each room cell to the dungeon.
-		for  (const cellInfo of room.cells) {
+		for (const cellInfo of room.cells) {
 			// Create a cell instance with an absolute cell position, rather than the relative room one.
-			const cell = new Cell(x + cellInfo.position.x, y + cellInfo.position.y, room.id, cellInfo.door, cellInfo.entrance);
+			const cell = new Cell(x + cellInfo.position.x, y + cellInfo.position.y, room.id, cellInfo.blocked, cellInfo.door, cellInfo.entrance);
 
 			// Add the cell to the dungeon!
-			this.cells[cell.getKey()] = cell;
+			this.cells[getCellKey(cell)] = cell;
 		}
 	};
 

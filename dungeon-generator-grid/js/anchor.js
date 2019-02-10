@@ -16,9 +16,9 @@ function Anchor(x, y, direction) {
     this.direction = direction;
 
     /**
-     * Get the direction.
+     * Get the direction at which to join an occupied cell.
      */
-    this.getDirection = function() {
+    this.getJoinDirection = function() {
         return this.direction;
     };
 
