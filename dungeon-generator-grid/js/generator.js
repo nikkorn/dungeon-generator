@@ -15,40 +15,69 @@ function Generator() {
 	 * Generate!
 	 */
 	this.generate = function () {
-		// Clear the cells dictionary and the dictionary storing added room information.
-		this.cells      = {};
-		this.addedRooms = {};
+		// A function which attempts to generate a dungeon, returning a success status and the dungeon tiles if successful.
+		const attempt = function() {
+			// Clear the cells dictionary and the dictionary storing added room information.
+			this.cells      = {};
+			this.addedRooms = {};
 
-		// Add the spawn room to the center of the dungeon, this should always be a success.
-		addRoom(0, 0, getRoom("spawn"));
+			// Add the spawn room to the center of the dungeon, this should always be a success.
+			addRoom(0, 0, getRoom("spawn"));
 
-		// Keep track of the number of times we have attempted to add a room and failed.
-		let roomGenerationFailureCount = 0;
+			// Keep track of the number of times we have attempted to add a room and failed.
+			let roomGenerationFailureCount = 0;
 
-		// While we need to populate our dungeon with rooms find a room and bolt it on.
-		while (getRoomCount() < MAX_ROOMS_COUNT && roomGenerationFailureCount < MAX_ROOM_GENERATE_RETRY) {
-			// Find all available anchors and pick any random one.
-			const anchor = getRandomItem(findAvailableAnchors());
+			// While we need to populate our dungeon with rooms find a room and bolt it on.
+			while (getRoomCount() < MAX_ROOMS_COUNT && roomGenerationFailureCount < MAX_ROOM_GENERATE_RETRY) {
+				// Find all available anchors and pick any random one.
+				const anchor = getRandomItem(findAvailableAnchors());
 
-			// Get all rooms where the entrance matches the direction of the anchor.
-			const attachableRooms = rooms.filter(room => getRoomEntranceDirection(room) === anchor.getJoinDirection()); 
+				// Get all rooms where the entrance matches the direction of the anchor.
+				const attachableRooms = rooms.filter(room => getRoomEntranceDirection(room) === anchor.getJoinDirection()); 
 
-			// TODO MAYBE Randomly pick a room rarity and filter X by that rarity.
+				// TODO MAYBE Randomly pick a room rarity and filter X by that rarity.
 
-			// Randomly pick a generatable room definition.
-			const generatableRoom = attachableRooms.find(room => canRoomBeGenerated(room, anchor))
+				// Randomly pick a generatable room definition.
+				const generatableRoom = attachableRooms.find(room => canRoomBeGenerated(room, anchor));
 
-			// Generate a room if we have a valid generatable room definition.
-			if (generatableRoom) {
-				addRoom(anchor.getX(), anchor.getY(), generatableRoom);
+				// Generate a room if we have a valid generatable room definition.
+				if (generatableRoom) {
+					addRoom(anchor.getX(), anchor.getY(), generatableRoom);
+				} else {
+					roomGenerationFailureCount++;
+				}
 			}
+
+			// We failed to generate the dungeon if we didn't meet the minmum number of rooms.
+			if (getRoomCount() < MIN_ROOMS_COUNT) {
+				return { success: false };
+			}
+
+			// TODO Check we have a valid dungeon by checking that:
+			// - Any rooms that have a minimum count have been added at least that many times.
+			// - The total number of rooms generated exceeds MIN_ROOMS_COUNT. 
+
+			// TODO Populate and return a collection of tiles based on the dungeon cells.
+			return { success: true, tiles: convertCellsToTiles() };
 		}
 
-		// TODO Check we have a valid dungeon by checking that:
-		// - Any rooms that have a minimum count have been added at least that many times.
-		// - The total number of rooms generated exceeds MIN_ROOMS_COUNT. 
+		// Keep track of the number of times we have attempted to create the dungeon and failed.
+		let dungeonGenerationFailureCount = 0;
 
-		// TODO Populate and return a collection of tiles based on the dungeon cells.
+		// Keep trying to generate the dungeon until we hit the attempt limit.
+		while (dungeonGenerationFailureCount < MAX_DUNGEON_GENERATE_RETRY) {
+			const dungeonGenerationAttempt = attempt();
+
+			// If we succeeded then just return the generatd tiles.
+			if (dungeonGenerationAttempt.success) {
+				return dungeonGenerationAttempt.tiles;
+			}
+
+			dungeonGenerationFailureCount++;
+		}
+
+		// We completely failed to generate a valid dungeon!
+		throw "reached dungeon generation attempt limit!";
 	};
 
 	/**
@@ -162,6 +191,13 @@ function Generator() {
 			this.cells[getCellKey(cell)] = cell;
 		}
 	};
+
+	/**
+	 * Convert the dungeon cells into an array of duneon tiles.
+	 */
+	this.convertCellsToTiles = function() {
+		return [];
+	}
 
 	/**
 	 * Get the total number of rooms that have been added to the dungeon.
