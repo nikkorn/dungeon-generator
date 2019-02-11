@@ -32,6 +32,7 @@ rooms.push(
 rooms.push(
     {
         name: "empty_3*1_room",
+        max: 2,
         cells: [
             {
                 position: { x: 0, y: 0 },
@@ -53,11 +54,88 @@ rooms.push(
 );
 
 /**
+ * A simple empty 2*1 room accessible from the west side.
+ */
+rooms.push(
+    {
+        name: "empty_2*1_room_west",
+        cells: [
+            {
+                position: { x: 0, y: 0 },
+                entrance: DIRECTION.WEST,
+                door: DOOR.THREE_KEYS,
+                contents: []
+            },
+            {
+                position: { x: 1, y: 0 },
+                contents: []
+            }
+        ]
+    }
+);
+
+/**
+ * A simple empty 2*1 room accessible from the east side.
+ */
+rooms.push(
+    {
+        name: "empty_2*1_room_east",
+        cells: [
+            {
+                position: { x: 0, y: 0 },
+                entrance: DIRECTION.EAST,
+                door: DOOR.THREE_KEYS,
+                contents: []
+            },
+            {
+                position: { x: 1, y: 0 },
+                contents: []
+            }
+        ]
+    }
+);
+
+/**
+ * A simple empty 1*1 room accessible from the west side.
+ */
+rooms.push(
+    {
+        name: "empty_1*1_room_west",
+        cells: [
+            {
+                position: { x: 0, y: 0 },
+                entrance: DIRECTION.WEST,
+                door: DOOR.THREE_KEYS,
+                contents: []
+            }
+        ]
+    }
+);
+
+/**
+ * A simple empty 1*1 room accessible from the east side.
+ */
+rooms.push(
+    {
+        name: "empty_1*1_room_east",
+        cells: [
+            {
+                position: { x: 0, y: 0 },
+                entrance: DIRECTION.EAST,
+                door: DOOR.THREE_KEYS,
+                contents: []
+            }
+        ]
+    }
+);
+
+/**
  * A simple empty 1*3 room accessible from the south side.
  */
 rooms.push(
     {
         name: "empty_1*3_room",
+        max: 2,
         cells: [
             {
                 position: { x: 0, y: 0 },
@@ -77,6 +155,87 @@ rooms.push(
         ]
     }
 );
+
+/**
+ * An L shaped room accessible from the south side.
+ */
+rooms.push(
+    {
+        name: "l_shape_south_room",
+        cells: [
+            {
+                position: { x: 0, y: 0 },
+                entrance: DIRECTION.SOUTH,
+                door: DOOR.THREE_KEYS,
+                contents: []
+            },
+            {
+                position: { x: 0, y: 1 },
+                contents: []
+            },
+            {
+                position: { x: 1, y: 1 },
+                contents: []
+            }
+        ]
+    }
+);
+
+/**
+ * An L shaped room accessible from the north side.
+ */
+rooms.push(
+    {
+        name: "l_shape_north_room",
+        cells: [
+            {
+                position: { x: 0, y: 0 },
+                entrance: DIRECTION.NORTH,
+                door: DOOR.THREE_KEYS,
+                contents: []
+            },
+            {
+                position: { x: 0, y: -1 },
+                contents: []
+            },
+            {
+                position: { x: -1, y: -1 },
+                contents: []
+            }
+        ]
+    }
+);
+
+/**
+ * An L shaped room accessible from the north side.
+ */
+rooms.push(
+    {
+        name: "sideways_hat_room",
+        cells: [
+            {
+                position: { x: 0, y: 0 },
+                entrance: DIRECTION.NORTH,
+                door: DOOR.THREE_KEYS,
+                contents: []
+            },
+            {
+                position: { x: 0, y: -1 },
+                contents: []
+            },
+            {
+                position: { x: 1, y: -1 },
+                contents: []
+            },
+            {
+                position: { x: 0, y: -2 },
+                contents: []
+            }
+        ]
+    }
+);
+
+
 
 /**
  * Add a room group for the shop rooms so that only one is generated.
@@ -148,5 +307,5 @@ function getRoom(name)
  * @param room The room. 
  */
 function getRoomEntranceDirection(room) {
-    return (room.cells.find(cell => cell.entrance) || {}).entrance;
+    return (room.cells.find(cell => typeof cell.entrance === "number") || {}).entrance;
 }

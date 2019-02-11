@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <body>
+<link rel="stylesheet" type="text/css" href="style.css">
 <script src="js/constants.js"></script>
 <script src="js/utility.js"></script>
 <script src="js/anchor.js"></script>
@@ -10,7 +11,7 @@
 
 <button type="button" onclick="generate()">Generate!</button>
 
-<svg id="dungeon" width="800" height="800">
+<svg id="dungeon" width="800" height="800" class="element-vertical">
   <rect width="800" height="800" style="fill:rgb(0,0,0)" />
 </svg>
  
@@ -24,10 +25,10 @@ function setSpace(x, y, colour)
 {
   // Draw the space on the dungeon area SVG.
   var rect = document.createElementNS("http://www.w3.org/2000/svg", 'rect');
-  rect.setAttributeNS(null, 'x', (x * 4) + 400);
-  rect.setAttributeNS(null, 'y', (y * 4) + 200);
-  rect.setAttributeNS(null, 'height', 4);
-  rect.setAttributeNS(null, 'width', 4);
+  rect.setAttributeNS(null, 'x', (x * 3) + 400);
+  rect.setAttributeNS(null, 'y', (y * 3) + 400);
+  rect.setAttributeNS(null, 'height', 3);
+  rect.setAttributeNS(null, 'width', 3);
   rect.setAttributeNS(null, 'fill', colour);
   document.getElementById('dungeon').appendChild(rect);
 };
