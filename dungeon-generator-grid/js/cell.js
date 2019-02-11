@@ -3,11 +3,12 @@
  * @param x The x position.
  * @param y The y position.
  * @param roomId The id of the room that the cell is part of.
+ * @param roomName The name of the room that the cell is part of.
  * @param blocked The directions from which the cell is blocked (cannot be liked to another room).
  * @param door The door that is used to access the cell (if this cell is a room entrance cell).
  * @param doorDirection The direction at which an entrance door is placed.
  */
-function Cell(x, y, roomId, blocked, door, doorDirection) {
+function Cell(x, y, roomId, roomName, blocked, door, doorDirection) {
     /**
      * The cell position.
      */
@@ -21,10 +22,14 @@ function Cell(x, y, roomId, blocked, door, doorDirection) {
      * The direction at which an entrance door is placed.
      */
     this.doorDirection = doorDirection;
-    /**s
+    /**
      * The id of the room that the cell is part of.
      */
     this.roomId = roomId;
+    /**
+     * The name of the room that the cell is part of.
+     */
+    this.roomName = roomName;
     /**
      * The directions from which the cell is blocked (cannot be liked to another room).
      */
@@ -49,6 +54,13 @@ function Cell(x, y, roomId, blocked, door, doorDirection) {
      */
     this.getRoomId = function() {
         return this.roomId;
+    };
+
+    /**
+     * Get the name of the room that the cell is part of.
+     */
+    this.getRoomName = function() {
+        return this.roomName;
     };
 
     /**

@@ -14,7 +14,7 @@ const roomGroups = [];
  */
 rooms.push(
     {
-        id: "spawn",
+        name: "spawn",
         min: 1,
         max: 1,
         cells: [
@@ -31,7 +31,7 @@ rooms.push(
  */
 rooms.push(
     {
-        id: "empty_3*1_room",
+        name: "empty_3*1_room",
         cells: [
             {
                 position: { x: 0, y: 0 },
@@ -59,7 +59,7 @@ rooms.push(
  */
 rooms.push(
     {
-        id: "empty_1*3_room",
+        name: "empty_1*3_room",
         cells: [
             {
                 position: { x: 0, y: 0 },
@@ -99,7 +99,7 @@ roomGroups.push(
  */
 rooms.push(
     {
-        id: "shop_east",
+        name: "shop_east",
         range: { min: 2 , max: 10 },
         cells: [
             {
@@ -117,7 +117,7 @@ rooms.push(
  */
 rooms.push(
     {
-        id: "shop_west",
+        name: "shop_west",
         range: { min: 2 , max: 10 },
         cells: [
             {
@@ -131,13 +131,13 @@ rooms.push(
 );
 
 /**
- * Get a room by its id.
- * @param id The room id.
+ * Get a room by its name.
+ * @param name The room name.
  */
-function getRoom(id)
+function getRoom(name)
 {
     for (const room of rooms) {
-        if (room.id === id) {
+        if (room.name === name) {
             // We found the room.
             return room;
         }

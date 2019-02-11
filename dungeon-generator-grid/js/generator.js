@@ -7,7 +7,7 @@ function Generator() {
 	 */
 	this.cells = {};
 	/**
-	 * A dictionary mapping room id's to the count of times they have been added to the dungeon.
+	 * A dictionary mapping room names to the count of times they have been added to the dungeon.
 	 */
 	this.roomCounts = {};
 
@@ -139,7 +139,7 @@ function Generator() {
 	 */
 	this.canRoomBeGenerated = function(room, anchor) {
 		// Find the room group that the room is in (if there is one).
-		const roomGroup = roomGroups.find(group => group.rooms.includes(room.id));
+		const roomGroup = roomGroups.find(group => group.rooms.includes(room.name));
 
 		// Return false if the number of rooms that belong to the same category 
 		// and that have already been generated meet the max for the group.
@@ -156,7 +156,7 @@ function Generator() {
 		}
 
 		// If the room has a max then return false if the count has already been met.
-		if (room.max && (this.roomCounts[room.id] || 0) >= room.max) {
+		if (room.max && (this.roomCounts[room.name] || 0) >= room.max) {
 			return false;
 		}
 
@@ -183,7 +183,7 @@ function Generator() {
 	 */
 	this.addRoom = function (x, y, room) {
 		// Keep a count of any rooms that we add.
-		this.roomCounts[room.id] = (this.roomCounts[room.id] || 0) + 1;
+		this.roomCounts[room.name] = (this.roomCounts[room.name] || 0) + 1;
 
 		// Create a unique room id to represent a generated room instance.
 		const uniqueRoomId = getPositionKey(x, y);
@@ -191,7 +191,7 @@ function Generator() {
 		// Add each room cell to the dungeon.
 		for (const cellInfo of room.cells) {
 			// Create a cell instance with an absolute cell position, rather than the relative room one.
-			const cell = new Cell(x + cellInfo.position.x, y + cellInfo.position.y, room.id, cellInfo.blocked, cellInfo.door, cellInfo.entrance);
+			const cell = new Cell(x + cellInfo.position.x, y + cellInfo.position.y, uniqueRoomId, room.name, cellInfo.blocked, cellInfo.door, cellInfo.entrance);
 
 			// Add the cell to the dungeon!
 			this.cells[getCellKey(cell)] = cell;
@@ -218,7 +218,7 @@ function Generator() {
 					tiles[getPositionKey(tileX, tileY)] = { 
 						x: tileX, 
 						y: tileY, 
-						roomId: cell.getRoomId(),
+						roomName: cell.getRoomName(),
 						type: TILE.ROOM
 					};
 				}
@@ -253,6 +253,7 @@ function Generator() {
 					doorType: door,
 					doorDirection: doorDirection,
 					roomId: cell.getRoomId(),
+					roomName: cell.getRoomName(),
 					type: TILE.ROOM
 				};
 			}
@@ -305,6 +306,7 @@ function Generator() {
 		// Get the target cell.
 		const targetCell = this.cells[getPositionKey(x, y)];
 
+		// Are the cells within the same room instance.
 		return targetCell && targetCell.getRoomId() === initialCell.getRoomId();
 	}
 
