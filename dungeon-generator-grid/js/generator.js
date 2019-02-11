@@ -48,7 +48,7 @@ function Generator() {
 				}
 			}
 
-			// We failed to generate the dungeon if we didn't meet the minmum number of rooms.
+			// We failed to generate the dungeon if we didn't meet the minimum number of rooms.
 			if (this.getRoomCount() < MIN_ROOMS_COUNT) {
 				return { success: false };
 			}
@@ -258,16 +258,58 @@ function Generator() {
 				};
 			}
 
-
 			// Is the cell above this one in the same room?
 			if (this.areRoomCellsBridged(cell.getX(), cell.getY(), DIRECTION.NORTH)) {
-
+				// Create a tile for each tile position in the cell.
+				for (let tileX = tileXMin; tileX < tileXMax; tileX++) {
+					tiles[getPositionKey(tileX, tileYMax)] = { 
+						x: tileX, 
+						y: tileYMax, 
+						roomName: cell.getRoomName(),
+						type: TILE.ROOM
+					};
+				}
 			}
 
-			// TODO Fill in the room tiles between the cells.
-		});
+			// Is the cell above this one in the same room?
+			if (this.areRoomCellsBridged(cell.getX(), cell.getY(), DIRECTION.SOUTH)) {
+				// Create a tile for each tile position in the cell.
+				for (let tileX = tileXMin; tileX < tileXMax; tileX++) {
+					tiles[getPositionKey(tileX, tileYMin - 1)] = { 
+						x: tileX, 
+						y: tileYMin - 1, 
+						roomName: cell.getRoomName(),
+						type: TILE.ROOM
+					};
+				}
+			}
 
-		// TODO Fill in the room tiles between the cells.
+			// Is the cell to the left of this one in the same room?
+			if (this.areRoomCellsBridged(cell.getX(), cell.getY(), DIRECTION.WEST)) {
+				// Create a tile for each tile position in the cell.
+				for (let tileY = tileYMin; tileY < tileYMax; tileY++) {
+					tiles[getPositionKey(tileXMin - 1, tileY)] = { 
+						x: tileXMin - 1, 
+						y: tileY, 
+						roomName: cell.getRoomName(),
+						type: TILE.ROOM
+					};
+				}
+			}
+
+			// Is the cell to the right of this one in the same room?
+			if (this.areRoomCellsBridged(cell.getX(), cell.getY(), DIRECTION.EAST)) {
+				// Create a tile for each tile position in the cell.
+				for (let tileY = tileYMin; tileY < tileYMax; tileY++) {
+					tiles[getPositionKey(tileXMax, tileY)] = { 
+						x: tileXMax, 
+						y: tileY, 
+						roomName: cell.getRoomName(),
+						type: TILE.ROOM
+					};
+				}
+			}
+		});
 
 		// TODO Fill in the reachable wall tiles.
 
@@ -276,6 +318,8 @@ function Generator() {
 
 	/**
 	 * Gets whether the cell at the x/y position and the cell in the specified direction are in the same room.
+	 * @param x The initial cell x position.
+	 * @param y The initial cell y position.
 	 */
 	this.areRoomCellsBridged = function(x, y, direction) {
 		// Get the initial cell.
@@ -304,7 +348,7 @@ function Generator() {
 		const targetCellPosition = getTargetCellPosition();
 
 		// Get the target cell.
-		const targetCell = this.cells[getPositionKey(x, y)];
+		const targetCell = this.cells[getPositionKey(targetCellPosition.x, targetCellPosition.y)];
 
 		// Are the cells within the same room instance.
 		return targetCell && targetCell.getRoomId() === initialCell.getRoomId();

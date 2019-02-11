@@ -45,9 +45,7 @@ rooms.push(
             },
             {
                 position: { x: -2, y: 0 },
-                blocked: [
-                    DIRECTION.WEST
-                ],
+                blocked: [],
                 contents: []
             }
         ]
@@ -73,9 +71,7 @@ rooms.push(
             },
             {
                 position: { x: 0, y: 2 },
-                blocked: [
-                    DIRECTION.NORTH
-                ],
+                blocked: [],
                 contents: []
             }
         ]
