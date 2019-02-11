@@ -10,16 +10,36 @@
 
 <button type="button" onclick="generate()">Generate!</button>
 
-<svg id="dungeon" width="600" height="600">
-  <rect width="600" height="600" style="fill:rgb(0,0,0)" />
+<svg id="dungeon" width="800" height="800">
+  <rect width="800" height="800" style="fill:rgb(0,0,0)" />
 </svg>
  
 </body>
 <script>
 
-const result = new Generator().generate();
+/**
+ * Set a space in the dungeon.
+ */
+function setSpace(x, y, colour)
+{
+  // Draw the space on the dungeon area SVG.
+  var rect = document.createElementNS("http://www.w3.org/2000/svg", 'rect');
+  rect.setAttributeNS(null, 'x', (x * 4) + 400);
+  rect.setAttributeNS(null, 'y', (y * 4) + 200);
+  rect.setAttributeNS(null, 'height', 4);
+  rect.setAttributeNS(null, 'width', 4);
+  rect.setAttributeNS(null, 'fill', colour);
+  document.getElementById('dungeon').appendChild(rect);
+};
 
-console.log(result);
+const TILE_COLOUR = {
+  [TILE.ROOM]: "#FFFFFF",
+  [TILE.DOOR]: "#FF0000"
+};
+
+const tiles = new Generator().generate();
+
+tiles.forEach(element => setSpace(element.x, element.y, TILE_COLOUR[element.type]));
 
 </script>
 </html>

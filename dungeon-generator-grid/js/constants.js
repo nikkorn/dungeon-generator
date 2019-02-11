@@ -4,7 +4,10 @@
 //============================================================================
 
 /** The number of tiles that make up a cell horizontally and vertically. */
-const CELL_TILE_SIZE = 5;
+const CELL_TILE_SIZE = 7;
+
+/** The number of tiles that a door will be offset by from a cell edge. */
+const CELL_DOOR_OFFSET = Math.floor(CELL_TILE_SIZE / 2);
 
 /** The maximum number of times allowed for dungeon regeneration attempts. */
 const MAX_DUNGEON_GENERATE_RETRY = 1000;
@@ -46,6 +49,13 @@ const DOOR = {
     FOUR_KEYS: 4,
     FIVE_KEYS: 4,
     SHOP: 4 
+};
+
+/** An enumeration of tile types. */
+const TILE = {
+    WALL: 0,
+    ROOM: 1,
+    DOOR: 2
 };
 
 //============================================================================

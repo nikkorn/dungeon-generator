@@ -46,7 +46,35 @@ rooms.push(
             {
                 position: { x: -2, y: 0 },
                 blocked: [
-                    DIRECTION.EAST
+                    DIRECTION.WEST
+                ],
+                contents: []
+            }
+        ]
+    }
+);
+
+/**
+ * A simple empty 1*3 room accessible from the south side.
+ */
+rooms.push(
+    {
+        id: "empty_1*3_room",
+        cells: [
+            {
+                position: { x: 0, y: 0 },
+                entrance: DIRECTION.SOUTH,
+                door: DOOR.THREE_KEYS,
+                contents: []
+            },
+            {
+                position: { x: 0, y: 1 },
+                contents: []
+            },
+            {
+                position: { x: 0, y: 2 },
+                blocked: [
+                    DIRECTION.NORTH
                 ],
                 contents: []
             }

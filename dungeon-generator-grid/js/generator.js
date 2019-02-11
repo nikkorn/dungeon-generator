@@ -68,7 +68,7 @@ function Generator() {
 		while (dungeonGenerationFailureCount < MAX_DUNGEON_GENERATE_RETRY) {
 			const dungeonGenerationAttempt = attempt.call(this);
 
-			// If we succeeded then just return the generatd tiles.
+			// If we succeeded then just return the generated tiles.
 			if (dungeonGenerationAttempt.success) {
 				return dungeonGenerationAttempt.tiles;
 			}
@@ -185,6 +185,9 @@ function Generator() {
 		// Keep a count of any rooms that we add.
 		this.roomCounts[room.id] = (this.roomCounts[room.id] || 0) + 1;
 
+		// Create a unique room id to represent a generated room instance.
+		const uniqueRoomId = getPositionKey(x, y);
+
 		// Add each room cell to the dungeon.
 		for (const cellInfo of room.cells) {
 			// Create a cell instance with an absolute cell position, rather than the relative room one.
@@ -196,10 +199,113 @@ function Generator() {
 	};
 
 	/**
-	 * Convert the dungeon cells into an array of duneon tiles.
+	 * Convert the dungeon cells into an array of dungeon tiles.
 	 */
 	this.convertCellsToTiles = function() {
-		return [];
+		const tiles = {};
+
+		// Convert each cell into a bunch of tiles.
+		Object.values(this.cells).forEach(cell => {
+			// Get the x/y position of the bottom left tile in the cell.
+			const tileXMin = cell.getX() * (CELL_TILE_SIZE + 1);
+			const tileYMin = cell.getY() * (CELL_TILE_SIZE + 1);
+			const tileXMax = tileXMin + CELL_TILE_SIZE;
+			const tileYMax = tileYMin + CELL_TILE_SIZE;
+
+			// Create a tile for each tile position in the cell.
+			for (let tileX = tileXMin; tileX < tileXMax; tileX++) {
+				for (let tileY = tileYMin; tileY < tileYMax; tileY++) {
+					tiles[getPositionKey(tileX, tileY)] = { 
+						x: tileX, 
+						y: tileY, 
+						roomId: cell.getRoomId(),
+						type: TILE.ROOM
+					};
+				}
+			}
+
+			// Are we generating a door for the cell?
+			if (cell.getDoor()) {
+				// Get the door type.
+				const door = cell.getDoor();
+				// Get the direction at which to generate the door.
+				const doorDirection = cell.getDoorDirection();
+				// Helper function to get the door position.
+				const getDoorPosition = () => {
+					// Where we place the door tile depends on its direction.
+					switch (doorDirection) {
+						case DIRECTION.NORTH:
+							return { x: tileXMin + CELL_DOOR_OFFSET, y: tileYMax + 1 };
+						case DIRECTION.SOUTH:
+							return { x: tileXMin + CELL_DOOR_OFFSET, y: tileYMin - 1 };
+						case DIRECTION.EAST:
+							return { x: tileXMax + 1, y: tileYMin + CELL_DOOR_OFFSET };
+						case DIRECTION.WEST:
+							return { x: tileXMin - 1, y: tileYMin + CELL_DOOR_OFFSET };
+					}
+				};
+				// Get the door position.
+				const doorPosition = getDoorPosition();
+				// Create the door tile at the correct position.
+				tiles[getPositionKey(doorPosition.x, doorPosition.y)] = { 
+					x: doorPosition.x, 
+					y: doorPosition.y, 
+					doorType: door,
+					doorDirection: doorDirection,
+					roomId: cell.getRoomId(),
+					type: TILE.ROOM
+				};
+			}
+
+
+			// Is the cell above this one in the same room?
+			if (this.areRoomCellsBridged(cell.getX(), cell.getY(), DIRECTION.NORTH)) {
+
+			}
+
+			// TODO Fill in the room tiles between the cells.
+		});
+
+		// TODO Fill in the room tiles between the cells.
+
+		// TODO Fill in the reachable wall tiles.
+
+		return Object.values(tiles);
+	}
+
+	/**
+	 * Gets whether the cell at the x/y position and the cell in the specified direction are in the same room.
+	 */
+	this.areRoomCellsBridged = function(x, y, direction) {
+		// Get the initial cell.
+		const initialCell = this.cells[getPositionKey(x, y)];
+
+		// If the cell is not a room cell then there will definitely not be a bridge.
+		if (!initialCell) {
+			return false;
+		}
+
+		// Helper function to get the target cell position based on direction.
+		const getTargetCellPosition = () => {
+			switch (direction) {
+				case DIRECTION.NORTH:
+					return { x, y: y + 1 };
+				case DIRECTION.SOUTH:
+					return { x, y: y - 1 };
+				case DIRECTION.EAST:
+					return { x: x + 1, y };
+				case DIRECTION.WEST:
+					return { x: x - 1, y };
+			}
+		};
+
+		// Get the target cell position.
+		const targetCellPosition = getTargetCellPosition();
+
+		// Get the target cell.
+		const targetCell = this.cells[getPositionKey(x, y)];
+
+		return targetCell && targetCell.getRoomId() === initialCell.getRoomId();
 	}
 
 	/**
