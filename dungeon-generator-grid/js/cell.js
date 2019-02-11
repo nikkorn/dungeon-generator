@@ -70,6 +70,6 @@ function Cell(x, y, roomId, blocked, door, doorDirection) {
      * @param direction The direction.
      */
     this.isJoinableAt = function(direction) {
-        return !this.blocked.includes(direction);
+        return !(this.blocked || []).includes(direction);
     };
 }

@@ -35,8 +35,8 @@ rooms.push(
         cells: [
             {
                 position: { x: 0, y: 0 },
-                entrance: Direction.EAST,
-                door: Door.THREE_KEYS,
+                entrance: DIRECTION.EAST,
+                door: DOOR.THREE_KEYS,
                 contents: []
             },
             {
@@ -46,7 +46,7 @@ rooms.push(
             {
                 position: { x: -2, y: 0 },
                 blocked: [
-                    Direction.EAST
+                    DIRECTION.EAST
                 ],
                 contents: []
             }
@@ -76,8 +76,8 @@ rooms.push(
         cells: [
             {
                 position: { x: 0, y: 0 },
-                entrance: Direction.EAST,
-                door: Door.SHOP,
+                entrance: DIRECTION.EAST,
+                door: DOOR.SHOP,
                 contents: []
             }
         ]
@@ -94,8 +94,8 @@ rooms.push(
         cells: [
             {
                 position: { x: 0, y: 0 },
-                entrance: Direction.WEST,
-                door: Door.SHOP,
+                entrance: DIRECTION.WEST,
+                door: DOOR.SHOP,
                 contents: []
             }
         ]
@@ -124,5 +124,5 @@ function getRoom(id)
  * @param room The room. 
  */
 function getRoomEntranceDirection(room) {
-    return room.cells.find(cell => cell.entrance).entrance;
+    return (room.cells.find(cell => cell.entrance) || {}).entrance;
 }
