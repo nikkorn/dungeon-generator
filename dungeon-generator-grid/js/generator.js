@@ -162,7 +162,7 @@ function Generator() {
 
 		// Check to make sure that all of the cell positions that will be taken up by the room are available.
 		for (const cell of room.cells) {
-			if (this.cells[getPositionKey(cell.x + anchor.getX(), cell.y + anchor.getY())]) {
+			if (this.cells[getPositionKey(cell.position.x + anchor.getX(), cell.position.y + anchor.getY())]) {
 				// The cell position is taken!
 				return false;
 			}
