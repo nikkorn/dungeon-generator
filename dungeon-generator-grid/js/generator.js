@@ -160,12 +160,9 @@ function Generator() {
 			return false;
 		}
 
-		// A function to get whether an x/y cell position is free.
-		const isCellPositionFree = (x, y) => !this.cells[getPositionKey(x, y)];
-
 		// Check to make sure that all of the cell positions that will be taken up by the room are available.
 		for (const cell of room.cells) {
-			if (!isCellPositionFree(cell.x + anchor.getX(), cell.y + anchor.getY())) {
+			if (this.cells[getPositionKey(cell.x + anchor.getX(), cell.y + anchor.getY())]) {
 				// The cell position is taken!
 				return false;
 			}
@@ -235,11 +232,11 @@ function Generator() {
 					// Where we place the door tile depends on its direction.
 					switch (doorDirection) {
 						case DIRECTION.NORTH:
-							return { x: tileXMin + CELL_DOOR_OFFSET, y: tileYMax + 1 };
+							return { x: tileXMin + CELL_DOOR_OFFSET, y: tileYMax };
 						case DIRECTION.SOUTH:
 							return { x: tileXMin + CELL_DOOR_OFFSET, y: tileYMin - 1 };
 						case DIRECTION.EAST:
-							return { x: tileXMax + 1, y: tileYMin + CELL_DOOR_OFFSET };
+							return { x: tileXMax, y: tileYMin + CELL_DOOR_OFFSET };
 						case DIRECTION.WEST:
 							return { x: tileXMin - 1, y: tileYMin + CELL_DOOR_OFFSET };
 					}
