@@ -33,9 +33,12 @@ function Generator() {
 				const anchor = getRandomItem(this.findAvailableAnchors());
 
 				// Get all rooms where the entrance matches the direction of the anchor.
-				const attachableRooms = rooms.filter(room => getRoomEntranceDirection(room) === anchor.getJoinDirection()); 
+				let attachableRooms = rooms.filter(room => getRoomEntranceDirection(room) === anchor.getJoinDirection()); 
 
 				// TODO MAYBE Randomly pick a room rarity and filter X by that rarity.
+
+				// Shuffle the attachable rooms so that we don't spend end up playing favourites with earlier items.
+				attachableRooms = shuffle(attachableRooms);
 
 				// Randomly pick a generatable room definition.
 				const generatableRoom = attachableRooms.find(room => this.canRoomBeGenerated(room, anchor));

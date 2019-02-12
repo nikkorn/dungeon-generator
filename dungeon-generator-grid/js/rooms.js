@@ -32,7 +32,7 @@ rooms.push(
 rooms.push(
     {
         name: "empty_3*1_room",
-        max: 2,
+        max: 3,
         cells: [
             {
                 position: { x: 0, y: 0 },
@@ -135,7 +135,7 @@ rooms.push(
 rooms.push(
     {
         name: "empty_1*3_room",
-        max: 2,
+        max: 3,
         cells: [
             {
                 position: { x: 0, y: 0 },
@@ -235,7 +235,51 @@ rooms.push(
     }
 );
 
-
+/**
+ * A big ring room accessible from the north
+ */
+rooms.push(
+    {
+        name: "big_ring_room_north",
+        min: 1,
+        cells: [
+            {
+                position: { x: 0, y: 0 },
+                entrance: DIRECTION.NORTH,
+                door: DOOR.THREE_KEYS,
+                contents: []
+            },
+            {
+                position: { x: -1, y: 0 },
+                contents: []
+            },
+            {
+                position: { x: 1, y: 0 },
+                contents: []
+            },
+            {
+                position: { x: -1, y: -1 },
+                contents: []
+            },
+            {
+                position: { x: 1, y: -1 },
+                contents: []
+            },
+            {
+                position: { x: -1, y: -2 },
+                contents: []
+            },
+            {
+                position: { x: 0, y: -2 },
+                contents: []
+            },
+            {
+                position: { x: 1, y: -2 },
+                contents: []
+            }
+        ]
+    }
+);
 
 /**
  * Add a room group for the shop rooms so that only one is generated.
