@@ -282,6 +282,78 @@ rooms.push(
 );
 
 /**
+ * A big cross room accessible from the north
+ */
+rooms.push(
+    {
+        name: "cross_room_north",
+        max: 1,
+        cells: [
+            {
+                position: { x: 0, y: 0 },
+                entrance: DIRECTION.NORTH,
+                door: DOOR.THREE_KEYS,
+                contents: []
+            },
+            {
+                position: { x: -1, y: -1 },
+                blocked: [DIRECTION.NORTH, DIRECTION.SOUTH],
+                contents: []
+            },
+            {
+                position: { x: 0, y: -1 },
+                contents: []
+            },
+            {
+                position: { x: 1, y: -1 },
+                blocked: [DIRECTION.NORTH, DIRECTION.SOUTH],
+                contents: []
+            },
+            {
+                position: { x: 0, y: -2 },
+                contents: []
+            }
+        ]
+    }
+);
+
+/**
+ * A big cross room accessible from the south
+ */
+rooms.push(
+    {
+        name: "cross_room_south",
+        max: 1,
+        cells: [
+            {
+                position: { x: 0, y: 0 },
+                entrance: DIRECTION.SOUTH,
+                blocked: [DIRECTION.EAST, DIRECTION.WEST],
+                door: DOOR.THREE_KEYS,
+                contents: []
+            },
+            {
+                position: { x: -1, y: 1 },
+                contents: []
+            },
+            {
+                position: { x: 0, y: 1 },
+                contents: []
+            },
+            {
+                position: { x: 1, y: 1 },
+                contents: []
+            },
+            {
+                position: { x: 0, y: 2 },
+                blocked: [DIRECTION.EAST, DIRECTION.WEST],
+                contents: []
+            }
+        ]
+    }
+);
+
+/**
  * Add a room group for the shop rooms so that only one is generated.
  */
 roomGroups.push(
