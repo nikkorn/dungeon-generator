@@ -1,10 +1,11 @@
 /**
  * Represents a dungeon anchor.
- * @param {*} x The x cell position.
- * @param {*} y The y cell position.
- * @param {*} direction The direction at which to join an occupied cell.
+ * @param x The x cell position.
+ * @param y The y cell position.
+ * @param direction The direction at which to join an occupied cell.
+ * @param depth The depth of the room that the anchor is attached to.
  */
-function Anchor(x, y, direction) {
+function Anchor(x, y, direction, depth) {
     /**
      * The anchor position.
      */
@@ -14,6 +15,10 @@ function Anchor(x, y, direction) {
      * The direction at which to join an occupied cell.
      */
     this.direction = direction;
+    /**
+     * The depth of the room that the anchor is attached to.
+     */
+    this.depth = depth;
 
     /**
      * Get the direction at which to join an occupied cell.
@@ -34,5 +39,12 @@ function Anchor(x, y, direction) {
      */
     this.getY = function() {
         return this.y;
+    };
+
+    /**
+     * Get the depth of the room that the anchor is attached to.
+     */
+    this.getDepth = function() {
+        return this.depth;
     };
 }

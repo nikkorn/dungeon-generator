@@ -22,7 +22,7 @@ function Generator() {
 			this.addedRooms = {};
 
 			// Add the spawn room to the center of the dungeon, this should always be a success.
-			this.addRoom(0, 0, getRoom("spawn"));
+			this.addRoom(0, 0, getRoom("spawn"), 0);
 
 			// Keep track of the number of times we have attempted to add a room and failed.
 			let roomGenerationFailureCount = 0;
@@ -42,7 +42,7 @@ function Generator() {
 
 				// Generate a room if we have a valid generatable room definition.
 				if (generatableRoom) {
-					this.addRoom(anchor.getX(), anchor.getY(), generatableRoom);
+					this.addRoom(anchor.getX(), anchor.getY(), generatableRoom, anchor.getDepth());
 				} else {
 					roomGenerationFailureCount++;
 				}
@@ -106,24 +106,27 @@ function Generator() {
 			const cellX = cell.getX();
 			const cellY = cell.getY(); 
 
+			// Get the depth of the next room.
+			const nextRoomDepth = cell.getDepth() + 1;
+
 			// Can we create an anchor above?
 			if (isCellPositionFree(cellX, cellY + 1) && cell.isJoinableAt(DIRECTION.NORTH)) {
-				anchors.push(new Anchor(cellX, cellY + 1, DIRECTION.SOUTH));
+				anchors.push(new Anchor(cellX, cellY + 1, DIRECTION.SOUTH, nextRoomDepth));
 			}
 
 			// Can we create an anchor below?
 			if (isCellPositionFree(cellX, cellY - 1) && cell.isJoinableAt(DIRECTION.SOUTH)) {
-				anchors.push(new Anchor(cellX, cellY - 1, DIRECTION.NORTH));
+				anchors.push(new Anchor(cellX, cellY - 1, DIRECTION.NORTH, nextRoomDepth));
 			}
 
 			// Can we create an anchor to the left?
 			if (isCellPositionFree(cellX - 1, cellY) && cell.isJoinableAt(DIRECTION.WEST)) {
-				anchors.push(new Anchor(cellX - 1, cellY, DIRECTION.EAST));
+				anchors.push(new Anchor(cellX - 1, cellY, DIRECTION.EAST, nextRoomDepth));
 			}
 
 			// Can we create an anchor to the right?
 			if (isCellPositionFree(cellX + 1, cellY) && cell.isJoinableAt(DIRECTION.EAST)) {
-				anchors.push(new Anchor(cellX + 1, cellY, DIRECTION.WEST));
+				anchors.push(new Anchor(cellX + 1, cellY, DIRECTION.WEST, nextRoomDepth));
 			}
 		}
 
@@ -174,11 +177,12 @@ function Generator() {
 
 	/**
 	  * Add a room to the dungeon as the cells that the room occupies.
-	 * @param {*} x The dungeon cell x position at which to place the room entrance cell.
-	 * @param {*} y The dungeon cell y position at which to place the room entrance cell.
-	 * @param {*} room The room to add.
+	 * @param x The dungeon cell x position at which to place the room entrance cell.
+	 * @param y The dungeon cell y position at which to place the room entrance cell.
+	 * @param room The room to add.
+	 * @param depth The depth of the room into the dungeon.
 	 */
-	this.addRoom = function (x, y, room) {
+	this.addRoom = function (x, y, room, depth) {
 		// Keep a count of any rooms that we add.
 		this.roomCounts[room.name] = (this.roomCounts[room.name] || 0) + 1;
 
@@ -188,7 +192,7 @@ function Generator() {
 		// Add each room cell to the dungeon.
 		for (const cellInfo of room.cells) {
 			// Create a cell instance with an absolute cell position, rather than the relative room one.
-			const cell = new Cell(x + cellInfo.position.x, y + cellInfo.position.y, uniqueRoomId, room.name, cellInfo.blocked, cellInfo.door, cellInfo.entrance);
+			const cell = new Cell(x + cellInfo.position.x, y + cellInfo.position.y, depth, uniqueRoomId, room.name, cellInfo.blocked, cellInfo.door, cellInfo.entrance);
 
 			// Add the cell to the dungeon!
 			this.cells[getCellKey(cell)] = cell;
@@ -216,6 +220,7 @@ function Generator() {
 						x: tileX, 
 						y: tileY, 
 						roomName: cell.getRoomName(),
+						depth: cell.getDepth(),
 						type: TILE.ROOM
 					};
 				}
@@ -251,6 +256,7 @@ function Generator() {
 					doorDirection: doorDirection,
 					roomId: cell.getRoomId(),
 					roomName: cell.getRoomName(),
+					depth: cell.getDepth(),
 					type: TILE.ROOM
 				};
 			}
@@ -263,6 +269,7 @@ function Generator() {
 						x: tileX, 
 						y: tileYMax, 
 						roomName: cell.getRoomName(),
+						depth: cell.getDepth(),
 						type: TILE.ROOM
 					};
 				}
@@ -276,6 +283,7 @@ function Generator() {
 						x: tileX, 
 						y: tileYMin - 1, 
 						roomName: cell.getRoomName(),
+						depth: cell.getDepth(),
 						type: TILE.ROOM
 					};
 				}
@@ -289,6 +297,7 @@ function Generator() {
 						x: tileXMin - 1, 
 						y: tileY, 
 						roomName: cell.getRoomName(),
+						depth: cell.getDepth(),
 						type: TILE.ROOM
 					};
 				}
@@ -302,6 +311,7 @@ function Generator() {
 						x: tileXMax, 
 						y: tileY, 
 						roomName: cell.getRoomName(),
+						depth: cell.getDepth(),
 						type: TILE.ROOM
 					};
 				}

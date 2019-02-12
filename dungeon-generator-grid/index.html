@@ -38,9 +38,42 @@ const TILE_COLOUR = {
   [TILE.DOOR]: "#FF0000"
 };
 
+const DEPTH_COLOUR = [
+  "#0069E5",
+  "#00A7E2",
+  "#00DFDB",
+  "#00DC9A",
+  "#00DA5B",
+  "#00D71E",
+  "#1DD400",
+  "#58D200",
+  "#91CF00",
+  "#C8CC00",
+  "#C99500",
+  "#C75B00",
+  "#C42300",
+  "#C10013",
+  "#BF0048",
+  "#BF0048",
+  "#BF0048",
+  "#BF0048",
+  "#BF0048",
+  "#BF0048",
+  "#BF0048",
+  "#BF0048",
+  "#BF0048",
+  "#BF0048",
+  "#BF0048",
+  "#BF0048",
+  "#BF0048",
+  "#BF0048",
+  "#BF0048",
+  "#BF0048"
+];
+
 const tiles = new Generator().generate();
 
-tiles.forEach(element => setSpace(element.x, element.y, TILE_COLOUR[element.type]));
+tiles.forEach(element => setSpace(element.x, element.y, DEPTH_COLOUR[element.depth]));
 
 </script>
 </html>
