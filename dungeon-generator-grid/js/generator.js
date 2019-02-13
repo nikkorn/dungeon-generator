@@ -195,7 +195,7 @@ function Generator() {
 		// Add each room cell to the dungeon.
 		for (const cellInfo of room.cells) {
 			// Create a cell instance with an absolute cell position, rather than the relative room one.
-			const cell = new Cell(x + cellInfo.position.x, y + cellInfo.position.y, depth, uniqueRoomId, room.name, cellInfo.blocked, cellInfo.door, cellInfo.entrance);
+			const cell = new Cell(x + cellInfo.position.x, y + cellInfo.position.y, depth, uniqueRoomId, room.name, room.category, cellInfo.blocked, cellInfo.door, cellInfo.entrance);
 
 			// Add the cell to the dungeon!
 			this.cells[getCellKey(cell)] = cell;
@@ -233,7 +233,10 @@ function Generator() {
 					tiles[getPositionKey(tileX, tileY)] = { 
 						x: tileX, 
 						y: tileY, 
-						roomName: cell.getRoomName(),
+						room: {
+							name: cell.getRoomName(),
+							category: cell.getRoomCategory()
+						},
 						depth: cell.getDepth(),
 						type: TILE.ROOM
 					};
@@ -268,8 +271,11 @@ function Generator() {
 					y: doorPosition.y, 
 					doorType: door,
 					doorDirection: doorDirection,
-					roomId: cell.getRoomId(),
-					roomName: cell.getRoomName(),
+					room: {
+						id: cell.getRoomId(),
+						name: cell.getRoomName(),
+						category: cell.getRoomCategory()
+					},
 					depth: cell.getDepth(),
 					type: TILE.ROOM
 				};
@@ -282,7 +288,10 @@ function Generator() {
 					tiles[getPositionKey(tileX, tileYMax)] = { 
 						x: tileX, 
 						y: tileYMax, 
-						roomName: cell.getRoomName(),
+						room: {
+							name: cell.getRoomName(),
+							category: cell.getRoomCategory()
+						},
 						depth: cell.getDepth(),
 						type: TILE.ROOM
 					};
@@ -296,7 +305,10 @@ function Generator() {
 					tiles[getPositionKey(tileX, tileYMin - 1)] = { 
 						x: tileX, 
 						y: tileYMin - 1, 
-						roomName: cell.getRoomName(),
+						room: {
+							name: cell.getRoomName(),
+							category: cell.getRoomCategory()
+						},
 						depth: cell.getDepth(),
 						type: TILE.ROOM
 					};
@@ -310,7 +322,10 @@ function Generator() {
 					tiles[getPositionKey(tileXMin - 1, tileY)] = { 
 						x: tileXMin - 1, 
 						y: tileY, 
-						roomName: cell.getRoomName(),
+						room: {
+							name: cell.getRoomName(),
+							category: cell.getRoomCategory()
+						},
 						depth: cell.getDepth(),
 						type: TILE.ROOM
 					};
@@ -324,7 +339,10 @@ function Generator() {
 					tiles[getPositionKey(tileXMax, tileY)] = { 
 						x: tileXMax, 
 						y: tileY, 
-						roomName: cell.getRoomName(),
+						room: {
+							name: cell.getRoomName(),
+							category: cell.getRoomCategory()
+						},
 						depth: cell.getDepth(),
 						type: TILE.ROOM
 					};

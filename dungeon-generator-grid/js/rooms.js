@@ -361,7 +361,8 @@ roomGroups.push(
         name: "shop",
         min: 1,
         max: 1,
-        rooms: ["shop_east", "shop_west"]
+        range: { min: 2 , max: 5 },
+        rooms: ["shop_east", "shop_west", "shop_north", "shop_south"]
     }
 );
 
@@ -371,12 +372,13 @@ roomGroups.push(
 rooms.push(
     {
         name: "shop_east",
-        range: { min: 2 , max: 10 },
+        category: "shop",
         cells: [
             {
                 position: { x: 0, y: 0 },
                 entrance: DIRECTION.EAST,
                 door: DOOR.SHOP,
+                blocked: [DIRECTION.NORTH, DIRECTION.SOUTH, DIRECTION.WEST],
                 contents: []
             }
         ]
@@ -389,12 +391,92 @@ rooms.push(
 rooms.push(
     {
         name: "shop_west",
-        range: { min: 2 , max: 10 },
+        category: "shop",
         cells: [
             {
                 position: { x: 0, y: 0 },
                 entrance: DIRECTION.WEST,
                 door: DOOR.SHOP,
+                blocked: [DIRECTION.NORTH, DIRECTION.SOUTH, DIRECTION.EAST],
+                contents: []
+            }
+        ]
+    }
+);
+
+/**
+ * A shop with its door to the north.
+ */
+rooms.push(
+    {
+        name: "shop_north",
+        category: "shop",
+        cells: [
+            {
+                position: { x: 0, y: 0 },
+                entrance: DIRECTION.NORTH,
+                door: DOOR.SHOP,
+                blocked: [DIRECTION.SOUTH, DIRECTION.WEST, DIRECTION.EAST],
+                contents: []
+            }
+        ]
+    }
+);
+
+/**
+ * A shop with its door to the south.
+ */
+rooms.push(
+    {
+        name: "shop_south",
+        category: "shop",
+        cells: [
+            {
+                position: { x: 0, y: 0 },
+                entrance: DIRECTION.SOUTH,
+                door: DOOR.SHOP,
+                blocked: [DIRECTION.NORTH, DIRECTION.WEST, DIRECTION.EAST],
+                contents: []
+            }
+        ]
+    }
+);
+
+
+/**
+ * A big cross boss room accessible from the north.
+ */
+rooms.push(
+    {
+        name: "boss_room_north",
+        category: "boss",
+        max: 1,
+        min: 1,
+        cells: [
+            {
+                position: { x: 0, y: 0 },
+                entrance: DIRECTION.NORTH,
+                door: DOOR.THREE_KEYS,
+                blocked: [DIRECTION.WEST, DIRECTION.EAST],
+                contents: []
+            },
+            {
+                position: { x: -1, y: -1 },
+                blocked: [DIRECTION.WEST, DIRECTION.NORTH, DIRECTION.SOUTH],
+                contents: []
+            },
+            {
+                position: { x: 0, y: -1 },
+                contents: []
+            },
+            {
+                position: { x: 1, y: -1 },
+                blocked: [DIRECTION.EAST, DIRECTION.NORTH, DIRECTION.SOUTH],
+                contents: []
+            },
+            {
+                position: { x: 0, y: -2 },
+                blocked: [DIRECTION.EAST, DIRECTION.WEST, DIRECTION.SOUTH],
                 contents: []
             }
         ]

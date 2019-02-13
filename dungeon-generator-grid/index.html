@@ -64,10 +64,15 @@ const DEPTH_COLOUR = [
   "#BF0048"
 ];
 
+const ROOM_CATEGORY_COLOUR = {
+  "boss": "#7d7f76",
+  "shop": "#ad42f4"
+};
+
 const tileColourProviders = {
   [TILE.WALL]: (tile) => "#FFFFFF",
   [TILE.DOOR]: (tile) => DEPTH_COLOUR[tile.depth],
-  [TILE.ROOM]: (tile) => DEPTH_COLOUR[tile.depth]
+  [TILE.ROOM]: (tile) => ROOM_CATEGORY_COLOUR[tile.room.category] || DEPTH_COLOUR[tile.depth]
 }
 
 const tiles = new Generator().generate();

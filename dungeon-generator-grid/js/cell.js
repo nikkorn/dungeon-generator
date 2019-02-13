@@ -5,11 +5,12 @@
  * @param depth The depth of the cell into the dungeon.
  * @param roomId The id of the room that the cell is part of.
  * @param roomName The name of the room that the cell is part of.
+ * @param roomCategory The category of the room that the cell is part of.
  * @param blocked The directions from which the cell is blocked (cannot be liked to another room).
  * @param door The door that is used to access the cell (if this cell is a room entrance cell).
  * @param doorDirection The direction at which an entrance door is placed.
  */
-function Cell(x, y, depth, roomId, roomName, blocked, door, doorDirection) {
+function Cell(x, y, depth, roomId, roomName, roomCategory, blocked, door, doorDirection) {
     /**
      * The cell position.
      */
@@ -31,6 +32,10 @@ function Cell(x, y, depth, roomId, roomName, blocked, door, doorDirection) {
      * The name of the room that the cell is part of.
      */
     this.roomName = roomName;
+    /**
+     * The category of the room that the cell is part of.
+     */
+    this.roomCategory = roomCategory;
     /**
      * The directions from which the cell is blocked (cannot be liked to another room).
      */
@@ -66,6 +71,13 @@ function Cell(x, y, depth, roomId, roomName, blocked, door, doorDirection) {
      */
     this.getRoomName = function() {
         return this.roomName;
+    };
+
+    /**
+     * Get the category of the room that the cell is part of.
+     */
+    this.getRoomCategory = function() {
+        return this.roomCategory;
     };
 
     /**
