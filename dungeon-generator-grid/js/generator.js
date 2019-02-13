@@ -216,6 +216,17 @@ function Generator() {
 			const tileXMax = tileXMin + CELL_TILE_SIZE;
 			const tileYMax = tileYMin + CELL_TILE_SIZE;
 
+			// Create a wall tile for each tile position around the cell.
+			for (let tileX = tileXMin - 1; tileX <= tileXMax; tileX++) {
+				for (let tileY = tileYMin - 1; tileY <= tileYMax; tileY++) {
+					tiles[getPositionKey(tileX, tileY)] = { 
+						x: tileX, 
+						y: tileY, 
+						type: TILE.WALL
+					};
+				}
+			}
+
 			// Create a tile for each tile position in the cell.
 			for (let tileX = tileXMin; tileX < tileXMax; tileX++) {
 				for (let tileY = tileYMin; tileY < tileYMax; tileY++) {
@@ -320,8 +331,6 @@ function Generator() {
 				}
 			}
 		});
-
-		// TODO Fill in the reachable wall tiles.
 
 		return Object.values(tiles);
 	}
