@@ -4,7 +4,7 @@
 //============================================================================
 
 /** The number of tiles that make up a cell horizontally and vertically. */
-const CELL_TILE_SIZE = 7;
+const CELL_TILE_SIZE = 5;
 
 /** The number of tiles that a door will be offset by from a cell edge. */
 const CELL_DOOR_OFFSET = Math.floor(CELL_TILE_SIZE / 2);
