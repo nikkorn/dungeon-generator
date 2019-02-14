@@ -19,7 +19,7 @@ function Generator() {
 		const attempt = function() {
 			// Clear the cells dictionary and the dictionary storing added room information.
 			this.cells      = {};
-			this.addedRooms = {};
+			this.roomCounts = {};
 
 			// Add the spawn room to the center of the dungeon, this should always be a success.
 			this.addRoom(0, 0, getRoom("spawn"), 0);
@@ -51,16 +51,13 @@ function Generator() {
 				}
 			}
 
-			// We failed to generate the dungeon if we didn't meet the minimum number of rooms.
-			if (this.getRoomCount() < MIN_ROOMS_COUNT) {
+			// We failed to generate the dungeon if we didn't meet the minimum number of rooms or 
+			// any rooms that have a minimum count have not been added at least that many times.
+			if (!this.areMinimumRoomCountsMet()) {
 				return { success: false };
 			}
 
-			// TODO Check we have a valid dungeon by checking that:
-			// - Any rooms that have a minimum count have been added at least that many times.
-			// - The total number of rooms generated exceeds MIN_ROOMS_COUNT. 
-
-			// TODO Populate and return a collection of tiles based on the dungeon cells.
+			// Populate and return a collection of tiles based on the dungeon cells.
 			return { success: true, tiles: this.convertCellsToTiles() };
 		}
 
@@ -138,6 +135,43 @@ function Generator() {
 	};
 
 	/**
+	 * Gets whether the minimum number or overall rooms and individual room counts meet any minimums.
+	 * @returns Whether the minimum number or overall rooms and individual room counts meet any minimums.
+	 */
+	this.areMinimumRoomCountsMet = function() {
+		// We fail to generate the dungeon if we didn't even meet the minimum number of rooms.
+		if (this.getRoomCount() < MIN_ROOMS_COUNT) {
+			return false;
+		}
+
+		// Any room group can have a minimum defined, meaning that the sum of all rooms generated for that group must meet the group minimum.
+		const unmetGroupMinimumExists = roomGroups
+			.filter((group) => group.min)
+			.map((group) => ({
+				minimum: group.min,
+				count: group.rooms
+					.map(roomName => this.roomCounts[roomName] || 0)
+					.reduce((total, roomCount) => total + roomCount, 0)
+			}))
+			.some(({ minimum, count }) => count < minimum);
+
+		// Did we find any groups with a minimum where the sum of all generated rooms in the group did not reach the minimum?
+		if (unmetGroupMinimumExists) {
+			return false;
+		}
+
+		// Check whether there are any rooms that have their own minimum, if so we need to make sure every count was reached.
+		for (const room of rooms) {
+			if (room.min && (this.roomCounts[room.name] || 0) < room.min) {
+				return false;
+			}
+		}
+
+		// We are good to go!
+		return true;
+	};
+
+	/**
 	 * Gets whether the room can be generated at the specified anchor.
 	 * @param room The room to check.
 	 * @param anchor The anchor.
@@ -152,7 +186,7 @@ function Generator() {
 		if (roomGroup && roomGroup.max) {
 			// Get the total number of times that rooms in the same group have been generated.
 			const roomGroupGenerationCount = roomGroup.rooms
-				.map(roomId => this.roomCounts[roomId] || 0)
+				.map(roomName => this.roomCounts[roomName] || 0)
 				.reduce((total, roomCount) => total + roomCount, 0);
 
 			// Have we met the group max?
