@@ -181,9 +181,14 @@ function Generator() {
 		// Find the room group that the room is in (if there is one).
 		const roomGroup = roomGroups.find(group => group.rooms.includes(room.name));
 
-		// Return false if the number of rooms that belong to the same category 
-		// and that have already been generated meet the max for the group.
-		if (roomGroup && roomGroup.max) {
+		// Check whether there is a restriction on the maximum number of times this room can be
+		// generated. A max can be applied per group and per room, with the latter taking priority.
+		if (room.max) {
+			// If the room has a max then return false if the count has already been met.
+			if ((this.roomCounts[room.name] || 0) >= room.max) {
+				return false;
+			}
+		} else if (roomGroup && roomGroup.max) {
 			// Get the total number of times that rooms in the same group have been generated.
 			const roomGroupGenerationCount = roomGroup.rooms
 				.map(roomName => this.roomCounts[roomName] || 0)
@@ -195,8 +200,23 @@ function Generator() {
 			}
 		}
 
-		// If the room has a max then return false if the count has already been met.
-		if (room.max && (this.roomCounts[room.name] || 0) >= room.max) {
+		// A function to get whether the anchor depth is within a depth range.
+		const isAnchorDepthInRange = (range) => {
+			// Check whether the anchor depth is below the minimum.
+			if (typeof range.minimum === "number" && anchor.getDepth() < range.minimum) {
+				return false;
+			}
+			// Check whether the anchor depth is below the minimum.
+			if (typeof range.maximum === "number" && anchor.getDepth() > range.maximum) {
+				return false;
+			}
+			// The anchor depth is within the specified depth range.
+			return true;
+		};
+
+		// Check whether there is a restriction on the depth at which this room can be generated.
+		// A depth range can be applied per group and per room, with the latter taking priority.
+		if (!isAnchorDepthInRange(room.depth || (roomGroup || {}).depth || {})) {
 			return false;
 		}
 

@@ -361,7 +361,10 @@ roomGroups.push(
         name: "shop",
         min: 1,
         max: 1,
-        range: { min: 2 , max: 5 },
+        depth: {
+            minimum: 2,
+            maximum: 4
+        },
         rooms: ["shop_east", "shop_west", "shop_north", "shop_south"]
     }
 );
@@ -450,6 +453,10 @@ rooms.push(
     {
         name: "boss_room_north",
         category: "boss",
+        depth: {
+            minimum: 2,
+            maximum: 4
+        },
         max: 1,
         min: 1,
         cells: [
