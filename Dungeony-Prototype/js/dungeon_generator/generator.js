@@ -19,7 +19,7 @@ function Generator() {
 		const attempt = function() {
 			// Clear the cells dictionary and the dictionary storing added room information.
 			this.cells      = {};
-			this.roomCounts = {};
+			this.addedRooms = {};
 
 			// Add the spawn room to the center of the dungeon, this should always be a success.
 			this.addRoom(0, 0, getRoom("spawn"), 0);
@@ -51,13 +51,16 @@ function Generator() {
 				}
 			}
 
-			// We failed to generate the dungeon if we didn't meet the minimum number of rooms or 
-			// any rooms that have a minimum count have not been added at least that many times.
-			if (!this.areMinimumRoomCountsMet()) {
+			// We failed to generate the dungeon if we didn't meet the minimum number of rooms.
+			if (this.getRoomCount() < MIN_ROOMS_COUNT) {
 				return { success: false };
 			}
 
-			// Populate and return a collection of tiles based on the dungeon cells.
+			// TODO Check we have a valid dungeon by checking that:
+			// - Any rooms that have a minimum count have been added at least that many times.
+			// - The total number of rooms generated exceeds MIN_ROOMS_COUNT. 
+
+			// TODO Populate and return a collection of tiles based on the dungeon cells.
 			return { success: true, tiles: this.convertCellsToTiles() };
 		}
 
@@ -135,43 +138,6 @@ function Generator() {
 	};
 
 	/**
-	 * Gets whether the minimum number or overall rooms and individual room counts meet any minimums.
-	 * @returns Whether the minimum number or overall rooms and individual room counts meet any minimums.
-	 */
-	this.areMinimumRoomCountsMet = function() {
-		// We fail to generate the dungeon if we didn't even meet the minimum number of rooms.
-		if (this.getRoomCount() < MIN_ROOMS_COUNT) {
-			return false;
-		}
-
-		// Any room group can have a minimum defined, meaning that the sum of all rooms generated for that group must meet the group minimum.
-		const unmetGroupMinimumExists = roomGroups
-			.filter((group) => group.min)
-			.map((group) => ({
-				minimum: group.min,
-				count: group.rooms
-					.map(roomName => this.roomCounts[roomName] || 0)
-					.reduce((total, roomCount) => total + roomCount, 0)
-			}))
-			.some(({ minimum, count }) => count < minimum);
-
-		// Did we find any groups with a minimum where the sum of all generated rooms in the group did not reach the minimum?
-		if (unmetGroupMinimumExists) {
-			return false;
-		}
-
-		// Check whether there are any rooms that have their own minimum, if so we need to make sure every count was reached.
-		for (const room of rooms) {
-			if (room.min && (this.roomCounts[room.name] || 0) < room.min) {
-				return false;
-			}
-		}
-
-		// We are good to go!
-		return true;
-	};
-
-	/**
 	 * Gets whether the room can be generated at the specified anchor.
 	 * @param room The room to check.
 	 * @param anchor The anchor.
@@ -181,17 +147,12 @@ function Generator() {
 		// Find the room group that the room is in (if there is one).
 		const roomGroup = roomGroups.find(group => group.rooms.includes(room.name));
 
-		// Check whether there is a restriction on the maximum number of times this room can be
-		// generated. A max can be applied per group and per room, with the latter taking priority.
-		if (room.max) {
-			// If the room has a max then return false if the count has already been met.
-			if ((this.roomCounts[room.name] || 0) >= room.max) {
-				return false;
-			}
-		} else if (roomGroup && roomGroup.max) {
+		// Return false if the number of rooms that belong to the same category 
+		// and that have already been generated meet the max for the group.
+		if (roomGroup && roomGroup.max) {
 			// Get the total number of times that rooms in the same group have been generated.
 			const roomGroupGenerationCount = roomGroup.rooms
-				.map(roomName => this.roomCounts[roomName] || 0)
+				.map(roomId => this.roomCounts[roomId] || 0)
 				.reduce((total, roomCount) => total + roomCount, 0);
 
 			// Have we met the group max?
@@ -200,23 +161,8 @@ function Generator() {
 			}
 		}
 
-		// A function to get whether the anchor depth is within a depth range.
-		const isAnchorDepthInRange = (range) => {
-			// Check whether the anchor depth is below the minimum.
-			if (typeof range.minimum === "number" && anchor.getDepth() < range.minimum) {
-				return false;
-			}
-			// Check whether the anchor depth is below the minimum.
-			if (typeof range.maximum === "number" && anchor.getDepth() > range.maximum) {
-				return false;
-			}
-			// The anchor depth is within the specified depth range.
-			return true;
-		};
-
-		// Check whether there is a restriction on the depth at which this room can be generated.
-		// A depth range can be applied per group and per room, with the latter taking priority.
-		if (!isAnchorDepthInRange(room.depth || (roomGroup || {}).depth || {})) {
+		// If the room has a max then return false if the count has already been met.
+		if (room.max && (this.roomCounts[room.name] || 0) >= room.max) {
 			return false;
 		}
 
@@ -249,7 +195,7 @@ function Generator() {
 		// Add each room cell to the dungeon.
 		for (const cellInfo of room.cells) {
 			// Create a cell instance with an absolute cell position, rather than the relative room one.
-			const cell = new Cell(x + cellInfo.position.x, y + cellInfo.position.y, depth, uniqueRoomId, room.name, room.category, cellInfo.blocked, cellInfo.door, cellInfo.entrance);
+			const cell = new Cell(x + cellInfo.position.x, y + cellInfo.position.y, depth, uniqueRoomId, room.name, cellInfo.blocked, cellInfo.door, cellInfo.entrance);
 
 			// Add the cell to the dungeon!
 			this.cells[getCellKey(cell)] = cell;
@@ -287,10 +233,7 @@ function Generator() {
 					tiles[getPositionKey(tileX, tileY)] = { 
 						x: tileX, 
 						y: tileY, 
-						room: {
-							name: cell.getRoomName(),
-							category: cell.getRoomCategory()
-						},
+						roomName: cell.getRoomName(),
 						depth: cell.getDepth(),
 						type: TILE.ROOM
 					};
@@ -325,11 +268,8 @@ function Generator() {
 					y: doorPosition.y, 
 					doorType: door,
 					doorDirection: doorDirection,
-					room: {
-						id: cell.getRoomId(),
-						name: cell.getRoomName(),
-						category: cell.getRoomCategory()
-					},
+					roomId: cell.getRoomId(),
+					roomName: cell.getRoomName(),
 					depth: cell.getDepth(),
 					type: TILE.ROOM
 				};
@@ -342,10 +282,7 @@ function Generator() {
 					tiles[getPositionKey(tileX, tileYMax)] = { 
 						x: tileX, 
 						y: tileYMax, 
-						room: {
-							name: cell.getRoomName(),
-							category: cell.getRoomCategory()
-						},
+						roomName: cell.getRoomName(),
 						depth: cell.getDepth(),
 						type: TILE.ROOM
 					};
@@ -359,10 +296,7 @@ function Generator() {
 					tiles[getPositionKey(tileX, tileYMin - 1)] = { 
 						x: tileX, 
 						y: tileYMin - 1, 
-						room: {
-							name: cell.getRoomName(),
-							category: cell.getRoomCategory()
-						},
+						roomName: cell.getRoomName(),
 						depth: cell.getDepth(),
 						type: TILE.ROOM
 					};
@@ -376,10 +310,7 @@ function Generator() {
 					tiles[getPositionKey(tileXMin - 1, tileY)] = { 
 						x: tileXMin - 1, 
 						y: tileY, 
-						room: {
-							name: cell.getRoomName(),
-							category: cell.getRoomCategory()
-						},
+						roomName: cell.getRoomName(),
 						depth: cell.getDepth(),
 						type: TILE.ROOM
 					};
@@ -393,10 +324,7 @@ function Generator() {
 					tiles[getPositionKey(tileXMax, tileY)] = { 
 						x: tileXMax, 
 						y: tileY, 
-						room: {
-							name: cell.getRoomName(),
-							category: cell.getRoomCategory()
-						},
+						roomName: cell.getRoomName(),
 						depth: cell.getDepth(),
 						type: TILE.ROOM
 					};
