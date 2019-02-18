@@ -20,7 +20,12 @@ rooms.push(
         cells: [
             {
                 position: { x: 0, y: 0 },
-                contents: []
+                contents: [
+                    { id: "spawn_panel", x: 1,  y: 1 },
+                    { id: "spawn_panel", x: 1,  y: 3 },
+                    { id: "spawn_panel", x: 3,  y: 1 },
+                    { id: "spawn_panel", x: 3,  y: 3 }
+                ]
             }
         ]
     }
@@ -124,6 +129,38 @@ rooms.push(
                 entrance: DIRECTION.EAST,
                 door: DOOR.THREE_KEYS,
                 contents: []
+            }
+        ]
+    }
+);
+
+/**
+ * An ultimate treasure 1*1 room accessible only from the east side.
+ */
+rooms.push(
+    {
+        name: "ultimate_treasure_east",
+        max: 1,
+        chance: 0.5,
+        depth: {
+            minimum: 4
+        },
+        cells: [
+            {
+                position: { x: 0, y: 0 },
+                entrance: DIRECTION.EAST,
+                door: DOOR.FIVE_KEYS,
+                blocked: [DIRECTION.NORTH, DIRECTION.SOUTH, DIRECTION.WEST],
+                contents: [
+                    {
+                        x: 2,
+                        y: 2,
+                        participants: [
+                            { id: "ultra_rare_chest", tickets: 1, direction: DIRECTION.EAST },
+                            { id: "rare_chest", tickets: 3, direction: DIRECTION.EAST }
+                        ]
+                    }
+                ]
             }
         ]
     }
@@ -474,7 +511,9 @@ rooms.push(
             },
             {
                 position: { x: 0, y: -1 },
-                contents: []
+                contents: [
+                    { id: "boss_spawn", x: 2,  y: 2, direction: DIRECTION.NORTH }
+                ]
             },
             {
                 position: { x: 1, y: -1 },

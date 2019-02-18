@@ -12,6 +12,8 @@ Each room will be represented by an array of 7*7 dungeon grid cells, where each 
 
 Rooms have an optional range, which defines the range at which it can be generated, based on its entracne cell position.
 
+Rooms will have am optional spawn chance, which will be evaluated once per generation.
+
 Example:
 
 {
@@ -44,6 +46,19 @@ A cell is tile-based position in a dungeon that can be empty or be made up of a 
 
 ANCHOR
 An empty cell at which an entrance cell of a room can be placed, it also defines in which direction this link happens.
+
+CONTENTS
+Each cell will define its contents. This is a relative x/y tile positioned entity with either:
+     - An id (required), 
+     - A facing direction (optional, random if not defined)
+     - A spawn chance (optional)
+
+     OR
+
+     An array of participants from which one will be randomly picked based on a lotto, each with:
+     - An id (optional, if not provided then if this is the winner then nothing will be generated), 
+     - A facing direction (optional, random if not defined)
+     - The number of tickets held (required)
 
 
 
