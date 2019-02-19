@@ -9,8 +9,9 @@
  * @param blocked The directions from which the cell is blocked (cannot be liked to another room).
  * @param door The door that is used to access the cell (if this cell is a room entrance cell).
  * @param doorDirection The direction at which an entrance door is placed.
+ * @param entities The entities that will (potentially) be generated for the cell. 
  */
-function Cell(x, y, depth, roomId, roomName, roomCategory, blocked, door, doorDirection) {
+function Cell(x, y, depth, roomId, roomName, roomCategory, blocked, door, doorDirection, entities) {
     /**
      * The cell position.
      */
@@ -44,6 +45,10 @@ function Cell(x, y, depth, roomId, roomName, roomCategory, blocked, door, doorDi
      * The depth of the cell into the dungeon.
      */
     this.depth = depth;
+    /**
+     * The entities that will (potentially) be generated for the cell. 
+     */
+    this.entities = entities;
 
     /**
      * Get the x position of the cell.
@@ -99,6 +104,13 @@ function Cell(x, y, depth, roomId, roomName, roomCategory, blocked, door, doorDi
      */
     this.getDepth = function() {
         return this.depth;
+    };
+
+    /**
+     * Get the entities of the cell.
+     */
+    this.getEntities = function() {
+        return this.entities || [];
     };
 
     /**

@@ -20,7 +20,7 @@ rooms.push(
         cells: [
             {
                 position: { x: 0, y: 0 },
-                contents: [
+                entities: [
                     { id: "spawn_panel", x: 1,  y: 1 },
                     { id: "spawn_panel", x: 1,  y: 3 },
                     { id: "spawn_panel", x: 3,  y: 1 },
@@ -43,16 +43,16 @@ rooms.push(
                 position: { x: 0, y: 0 },
                 entrance: DIRECTION.EAST,
                 door: DOOR.THREE_KEYS,
-                contents: []
+                entities: []
             },
             {
                 position: { x: -1, y: 0 },
-                contents: []
+                entities: []
             },
             {
                 position: { x: -2, y: 0 },
                 blocked: [],
-                contents: []
+                entities: []
             }
         ]
     }
@@ -69,11 +69,11 @@ rooms.push(
                 position: { x: 0, y: 0 },
                 entrance: DIRECTION.WEST,
                 door: DOOR.THREE_KEYS,
-                contents: []
+                entities: []
             },
             {
                 position: { x: 1, y: 0 },
-                contents: []
+                entities: []
             }
         ]
     }
@@ -90,11 +90,11 @@ rooms.push(
                 position: { x: 0, y: 0 },
                 entrance: DIRECTION.EAST,
                 door: DOOR.THREE_KEYS,
-                contents: []
+                entities: []
             },
             {
                 position: { x: 1, y: 0 },
-                contents: []
+                entities: []
             }
         ]
     }
@@ -111,7 +111,7 @@ rooms.push(
                 position: { x: 0, y: 0 },
                 entrance: DIRECTION.WEST,
                 door: DOOR.THREE_KEYS,
-                contents: []
+                entities: []
             }
         ]
     }
@@ -128,7 +128,7 @@ rooms.push(
                 position: { x: 0, y: 0 },
                 entrance: DIRECTION.EAST,
                 door: DOOR.THREE_KEYS,
-                contents: []
+                entities: []
             }
         ]
     }
@@ -151,7 +151,7 @@ rooms.push(
                 entrance: DIRECTION.EAST,
                 door: DOOR.FIVE_KEYS,
                 blocked: [DIRECTION.NORTH, DIRECTION.SOUTH, DIRECTION.WEST],
-                contents: [
+                entities: [
                     {
                         x: 2,
                         y: 2,
@@ -178,16 +178,16 @@ rooms.push(
                 position: { x: 0, y: 0 },
                 entrance: DIRECTION.SOUTH,
                 door: DOOR.THREE_KEYS,
-                contents: []
+                entities: []
             },
             {
                 position: { x: 0, y: 1 },
-                contents: []
+                entities: []
             },
             {
                 position: { x: 0, y: 2 },
                 blocked: [],
-                contents: []
+                entities: []
             }
         ]
     }
@@ -204,15 +204,15 @@ rooms.push(
                 position: { x: 0, y: 0 },
                 entrance: DIRECTION.SOUTH,
                 door: DOOR.THREE_KEYS,
-                contents: []
+                entities: []
             },
             {
                 position: { x: 0, y: 1 },
-                contents: []
+                entities: []
             },
             {
                 position: { x: 1, y: 1 },
-                contents: []
+                entities: []
             }
         ]
     }
@@ -229,15 +229,15 @@ rooms.push(
                 position: { x: 0, y: 0 },
                 entrance: DIRECTION.NORTH,
                 door: DOOR.THREE_KEYS,
-                contents: []
+                entities: []
             },
             {
                 position: { x: 0, y: -1 },
-                contents: []
+                entities: []
             },
             {
                 position: { x: -1, y: -1 },
-                contents: []
+                entities: []
             }
         ]
     }
@@ -254,19 +254,19 @@ rooms.push(
                 position: { x: 0, y: 0 },
                 entrance: DIRECTION.NORTH,
                 door: DOOR.THREE_KEYS,
-                contents: []
+                entities: []
             },
             {
                 position: { x: 0, y: -1 },
-                contents: []
+                entities: []
             },
             {
                 position: { x: 1, y: -1 },
-                contents: []
+                entities: []
             },
             {
                 position: { x: 0, y: -2 },
-                contents: []
+                entities: []
             }
         ]
     }
@@ -284,35 +284,35 @@ rooms.push(
                 position: { x: 0, y: 0 },
                 entrance: DIRECTION.NORTH,
                 door: DOOR.THREE_KEYS,
-                contents: []
+                entities: []
             },
             {
                 position: { x: -1, y: 0 },
-                contents: []
+                entities: []
             },
             {
                 position: { x: 1, y: 0 },
-                contents: []
+                entities: []
             },
             {
                 position: { x: -1, y: -1 },
-                contents: []
+                entities: []
             },
             {
                 position: { x: 1, y: -1 },
-                contents: []
+                entities: []
             },
             {
                 position: { x: -1, y: -2 },
-                contents: []
+                entities: []
             },
             {
                 position: { x: 0, y: -2 },
-                contents: []
+                entities: []
             },
             {
                 position: { x: 1, y: -2 },
-                contents: []
+                entities: []
             }
         ]
     }
@@ -330,25 +330,25 @@ rooms.push(
                 position: { x: 0, y: 0 },
                 entrance: DIRECTION.NORTH,
                 door: DOOR.THREE_KEYS,
-                contents: []
+                entities: []
             },
             {
                 position: { x: -1, y: -1 },
                 blocked: [DIRECTION.NORTH, DIRECTION.SOUTH],
-                contents: []
+                entities: []
             },
             {
                 position: { x: 0, y: -1 },
-                contents: []
+                entities: []
             },
             {
                 position: { x: 1, y: -1 },
                 blocked: [DIRECTION.NORTH, DIRECTION.SOUTH],
-                contents: []
+                entities: []
             },
             {
                 position: { x: 0, y: -2 },
-                contents: []
+                entities: []
             }
         ]
     }
@@ -367,24 +367,24 @@ rooms.push(
                 entrance: DIRECTION.SOUTH,
                 blocked: [DIRECTION.EAST, DIRECTION.WEST],
                 door: DOOR.THREE_KEYS,
-                contents: []
+                entities: []
             },
             {
                 position: { x: -1, y: 1 },
-                contents: []
+                entities: []
             },
             {
                 position: { x: 0, y: 1 },
-                contents: []
+                entities: []
             },
             {
                 position: { x: 1, y: 1 },
-                contents: []
+                entities: []
             },
             {
                 position: { x: 0, y: 2 },
                 blocked: [DIRECTION.EAST, DIRECTION.WEST],
-                contents: []
+                entities: []
             }
         ]
     }
@@ -419,7 +419,7 @@ rooms.push(
                 entrance: DIRECTION.EAST,
                 door: DOOR.SHOP,
                 blocked: [DIRECTION.NORTH, DIRECTION.SOUTH, DIRECTION.WEST],
-                contents: []
+                entities: []
             }
         ]
     }
@@ -438,7 +438,7 @@ rooms.push(
                 entrance: DIRECTION.WEST,
                 door: DOOR.SHOP,
                 blocked: [DIRECTION.NORTH, DIRECTION.SOUTH, DIRECTION.EAST],
-                contents: []
+                entities: []
             }
         ]
     }
@@ -457,7 +457,7 @@ rooms.push(
                 entrance: DIRECTION.NORTH,
                 door: DOOR.SHOP,
                 blocked: [DIRECTION.SOUTH, DIRECTION.WEST, DIRECTION.EAST],
-                contents: []
+                entities: []
             }
         ]
     }
@@ -476,7 +476,7 @@ rooms.push(
                 entrance: DIRECTION.SOUTH,
                 door: DOOR.SHOP,
                 blocked: [DIRECTION.NORTH, DIRECTION.WEST, DIRECTION.EAST],
-                contents: []
+                entities: []
             }
         ]
     }
@@ -502,28 +502,28 @@ rooms.push(
                 entrance: DIRECTION.NORTH,
                 door: DOOR.THREE_KEYS,
                 blocked: [DIRECTION.WEST, DIRECTION.EAST],
-                contents: []
+                entities: []
             },
             {
                 position: { x: -1, y: -1 },
                 blocked: [DIRECTION.WEST, DIRECTION.NORTH, DIRECTION.SOUTH],
-                contents: []
+                entities: []
             },
             {
                 position: { x: 0, y: -1 },
-                contents: [
+                entities: [
                     { id: "boss_spawn", x: 2,  y: 2, direction: DIRECTION.NORTH }
                 ]
             },
             {
                 position: { x: 1, y: -1 },
                 blocked: [DIRECTION.EAST, DIRECTION.NORTH, DIRECTION.SOUTH],
-                contents: []
+                entities: []
             },
             {
                 position: { x: 0, y: -2 },
                 blocked: [DIRECTION.EAST, DIRECTION.WEST, DIRECTION.SOUTH],
-                contents: []
+                entities: []
             }
         ]
     }

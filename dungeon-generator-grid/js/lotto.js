@@ -1,6 +1,5 @@
 /**
- * Represents a dungeon cell.
- * @param participants The participants.
+ * Represents a lotto draw.
  */
 function Lotto() {
     /**
@@ -19,7 +18,8 @@ function Lotto() {
     };
 
     /**
-     * Get the x position of the cell.
+     * Draw a winning participant.
+     * @returns A winning participant.
      */
     this.draw = function() {
         // We cannot do anything if there are no participants.

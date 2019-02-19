@@ -249,7 +249,18 @@ function Generator() {
 		// Add each room cell to the dungeon.
 		for (const cellInfo of room.cells) {
 			// Create a cell instance with an absolute cell position, rather than the relative room one.
-			const cell = new Cell(x + cellInfo.position.x, y + cellInfo.position.y, depth, uniqueRoomId, room.name, room.category, cellInfo.blocked, cellInfo.door, cellInfo.entrance);
+			const cell = new Cell(
+				x + cellInfo.position.x, 
+				y + cellInfo.position.y, 
+				depth, 
+				uniqueRoomId, 
+				room.name, 
+				room.category, 
+				cellInfo.blocked, 
+				cellInfo.door, 
+				cellInfo.entrance, 
+				cellInfo.entities
+			);
 
 			// Add the cell to the dungeon!
 			this.cells[getCellKey(cell)] = cell;
@@ -402,8 +413,34 @@ function Generator() {
 					};
 				}
 			}
+		});
 
-			// TODO Add the contents!
+		// Add the entities of each cell to its corresponding tile.
+		Object.values(this.cells).forEach(cell => {
+			// Get the x/y position of the bottom left tile in the cell.
+			const tileXMin = cell.getX() * (CELL_TILE_SIZE + 1);
+			const tileYMin = cell.getY() * (CELL_TILE_SIZE + 1);
+
+			// Add the entities!
+			cell.getEntities().forEach(entity => {
+				// Attempt to get the tile at which the entity will be placed.
+				const tile = tiles[getPositionKey(tileXMin + entity.x, tileYMin + entity.y)];
+
+				// If there isn't one then we cannot place an entity on a non-existent tile.
+				if(!tile) {
+					return;
+				}
+
+				// If the entry has an id then we do not need to consider multiple participants.
+				if (entity.id) {
+					tile["entity"] = {
+						id: entity.id,
+						direction: entity.direction
+					};
+				} else {
+					// TODO Handle entity.participants!
+				}
+			});
 		});
 
 		return Object.values(tiles);
