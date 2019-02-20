@@ -433,12 +433,26 @@ function Generator() {
 
 				// If the entry has an id then we do not need to consider multiple participants.
 				if (entity.id) {
+					// Add the entity to the tile.
 					tile["entity"] = {
 						id: entity.id,
 						direction: entity.direction
 					};
-				} else {
-					// TODO Handle entity.participants!
+				} else if (entity.participants) {
+					// Create a lotto with which to pick a winning participant.
+					const lotto = new Lotto();
+
+					// Add each participant to the lotto.
+					entity.participants.forEach(participant => lotto.add(participant, participant.tickets || 0));
+
+					// Pick a winner!
+					const winner = lotto.draw();
+
+					// Add the winning entity to the tile.
+					tile["entity"] = {
+						id: winner.id,
+						direction: winner.direction
+					};
 				}
 			});
 		});
