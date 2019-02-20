@@ -12,112 +12,54 @@
  * @param entities The entities that will (potentially) be generated for the cell. 
  */
 function Cell(x, y, depth, roomId, roomName, roomCategory, blocked, door, doorDirection, entities) {
-    /**
-     * The cell position.
-     */
-    this.x = x;
-    this.y = y;
-    /**
-     * The door that is used to access the cell (if this cell is a room entrance cell).
-     */
-    this.door = door;
-    /**
-     * The direction at which an entrance door is placed.
-     */
-    this.doorDirection = doorDirection;
-    /**
-     * The id of the room that the cell is part of.
-     */
-    this.roomId = roomId;
-    /**
-     * The name of the room that the cell is part of.
-     */
-    this.roomName = roomName;
-    /**
-     * The category of the room that the cell is part of.
-     */
-    this.roomCategory = roomCategory;
-    /**
-     * The directions from which the cell is blocked (cannot be liked to another room).
-     */
-    this.blocked = blocked;
-    /**
-     * The depth of the cell into the dungeon.
-     */
-    this.depth = depth;
-    /**
-     * The entities that will (potentially) be generated for the cell. 
-     */
-    this.entities = entities;
 
     /**
      * Get the x position of the cell.
      */
-    this.getX = function() {
-        return this.x;
-    };
+    this.getX = () => x;
 
     /**
      * Get the y position of the cell.
      */
-    this.getY = function() {
-        return this.y;
-    };
+    this.getY = () => y;
 
     /**
      * Get the id of the room that the cell is part of.
      */
-    this.getRoomId = function() {
-        return this.roomId;
-    };
-
+    this.getRoomId = () => roomId;
     /**
      * Get the name of the room that the cell is part of.
      */
-    this.getRoomName = function() {
-        return this.roomName;
-    };
+    this.getRoomName = () => roomName;
 
     /**
      * Get the category of the room that the cell is part of.
      */
-    this.getRoomCategory = function() {
-        return this.roomCategory;
-    };
+    this.getRoomCategory = () => roomCategory;
 
     /**
      * Get the door that is used to access the cell (if this cell is a room entrance cell).
      */
-    this.getDoor = function() {
-        return this.door;
-    };
+    this.getDoor = () => door;
 
     /**
      * Get the direction at which an entrance door is placed.
      */
-    this.getDoorDirection = function() {
-        return this.doorDirection;
-    };
+    this.getDoorDirection = () => doorDirection;
 
     /**
      * Get the depth of the cell into the dungeon.
      */
-    this.getDepth = function() {
-        return this.depth;
-    };
+    this.getDepth = () => depth;
 
     /**
      * Get the entities of the cell.
      */
-    this.getEntities = function() {
-        return this.entities || [];
-    };
+    this.getEntities = () => entities || [];
 
     /**
      * Get whether the cell is joinable at the particular direction.
      * @param direction The direction.
      */
-    this.isJoinableAt = function(direction) {
-        return !(this.blocked || []).includes(direction);
-    };
+    this.isJoinableAt = (direction) => !(blocked || []).includes(direction);
 }

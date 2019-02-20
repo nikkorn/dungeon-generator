@@ -200,23 +200,9 @@ function Generator() {
 			}
 		}
 
-		// A function to get whether the anchor depth is within a depth range.
-		const isAnchorDepthInRange = (range) => {
-			// Check whether the anchor depth is below the minimum.
-			if (typeof range.minimum === "number" && anchor.getDepth() < range.minimum) {
-				return false;
-			}
-			// Check whether the anchor depth is below the minimum.
-			if (typeof range.maximum === "number" && anchor.getDepth() > range.maximum) {
-				return false;
-			}
-			// The anchor depth is within the specified depth range.
-			return true;
-		};
-
 		// Check whether there is a restriction on the depth at which this room can be generated.
 		// A depth range can be applied per group and per room, with the latter taking priority.
-		if (!isAnchorDepthInRange(room.depth || (roomGroup || {}).depth || {})) {
+		if (!anchor.isWithinRange(room.depth || (roomGroup || {}).depth || {})) {
 			return false;
 		}
 
@@ -269,6 +255,7 @@ function Generator() {
 
 	/**
 	 * Convert the dungeon cells into an array of dungeon tiles.
+	 * @returns An array of dungeon tiles based on the generated dungeon cells.
 	 */
 	this.convertCellsToTiles = function() {
 		const tiles = {};
@@ -469,6 +456,8 @@ function Generator() {
 	 * Gets whether the cell at the x/y position and the cell in the specified direction are in the same room.
 	 * @param x The initial cell x position.
 	 * @param y The initial cell y position.
+	 * @param direction The direction of the cell to check.
+	 * @returns Whether the cell at the x/y position and the cell in the specified direction are in the same room.
 	 */
 	this.areRoomCellsBridged = function(x, y, direction) {
 		// Get the initial cell.
@@ -505,8 +494,7 @@ function Generator() {
 
 	/**
 	 * Get the total number of rooms that have been added to the dungeon.
+	 * @returns The total number of rooms that have been added to the dungeon.
 	 */
-	this.getRoomCount = function() {
-		return Object.values(this.roomCounts).reduce((total, roomCount) => total + roomCount, 0);
-	};
+	this.getRoomCount = () => Object.values(this.roomCounts).reduce((total, roomCount) => total + roomCount, 0);
 }
