@@ -448,6 +448,11 @@ function Generator() {
 					// Pick a winner!
 					const winner = lotto.draw();
 
+					// If the winner has no id then it is implied that no entity should be generated.
+					if (!winner.id) {
+						return;
+					}
+
 					// Add the winning entity to the tile.
 					tile["entity"] = {
 						id: winner.id,
