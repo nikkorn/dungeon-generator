@@ -4,21 +4,37 @@
  * @param nodes The entity nodes.
  */
 function processEntities(nodes) {
-    // Recursively get the entities for a node.
-    const getEntitiesForNode = (node, entities) => {
+    // Recursively process the entities for a node.
+    const processEntitiesForNode = (node, entities) => {
         if (node.id) {
-            // TODO Handle single entity.
+            // Handle single entity.
+            entities.push({
+                id: node.id,
+                x: node.x,
+                y: node.y,
+                direction: node.direction
+            });
         } else if (node.entities) {
-            // TODO Handle multiple entities.
+            // Handle multiple nodes.
+            node.entities.forEach(childNode => processEntitiesForNode(childNode, entities));
         } else if (node.participants) {
-            // TODO Get a winning entity.
+            // Create a lotto with which to find a winning participating node.
+			const lotto = new Lotto();
+                    
+            // Add each participant to the lotto.
+            node.participants.forEach(participant => lotto.add(participant, participant.tickets || 0));
+
+            // Process the winning node.
+            processEntitiesForNode(lotto.draw(), entities);
+        } else {
+            // This node represents the option to not create an entity.
         }
     };
 
     // Store the entities that were successfully generated.
     const generated = [];
 
-    nodes.forEach(node => getEntitiesForNode(node, generated));
+    nodes.forEach(node => processEntitiesForNode(node, generated));
 
     // Return the generated entities.
     return generated;
