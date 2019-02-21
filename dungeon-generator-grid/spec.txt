@@ -39,6 +39,100 @@ Example:
     }
 }
 
+ENTITY GENERATION
+
+The entties array contains a nested structure of objects which expose either:
+- ID if the object represents an entity to generate.
+- PARTICIPANTS with an array of other objects which MUST have a ticket count each.
+- ENTITIES Multiple objects of any of these three types.
+
+Example: A 1 in 4 chance to generate a ultra rare chest at 2/2.
+entities: [
+    {
+        participants: [
+            {
+                tickets: 1,
+                x: 2,
+                y: 2,
+                id: "ultra_rare_chest", 
+                direction: DIRECTION.EAST 
+            },
+            {
+                tickets: 3,
+                x: 2,
+                y: 2,
+                id: "rare_chest", 
+                direction: DIRECTION.EAST 
+            }
+        ]
+    }
+]
+
+Example: 
+    A 1 in 4 chance to get a 'pot' as 2/2.
+    OR
+    A 3 in 4 chance to get:
+        A 1 in 2 chance to get a box at 4/4
+        OR
+        A 1 in 2 chance to get:
+            A box at 3/3
+            AND
+            A 1 in 4 chance to get:
+                nothing
+                OR
+                A 3 in 4 chance to get a pickle at 2/2
+
+entities: [
+    {
+        participants: [
+            { 
+                tickets: 1,
+                x: 2,
+                y: 2,
+                id: "pot", 
+                direction: DIRECTION.EAST 
+            },
+            { 
+                tickets: 3, 
+                participants: [
+                    { 
+                        tickets: 1,
+                        x: 4,
+                        y: 4,
+                        id: "box", 
+                        direction: DIRECTION.EAST 
+                    },
+                    { 
+                        tickets: 1, 
+                        entities: [
+                            { 
+                                x: 3,
+                                y: 3,
+                                id: "box", 
+                                direction: DIRECTION.EAST 
+                            },
+                            { 
+                                participants: [
+                                    {
+                                        tickets: 1
+                                    },
+                                    {
+                                        tickets: 3,
+                                        x: 2,
+                                        y: 2,
+                                        id: "pickle", 
+                                        direction: DIRECTION.EAST 
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]
+
 TERMINOLOGY
 
 CELL
