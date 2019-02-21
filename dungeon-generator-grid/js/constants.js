@@ -21,10 +21,10 @@ const MAX_DUNGEON_GENERATE_RETRY = 1000;
 const MAX_ROOM_GENERATE_RETRY = 1000;
 
 /** The maximum number of rooms allowed per dungeon. */
-const MAX_ROOMS_COUNT = 80;
+const MAX_ROOMS_COUNT = 55;
 
 /** The minimum number of rooms allowed per dungeon. */
-const MIN_ROOMS_COUNT = 10;
+const MIN_ROOMS_COUNT = 15;
 
 
 //============================================================================

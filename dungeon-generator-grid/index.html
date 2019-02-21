@@ -32,6 +32,17 @@ function setSpace(x, y, colour)
   document.getElementById('dungeon').appendChild(rect);
 };
 
+const ENTITY_COLOUR = {
+  "spawn_panel": "#e1ffd6",
+  "ultra_rare_chest": "#f4f1c1",
+  "rare_chest": "#fff65b"
+};
+
+const ROOM_CATEGORY_COLOUR = {
+  "boss": "#7d7f76",
+  "shop": "#ad42f4"
+};
+
 const DEPTH_COLOUR = [
   "#0069E5",
   "#00A7E2",
@@ -65,15 +76,10 @@ const DEPTH_COLOUR = [
   "#BF0048"
 ];
 
-const ROOM_CATEGORY_COLOUR = {
-  "boss": "#7d7f76",
-  "shop": "#ad42f4"
-};
-
 const tileColourProviders = {
   [TILE.WALL]: (tile) => "#FFFFFF",
   [TILE.DOOR]: (tile) => DEPTH_COLOUR[tile.depth],
-  [TILE.ROOM]: (tile) => ROOM_CATEGORY_COLOUR[tile.room.category] || DEPTH_COLOUR[tile.depth]
+  [TILE.ROOM]: (tile) => ENTITY_COLOUR[(tile.entity || {}).id] || ROOM_CATEGORY_COLOUR[tile.room.category] || DEPTH_COLOUR[tile.depth]
 }
 
 const tiles = new Generator().generate();
