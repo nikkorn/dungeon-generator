@@ -272,7 +272,61 @@ rooms.push(
             },
             {
                 position: { x: 1, y: -1 },
-                entities: []
+                entities: [
+                    {
+                        participants: [
+                            {
+                                tickets: 5,
+                                entities: [
+                                    { 
+                                        id: "pot", 
+                                        x: 4,  
+                                        y: 0 
+                                    },
+                                    { 
+                                        id: "pot", 
+                                        x: 4,  
+                                        y: 1 
+                                    },
+                                    { 
+                                        id: "pot", 
+                                        x: 4,  
+                                        y: 3 
+                                    },
+                                    { 
+                                        id: "pot", 
+                                        x: 4,  
+                                        y: 4
+                                    }
+                                ]
+                            },
+                            {
+                                tickets: 1,
+                                entities: [
+                                    { 
+                                        id: "pot", 
+                                        x: 4,  
+                                        y: 0 
+                                    },
+                                    { 
+                                        id: "common_chest", 
+                                        x: 2, 
+                                        y: 2, 
+                                        direction: DIRECTION.WEST 
+                                    },
+                                    { 
+                                        id: "pot", 
+                                        x: 4,  
+                                        y: 4 
+                                    }
+                                ]
+                            },
+                            {
+                                tickets: 2
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 position: { x: 0, y: -2 },
@@ -523,7 +577,7 @@ rooms.push(
                 position: { x: 0, y: -1 },
                 entities: [
                     { 
-                        id: "boss_spawn", 
+                        id: "boss", 
                         x: 2,  
                         y: 2, 
                         direction: DIRECTION.NORTH 
