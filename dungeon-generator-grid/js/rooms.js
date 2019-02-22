@@ -153,11 +153,21 @@ rooms.push(
                 blocked: [DIRECTION.NORTH, DIRECTION.SOUTH, DIRECTION.WEST],
                 entities: [
                     {
-                        x: 2,
-                        y: 2,
                         participants: [
-                            { id: "ultra_rare_chest", tickets: 1, direction: DIRECTION.EAST },
-                            { id: "rare_chest", tickets: 3, direction: DIRECTION.EAST }
+                            {
+                                tickets: 1, 
+                                x: 2,
+                                y: 2,
+                                id: "ultra_rare_chest", 
+                                direction: DIRECTION.EAST 
+                            },
+                            {
+                                tickets: 3, 
+                                x: 2,
+                                y: 2,
+                                id: "rare_chest", 
+                                direction: DIRECTION.EAST 
+                            }
                         ]
                     }
                 ]
@@ -512,7 +522,12 @@ rooms.push(
             {
                 position: { x: 0, y: -1 },
                 entities: [
-                    { id: "boss_spawn", x: 2,  y: 2, direction: DIRECTION.NORTH }
+                    { 
+                        id: "boss_spawn", 
+                        x: 2,  
+                        y: 2, 
+                        direction: DIRECTION.NORTH 
+                    }
                 ]
             },
             {

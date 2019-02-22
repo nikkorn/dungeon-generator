@@ -409,43 +409,20 @@ function Generator() {
 			const tileYMin = cell.getY() * (CELL_TILE_SIZE + 1);
 
 			// Add the entities!
-			cell.getEntities().forEach(entity => {
+			processEntities(cell.getEntities()).forEach((entity) => {
 				// Attempt to get the tile at which the entity will be placed.
 				const tile = tiles[getPositionKey(tileXMin + entity.x, tileYMin + entity.y)];
 
 				// If there isn't one then we cannot place an entity on a non-existent tile.
-				if(!tile) {
+				if (!tile) {
 					return;
 				}
 
-				// If the entry has an id then we do not need to consider multiple participants.
-				if (entity.id) {
-					// Add the entity to the tile.
-					tile["entity"] = {
-						id: entity.id,
-						direction: entity.direction
-					};
-				} else if (entity.participants) {
-					// Create a lotto with which to pick a winning participant.
-					const lotto = new Lotto();
-
-					// Add each participant to the lotto.
-					entity.participants.forEach(participant => lotto.add(participant, participant.tickets || 0));
-
-					// Pick a winner!
-					const winner = lotto.draw();
-
-					// If the winner has no id then it is implied that no entity should be generated.
-					if (!winner.id) {
-						return;
-					}
-
-					// Add the winning entity to the tile.
-					tile["entity"] = {
-						id: winner.id,
-						direction: winner.direction
-					};
-				}
+				// Add the entity to the tile.
+				tile["entity"] = {
+					id: entity.id,
+					direction: entity.direction
+				};
 			});
 		});
 
