@@ -47,7 +47,40 @@ rooms.push(
             },
             {
                 position: { x: -1, y: 0 },
-                entities: []
+                entities: [
+                    {
+                        participants: [
+                            {
+                                tickets: 1
+                            },
+                            {
+                                tickets: 1, 
+                                entities: [
+                                    { 
+                                        id: "zombie", 
+                                        x: 1,  
+                                        y: 1 
+                                    },
+                                    { 
+                                        id: "zombie", 
+                                        x: 3,  
+                                        y: 3 
+                                    }
+                                ]
+                            },
+                            {
+                                tickets: 1, 
+                                entities: [
+                                    { 
+                                        id: "zombie_strong", 
+                                        x: 1,  
+                                        y: 1 
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 position: { x: -2, y: 0 },
@@ -136,6 +169,7 @@ rooms.push(
 
 /**
  * An ultimate treasure 1*1 room accessible only from the east side.
+ * A room with a five key door that guarantees a chest.
  */
 rooms.push(
     {
@@ -177,6 +211,56 @@ rooms.push(
 );
 
 /**
+ * An ultimate treasure or strong enemy 1*1 room accessible only from the east side.
+ */
+rooms.push(
+    {
+        name: "ultimate_trick_or_treat_east",
+        max: 1,
+        chance: 0.5,
+        depth: {
+            minimum: 4
+        },
+        cells: [
+            {
+                position: { x: 0, y: 0 },
+                entrance: DIRECTION.EAST,
+                door: DOOR.FOUR_KEYS,
+                blocked: [DIRECTION.NORTH, DIRECTION.SOUTH, DIRECTION.WEST],
+                entities: [
+                    {
+                        participants: [
+                            {
+                                tickets: 1, 
+                                x: 2,
+                                y: 2,
+                                id: "ultra_rare_chest", 
+                                direction: DIRECTION.EAST 
+                            },
+                            {
+                                tickets: 1, 
+                                entities: [
+                                    { 
+                                        id: "ghost_strong", 
+                                        x: 1,  
+                                        y: 1 
+                                    },
+                                    { 
+                                        id: "ghost_strong", 
+                                        x: 3,  
+                                        y: 3 
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+);
+
+/**
  * A simple empty 1*3 room accessible from the south side.
  */
 rooms.push(
@@ -188,16 +272,80 @@ rooms.push(
                 position: { x: 0, y: 0 },
                 entrance: DIRECTION.SOUTH,
                 door: DOOR.THREE_KEYS,
-                entities: []
+                entities: [
+                    {
+                        participants: [
+                            {
+                                tickets: 1
+                            },
+                            {
+                                tickets: 1, 
+                                entities: [
+                                    { 
+                                        id: "bat", 
+                                        x: 1,  
+                                        y: 1 
+                                    },
+                                    { 
+                                        id: "bat", 
+                                        x: 3,  
+                                        y: 3 
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 position: { x: 0, y: 1 },
-                entities: []
+                entities: [
+                    {
+                        participants: [
+                            {
+                                tickets: 3
+                            },
+                            {
+                                tickets: 1, 
+                                entities: [
+                                    { 
+                                        id: "bat_strong", 
+                                        x: 2,  
+                                        y: 2 
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 position: { x: 0, y: 2 },
                 blocked: [],
-                entities: []
+                entities: [
+                    {
+                        participants: [
+                            {
+                                tickets: 1
+                            },
+                            {
+                                tickets: 1, 
+                                entities: [
+                                    { 
+                                        id: "bat", 
+                                        x: 1,  
+                                        y: 1 
+                                    },
+                                    { 
+                                        id: "bat", 
+                                        x: 3,  
+                                        y: 3 
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
             }
         ]
     }
@@ -218,7 +366,30 @@ rooms.push(
             },
             {
                 position: { x: 0, y: 1 },
-                entities: []
+                entities: [
+                    {
+                        participants: [
+                            {
+                                tickets: 1
+                            },
+                            {
+                                tickets: 1, 
+                                entities: [
+                                    { 
+                                        id: "bat", 
+                                        x: 0,  
+                                        y: 0 
+                                    },
+                                    { 
+                                        id: "bat", 
+                                        x: 4,  
+                                        y: 4 
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 position: { x: 1, y: 1 },
@@ -243,7 +414,26 @@ rooms.push(
             },
             {
                 position: { x: 0, y: -1 },
-                entities: []
+                entities: [
+                    {
+                        tickets: 1
+                    },
+                    {
+                        tickets: 1, 
+                        entities: [
+                            { 
+                                id: "bat", 
+                                x: 0,  
+                                y: 0 
+                            },
+                            { 
+                                id: "bat", 
+                                x: 4,  
+                                y: 4 
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 position: { x: -1, y: -1 },
