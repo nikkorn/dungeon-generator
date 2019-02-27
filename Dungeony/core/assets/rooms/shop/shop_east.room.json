@@ -1,0 +1,16 @@
+{
+    "name": "shop_east",
+    "category": "shop",
+    "cells": [
+        {
+            "position": {
+                "x": 0, 
+                "y": 0 
+            },
+            "entrance": "EAST",
+            "door": "SHOP",
+            "blocked": ["NORTH", "SOUTH", "WEST"],
+            "entities": []
+        }
+    ]
+}
