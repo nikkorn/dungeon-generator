@@ -1,4 +1,4 @@
-package com.dumbpug.dungeony.dungen;
+package com.dumbpug.dungeony.dungen.room;
 
 import org.json.JSONObject;
 
