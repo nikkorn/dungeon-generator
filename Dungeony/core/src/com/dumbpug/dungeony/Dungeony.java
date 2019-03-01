@@ -4,6 +4,8 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dumbpug.dungeony.dungen.room.RoomResources;
+import com.dumbpug.dungeony.dungen.room.RoomResourcesReader;
 
 public class Dungeony extends ApplicationAdapter {
 	SpriteBatch batch;
@@ -11,6 +13,8 @@ public class Dungeony extends ApplicationAdapter {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
+		
+		RoomResources resources = RoomResourcesReader.getResources("rooms");
 	}
 
 	@Override

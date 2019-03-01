@@ -26,7 +26,7 @@ public class RoomResourcesReader {
 		File roomResourceDirectory = new File(resourceDirectoryPath);
 
 		// The file must exist and be a directory for us to continue.
-		if (!roomResourceDirectory.exists() || roomResourceDirectory.isDirectory()) {
+		if (!roomResourceDirectory.exists() || !roomResourceDirectory.isDirectory()) {
 			throw new RuntimeException("room resource directory '" + roomResourceDirectory.getAbsolutePath() + "' does not exist or is a file");
 		}
 		
@@ -47,6 +47,24 @@ public class RoomResourcesReader {
 	 * @return All files nested within the directory with the given extension.
 	 */
 	private static ArrayList<File> findFilesWithExtension(File roomResourceDirectory, String extension) {
-		return null;
+		// Create a list to hold all the matching files.
+		ArrayList<File> found = new ArrayList<File>();
+		
+		findFilesInDirectoryWithExtension(roomResourceDirectory, extension, found);
+		
+		// Return the list holding all the matching files.
+		return found;
+	}
+	
+	private static void findFilesInDirectoryWithExtension(File directory, String extension, ArrayList<File> found) {
+		for (File file : directory.listFiles()) {
+			if (file.isDirectory()) {
+				findFilesInDirectoryWithExtension(file, extension, found);
+			} else {
+				if (file.getName().endsWith(extension)) {
+					found.add(file);
+				}
+			}
+		}
 	}
 }
