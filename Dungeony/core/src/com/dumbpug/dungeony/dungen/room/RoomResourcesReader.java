@@ -41,7 +41,7 @@ public class RoomResourcesReader {
 	}
 	
 	/**
-	 * Find all files nested within the directory with the given extension.
+	 * Find all files recursively nested within the directory with the given extension.
 	 * @param roomResourceDirectory The directory containing room resources.
 	 * @param extension The room resource file extension.
 	 * @return All files nested within the directory with the given extension.
@@ -56,6 +56,12 @@ public class RoomResourcesReader {
 		return found;
 	}
 	
+	/**
+	 * Find all files recursively nested within the directory with the given extension.
+	 * @param directory The current directory.
+	 * @param extension The room resource file extension.
+	 * @param found The list of found files.
+	 */
 	private static void findFilesInDirectoryWithExtension(File directory, String extension, ArrayList<File> found) {
 		for (File file : directory.listFiles()) {
 			if (file.isDirectory()) {

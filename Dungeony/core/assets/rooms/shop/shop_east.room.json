@@ -7,8 +7,10 @@
                 "x": 0, 
                 "y": 0 
             },
-            "entrance": "EAST",
-            "door": "SHOP",
+            "entrance": {
+                "direction": "EAST",
+                "door": "SHOP"
+            },
             "blocked": ["NORTH", "SOUTH", "WEST"],
             "entities": []
         }
