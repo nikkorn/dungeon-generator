@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.Random;
 import org.json.JSONArray;
 import com.dumbpug.dungeony.dungen.Direction;
+import com.dumbpug.dungeony.dungen.Position;
 
 /**
  * Represents a cell in a room.
  */
 public class Cell {
 	/**
-	 * The position of the cell.
+	 * The local position of the cell, relative to a room entrance cell position.
 	 */
 	private Position position;
 	/**
@@ -28,7 +29,7 @@ public class Cell {
 	
 	/**
 	 * Create a new instance of the Cell class.
-	 * @param position The position of the cell.
+	 * @param position The local position of the cell, relative to a room entrance cell position.
 	 * @param entrance The cell entrance, or null if this cell is not an entrance cell.
 	 * @param blockedDirections The list of the directions in which anchors cannot be attached to the cell.
 	 * @param entities The generatable entites
@@ -41,10 +42,10 @@ public class Cell {
 	}
 	
 	/**
-	 * Get the cell position.
-	 * @return The cell position.
+	 * Get the local position of the cell, relative to a room entrance cell position.
+	 * @return The local position of the cell, relative to a room entrance cell position.
 	 */
-	public Position getPosition() {
+	public Position getLocalPosition() {
 		return position;
 	}
 

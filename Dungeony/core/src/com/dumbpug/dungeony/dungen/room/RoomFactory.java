@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import com.dumbpug.dungeony.dungen.Direction;
+import com.dumbpug.dungeony.dungen.Position;
 
 /**
  * Factory for creating Room and RoomGroup instances. 
@@ -27,7 +28,7 @@ public class RoomFactory {
 		Double chance = object.has("chance") ? object.getDouble("chance") : null;
 		
 		// Create the room depth.
-		Depth depth = object.has("depth") ? createDepthRange(object.getJSONObject("depth")) : null;
+		DepthRange depth = object.has("depth") ? createDepthRange(object.getJSONObject("depth")) : null;
 		
 		// Create the list to hold the room cells.
 		ArrayList<Cell> cells = new ArrayList<Cell>();
@@ -57,7 +58,7 @@ public class RoomFactory {
 		Integer maximum = object.has("maximum") ? object.getInt("maximum") : null;
 		
 		// Create the group depth.
-		Depth depth = object.has("depth") ? createDepthRange(object.getJSONObject("depth")) : null;
+		DepthRange depth = object.has("depth") ? createDepthRange(object.getJSONObject("depth")) : null;
 		
 		// Create a list to hold the names of the rooms in the group.
 		ArrayList<String> rooms = new ArrayList<String>();
@@ -100,14 +101,14 @@ public class RoomFactory {
 	}
 	
 	/**
-	 * Create a Depth object based on a definition in JSON.
+	 * Create a DepthRange object based on a definition in JSON.
 	 * @param object The definition.
-	 * @return A Depth object based on a definition in JSON.
+	 * @return A DepthRange object based on a definition in JSON.
 	 */
-	private static Depth createDepthRange(JSONObject object) {
+	private static DepthRange createDepthRange(JSONObject object) {
 		Integer minimum = object.has("minimum") ? object.getInt("minimum") : null;
 		Integer maximum = object.has("maximum") ? object.getInt("maximum") : null;
-		return new Depth(minimum, maximum);
+		return new DepthRange(minimum, maximum);
 	}
 	
 	/**

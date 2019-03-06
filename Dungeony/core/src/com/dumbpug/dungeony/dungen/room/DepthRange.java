@@ -3,7 +3,7 @@ package com.dumbpug.dungeony.dungen.room;
 /**
  * Represents a range of depth.
  */
-public class Depth {
+public class DepthRange {
 	/**
 	 * The depth minimum.
 	 */
@@ -14,11 +14,11 @@ public class Depth {
 	private Integer maximum;
 	
 	/**
-	 * Create a new instance of the Depth class.
+	 * Create a new instance of the DepthRange class.
 	 * @param minimum The minimum.
 	 * @param maximum The maximum.
 	 */
-	public Depth(Integer minimum, Integer maximum) {
+	public DepthRange(Integer minimum, Integer maximum) {
 		this.minimum = minimum;
 		this.maximum = maximum;
 	}

@@ -21,7 +21,7 @@ public class RoomGroup {
 	/**
 	 * The depth range defining how far into the dungeon rooms in the group can be generated.
 	 */
-	private Depth depth;
+	private DepthRange depth;
 	/**
 	 * The list of names of any rooms in the group.
 	 */
@@ -35,7 +35,7 @@ public class RoomGroup {
 	 * @param depth The depth range defining how far into the dungeon rooms in the group can be generated.
 	 * @param rooms The list of names of any rooms in the group.
 	 */
-	public RoomGroup(String name, Integer minimum, Integer maximum, Depth depth, ArrayList<String> rooms) {
+	public RoomGroup(String name, Integer minimum, Integer maximum, DepthRange depth, ArrayList<String> rooms) {
 		this.name    = name;
 		this.minimum = minimum;
 		this.maximum = maximum;
@@ -71,7 +71,7 @@ public class RoomGroup {
 	 * Get the depth range defining how far into the dungeon rooms in the group can be generated.
 	 * @return The depth range defining how far into the dungeon rooms in the group can be generated.
 	 */
-	public Depth getDepth() {
+	public DepthRange getDepth() {
 		return depth;
 	}
 	

@@ -25,7 +25,7 @@ public class Room {
 	/**
 	 * The depth range defining how far into the dungeon the room can be generated.
 	 */
-	private Depth depth;
+	private DepthRange depth;
 	/**
 	 * The list of cells that the room is composed of.
 	 */
@@ -40,7 +40,7 @@ public class Room {
 	 * @param depth The depth range defining how far into the dungeon the room can be generated.
 	 * @param cells The cells that the room are composed of.
 	 */
-	public Room(String name, Integer minimum, Integer maximum, Double chance, Depth depth, ArrayList<Cell> cells) {
+	public Room(String name, Integer minimum, Integer maximum, Double chance, DepthRange depth, ArrayList<Cell> cells) {
 		this.name    = name;
 		this.minimum = minimum;
 		this.maximum = maximum;
@@ -85,7 +85,7 @@ public class Room {
 	 * Get the depth range defining how far into the dungeon the room can be generated.
 	 * @return The depth range defining how far into the dungeon the room can be generated.
 	 */
-	public Depth getDepth() {
+	public DepthRange getDepth() {
 		return depth;
 	}
 	
