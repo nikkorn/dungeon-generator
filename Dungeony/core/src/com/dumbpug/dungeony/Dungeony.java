@@ -15,6 +15,9 @@ public class Dungeony extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		
 		RoomResources resources = RoomResourcesReader.getResources("rooms");
+		
+		System.out.println("ROOM COUNT      : " + resources.getRooms().size());
+		System.out.println("ROOM GROUP COUNT: " + resources.getRoomGroups().size());
 	}
 
 	@Override

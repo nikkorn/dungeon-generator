@@ -1,7 +1,12 @@
 package com.dumbpug.dungeony.dungen.room;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+
+import org.json.JSONObject;
 
 /**
  * Reads rooms resources from disk.
@@ -33,11 +38,27 @@ public class RoomResourcesReader {
 		// Get all of the room resource files.
 		ArrayList<File> roomResourceFiles = RoomResourcesReader.findFilesWithExtension(roomResourceDirectory, ROOM_FILE_EXTENSION);
 		
+		// Create a list to store all of the rooms.
+		ArrayList<Room> rooms = new ArrayList<Room>();
+		
+		// Get the contents of ever room definition file and convert it to an actual Room instance.
+		for (File roomResourceFile : roomResourceFiles) {
+			rooms.add(RoomFactory.createRoom(new JSONObject(getFileContents(roomResourceFile))));
+		}
+		
 		// Get all of the room group resource files.
 		ArrayList<File> roomGroupResourceFiles = RoomResourcesReader.findFilesWithExtension(roomResourceDirectory, ROOM_GROUP_FILE_EXTENSION);
-			
+		
+		// Create a list to store all of the room groups.
+		ArrayList<RoomGroup> roomGroups = new ArrayList<RoomGroup>();
+		
+		// Get the contents of ever room definition file and convert it to an actual RoomGroup instance.
+		for (File roomGroupResourceFile : roomGroupResourceFiles) {
+			roomGroups.add(RoomFactory.createRoomGroup(new JSONObject(getFileContents(roomGroupResourceFile))));
+		}
+		
 		// Return the room resources.
-		return new RoomResources(null, null);
+		return new RoomResources(rooms, roomGroups);
 	}
 	
 	/**
@@ -71,6 +92,19 @@ public class RoomResourcesReader {
 					found.add(file);
 				}
 			}
+		}
+	}
+	
+	/**
+	 * Get the contents of the specified file.
+	 * @param file The file to read from.
+	 * @return The contents of the specified file.
+	 */
+	private static String getFileContents(File file) {
+		try {
+			return new String(Files.readAllBytes(Paths.get(file.getPath())));
+		} catch (IOException e) {
+			throw new RuntimeException("cannot read test from file: " + file.getAbsolutePath());
 		}
 	}
 }

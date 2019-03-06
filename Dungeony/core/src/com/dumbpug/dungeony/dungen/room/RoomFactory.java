@@ -49,7 +49,28 @@ public class RoomFactory {
 	 * @return A RoomGroup object based on a definition in JSON.
 	 */
 	public static RoomGroup createRoomGroup(JSONObject object) {
-		return null;
+		// Get the group name.
+		String name = object.getString("name");
+		
+		// Get the minimum/maximum generation count.
+		Integer minimum = object.has("minimum") ? object.getInt("minimum") : null;
+		Integer maximum = object.has("maximum") ? object.getInt("maximum") : null;
+		
+		// Create the group depth.
+		Depth depth = object.has("depth") ? createDepthRange(object.getJSONObject("depth")) : null;
+		
+		// Create a list to hold the names of the rooms in the group.
+		ArrayList<String> rooms = new ArrayList<String>();
+		
+		// Get the room names array from our group JSON.
+		JSONArray roomsJsonArray = object.getJSONArray("rooms");
+		
+		// Create an actual room name entry for each JSON array value.
+		for (int roomNameIndex = 0; roomNameIndex < roomsJsonArray.length(); roomNameIndex++) {
+			rooms.add(roomsJsonArray.getString(roomNameIndex));
+		}
+				
+		return new RoomGroup(name, minimum, maximum, depth, rooms);
 	}
 	
 	/**
@@ -68,7 +89,7 @@ public class RoomFactory {
 		ArrayList<Direction> blocked = new ArrayList<Direction>();
 		
 		// Get the blocked directions array from our room JSON.
-		JSONArray blockedJsonArray = object.getJSONArray("blocked");
+		JSONArray blockedJsonArray = object.has("blocked") ? object.getJSONArray("blocked") : new JSONArray();
 		
 		// Create an actual blocked direction entry for each JSON array value.
 		for (int directionIndex = 0; directionIndex < blockedJsonArray.length(); directionIndex++) {

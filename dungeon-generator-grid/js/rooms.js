@@ -754,7 +754,7 @@ rooms.push(
             {
                 position: { x: 0, y: 0 },
                 entrance: DIRECTION.NORTH,
-                door: DOOR.THREE_KEYS,
+                door: DOOR.BOSS,
                 blocked: [DIRECTION.WEST, DIRECTION.EAST],
                 entities: []
             },

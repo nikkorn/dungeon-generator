@@ -1,6 +1,5 @@
 {
-    "name": "shop_west",
-    "category": "shop",
+    "name": "empty_1_1_north",
     "cells": [
         {
             "position": {
@@ -8,10 +7,9 @@
                 "y": 0 
             },
             "entrance": {
-                "direction": "WEST",
-                "door": "SHOP"
+                "direction": "NORTH",
+                "door": "NONE"
             },
-            "blocked": ["NORTH", "SOUTH", "EAST"],
             "entities": []
         }
     ]
