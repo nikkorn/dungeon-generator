@@ -34,6 +34,21 @@ public class RoomResources {
 	}
 	
 	/**
+	 * Get the room with the specified name.
+	 * @param name The room name.
+	 * @return The room with the specified name.
+	 */
+	public Room getRoom(String name) {
+		for (Room room : this.rooms) {
+			if (room.getName().equals(name)) {
+				return room;
+			}
+		}
+		// There was no room with the specified name.
+		return null;
+	}
+	
+	/**
 	 * Get a list of all rooms groups.
 	 * @return A list of all room groups.
 	 */
