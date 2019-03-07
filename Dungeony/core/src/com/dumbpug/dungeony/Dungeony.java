@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dumbpug.dungeony.dungen.DunGenPrinter;
 import com.dumbpug.dungeony.dungen.room.RoomResources;
 import com.dumbpug.dungeony.dungen.room.RoomResourcesReader;
 
@@ -18,6 +19,8 @@ public class Dungeony extends ApplicationAdapter {
 		
 		System.out.println("ROOM COUNT      : " + resources.getRooms().size());
 		System.out.println("ROOM GROUP COUNT: " + resources.getRoomGroups().size());
+		
+		DunGenPrinter.create("", "TEST");
 	}
 
 	@Override

@@ -1,6 +1,9 @@
 package com.dumbpug.dungeony.dungen;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Random;
 import com.dumbpug.dungeony.dungen.room.Anchor;
 import com.dumbpug.dungeony.dungen.room.Cell;
 import com.dumbpug.dungeony.dungen.room.Room;
@@ -23,13 +26,16 @@ public class DunGen {
 		// Grab all of the room resources from disk.
 		RoomResources resources = RoomResourcesReader.getResources("rooms");
 		
+		// Create the RNG to use in generating the dungeon.
+		Random random = new Random(configuration.seed);
+		
 		// Keep track of the number of times we have attempted to create the dungeon and failed.
 		int dungeonGenerationFailureCount = 0;
 		
 		// Keep trying to generate the dungeon until we hit the attempt limit.
 		while (dungeonGenerationFailureCount < configuration.dungeonGenerationRetries) {
 			// Attempt to generate a dungeon.
-			DunGenGenerationAttempt result = attemptDungeonGeneration(resources);
+			DunGenGenerationAttempt result = attemptDungeonGeneration(resources, configuration, random);
 
 			// If we succeeded then we are done!
 			if (result.getStatus() == DunGenGenerationAttemptStatus.SUCCESS) {
@@ -46,9 +52,11 @@ public class DunGen {
 	/**
 	 * Attempt to generate a dungeon and return the result.
 	 * @param resources The room resources.
+	 * @param configuration The configuration.
+	 * @param randon The RNG to use throughout generation.
 	 * @return The result of attempting to generate a dungeon.
 	 */
-	private static DunGenGenerationAttempt attemptDungeonGeneration(RoomResources resources) {
+	private static DunGenGenerationAttempt attemptDungeonGeneration(RoomResources resources, DunGenConfiguration configuration, Random random) {
 		// Create the map to hold all of the placed dungeon cells.
 		HashMap<Position, Cell> cells = new HashMap<Position, Cell>();
 		
@@ -57,14 +65,42 @@ public class DunGen {
 		
 		// Add the spawn room to the center of the dungeon, this should always be a success.
 		addRoom(0, 0, 0, resources.getRoom("spawn"), cells, roomCounts);
+		
+		// Keep track of the number of times we have attempted to add a room and failed.
+		int roomGenerationFailureCount = 0;
+		
+		// While we need to populate our dungeon with rooms, find a room and bolt it on.
+		while (roomCounts.getTotal() < configuration.maximumRoomCount && roomGenerationFailureCount < configuration.roomGenerationRetries) {
+			// Find all available anchors and pick any random one.
+			Anchor anchor = Utility.getRandomListItem(findAvailableAnchors(cells), random);
 
+			// Get all rooms where the entrance matches the direction of the anchor.
+			ArrayList<Room> attachableRooms = getRoomsWithEntranceDirection(anchor.getJoinDirection(), resources.getRooms());
+
+			// TODO MAYBE Randomly pick a room rarity and filter X by that rarity.
+
+			// Shuffle the attachable rooms so that we don't spend end up playing favourites with earlier items.
+			Collections.shuffle(attachableRooms, random);
+
+			// Randomly pick a generatable room definition.
+			Room generatableRoom = attachableRooms.find(room => this.canRoomBeGenerated(room, anchor));
+
+			// Generate a room if we have a valid generatable room definition.
+			if (generatableRoom != null) {
+				// Add the room.
+				addRoom(anchor.getPosition().getX(), anchor.getPosition().getX(), anchor.getDepth(), generatableRoom, cells, roomCounts);
+
+				// Reset the room generation failure count now that we have had a success.
+				roomGenerationFailureCount = 0;
+			} else {
+				// We failed to generate a room!
+				roomGenerationFailureCount++;
+			}
+		}
 		
+		// TODO Check for minimum room counts.
 		
-		
-		
-		
-		// TODO Remove this!
-		return new DunGenGenerationAttempt(DunGenGenerationAttemptStatus.FAIL, null);
+		return new DunGenGenerationAttempt(DunGenGenerationAttemptStatus.SUCCESS, null);
 	}
 	
 	/**
@@ -154,5 +190,34 @@ public class DunGen {
 	
 			cells.put(cellPosition, cell);		
 		}
+	}
+	
+	/**
+	 * Find all available anchor points in the dungeon.
+	 * @param cells The cell to which anchors may be attached.
+	 * @return All available anchor points in the dungeon.
+	 */
+	private static ArrayList<Anchor> findAvailableAnchors(HashMap<Position, Cell> cells) {
+		return null;
+	}
+	
+	/**
+	 * Get a list of all rooms that have an entrance direction matching the specified one.
+	 * @param entranceDirection The entrance direction.
+	 * @param rooms The list of all the rooms.
+	 * @return A list of all rooms that have an entrance direction matching the specified one.
+	 */
+	private static ArrayList<Room> getRoomsWithEntranceDirection(Direction entranceDirection, ArrayList<Room> rooms) {
+		// Create a list to store all of the rooms that are found with a matching entrance cell direction.
+		ArrayList<Room> roomsFound = new ArrayList<Room>();
+		
+		for (Room room : rooms) {
+			if (room.getEntranceDirection() == entranceDirection) {
+				roomsFound.add(room);
+			}
+		}
+		
+		// Return all the rooms that were found with a matching entrance cell direction.
+		return roomsFound;
 	}
 }

@@ -31,4 +31,16 @@ public class RoomCountMap extends HashMap<String, Integer> {
 			this.put(name, 1);
 		}
 	}
+	
+	/**
+	 * Get the total number of generated rooms.
+	 * @return The total number of generated rooms.
+	 */
+	public int getTotal() {
+		int total = 0;
+		for (Integer count : this.values()) {
+			total += count;
+		}
+		return total;
+	}
 }

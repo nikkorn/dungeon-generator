@@ -1,6 +1,7 @@
 package com.dumbpug.dungeony.dungen.room;
 
 import java.util.ArrayList;
+import com.dumbpug.dungeony.dungen.Direction;
 
 /**
  * Represents a generatable room.
@@ -95,5 +96,20 @@ public class Room {
 	 */
 	public ArrayList<Cell> getCells() {
 		return this.cells;
+	}
+	
+	/**
+	 * Get the direction in which this room attaches to an existing room.
+	 * @return The direction in which this room attaches to an existing room.
+	 */
+	public Direction getEntranceDirection() {
+		// We need to find the room entrance cell. It will define the direction in which the room attaches to a cell.
+		for (Cell cell : this.cells) {
+			if (cell.getEntrance() != null) {
+				return cell.getEntrance().getDirection();
+			}
+		}
+		// Every room needs to have an entrance cell.
+		throw new RuntimeException("room found without entrance cell");
 	}
 }
