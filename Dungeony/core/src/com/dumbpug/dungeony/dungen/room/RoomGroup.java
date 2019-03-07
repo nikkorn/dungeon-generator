@@ -82,4 +82,19 @@ public class RoomGroup {
 	public ArrayList<String> getRoomNames() {
 		return this.rooms;
 	}
+	
+	/**
+	 * Get whether the group includes the specified room.
+	 * @param room The room.
+	 * @return Whether the group includes the specified room.
+	 */
+	public boolean includesRoom(Room room) {
+		for (String groupedRoomName : this.rooms) {
+			if (groupedRoomName.equals(room.getName())) {
+				return true;
+			}
+		}
+		// The room is not in this group.
+		return false;
+	}
 }

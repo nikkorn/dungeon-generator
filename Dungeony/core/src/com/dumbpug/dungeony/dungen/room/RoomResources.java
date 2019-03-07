@@ -55,4 +55,19 @@ public class RoomResources {
 	public ArrayList<RoomGroup> getRoomGroups() {
 		return groups;
 	}
+	
+	/**
+	 * Get the room group with the specified name.
+	 * @param name The room group name.
+	 * @return The room group with the specified name.
+	 */
+	public RoomGroup getRoomGroup(String name) {
+		for (RoomGroup group : this.groups) {
+			if (group.getName().equals(name)) {
+				return group;
+			}
+		}
+		// There was no room group with the specified name.
+		return null;
+	}
 }
