@@ -2,7 +2,6 @@ package com.dumbpug.dungeony.dungen;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Random;
 import com.dumbpug.dungeony.dungen.room.Anchor;
 import com.dumbpug.dungeony.dungen.room.Cell;
@@ -58,7 +57,7 @@ public class DunGen {
 	 */
 	private static DunGenGenerationAttempt attemptDungeonGeneration(RoomResources resources, DunGenConfiguration configuration, Random random) {
 		// Create the map to hold all of the placed dungeon cells.
-		HashMap<Position, Cell> cells = new HashMap<Position, Cell>();
+		PositionedCellList cells = new PositionedCellList();
 		
 		// Create a map to hold the counts of generated rooms.
 		RoomCountMap roomCounts = new RoomCountMap();
@@ -81,9 +80,17 @@ public class DunGen {
 
 			// Shuffle the attachable rooms so that we don't spend end up playing favourites with earlier items.
 			Collections.shuffle(attachableRooms, random);
-
+			
 			// Randomly pick a generatable room definition.
-			Room generatableRoom = attachableRooms.find(room => this.canRoomBeGenerated(room, anchor));
+			Room generatableRoom = null;
+			for (Room room : attachableRooms) {
+				if (canRoomBeGenerated(resources, room, anchor, roomCounts, cells)) {
+					// We found a room that can be generated!
+					generatableRoom = room;
+					
+					break;
+				}
+			}
 
 			// Generate a room if we have a valid generatable room definition.
 			if (generatableRoom != null) {
@@ -98,11 +105,15 @@ public class DunGen {
 			}
 		}
 		
-		// TODO Check for minimum room counts.
+		// We failed to generate the dungeon if we didn't meet the minimum number of rooms or 
+		// any rooms that have a minimum count have not been added at least that many times.
+		if (!areMinimumRoomCountsMet(resources, roomCounts, configuration)) {
+			return new DunGenGenerationAttempt(DunGenGenerationAttemptStatus.FAIL, null);
+		}
 		
 		return new DunGenGenerationAttempt(DunGenGenerationAttemptStatus.SUCCESS, null);
 	}
-	
+
 	/**
 	 * Get whether the room can be generated at an anchor.
 	 * @param resources The room resources.
@@ -112,7 +123,7 @@ public class DunGen {
 	 * @param cells The existing placed dungeon cells.
 	 * @return Whether the room can be generated at an anchor.
 	 */
-	private static boolean canRoomBeGenerated(RoomResources resources, Room room, Anchor anchor, RoomCountMap roomCounts, HashMap<Position, Cell> cells) {
+	private static boolean canRoomBeGenerated(RoomResources resources, Room room, Anchor anchor, RoomCountMap roomCounts, PositionedCellList cells) {
 		// Find the room group that the room is in (if there is one).
 		RoomGroup roomGroup = null;
 		for (RoomGroup group : resources.getRoomGroups()) {
@@ -158,7 +169,7 @@ public class DunGen {
 			int cellPositionY = cell.getLocalPosition().getY() + anchor.getPosition().getY();
 			
 			// If the cell position is already taken then we cannot generate the room.
-			if (cells.containsKey(new Position(cellPositionX, cellPositionY))) {
+			if (cells.isCellAt(new Position(cellPositionX, cellPositionY))) {
 				return false;
 			}
 		}
@@ -176,7 +187,7 @@ public class DunGen {
 	 * @param cells The existing placed dungeon cells.
 	 * @param roomCounts The counts of the generated rooms.
 	 */
-	private static void addRoom(int x, int y, int depth, Room room, HashMap<Position, Cell> cells, RoomCountMap roomCounts) {
+	private static void addRoom(int x, int y, int depth, Room room, PositionedCellList cells, RoomCountMap roomCounts) {
 		// Add a room count entry for this room.
 		roomCounts.incrementCount(room.getName());
 
@@ -188,7 +199,7 @@ public class DunGen {
 			// Get the absolute position of the cell.
 			Position cellPosition = new Position(x + cell.getLocalPosition().getX(), y + cell.getLocalPosition().getY());
 	
-			cells.put(cellPosition, cell);		
+			cells.add(new PositionedCell(cell, cellPosition, depth));		
 		}
 	}
 	
@@ -197,8 +208,85 @@ public class DunGen {
 	 * @param cells The cell to which anchors may be attached.
 	 * @return All available anchor points in the dungeon.
 	 */
-	private static ArrayList<Anchor> findAvailableAnchors(HashMap<Position, Cell> cells) {
-		return null;
+	private static ArrayList<Anchor> findAvailableAnchors(PositionedCellList cells) {
+		// Create a list to store all of the available anchors.
+		ArrayList<Anchor> anchors = new ArrayList<Anchor>();
+
+		for (PositionedCell positionedCell : cells) {	
+			// Get the position of the cell.
+			int cellX = positionedCell.getPosition().getX();
+			int cellY = positionedCell.getPosition().getY();
+			
+			// Get the depth of the next room.
+			int nextRoomDepth = positionedCell.getDepth() + 1;
+			
+			if (positionedCell.getCell().isJoinableAt(Direction.NORTH) && !cells.isCellAt(cellX, cellY + 1)) {
+				anchors.add(new Anchor(new Position(cellX, cellY + 1), Direction.SOUTH, nextRoomDepth));
+			}
+			
+			if (positionedCell.getCell().isJoinableAt(Direction.SOUTH) && !cells.isCellAt(cellX, cellY - 1)) {
+				anchors.add(new Anchor(new Position(cellX, cellY - 1), Direction.NORTH, nextRoomDepth));
+			}
+			
+			if (positionedCell.getCell().isJoinableAt(Direction.WEST) && !cells.isCellAt(cellX - 1, cellY)) {
+				anchors.add(new Anchor(new Position(cellX - 1, cellY), Direction.EAST, nextRoomDepth));
+			}
+			
+			if (positionedCell.getCell().isJoinableAt(Direction.EAST) && !cells.isCellAt(cellX + 1, cellY)) {
+				anchors.add(new Anchor(new Position(cellX + 1, cellY), Direction.WEST, nextRoomDepth));
+			}
+		}
+		
+		return anchors;
+	}
+	
+	/**
+	 * Get whether the minimum number or overall rooms and individual room counts meet any minimums.
+	 * @param resources The room resources.
+	 * @param roomCounts The generated room counts.
+	 * @param configuration The configuration.
+	 * @return Whether the minimum number or overall rooms and individual room counts meet any minimums.
+	 */
+	private static boolean areMinimumRoomCountsMet(RoomResources resources, RoomCountMap roomCounts, DunGenConfiguration configuration) {
+		// We fail to generate the dungeon if we didn't even meet the minimum number of rooms.
+		if (roomCounts.getTotal() < configuration.minimumRoomCount) {
+			return false;
+		}
+		
+		// Any room group can have a minimum defined, meaning that the sum of all rooms generated for that group must meet the group minimum.
+		for (RoomGroup group : resources.getRoomGroups()) {
+			// We only care about groups that have a minimum defined.
+			if (group.getMinimum() == null) {
+				continue;
+			}
+			
+			// Get the total number of times that rooms in the same group have been generated.
+			int roomGroupGenerationCount = 0;
+			for (String roomName : group.getRoomNames()) {
+				roomGroupGenerationCount += roomCounts.getCount(roomName);
+			}
+
+			// Are we below the group minimum?
+			if (roomGroupGenerationCount < group.getMinimum()) {
+				return false;
+			}
+		}
+		
+		// Check whether there are any rooms that have their own minimum, if so we need to make sure every count was reached.
+		for (Room room : resources.getRooms()) {
+			// We only care about rooms that have a minimum defined.
+			if (room.getMinimum() == null) {
+				continue;
+			}
+			
+			// Was the room not generated enough times?
+			if (roomCounts.getCount(room.getName()) < room.getMinimum()) {
+				return false;
+			}
+		}
+		
+		// We are good to go!
+		return true;
 	}
 	
 	/**

@@ -67,18 +67,18 @@ public class Cell {
 	}
 	
 	/**
-	 * Gets whether this cell is blocked in the specified direction.
+	 * Gets whether this cell is joinable in the specified direction.
 	 * @param direction The direction to check.
-	 * @return Whether this cell is blocked in the specified direction.
+	 * @return Whether this cell is joinable in the specified direction.
 	 */
-	public boolean isBlockedAt(Direction direction) {
+	public boolean isJoinableAt(Direction direction) {
 		for (Direction blocked : this.blockedDirections) {
 			if (direction == blocked) {
 				// This cell is blocked in the specified direction.
-				return true;
+				return false;
 			}
 		}
 		// The direction is not blocked.
-		return false;
+		return true;
 	}
 }
