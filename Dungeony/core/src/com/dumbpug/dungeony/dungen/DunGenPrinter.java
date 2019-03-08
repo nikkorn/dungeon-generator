@@ -3,25 +3,24 @@ package com.dumbpug.dungeony.dungen;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Random;
 import javax.imageio.ImageIO;
+import com.dumbpug.dungeony.dungen.tile.Tile;
 
 /**
  * Prints a dungeon to an image.
  */
 public class DunGenPrinter {
 	
-	public static void create(String name, String path) {
-		int size = 200;
+	public static void print(String name, String path, Dungeon dungeon) {
+		int size   = 400;
+		int offset = size / 2;
 		
 		File outputfile   = new File(path + name + ".png");
 		BufferedImage img = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
 		
 		// Generate each static tile and draw it to our image.
-		for (int x = 0; x < size; x++) {
-			for (int y = 0; y < size; y++) {
-				drawTileToImage(img, x, y, new Random().nextBoolean());
-			}
+		for (Tile tile : dungeon.getTiles()) {
+			drawTileToImage(img, tile.getX() + offset, tile.getY() + offset, false);
 		}
 		
 		// Try to write the image to disk.

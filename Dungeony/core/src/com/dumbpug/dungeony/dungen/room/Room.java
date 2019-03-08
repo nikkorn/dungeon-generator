@@ -109,7 +109,7 @@ public class Room {
 				return cell.getEntrance().getDirection();
 			}
 		}
-		// Every room needs to have an entrance cell.
-		throw new RuntimeException("room found without entrance cell");
+		// The room did not have an entrance cell.
+		return Direction.UNKNOWN;
 	}
 }

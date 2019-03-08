@@ -111,7 +111,7 @@ public class DunGen {
 			return new DunGenGenerationAttempt(DunGenGenerationAttemptStatus.FAIL, null);
 		}
 		
-		return new DunGenGenerationAttempt(DunGenGenerationAttemptStatus.SUCCESS, null);
+		return new DunGenGenerationAttempt(DunGenGenerationAttemptStatus.SUCCESS, TileGenerator.generateFromCells(cells));
 	}
 
 	/**

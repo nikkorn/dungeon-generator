@@ -30,7 +30,7 @@ public class Dungeon {
 	 * Get the dungeon tiles.
 	 * @return The dungeon tiles.
 	 */
-	public ArrayList<Tile> getCells() { return this.tiles; }
+	public ArrayList<Tile> getTiles() { return this.tiles; }
 
 	/**
 	 * Get the configuration used in generating this dungeon.
