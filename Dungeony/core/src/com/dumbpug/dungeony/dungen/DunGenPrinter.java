@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import com.dumbpug.dungeony.dungen.tile.Tile;
+import com.dumbpug.dungeony.dungen.tile.TileType;
 
 /**
  * Prints a dungeon to an image.
@@ -20,7 +21,7 @@ public class DunGenPrinter {
 		
 		// Generate each static tile and draw it to our image.
 		for (Tile tile : dungeon.getTiles()) {
-			drawTileToImage(img, tile.getX() + offset, tile.getY() + offset, false);
+			drawTileToImage(img, tile.getX() + offset, tile.getY() + offset, tile.getType() != TileType.WALL);
 		}
 		
 		// Try to write the image to disk.

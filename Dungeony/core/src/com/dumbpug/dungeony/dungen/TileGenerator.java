@@ -1,6 +1,8 @@
 package com.dumbpug.dungeony.dungen;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import com.dumbpug.dungeony.dungen.tile.Empty;
 import com.dumbpug.dungeony.dungen.tile.Tile;
 import com.dumbpug.dungeony.dungen.tile.Wall;
 
@@ -10,8 +12,8 @@ import com.dumbpug.dungeony.dungen.tile.Wall;
 public class TileGenerator {
 	
 	public static ArrayList<Tile> generateFromCells(PositionedCellList cells) {
-		// Create a list to hold all of the tiles.
-		ArrayList<Tile> tiles = new ArrayList<Tile>();
+		// Create a map to hold all of the tiles.
+		HashMap<Position, Tile> tileMap = new HashMap<Position, Tile>();
 		
 		// Convert each cell into a bunch of tiles.
 		for (PositionedCell cell : cells) {
@@ -27,14 +29,21 @@ public class TileGenerator {
 			// Create a wall tile for each tile position around the cell.
 			for (int tileX = tileXMin - 1; tileX <= tileXMax; tileX++) {
 				for (int tileY = tileYMin - 1; tileY <= tileYMax; tileY++) {
-					tiles.add(new Wall(tileX, tileY));
+					tileMap.put(new Position(tileX, tileY), new Wall(tileX, tileY));
+				}
+			}
+			
+			// Create a tile for each tile position in the cell.
+			for (int tileX = tileXMin; tileX < tileXMax; tileX++) {
+				for (int tileY = tileYMin; tileY < tileYMax; tileY++) {
+					tileMap.put(new Position(tileX, tileY), new Empty(tileX, tileY, cell.getDepth()));
 				}
 			}
 			
 			// ...
 		}
 		
-		// Return the generated tiles.
-		return tiles;
+		// Return a list of the generated tiles.
+		return new ArrayList<Tile>(tileMap.values());
 	}
 }

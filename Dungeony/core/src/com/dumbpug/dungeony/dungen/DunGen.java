@@ -95,7 +95,7 @@ public class DunGen {
 			// Generate a room if we have a valid generatable room definition.
 			if (generatableRoom != null) {
 				// Add the room.
-				addRoom(anchor.getPosition().getX(), anchor.getPosition().getX(), anchor.getDepth(), generatableRoom, cells, roomCounts);
+				addRoom(anchor.getPosition().getX(), anchor.getPosition().getY(), anchor.getDepth(), generatableRoom, cells, roomCounts);
 
 				// Reset the room generation failure count now that we have had a success.
 				roomGenerationFailureCount = 0;
