@@ -305,36 +305,102 @@ function Generator() {
 				const door = cell.getDoor();
 				// Get the direction at which to generate the door.
 				const doorDirection = cell.getDoorDirection();
-				// Helper function to get the door position.
-				const getDoorPosition = () => {
-					// Where we place the door tile depends on its direction.
+
+				if (door === DOOR.NO_KEY) {
 					switch (doorDirection) {
 						case DIRECTION.NORTH:
-							return { x: tileXMin + CELL_DOOR_OFFSET, y: tileYMax };
+							// Create a tile for each tile position in the cell.
+							for (let tileX = tileXMin; tileX < tileXMax; tileX++) {
+								tiles[getPositionKey(tileX, tileYMax)] = { 
+									x: tileX, 
+									y: tileYMax, 
+									room: {
+										name: cell.getRoomName(),
+										category: cell.getRoomCategory()
+									},
+									depth: cell.getDepth(),
+									type: TILE.ROOM
+								};
+							}
+							break;
 						case DIRECTION.SOUTH:
-							return { x: tileXMin + CELL_DOOR_OFFSET, y: tileYMin - 1 };
+							// Create a tile for each tile position in the cell.
+							for (let tileX = tileXMin; tileX < tileXMax; tileX++) {
+								tiles[getPositionKey(tileX, tileYMin - 1)] = { 
+									x: tileX, 
+									y: tileYMin - 1, 
+									room: {
+										name: cell.getRoomName(),
+										category: cell.getRoomCategory()
+									},
+									depth: cell.getDepth(),
+									type: TILE.ROOM
+								};
+							}
+							break;
 						case DIRECTION.EAST:
-							return { x: tileXMax, y: tileYMin + CELL_DOOR_OFFSET };
+							// Create a tile for each tile position in the cell.
+							for (let tileY = tileYMin; tileY < tileYMax; tileY++) {
+								tiles[getPositionKey(tileXMax, tileY)] = { 
+									x: tileXMax, 
+									y: tileY, 
+									room: {
+										name: cell.getRoomName(),
+										category: cell.getRoomCategory()
+									},
+									depth: cell.getDepth(),
+									type: TILE.ROOM
+								};
+							}
+							break;
 						case DIRECTION.WEST:
-							return { x: tileXMin - 1, y: tileYMin + CELL_DOOR_OFFSET };
+							// Create a tile for each tile position in the cell.
+							for (let tileY = tileYMin; tileY < tileYMax; tileY++) {
+								tiles[getPositionKey(tileXMin - 1, tileY)] = { 
+									x: tileXMin - 1, 
+									y: tileY, 
+									room: {
+										name: cell.getRoomName(),
+										category: cell.getRoomCategory()
+									},
+									depth: cell.getDepth(),
+									type: TILE.ROOM
+								};
+							}
+							break;
 					}
-				};
-				// Get the door position.
-				const doorPosition = getDoorPosition();
-				// Create the door tile at the correct position.
-				tiles[getPositionKey(doorPosition.x, doorPosition.y)] = { 
-					x: doorPosition.x, 
-					y: doorPosition.y, 
-					doorType: door,
-					doorDirection: doorDirection,
-					room: {
-						id: cell.getRoomId(),
-						name: cell.getRoomName(),
-						category: cell.getRoomCategory()
-					},
-					depth: cell.getDepth(),
-					type: TILE.ROOM
-				};
+				} else {
+					// Helper function to get the door position.
+					const getDoorPosition = () => {
+						// Where we place the door tile depends on its direction.
+						switch (doorDirection) {
+							case DIRECTION.NORTH:
+								return { x: tileXMin + CELL_DOOR_OFFSET, y: tileYMax };
+							case DIRECTION.SOUTH:
+								return { x: tileXMin + CELL_DOOR_OFFSET, y: tileYMin - 1 };
+							case DIRECTION.EAST:
+								return { x: tileXMax, y: tileYMin + CELL_DOOR_OFFSET };
+							case DIRECTION.WEST:
+								return { x: tileXMin - 1, y: tileYMin + CELL_DOOR_OFFSET };
+						}
+					};
+					// Get the door position.
+					const doorPosition = getDoorPosition();
+					// Create the door tile at the correct position.
+					tiles[getPositionKey(doorPosition.x, doorPosition.y)] = { 
+						x: doorPosition.x, 
+						y: doorPosition.y, 
+						doorType: door,
+						doorDirection: doorDirection,
+						room: {
+							id: cell.getRoomId(),
+							name: cell.getRoomName(),
+							category: cell.getRoomCategory()
+						},
+						depth: cell.getDepth(),
+						type: TILE.ROOM
+					};
+				}
 			}
 
 			// Is the cell above this one in the same room?

@@ -42,7 +42,7 @@ rooms.push(
             {
                 position: { x: 0, y: 0 },
                 entrance: DIRECTION.EAST,
-                door: DOOR.THREE_KEYS,
+                door: DOOR.NO_KEY,
                 entities: []
             },
             {
@@ -101,7 +101,7 @@ rooms.push(
             {
                 position: { x: 0, y: 0 },
                 entrance: DIRECTION.WEST,
-                door: DOOR.THREE_KEYS,
+                door: DOOR.NO_KEY,
                 entities: []
             },
             {
@@ -122,7 +122,7 @@ rooms.push(
             {
                 position: { x: 0, y: 0 },
                 entrance: DIRECTION.EAST,
-                door: DOOR.THREE_KEYS,
+                door: DOOR.NO_KEY,
                 entities: []
             },
             {
@@ -143,7 +143,7 @@ rooms.push(
             {
                 position: { x: 0, y: 0 },
                 entrance: DIRECTION.WEST,
-                door: DOOR.THREE_KEYS,
+                door: DOOR.NO_KEY,
                 entities: []
             }
         ]
@@ -160,7 +160,7 @@ rooms.push(
             {
                 position: { x: 0, y: 0 },
                 entrance: DIRECTION.EAST,
-                door: DOOR.THREE_KEYS,
+                door: DOOR.NO_KEY,
                 entities: []
             }
         ]
