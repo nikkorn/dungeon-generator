@@ -1,0 +1,16 @@
+{
+    "name": "empty_1_1_north",
+    "cells": [
+        {
+            "position": {
+                "x": 0, 
+                "y": 0 
+            },
+            "entrance": {
+                "direction": "NORTH",
+                "door": "NONE"
+            },
+            "entities": []
+        }
+    ]
+}

@@ -1,47 +1,40 @@
 package com.dumbpug.dungeony.dungen;
 
-import java.awt.Point;
-import java.util.HashMap;
-import com.dumbpug.dungeony.dungen.cell.ICell;
+import java.util.ArrayList;
+import com.dumbpug.dungeony.dungen.tile.Tile;
 
 /**
  * A generated dungeon.
  */
 public class Dungeon {
-	
-	/** The cell to position mappings. */
-	private HashMap<Point, ICell> cells;
-	
-	/** The configuration used in generating this dungeon. */
-	private Configuration configuration;
+	/** 
+	 * The configuration used in generating this dungeon. 
+	 */
+	private DunGenConfiguration configuration;
+	/**
+	 * The generated tiles.
+	 */
+	private ArrayList<Tile> tiles;
 	
 	/**
 	 * Create a new instance of the Dungeon class.
+	 * @param tiles The generated dungeon tiles.
 	 * @param configuration The configuration used in generating this dungeon. 
-	 * @param cells The dungeon cells
 	 */
-	public Dungeon(Configuration configuration, HashMap<Point, ICell> cells) {
+	public Dungeon(ArrayList<Tile> tiles, DunGenConfiguration configuration) {
+		this.tiles         = tiles;
 		this.configuration = configuration;
-		this.cells         = cells;
 	}
 
 	/**
-	 * Get the dungeon cells map.
-	 * @return cells map
+	 * Get the dungeon tiles.
+	 * @return The dungeon tiles.
 	 */
-	public HashMap<Point, ICell> getCells() { return cells; }
-	
-	/**
-	 * Get the dungeon cell at the specified position.
-	 * @param x
-	 * @param y
-	 * @return cell
-	 */
-	public ICell getCellAt(int x, int y) { return cells.get(new Point(x, y)); }
+	public ArrayList<Tile> getTiles() { return this.tiles; }
 
 	/**
 	 * Get the configuration used in generating this dungeon.
 	 * @return configuration
 	 */
-	public Configuration getConfiguration() { return configuration; }
+	public DunGenConfiguration getConfiguration() { return configuration; }
 }

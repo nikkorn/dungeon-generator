@@ -46,9 +46,10 @@ const DOOR = {
     ONE_KEY: 2, 
     TWO_KEYS: 3, 
     THREE_KEYS: 4,
-    FOUR_KEYS: 4,
-    FIVE_KEYS: 4,
-    SHOP: 4 
+    FOUR_KEYS: 5,
+    FIVE_KEYS: 6,
+    SHOP: 7,
+    BOSS: 8
 };
 
 /** An enumeration of tile types. */

@@ -8,6 +8,7 @@
 <script src="js/anchor.js"></script>
 <script src="js/cell.js"></script>
 <script src="js/rooms.js"></script>
+<script src="js/entityProcessor.js"></script>
 <script src="js/generator.js"></script>
 
 <svg id="dungeon" width="1000" height="1000" class="element-vertical">
@@ -33,9 +34,23 @@ function setSpace(x, y, colour)
 };
 
 const ENTITY_COLOUR = {
+  // Misc
   "spawn_panel": "#e1ffd6",
+
+  // Containers
+  "pot": "#8c5a19",
   "ultra_rare_chest": "#f4f1c1",
-  "rare_chest": "#fff65b"
+  "rare_chest": "#fff65b",
+  "common_chest": "#ede010",
+
+  // Enemies
+  "bat": "#FF0000",
+  "bat_strong": "#FF0000",
+  "zombie": "#FF0000",
+  "zombie_strong": "#FF0000",
+  "ghost": "#FF0000",
+  "ghost_strong": "#FF0000",
+  "boss": "#FF0000"
 };
 
 const ROOM_CATEGORY_COLOUR = {
