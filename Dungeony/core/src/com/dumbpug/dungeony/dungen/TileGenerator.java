@@ -139,6 +139,6 @@ public class TileGenerator {
 		}
 		
 		// Are the cells within the same room instance.
-		return cells.getCellAt(adjacentCellPosition).getCell().getRoomInstanceId() == initialCell.getCell().getRoomInstanceId();
+		return cells.getCellAt(adjacentCellPosition).getRoomInstanceId() == initialCell.getRoomInstanceId();
 	}
 }

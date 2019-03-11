@@ -3,6 +3,8 @@ package com.dumbpug.dungeony.dungen;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
+import java.util.UUID;
+
 import com.dumbpug.dungeony.dungen.room.Anchor;
 import com.dumbpug.dungeony.dungen.room.Cell;
 import com.dumbpug.dungeony.dungen.room.Room;
@@ -194,12 +196,15 @@ public class DunGen {
 		// Increment the room count.
 		roomCounts.put(room.getName(), roomCounts.get(room.getName()) + 1);
 		
+		// Create a room instance id for all cells in the room to share.
+		String roomInstanceId = UUID.randomUUID().toString();
+		
 		// Add each cell of the room to the dungeon.
 		for (Cell cell : room.getCells()) {
 			// Get the absolute position of the cell.
 			Position cellPosition = new Position(x + cell.getLocalPosition().getX(), y + cell.getLocalPosition().getY());
 	
-			cells.add(new PositionedCell(cell, cellPosition, depth));		
+			cells.add(new PositionedCell(cell, cellPosition, depth, roomInstanceId));		
 		}
 	}
 	

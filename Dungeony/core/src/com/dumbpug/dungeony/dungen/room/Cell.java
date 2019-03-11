@@ -26,10 +26,6 @@ public class Cell {
 	 * The JSON array holding generatable entities for the cell.
 	 */
 	private JSONArray generatableEntities;
-	/**
-	 * The room instance id.
-	 */
-	private String roomInstanceId;
 	
 	/**
 	 * Create a new instance of the Cell class.
@@ -37,14 +33,12 @@ public class Cell {
 	 * @param entrance The cell entrance, or null if this cell is not an entrance cell.
 	 * @param blockedDirections The list of the directions in which anchors cannot be attached to the cell.
 	 * @param entities The generatable entites
-	 * @param roomInstanceId The room instance id.
 	 */
-	public Cell(Position position, Entrance entrance, ArrayList<Direction> blockedDirections, JSONArray generatableEntities, String roomInstanceId) {
+	public Cell(Position position, Entrance entrance, ArrayList<Direction> blockedDirections, JSONArray generatableEntities) {
 		this.position            = position;
 		this.entrance            = entrance;
 		this.blockedDirections   = blockedDirections;
 		this.generatableEntities = generatableEntities;
-		this.roomInstanceId      = roomInstanceId;
 	}
 	
 	/**
@@ -61,14 +55,6 @@ public class Cell {
 	 */
 	public Entrance getEntrance() {
 		return entrance;
-	}
-	
-	/**
-	 * Get the room instance id.
-	 * @return The room instance id.
-	 */
-	public String getRoomInstanceId() {
-		return roomInstanceId;
 	}
 	
 	/**

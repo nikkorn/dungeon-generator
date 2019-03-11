@@ -18,17 +18,23 @@ public class PositionedCell {
 	 * The depth at which the room was placed.
 	 */
 	private int depth;
+	/**
+	 * The room instance id.
+	 */
+	private String roomInstanceId;
 	
 	/**
 	 * Create a new instance of the PositionedCell class.
 	 * @param cell The cell.
 	 * @param position The absolute cell position.
 	 * @param depth The depth at which the room was placed.
+	 * @param roomInstanceId The room instance id.
 	 */
-	public PositionedCell(Cell cell, Position position, int depth) {
-		this.cell     = cell;
-		this.position = position;
-		this.depth    = depth;
+	public PositionedCell(Cell cell, Position position, int depth, String roomInstanceId) {
+		this.cell           = cell;
+		this.position       = position;
+		this.depth          = depth;
+		this.roomInstanceId = roomInstanceId;
 	}
 	
 	/**
@@ -53,5 +59,13 @@ public class PositionedCell {
 	 */
 	public int getDepth() {
 		return depth;
+	}
+
+	/**
+	 * Get the room instance id.
+	 * @return The room instance id.
+	 */
+	public String getRoomInstanceId() {
+		return roomInstanceId;
 	}
 }
