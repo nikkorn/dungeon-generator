@@ -1,6 +1,7 @@
 package com.dumbpug.dungeony.dungen.room;
 
 import java.util.ArrayList;
+import java.util.UUID;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import com.dumbpug.dungeony.dungen.Direction;
@@ -36,9 +37,12 @@ public class RoomFactory {
 		// Get the cells array from our room JSON.
 		JSONArray cellsJsonArray = object.getJSONArray("cells");
 		
+		// Create a room instance id for all cells in the room to share.
+		String roomInstanceId = UUID.randomUUID().toString();
+		
 		// Create an actual cell for each JSON cell array value.
 		for (int cellIndex = 0; cellIndex < cellsJsonArray.length(); cellIndex++) {
-			cells.add(createRoomCell(cellsJsonArray.getJSONObject(cellIndex)));
+			cells.add(createRoomCell(roomInstanceId, cellsJsonArray.getJSONObject(cellIndex)));
 		}
 		
 		return new Room(name, minimum, maximum, chance, depth, cells);
@@ -76,10 +80,11 @@ public class RoomFactory {
 	
 	/**
 	 * Create a Cell object based on a definition in JSON.
+	 * @param roomInstanceId The room instance id.
 	 * @param object The definition.
 	 * @return A Cell object based on a definition in JSON.
 	 */
-	private static Cell createRoomCell(JSONObject object) {
+	private static Cell createRoomCell(String roomInstanceId, JSONObject object) {
 		// Create the cell position.
 		Position position = createPosition(object.getJSONObject("position"));
 		
@@ -97,7 +102,7 @@ public class RoomFactory {
 			blocked.add(getDirection(blockedJsonArray.getString(directionIndex)));
 		}
 		
-		return new Cell(position, entrance, blocked, object.getJSONArray("entities"));
+		return new Cell(position, entrance, blocked, object.getJSONArray("entities"), roomInstanceId);
 	}
 	
 	/**

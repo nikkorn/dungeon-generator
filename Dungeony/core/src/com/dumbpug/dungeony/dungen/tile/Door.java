@@ -9,7 +9,7 @@ public class Door extends Tile {
 	/**
 	 * The type of the door.
 	 */
-	private DoorType doorType;
+	private String doorType;
 	/**
 	 * The facing direction of the door.
 	 */
@@ -23,7 +23,7 @@ public class Door extends Tile {
 	 * @param door The door type.
 	 * @param direction The door facing direction.
 	 */
-	public Door(int x, int y, int depth, DoorType door, Direction direction) {
+	public Door(int x, int y, int depth, String door, Direction direction) {
 		super(x, y, depth);
 		this.doorType            = door;
 		this.doorFacingDirection = direction;
@@ -33,7 +33,7 @@ public class Door extends Tile {
 	 * Get the type of the door.
 	 * @return The type of the door.
 	 */
-	public DoorType getDoorType() {
+	public String getDoorType() {
 		return doorType;
 	}
 
