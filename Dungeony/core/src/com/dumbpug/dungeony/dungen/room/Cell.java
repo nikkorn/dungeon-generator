@@ -32,7 +32,7 @@ public class Cell {
 	 * @param position The local position of the cell, relative to a room entrance cell position.
 	 * @param entrance The cell entrance, or null if this cell is not an entrance cell.
 	 * @param blockedDirections The list of the directions in which anchors cannot be attached to the cell.
-	 * @param entities The generatable entites
+	 * @param entities The generatable entites.
 	 */
 	public Cell(Position position, Entrance entrance, ArrayList<Direction> blockedDirections, JSONArray generatableEntities) {
 		this.position            = position;
@@ -62,7 +62,7 @@ public class Cell {
 	 * @param random The rng to use in generating entities.
 	 * @return The generated entities for this cell.
 	 */
-	public ArrayList<Entity> generateEntities(Random random) {
+	public ArrayList<PositionedEntity> generateEntities(Random random) {
 		return GeneratableEntitiesProcessor.process(this.generatableEntities, random);		
 	}
 	

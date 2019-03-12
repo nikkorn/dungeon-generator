@@ -2,8 +2,10 @@ package com.dumbpug.dungeony.dungen;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 import com.dumbpug.dungeony.dungen.Direction;
 import com.dumbpug.dungeony.dungen.room.Entrance;
+import com.dumbpug.dungeony.dungen.room.PositionedEntity;
 import com.dumbpug.dungeony.dungen.tile.Door;
 import com.dumbpug.dungeony.dungen.tile.Empty;
 import com.dumbpug.dungeony.dungen.tile.Tile;
@@ -14,7 +16,13 @@ import com.dumbpug.dungeony.dungen.tile.Wall;
  */
 public class TileGenerator {
 	
-	public static ArrayList<Tile> generateFromCells(PositionedCellList cells) {
+	/**
+	 * Generate a list of tiles based on cell and entity information.
+	 * @param cells The dungeon cells.
+	 * @param random The RNG to use in resolving entity participants.
+	 * @return A list of tiles based on cell and entity information.
+	 */
+	public static ArrayList<Tile> generateFromCells(PositionedCellList cells, Random random) {
 		// Create a map to hold all of the tiles.
 		HashMap<Position, Tile> tileMap = new HashMap<Position, Tile>();
 		
@@ -90,7 +98,24 @@ public class TileGenerator {
 				}
 			}
 						
-			// ...
+			// Generate any entites for the cell and attach them to their corresponding tiles.
+			for (PositionedEntity positionedEntity : cell.getCell().generateEntities(random)) {
+				// There is nothing to do if there is no tile on which to place the entity.
+				if (!tileMap.containsKey(positionedEntity.getPosition())) {
+					continue;
+				}
+				
+				// Get the tile.
+				Tile tile = tileMap.get(positionedEntity.getPosition());
+				
+				// There is nothing to do if the tile at the entity position cannot hold an entity.
+				if (!(tile instanceof Empty)) {
+					continue;
+				}
+				
+				// Add the entity to its corresponding cell.
+				((Empty)tile).setEntity(positionedEntity.getEntity());
+			}
 		}
 		
 		// Return a list of the generated tiles.
@@ -99,7 +124,7 @@ public class TileGenerator {
 	
 	/**
 	 * Get the absolute position of a door for a cell.
-	 * @param direction
+	 * @param direction The door direction.
 	 * @param tileXMin
 	 * @param tileYMin
 	 * @param tileXMax

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 import java.util.UUID;
-
 import com.dumbpug.dungeony.dungen.room.Anchor;
 import com.dumbpug.dungeony.dungen.room.Cell;
 import com.dumbpug.dungeony.dungen.room.Room;
@@ -113,7 +112,8 @@ public class DunGen {
 			return new DunGenGenerationAttempt(DunGenGenerationAttemptStatus.FAIL, null);
 		}
 		
-		return new DunGenGenerationAttempt(DunGenGenerationAttemptStatus.SUCCESS, TileGenerator.generateFromCells(cells));
+		// We succeeded to create a dungeon! Convert the cells to tiles and return them along with a success status.
+		return new DunGenGenerationAttempt(DunGenGenerationAttemptStatus.SUCCESS, TileGenerator.generateFromCells(cells, random));
 	}
 
 	/**
