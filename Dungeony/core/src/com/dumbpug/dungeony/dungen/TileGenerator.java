@@ -114,7 +114,7 @@ public class TileGenerator {
 			case SOUTH:
 				return new Position(tileXMin + Constants.CELL_DOOR_OFFSET, tileYMin - 1);
 			case EAST:
-				return new Position(tileXMin, tileYMin + Constants.CELL_DOOR_OFFSET);
+				return new Position(tileXMax, tileYMin + Constants.CELL_DOOR_OFFSET);
 			case WEST:
 				return new Position(tileXMin - 1, tileYMin + Constants.CELL_DOOR_OFFSET);
 			default:
