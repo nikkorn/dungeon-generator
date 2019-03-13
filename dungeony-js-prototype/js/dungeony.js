@@ -25,10 +25,15 @@ const dungeon = new Generator().generate();
 const player = new Player(TILE_SIZE * 3, TILE_SIZE * 3);
 
 // Create the wall objects based on level data.
-const walls = dungeon.filter(tile => tile.type === TILE.WALL).map(wall => new Wall(wall));
+const walls = dungeon
+    .filter(tile => tile.type === TILE.WALL)
+    .map(wall => new Wall(wall));
 
 // Create an enemy to follow the player around the dungeon.
-const enemies = [new Enemy(TILE_SIZE, TILE_SIZE, ENEMY_TYPE.FOLLOWER)];
+// const enemies = [new Enemy(TILE_SIZE, TILE_SIZE, ENEMY_TYPE.FOLLOWER)];
+const enemies = dungeon
+    .filter(tile => tile.entity && tile.entity.id === "enemy")
+    .map(tile => new Enemy(tile.x * TILE_SIZE, tile.y * TILE_SIZE, ENEMY_TYPE.FOLLOWER))
 
 // All game entities.
 const entities = [player, ...enemies, ...walls];

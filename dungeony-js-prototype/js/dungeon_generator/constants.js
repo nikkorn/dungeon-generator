@@ -21,10 +21,10 @@ const MAX_DUNGEON_GENERATE_RETRY = 1000;
 const MAX_ROOM_GENERATE_RETRY = 1000;
 
 /** The maximum number of rooms allowed per dungeon. */
-const MAX_ROOMS_COUNT = 80;
+const MAX_ROOMS_COUNT = 55;
 
 /** The minimum number of rooms allowed per dungeon. */
-const MIN_ROOMS_COUNT = 10;
+const MIN_ROOMS_COUNT = 15;
 
 
 //============================================================================
@@ -46,9 +46,10 @@ const DOOR = {
     ONE_KEY: 2, 
     TWO_KEYS: 3, 
     THREE_KEYS: 4,
-    FOUR_KEYS: 4,
-    FIVE_KEYS: 4,
-    SHOP: 4 
+    FOUR_KEYS: 5,
+    FIVE_KEYS: 6,
+    SHOP: 7,
+    BOSS: 8
 };
 
 /** An enumeration of tile types. */
@@ -57,3 +58,10 @@ const TILE = {
     ROOM: 1,
     DOOR: 2
 };
+
+//============================================================================
+// DISPLAY
+//============================================================================
+
+ /** The number of pixels that make up a tile when drawn to a canvas. */
+ const TILE_PIXEL_SIZE = 10;
