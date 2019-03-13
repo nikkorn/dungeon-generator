@@ -30,10 +30,14 @@ const walls = dungeon
     .map(wall => new Wall(wall));
 
 // Create an enemy to follow the player around the dungeon.
-// const enemies = [new Enemy(TILE_SIZE, TILE_SIZE, ENEMY_TYPE.FOLLOWER)];
 const enemies = dungeon
     .filter(tile => tile.entity && tile.entity.id === "enemy")
     .map(tile => new Enemy(tile.x * TILE_SIZE, tile.y * TILE_SIZE, ENEMY_TYPE.FOLLOWER))
+
+// Create the enemy path waypoints.
+const waypoints = dungeon
+    .filter(tile => tile.entity && tile.entity.id === "waypoint")
+    .map(tile => new Waypoint(tile.x, tile.y))
 
 // All game entities.
 const entities = [player, ...enemies, ...walls];
@@ -157,6 +161,12 @@ function draw()
     context.fillStyle = colours.red;
     for (const enemy of enemies) {
         context.fillRect((enemy.getX() + xOffset) * zoomMultiplier, (enemy.getY() + yOffset) * zoomMultiplier, enemy.getSize() * zoomMultiplier, enemy.getSize() * zoomMultiplier);
+    }
+
+    // Draw every waypoint.
+    context.fillStyle = colours.orange;
+    for (const waypoint of waypoints) {
+        context.fillRect((waypoint.getX() + xOffset) * zoomMultiplier, (waypoint.getY() + yOffset) * zoomMultiplier, waypoint.getSize() * zoomMultiplier, waypoint.getSize() * zoomMultiplier);
     }
 
     // Draw every wall.

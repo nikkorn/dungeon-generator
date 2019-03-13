@@ -48,6 +48,11 @@ rooms.push(
             {
                 position: { x: -1, y: 0 },
                 entities: [
+                    { 
+                        id: "waypoint", 
+                        x: 2,  
+                        y: 2 
+                    },
                     {
                         participants: [
                             {
@@ -102,11 +107,23 @@ rooms.push(
                 position: { x: 0, y: 0 },
                 entrance: DIRECTION.WEST,
                 door: DOOR.THREE_KEYS,
-                entities: []
+                entities: [
+                    { 
+                        id: "waypoint", 
+                        x: 2,  
+                        y: 2 
+                    },
+                ]
             },
             {
                 position: { x: 1, y: 0 },
-                entities: []
+                entities: [
+                    { 
+                        id: "waypoint", 
+                        x: 2,  
+                        y: 2 
+                    },
+                ]
             }
         ]
     }
@@ -123,11 +140,23 @@ rooms.push(
                 position: { x: 0, y: 0 },
                 entrance: DIRECTION.EAST,
                 door: DOOR.THREE_KEYS,
-                entities: []
+                entities: [
+                    { 
+                        id: "waypoint", 
+                        x: 2,  
+                        y: 2 
+                    },
+                ]
             },
             {
                 position: { x: 1, y: 0 },
-                entities: []
+                entities: [
+                    { 
+                        id: "waypoint", 
+                        x: 2,  
+                        y: 2 
+                    },
+                ]
             }
         ]
     }
@@ -144,7 +173,13 @@ rooms.push(
                 position: { x: 0, y: 0 },
                 entrance: DIRECTION.WEST,
                 door: DOOR.THREE_KEYS,
-                entities: []
+                entities: [
+                    { 
+                        id: "waypoint", 
+                        x: 2,  
+                        y: 2 
+                    },
+                ]
             }
         ]
     }
@@ -161,7 +196,13 @@ rooms.push(
                 position: { x: 0, y: 0 },
                 entrance: DIRECTION.EAST,
                 door: DOOR.THREE_KEYS,
-                entities: []
+                entities: [
+                    { 
+                        id: "waypoint", 
+                        x: 2,  
+                        y: 2 
+                    },
+                ]
             }
         ]
     }
@@ -273,6 +314,11 @@ rooms.push(
                 entrance: DIRECTION.SOUTH,
                 door: DOOR.THREE_KEYS,
                 entities: [
+                    { 
+                        id: "waypoint", 
+                        x: 2,  
+                        y: 2 
+                    },
                     {
                         participants: [
                             {
@@ -367,6 +413,11 @@ rooms.push(
             {
                 position: { x: 0, y: 1 },
                 entities: [
+                    { 
+                        id: "waypoint", 
+                        x: 2,  
+                        y: 2 
+                    },
                     {
                         participants: [
                             {
@@ -415,23 +466,10 @@ rooms.push(
             {
                 position: { x: 0, y: -1 },
                 entities: [
-                    {
-                        tickets: 1
-                    },
-                    {
-                        tickets: 1, 
-                        entities: [
-                            { 
-                                id: "enemy", 
-                                x: 0,  
-                                y: 0 
-                            },
-                            { 
-                                id: "enemy", 
-                                x: 4,  
-                                y: 4 
-                            }
-                        ]
+                    { 
+                        id: "waypoint", 
+                        x: 2,  
+                        y: 2 
                     }
                 ]
             },
@@ -458,7 +496,13 @@ rooms.push(
             },
             {
                 position: { x: 0, y: -1 },
-                entities: []
+                entities: [
+                    { 
+                        id: "waypoint", 
+                        x: 2,  
+                        y: 2 
+                    }
+                ]
             },
             {
                 position: { x: 1, y: -1 },
@@ -550,11 +594,23 @@ rooms.push(
             },
             {
                 position: { x: -1, y: -1 },
-                entities: []
+                entities: [
+                    { 
+                        id: "waypoint", 
+                        x: 2,  
+                        y: 2 
+                    },
+                ]
             },
             {
                 position: { x: 1, y: -1 },
-                entities: []
+                entities: [
+                    { 
+                        id: "waypoint", 
+                        x: 2,  
+                        y: 2 
+                    },
+                ]
             },
             {
                 position: { x: -1, y: -2 },
@@ -625,7 +681,13 @@ rooms.push(
             },
             {
                 position: { x: -1, y: 1 },
-                entities: []
+                entities: [
+                    { 
+                        id: "waypoint", 
+                        x: 2,  
+                        y: 2 
+                    },
+                ]
             },
             {
                 position: { x: 0, y: 1 },
@@ -633,7 +695,13 @@ rooms.push(
             },
             {
                 position: { x: 1, y: 1 },
-                entities: []
+                entities: [
+                    { 
+                        id: "waypoint", 
+                        x: 2,  
+                        y: 2 
+                    },
+                ]
             },
             {
                 position: { x: 0, y: 2 },
