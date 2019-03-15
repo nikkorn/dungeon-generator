@@ -42,7 +42,7 @@ const waypoints = dungeon
 // Get the walkable tiles.
 const walkables = dungeon
     .filter(tile => tile.type !== TILE.WALL)
-    .map((tile) => new AStarNode(tile.x, tile.y, 0));
+    .map((tile) => new AStarNode(tile.x, tile.y));
 
 // Find a path between two random spots.
 const aStarResult = findPath(walkables, walkables[0], walkables[2000]);

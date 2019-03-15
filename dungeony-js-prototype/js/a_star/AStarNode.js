@@ -3,7 +3,7 @@
  * @param y The y position.
  * @param movementCost The movement cost.
  */
-function AStarNode(x, y, movementCost) {
+function AStarNode(x, y, movementCost = 1) {
     /**
      * The heuristic.
      */
