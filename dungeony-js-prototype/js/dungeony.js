@@ -32,12 +32,20 @@ const walls = dungeon
 // Create an enemy to follow the player around the dungeon.
 const enemies = dungeon
     .filter(tile => tile.entity && tile.entity.id === "enemy")
-    .map(tile => new Enemy(tile.x * TILE_SIZE, tile.y * TILE_SIZE, ENEMY_TYPE.FOLLOWER))
+    .map(tile => new Enemy(tile.x * TILE_SIZE, tile.y * TILE_SIZE, ENEMY_TYPE.FOLLOWER));
 
 // Create the enemy path waypoints.
 const waypoints = dungeon
     .filter(tile => tile.entity && tile.entity.id === "waypoint")
-    .map(tile => new Waypoint(tile.x, tile.y))
+    .map(tile => new Waypoint(tile.x, tile.y));
+
+// Get the walkable tiles.
+const walkables = dungeon
+    .filter(tile => tile.type !== TILE.WALL)
+    .map((tile) => new AStarNode(tile.x, tile.y, 0));
+
+// Find a path between two random spots.
+const aStarResult = findPath(walkables, walkables[0], walkables[2000]);
 
 // All game entities.
 const entities = [player, ...enemies, ...walls];
@@ -167,6 +175,13 @@ function draw()
     context.fillStyle = colours.orange;
     for (const waypoint of waypoints) {
         context.fillRect((waypoint.getX() + xOffset) * zoomMultiplier, (waypoint.getY() + yOffset) * zoomMultiplier, waypoint.getSize() * zoomMultiplier, waypoint.getSize() * zoomMultiplier);
+    }
+
+    // TODO Remove!!!!!!!
+    // Draw our test path.
+    context.fillStyle = colours.pink;
+    for (const point of aStarResult.path) {
+        context.fillRect(((point.getX() * TILE_SIZE) + xOffset) * zoomMultiplier, ((point.getY() * TILE_SIZE) + yOffset) * zoomMultiplier, TILE_SIZE * zoomMultiplier, TILE_SIZE * zoomMultiplier);
     }
 
     // Draw every wall.

@@ -10,6 +10,18 @@ function AStarNode(x, y, movementCost) {
     this.heuristic = 0;
 
     /**
+	 * The movement cost from the start node to this node. This will normally just
+	 * be incremented by 1 per node, but this can be made higher in order to
+	 * decrease the appeal of following a path with this node.
+	 */
+    this.accumulatedMovementCost = 0;
+    
+    /**
+     * The node parent.
+     */
+    this.parent = null;
+
+    /**
      * Gets the x cell position.
      */
     this.getX = () => x;
@@ -25,6 +37,16 @@ function AStarNode(x, y, movementCost) {
     this.getMovementCost = () => movementCost;
 
     /**
+     * Get the accumulated movement cost.
+     */
+    this.getAccumulatedMovementCost = () => this.accumulatedMovementCost;
+
+    /**
+     * Set the accumulated movement cost.
+     */
+    this.setAccumulatedMovementCost = (cost) => this.accumulatedMovementCost = cost;
+
+    /**
      * Get the node heuristic.
      */
     this.getHeuristic = () => this.heuristic;
@@ -34,8 +56,23 @@ function AStarNode(x, y, movementCost) {
      */
     this.setHeuristic = (target) => this.heuristic = Math.abs(target.getX() - x) + Math.abs(target.getY() - y);
 
+     /**
+     * Get the node parent.
+     */
+    this.getParent = () => this.parent;
+
+    /**
+     * Set the node parent.
+     */
+    this.setParent = (parent) => this.parent = parent;
+
+    /**
+	 * Get the score for this node.
+	 */
+	this.getScore = () => this.accumulatedMovementCost + this.heuristic;
+
     /**
      * Get the unique key for the node. 
      */
-    this.getKey() = () => x + "_" + y;
+    this.getKey = () => x + "_" + y;
 }
