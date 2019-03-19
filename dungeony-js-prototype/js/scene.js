@@ -17,15 +17,19 @@ function Scene(dungeon, keysDown) {
         .filter(tile => tile.entity && tile.entity.id === "enemy")
         .map(tile => new Enemy(tile.x * TILE_SIZE, tile.y * TILE_SIZE, ENEMY_TYPE.FOLLOWER));
 
-    // Create the enemy path waypoints.
-    const waypoints = dungeon
-        .filter(tile => tile.entity && tile.entity.id === "waypoint")
-        .map(tile => new Waypoint(tile.x, tile.y));
-
     // Get the walkable tiles.
     const walkables = dungeon
         .filter(tile => tile.type !== TILE.WALL)
-        .map((tile) => new AStarNode(tile.x, tile.y));
+        .map((tile) => ({
+            x: tile.x,
+            y: tile.y,
+            node: new AStarNode(tile.x, tile.y),
+            isWaypoint: tile.entity && tile.entity.id === "waypoint"
+        }));
+
+    // Find the enemy path waypoints.
+    const waypoints = walkables
+        .filter(walkable => walkable.isWaypoint);
 
     // All game entities.
     const entities = [player, ...enemies, ...walls];
@@ -154,7 +158,7 @@ function Scene(dungeon, keysDown) {
         // Draw every waypoint.
         context.fillStyle = colours.orange;
         for (const waypoint of waypoints) {
-            context.fillRect((waypoint.getX() + xOffset) * zoomMultiplier, (waypoint.getY() + yOffset) * zoomMultiplier, waypoint.getSize() * zoomMultiplier, waypoint.getSize() * zoomMultiplier);
+            context.fillRect(((waypoint.x * TILE_SIZE) + xOffset) * zoomMultiplier, ((waypoint.y * TILE_SIZE) + yOffset) * zoomMultiplier, TILE_SIZE * zoomMultiplier, TILE_SIZE * zoomMultiplier);
         }
 
         // TODO Remove!!!!!!!
