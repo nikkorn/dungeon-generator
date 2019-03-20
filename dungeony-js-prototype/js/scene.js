@@ -71,10 +71,10 @@ function Scene(dungeon, keysDown) {
             // How the enemy behaves depends on its current state.
             switch (enemy.getState(canEnemySeePlayer)) {
                 case EnemyState.PATROLLING:
-                    // Get the waypoint that the enemy is walking to.
-                    const targetWaypoint = enemy.getTargetWaypoint();
+                    // Get the next tile in the enemy patrol.
+                    const targetTile = enemy.getNextPatrolTile();
 
-                    // TODO Try to move the enemy to the waypoint
+                    // TODO Try to move into the next patrol tile.
                     break;
 
                 case EnemyState.FOLLOWING_PLAYER:

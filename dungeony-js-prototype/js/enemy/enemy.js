@@ -14,16 +14,22 @@ const EnemyState = {
  * @param {*} y The y position of the enemy.
  * @param {*} waypoints The waypoints visitable by the enemy.
  */
-function Enemy(x, y, waypoints) {
+function Enemy(x, y, waypoints, walkables) {
     /**
      * The enemy position.
      */
     this.x = x;
     this.y = y;
     /**
-     * The waypoint that the enemy is walking to, just make it the first available one for now.
+     * The current patrol path.
      */
-    const targetWaypoint = waypoints[0];
+    const currentPatrolPath = {
+        // The target waypoint, reaching it completes the current node path.
+        target: waypoints[0],
+
+        // The path of nodes to follow, if null then it has not been calculated yet.
+        path: null
+    };
 
     /**
      * Move the player.
@@ -42,15 +48,28 @@ function Enemy(x, y, waypoints) {
             return EnemyState.FOLLOWING_PLAYER;
         }
 
-        // The enemy is just patrolling.
+        // The enemy is patrolling.   
         return EnemyState.PATROLLING;
     };
 
     /**
-     * Get the target waypoint that the enemy is trying to reach.
+     * Get the next patrol tile.
      */
-    this.getTargetWaypoint = function() {
-        return targetWaypoint;
+    this.getNextPatrolTile = function() {
+        // Get the x/y tile positions of the enemy.
+        const enemyTileX = getTilePosition(this.x + (this.getSize() / 2));
+        const enemyTileY = getTilePosition(this.y + (this.getSize() / 2));
+        
+        // TODO Check whether the enemy has reached the target, if so then find a new target and calculate a path.
+
+        // TODO Calculate a patrol path if:
+        //     - The currentPatrolPath.path property is null.
+        //     - The enemy tile position is not within a 1 tile radius of the last (closest) node in the current path.
+        //       This may have been caused by the enemy getting distracted or following the player.
+
+        // TODO If the player position is completely within (no edges outside at all) the tile that is the last node in the path then pop the current node off of the current path.
+
+        // TODO Return the last node in the path array.
     };
 
     /**
