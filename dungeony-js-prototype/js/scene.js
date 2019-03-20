@@ -65,17 +65,19 @@ function Scene(dungeon, keysDown) {
      */
     function handleEnemyMovement() {
         for (const enemy of enemies) {
-            // How the enemy behaves depends on its type.
-            switch (enemy.getType()) {
-                case ENEMY_TYPE.WALKER:
-                    // Get the next enemy movement.
-                    const nextEnemyMovement = enemy.getNextMovement();
+            // Can the enemy see the player?
+            const canEnemySeePlayer = false;
 
-                    // Try to move the enemy along his path.
-                    handleCharacterMovement(enemy, nextEnemyMovement.x, nextEnemyMovement.y);
+            // How the enemy behaves depends on its current state.
+            switch (enemy.getState(canEnemySeePlayer)) {
+                case EnemyState.PATROLLING:
+                    // Get the waypoint that the enemy is walking to.
+                    const targetWaypoint = enemy.getTargetWaypoint();
+
+                    // TODO Try to move the enemy to the waypoint
                     break;
 
-                case ENEMY_TYPE.FOLLOWER:
+                case EnemyState.FOLLOWING_PLAYER:
                     // TODO Check whether player is close enough to follow. If not then do nothing.
 
                     // Follow the player at only half the player speed.

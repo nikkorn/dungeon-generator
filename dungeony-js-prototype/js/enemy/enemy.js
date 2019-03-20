@@ -1,21 +1,29 @@
-function Enemy(x, y, type, movements) {
+/**
+ * Enumeration of enemy states.
+ */
+const EnemyState = {
+    "IDLE": 0,
+    "PATROLLING": 1,
+    "LOOKING_AROUND": 2,
+    "FOLLOWING_PLAYER": 3
+};
+
+/**
+ * Represents an in-game enemy.
+ * @param {*} x The x position of the enemy.
+ * @param {*} y The y position of the enemy.
+ * @param {*} waypoints The waypoints visitable by the enemy.
+ */
+function Enemy(x, y, waypoints) {
     /**
      * The enemy position.
      */
     this.x = x;
     this.y = y;
     /**
-     * The enemy movements position.
+     * The waypoint that the enemy is walking to, just make it the first available one for now.
      */
-    this.movements = movements;
-    /**
-     * The current enemy movement index. 
-     */
-    this.currentMovementIndex = 0;
-    /**
-     * The enemy type.
-     */
-    this.type = type;
+    const targetWaypoint = waypoints[0];
 
     /**
      * Move the player.
@@ -26,21 +34,23 @@ function Enemy(x, y, type, movements) {
     };
 
     /**
-     * Get the next enemy movement.
+     * Get the state of the player.
      */
-    this.getNextMovement = function() {
-        if (!this.movements) {
-            return;
+    this.getState = function(canSeePlayer) {
+        // If the enemy can see the player then the enemy will follow them.
+        if (canSeePlayer) {
+            return EnemyState.FOLLOWING_PLAYER;
         }
 
-        const movement = this.movements[this.currentMovementIndex];
+        // The enemy is just patrolling.
+        return EnemyState.PATROLLING;
+    };
 
-        // Have we looped round to the initial movement?
-        if (++this.currentMovementIndex >= this.movements.length) {
-            this.currentMovementIndex = 0;
-        }
-
-        return movement;
+    /**
+     * Get the target waypoint that the enemy is trying to reach.
+     */
+    this.getTargetWaypoint = function() {
+        return targetWaypoint;
     };
 
     /**
@@ -62,12 +72,5 @@ function Enemy(x, y, type, movements) {
      */
     this.getSize = function() {
         return CHARACTER_SIZE;
-    };
-
-    /**
-     * Gets the enemy type.
-     */
-    this.getType = function() {
-        return this.type;
     };
 };
