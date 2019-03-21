@@ -12,11 +12,6 @@ function Scene(dungeon, keysDown) {
         .filter(tile => tile.type === TILE.WALL)
         .map(wall => new Wall(wall));
 
-    // Create an enemy to follow the player around the dungeon.
-    const enemies = dungeon
-        .filter(tile => tile.entity && tile.entity.id === "enemy")
-        .map(tile => new Enemy(tile.x * TILE_SIZE, tile.y * TILE_SIZE, ENEMY_TYPE.FOLLOWER));
-
     // Get the walkable tiles.
     const walkables = dungeon
         .filter(tile => tile.type !== TILE.WALL)
@@ -30,6 +25,11 @@ function Scene(dungeon, keysDown) {
     // Find the enemy path waypoints.
     const waypoints = walkables
         .filter(walkable => walkable.isWaypoint);
+
+    // Create the enemies.
+    const enemies = dungeon
+        .filter(tile => tile.entity && tile.entity.id === "enemy")
+        .map(tile => new Enemy(tile.x * TILE_SIZE, tile.y * TILE_SIZE, walkables));
 
     // All game entities.
     const entities = [player, ...enemies, ...walls];
@@ -52,10 +52,10 @@ function Scene(dungeon, keysDown) {
         let xPlayerOffset = 0;
         let yPlayerOffset = 0;
 
-        if (keysDown[KEY_CODE.W]) yPlayerOffset -= CHARACTER_MOVEMENT;
-        if (keysDown[KEY_CODE.S]) yPlayerOffset += CHARACTER_MOVEMENT;
-        if (keysDown[KEY_CODE.A]) xPlayerOffset -= CHARACTER_MOVEMENT;
-        if (keysDown[KEY_CODE.D]) xPlayerOffset += CHARACTER_MOVEMENT;
+        if (keysDown[KEY_CODE.W]) yPlayerOffset -= PLAYER_MOVEMENT;
+        if (keysDown[KEY_CODE.S]) yPlayerOffset += PLAYER_MOVEMENT;
+        if (keysDown[KEY_CODE.A]) xPlayerOffset -= PLAYER_MOVEMENT;
+        if (keysDown[KEY_CODE.D]) xPlayerOffset += PLAYER_MOVEMENT;
 
         handleCharacterMovement(player, xPlayerOffset, yPlayerOffset);
     };
@@ -66,15 +66,60 @@ function Scene(dungeon, keysDown) {
     function handleEnemyMovement() {
         for (const enemy of enemies) {
             // Can the enemy see the player?
-            const canEnemySeePlayer = false;
+            const canEnemySeePlayer = true;
+
+            // The enemy movement offset.
+            let enemyOffsetX = 0;
+            let enemyOffsetY = 0;
 
             // How the enemy behaves depends on its current state.
             switch (enemy.getState(canEnemySeePlayer)) {
                 case EnemyState.PATROLLING:
                     // Get the next tile in the enemy patrol.
-                    const targetTile = enemy.getNextPatrolTile();
+                    const targetTile = enemy.getNextPatrolTileNode();
 
-                    // TODO Try to move into the next patrol tile.
+                    // There is nothing to do if we do not have a tile to move to.
+                    if (!targetTile) {
+                        continue;
+                    }
+
+                    // Get the x/y position of the target tile origin.
+                    const tileOriginX = (targetTile.getX() * TILE_SIZE) + (TILE_SIZE / 2);
+                    const tileOriginY = (targetTile.getY() * TILE_SIZE) + (TILE_SIZE / 2);
+
+                    // Get the x/y position of the enemy origin.
+                    const enemyOriginX = enemy.getX() + (enemy.getSize() / 2);
+                    const enemyOriginY = enemy.getY() + (enemy.getSize() / 2);
+
+                    // Move to the centre of the tile on the x axis.
+                    if (enemyOriginX < tileOriginX) {
+                        if (enemyOriginX + ENEMY_MOVEMENT > tileOriginX) {
+                            enemyOffsetX = tileOriginX;
+                        } else {
+                            enemyOffsetX = enemyOriginX + ENEMY_MOVEMENT;
+                        }
+                    } else if (enemyOriginX > tileOriginX) {
+                        if (enemyOriginX - ENEMY_MOVEMENT < tileOriginX) {
+                            enemyOffsetX = tileOriginX;
+                        } else {
+                            enemyOffsetX = enemyOriginX - ENEMY_MOVEMENT;
+                        }
+                    }
+
+                    // Move to the centre of the tile on the y axis.
+                    if (enemyOriginY < tileOriginY) {
+                        if (enemyOriginY + ENEMY_MOVEMENT > tileOriginY) {
+                            enemyOffsetY = tileOriginY;
+                        } else {
+                            enemyOffsetY = enemyOriginY + ENEMY_MOVEMENT;
+                        }
+                    } else if (enemyOriginY > tileOriginY) {
+                        if (enemyOriginY - ENEMY_MOVEMENT < tileOriginY) {
+                            enemyOffsetY = tileOriginY;
+                        } else {
+                            enemyOffsetY = enemyOriginY - ENEMY_MOVEMENT;
+                        }
+                    }
                     break;
 
                 case EnemyState.FOLLOWING_PLAYER:
@@ -82,13 +127,13 @@ function Scene(dungeon, keysDown) {
 
                     // Follow the player at only half the player speed.
                     // TODO Add PLAYER_MOVEMENT and slower ENEMY_MOVEMENT.
-                    const enemyOffsetX = player.getX() > enemy.getX() ? CHARACTER_MOVEMENT * 0.5 : CHARACTER_MOVEMENT * -0.5;
-                    const enemyOffsetY = player.getY() > enemy.getY() ? CHARACTER_MOVEMENT * 0.5 : CHARACTER_MOVEMENT * -0.5;
-
-                    // Try to move the enemy towards the player.
-                    handleCharacterMovement(enemy, enemyOffsetX, enemyOffsetY);
+                    enemyOffsetX = player.getX() > enemy.getX() ? ENEMY_MOVEMENT : -ENEMY_MOVEMENT;
+                    enemyOffsetY = player.getY() > enemy.getY() ? ENEMY_MOVEMENT : -ENEMY_MOVEMENT;
                     break;
             }
+
+            // Move the enemy.
+            handleCharacterMovement(enemy, enemyOffsetX, enemyOffsetY);
         }
     };
 

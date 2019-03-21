@@ -12,9 +12,9 @@ const EnemyState = {
  * Represents an in-game enemy.
  * @param {*} x The x position of the enemy.
  * @param {*} y The y position of the enemy.
- * @param {*} waypoints The waypoints visitable by the enemy.
+ * @param {*} walkables The walkable tiles.
  */
-function Enemy(x, y, waypoints, walkables) {
+function Enemy(x, y, walkables) {
     /**
      * The enemy position.
      */
@@ -23,13 +23,7 @@ function Enemy(x, y, waypoints, walkables) {
     /**
      * The current patrol path.
      */
-    const currentPatrolPath = {
-        // The target waypoint, reaching it completes the current node path.
-        target: waypoints[0],
-
-        // The path of nodes to follow, if null then it has not been calculated yet.
-        path: null
-    };
+    let currentPatrolPath = [];
 
     /**
      * Move the player.
@@ -53,23 +47,51 @@ function Enemy(x, y, waypoints, walkables) {
     };
 
     /**
-     * Get the next patrol tile.
+     * Get the next patrol tile node.
      */
-    this.getNextPatrolTile = function() {
-        // Get the x/y tile positions of the enemy.
-        const enemyTileX = getTilePosition(this.x + (this.getSize() / 2));
-        const enemyTileY = getTilePosition(this.y + (this.getSize() / 2));
-        
-        // TODO Check whether the enemy has reached the target, if so then find a new target and calculate a path.
+    this.getNextPatrolTileNode = function() {
+        // If there is currently no path then we should create one to a random waypoint.
+        if (currentPatrolPath.length === 0) {
+            this.generatePatrolPath();
+        }
 
-        // TODO Calculate a patrol path if:
-        //     - The currentPatrolPath.path property is null.
-        //     - The enemy tile position is not within a 1 tile radius of the last (closest) node in the current path.
-        //       This may have been caused by the enemy getting distracted or following the player.
+        // Helper function which gets whether the enemy is on the specified tile node.
+        const isAtNode = (node) => this.getTileX() === node.getX() && this.getTileY() === node.getY();
 
-        // TODO If the player position is completely within (no edges outside at all) the tile that is the last node in the path then pop the current node off of the current path.
+        // Get the last node in the patrol path, the one the enemy should be closest to.
+        const lastPathNode = currentPatrolPath[currentPatrolPath.length - 1];
 
-        // TODO Return the last node in the path array.
+        // Has the play reached the last node and most likely closest node in the path?
+        if (isAtNode(lastPathNode)) {
+            // Get rid of the last node from the path as we have reached it.
+            currentPatrolPath.pop();
+        } else {
+            // TODO Check whether the enemy is too far away from the last path node.
+            // If so then we must have wandered off and will have to calculate a new path.
+        }
+
+        // If there are nodes left then we have not reached the end of the path and should return the current node we are aiming for.
+        if (currentPatrolPath.length) {
+            return currentPatrolPath[currentPatrolPath.length - 1];
+        }
+    };
+
+    /**
+     * Generate a new patrol path.
+     */
+    this.generatePatrolPath = function() {
+        // Find the walkable tile at the waypoint position.
+        const startTile = walkables.find((walkable) => walkable.x === this.getTileX() && walkable.y === this.getTileY());
+
+        // Get a random waypoint to walk to.
+        const waypoints = walkables.filter((walkable) => walkable.isWaypoint);
+        const targetWaypoint = waypoints[Math.floor(Math.random() * waypoints.length)]; 
+
+        // Find the walkable tile at the current enemy position.
+        const endTile = walkables.find((walkable) => walkable.x === targetWaypoint.x && walkable.y === targetWaypoint.y);
+
+        // Calculate the path!
+        currentPatrolPath = findPath(walkables.map((walkable) => walkable.node), startTile.node, endTile.node).path;
     };
 
     /**
@@ -84,6 +106,20 @@ function Enemy(x, y, waypoints, walkables) {
      */
     this.getY = function() {
         return this.y;
+    };
+
+    /**
+     * Gets the tile x position.
+     */
+    this.getTileX = function() {
+        return getTilePosition(this.x + (this.getSize() / 2));
+    };
+
+    /**
+     * Gets the y position.
+     */
+    this.getTileY = function() {
+        return getTilePosition(this.y + (this.getSize() / 2));
     };
 
     /**
