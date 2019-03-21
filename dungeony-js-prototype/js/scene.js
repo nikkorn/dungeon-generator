@@ -66,7 +66,7 @@ function Scene(dungeon, keysDown) {
     function handleEnemyMovement() {
         for (const enemy of enemies) {
             // Can the enemy see the player?
-            const canEnemySeePlayer = true;
+            const canEnemySeePlayer = false;
 
             // The enemy movement offset.
             let enemyOffsetX = 0;
@@ -94,30 +94,30 @@ function Scene(dungeon, keysDown) {
                     // Move to the centre of the tile on the x axis.
                     if (enemyOriginX < tileOriginX) {
                         if (enemyOriginX + ENEMY_MOVEMENT > tileOriginX) {
-                            enemyOffsetX = tileOriginX;
+                            enemyOffsetX = tileOriginX - enemyOriginX;
                         } else {
-                            enemyOffsetX = enemyOriginX + ENEMY_MOVEMENT;
+                            enemyOffsetX = ENEMY_MOVEMENT;
                         }
                     } else if (enemyOriginX > tileOriginX) {
                         if (enemyOriginX - ENEMY_MOVEMENT < tileOriginX) {
-                            enemyOffsetX = tileOriginX;
+                            enemyOffsetX = -(enemyOriginX - tileOriginX);
                         } else {
-                            enemyOffsetX = enemyOriginX - ENEMY_MOVEMENT;
+                            enemyOffsetX = -ENEMY_MOVEMENT;
                         }
                     }
 
                     // Move to the centre of the tile on the y axis.
                     if (enemyOriginY < tileOriginY) {
                         if (enemyOriginY + ENEMY_MOVEMENT > tileOriginY) {
-                            enemyOffsetY = tileOriginY;
+                            enemyOffsetY = tileOriginY - enemyOriginY;
                         } else {
-                            enemyOffsetY = enemyOriginY + ENEMY_MOVEMENT;
+                            enemyOffsetY = ENEMY_MOVEMENT;
                         }
                     } else if (enemyOriginY > tileOriginY) {
                         if (enemyOriginY - ENEMY_MOVEMENT < tileOriginY) {
-                            enemyOffsetY = tileOriginY;
+                            enemyOffsetY = -(enemyOriginX - tileOriginY);
                         } else {
-                            enemyOffsetY = enemyOriginY - ENEMY_MOVEMENT;
+                            enemyOffsetY = -ENEMY_MOVEMENT;
                         }
                     }
                     break;
