@@ -12,9 +12,9 @@ const EnemyState = {
  * Represents an in-game enemy.
  * @param {*} x The x position of the enemy.
  * @param {*} y The y position of the enemy.
- * @param {*} walkables The walkable tiles.
+ * @param {*} walkablesProvider The walkable tile nodes provider.
  */
-function Enemy(x, y, walkables) {
+function Enemy(x, y, walkablesProvider) {
     /**
      * The enemy position.
      */
@@ -80,6 +80,9 @@ function Enemy(x, y, walkables) {
      * Generate a new patrol path.
      */
     this.generatePatrolPath = function() {
+        // Get some fresh walkable nodes.
+        const walkables = walkablesProvider();
+
         // Find the walkable tile at the waypoint position.
         const startTile = walkables.find((walkable) => walkable.x === this.getTileX() && walkable.y === this.getTileY());
 

@@ -12,8 +12,8 @@ function Scene(dungeon, keysDown) {
         .filter(tile => tile.type === TILE.WALL)
         .map(wall => new Wall(wall));
 
-    // Get the walkable tiles.
-    const walkables = dungeon
+
+    const walkablesProvider = () => dungeon
         .filter(tile => tile.type !== TILE.WALL)
         .map((tile) => ({
             x: tile.x,
@@ -23,13 +23,12 @@ function Scene(dungeon, keysDown) {
         }));
 
     // Find the enemy path waypoints.
-    const waypoints = walkables
-        .filter(walkable => walkable.isWaypoint);
+    const waypoints = walkablesProvider().filter(walkable => walkable.isWaypoint);
 
     // Create the enemies.
     const enemies = dungeon
         .filter(tile => tile.entity && tile.entity.id === "enemy")
-        .map(tile => new Enemy(tile.x * TILE_SIZE, tile.y * TILE_SIZE, walkables));
+        .map(tile => new Enemy(tile.x * TILE_SIZE, tile.y * TILE_SIZE, walkablesProvider));
 
     // All game entities.
     const entities = [player, ...enemies, ...walls];

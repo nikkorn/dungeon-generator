@@ -6,7 +6,7 @@ const TILE_SIZE       = 25;
 const CANVAS_SIZE     = 2000;
 const CHARACTER_SIZE  = 15;
 const PLAYER_MOVEMENT = 1;
-const ENEMY_MOVEMENT  = PLAYER_MOVEMENT * 0.5;
+const ENEMY_MOVEMENT  = PLAYER_MOVEMENT * 2;
 
 /**
  * Some colours to use.
