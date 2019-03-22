@@ -1,4 +1,18 @@
-// Create a test enemy behaviour tree definition/.
+// Create a test enemy behaviour tree definition.
+
+// TERMINOLOGY
+
+// CONTEXT
+// A context represents state for a node and any children node in the tree.
+
+// Moving to a new node in the tree will create a brand new context object for the node.
+// This context will be passed in to every 'test()', 'onEntry()', 'onUpdate()' and 'onExit()' call for that node.
+// The context is thrown away when a node stops being visited (is no longer active).
+// Each context object will have a 'getParentContext()' function on it which will return the context of the parent node.
+
+// STATE
+// An external object that is passed throughout the tree to be used much in the same way as context objects.
+// The state is never destroyed.
 
 const behaviourTreeDefinition = [
     {
@@ -7,7 +21,7 @@ const behaviourTreeDefinition = [
             {
                 type: "node",
                 name: "patrolling",
-                test: (context, state) => !context.canSeePlayer(),
+                test: (context, state) => !state.canSeePlayer(),
                 onEntry: (context, state) => console.log("Starting Patrol!"),
                 onUpdate: (context, state) => {},
                 onExit: (context, state) => console.log("Stopping Patrol!")
@@ -43,11 +57,11 @@ const behaviourTreeDefinition = [
                                     {
                                         type: "node",
                                         name: "attack_player",
-                                        test: (context, state) => !context.isPlayerInAttackDistance(),
+                                        test: (context, state) => !state.isPlayerInAttackDistance(),
                                         onEntry: (context, state) => console.log("Walking towards the player!"),
                                         onUpdate: (context, state) => {
                                             // Hit the player super hard!
-                                            context.attackPlayer();
+                                            state.attackPlayer();
 
                                             // TODO Set cool down on node state.
                                         },
@@ -56,7 +70,7 @@ const behaviourTreeDefinition = [
                                     {
                                         type: "node",
                                         name: "attack_cool_down_wait",
-                                        test: (context, state) => !context.isPlayerInAttackDistance(),
+                                        test: (context, state) => !state.isPlayerInAttackDistance(),
                                         onEntry: (context, state) => console.log("Taking a break from attacking!"),
                                         onUpdate: (context, state) => {},
                                         onExit: (context, state) => console.log("Stopped walking towards the player!")
@@ -83,7 +97,7 @@ const behaviourTreeDefinition = [
                         onExit: (context, state) => {}
                     }
                 ],
-                test: (context, state) => context.canSeePlayer(),
+                test: (context, state) => state.canSeePlayer(),
                 onEntry: (context, state) => console.log("Starting the spotted player cycle!"),
                 onUpdate: (context, state) => {},
                 onExit: (context, state) => console.log("Stopping the spotted player cycle!")
