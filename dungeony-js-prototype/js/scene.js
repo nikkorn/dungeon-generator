@@ -114,7 +114,7 @@ function Scene(dungeon, keysDown) {
                         }
                     } else if (enemyOriginY > tileOriginY) {
                         if (enemyOriginY - ENEMY_MOVEMENT < tileOriginY) {
-                            enemyOffsetY = -(enemyOriginX - tileOriginY);
+                            enemyOffsetY = -(enemyOriginY - tileOriginY);
                         } else {
                             enemyOffsetY = -ENEMY_MOVEMENT;
                         }
