@@ -103,3 +103,29 @@ const behaviourTreeDefinition = [
         ]
     }
 ];
+
+const behaviourTreeTextDefinition = `
+    DECORATOR:REPEAT {
+        SELECTOR {
+            SEQUENCE {
+                PlayerIsInView
+                SEQUENCE {
+                    DECORATOR:INVERT {
+                        IsAlreadyFollowingPlayer
+                    }
+                    ShoutAtPlayer
+                }
+                SEQUENCE {
+                    PlayerIsInAttackDistance
+                    AttackPlayer
+                    Wait [literal:1000]
+                }
+                FollowPlayer
+            }
+            SEQUENCE {
+                WalkToPatrolDestination
+                Wait [literal:500]
+            }
+        }
+    }
+`;
