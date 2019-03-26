@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+  </head>
+  
+  <script src="js/bt/behaviourBranch.js"></script>
+  <script src="js/bt/behaviourCycle.js"></script>
+  <script src="js/bt/behaviourNode.js"></script>
+  <script src="js/bt/behaviourTree.js"></script>
+  <script src="js/bt/behaviourTreeDefinition.js"></script>
+
+  <script>
+
+  const definition = `
+      ROOT {
+          SELECTOR {
+              SEQUENCE {
+                  CONDITION:PlayerIsInView
+                  ShoutAtPlayer
+                  SEQUENCE {
+                      CONDITION:PlayerIsInAttackDistance
+                      AttackPlayer
+                      Wait [literal:1000]
+                  }
+                  FollowPlayer
+              }
+              SEQUENCE {
+                  WalkToPatrolDestination
+                  Wait [literal:500]
+              }
+          }
+      }
+  `;
+
+  const board = {};
+
+  const bt = new BehaviourTree(definition, board);
+  
+  </script>
+</html>

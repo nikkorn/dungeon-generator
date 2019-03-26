@@ -1,4 +1,0 @@
-
-function BehaviourTree(definition, context) {
-    
-};

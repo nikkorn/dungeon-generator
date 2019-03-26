@@ -105,18 +105,13 @@ const behaviourTreeDefinition = [
 ];
 
 const behaviourTreeTextDefinition = `
-    DECORATOR:REPEAT {
+    ROOT {
         SELECTOR {
             SEQUENCE {
-                PlayerIsInView
+                CONDITION:PlayerIsInView
+                ShoutAtPlayer
                 SEQUENCE {
-                    DECORATOR:INVERT {
-                        IsAlreadyFollowingPlayer
-                    }
-                    ShoutAtPlayer
-                }
-                SEQUENCE {
-                    PlayerIsInAttackDistance
+                    CONDITION:PlayerIsInAttackDistance
                     AttackPlayer
                     Wait [literal:1000]
                 }
