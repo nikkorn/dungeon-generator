@@ -17,17 +17,17 @@
           SELECTOR {
               SEQUENCE {
                   CONDITION:PlayerIsInView
-                  ShoutAtPlayer
+                  ACTION:ShoutAtPlayer
                   SEQUENCE {
                       CONDITION:PlayerIsInAttackDistance
-                      AttackPlayer
-                      Wait [literal:1000]
+                      ACTION:AttackPlayer
+                      ACTION:Wait
                   }
-                  FollowPlayer
+                  ACTION:FollowPlayer
               }
               SEQUENCE {
-                  WalkToPatrolDestination
-                  Wait [literal:500]
+                ACTION:WalkToPatrolDestination
+                ACTION:Wait
               }
           }
       }
