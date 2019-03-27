@@ -23,6 +23,10 @@ function findPath(nodes, origin, target) {
     // Helper function to find the open node with the lowest score.
     const getOpenNodeWithLowestScore = () => Object.values(openNodes).sort((a, b) => a.getScore() - b.getScore())[0];
 
+    // Create a node position lookup to speed up finding adjacent nodes.
+    const nodeLookup = {};
+    nodes.forEach((node) => nodeLookup[node.getKey()] = node);
+
     // Helper function to find the nodes adjacent to the specified one.
     const getAdjacentNodes = (currentNode) => [
         [currentNode.getX(), currentNode.getY() + 1],
@@ -30,7 +34,7 @@ function findPath(nodes, origin, target) {
         [currentNode.getX() + 1, currentNode.getY()],
         [currentNode.getX() - 1, currentNode.getY()]
     ].map(([x, y]) => getKey(x, y))
-        .map((key) => nodes.find((node) => node.getKey() === key))
+        .map((key) => nodeLookup[key])
         .filter((node) => node);
 
     // The list of all nodes MUST include both the origin and target node.
