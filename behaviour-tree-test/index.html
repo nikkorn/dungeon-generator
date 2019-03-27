@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <script src="js/behaviourBranch.js"></script>
+  <script src="js/behaviourCycle.js"></script>
+  <script src="js/behaviourNode.js"></script>
+  <script src="js/behaviourTree.js"></script>
+  <script src="js/behaviourTreeDefinition.js"></script>
+
+  <head>
+    <meta charset="utf-8">
+  </head>
+
+  <body>
+      <div class="page-container">
+          <div class="editor-container">
+              <div class="page-tile">
+                  <p>Definition</p>
+                  <textarea id="definition-text-area" onkeyup="onDefinitionUpdate()" spellcheck="false" style="width: 100%;"></textarea>
+              </div>
+              <div class="page-tile">
+                  <p>Result</p>
+                  <textarea id="result-text-area" spellcheck="false" style="width: 100%;" readonly></textarea>
+              </div>
+          </div>
+          <div class="buttons-container">
+              <button type="button" onclick="onTickButtonPressed()">Tick</button>
+              <button type="button" onclick="onResetButtonPressed()">Reset</button>       
+          </div>
+          <div class="review-container">
+              <div class="tree-view-container page-tile">
+                  <p>Tree View</p>
+                  <div class="tree-view" style="width: 100%;">
+                 
+                  </div>
+              </div>
+              <div class="blackboard-view-container page-tile">
+                  <p>Board</p>
+                  <textarea id="blackboard-text-area" spellcheck="false" style="width: 100%;"></textarea>
+              </div>
+          </div>
+      </div>
+  </body>
+
+  <script>
+    const definitionTextArea = document.getElementById("definition-text-area");
+    const resultTextArea     = document.getElementById("result-text-area");
+    const blackboardTextArea = document.getElementById("blackboard-text-area");
+
+    // Set a test definition.
+    definitionTextArea.innerHTML = 
+`ROOT {
+    SELECTOR {
+        SEQUENCE {
+            CONDITION:PlayerIsInView
+            ACTION:ShoutAtPlayer
+            SEQUENCE {
+                CONDITION:PlayerIsInAttackDistance
+                ACTION:AttackPlayer
+                ACTION:Wait
+            }
+            ACTION:FollowPlayer
+        }
+        SEQUENCE {
+          ACTION:WalkToPatrolDestination
+          ACTION:Wait
+        }
+    }
+}`;
+
+    // Set a test blackboard.
+    blackboardTextArea.innerHTML = `{}`;
+
+    /**
+     * Handles definition updates.
+     */
+    function onDefinitionUpdate() {
+        try {
+            // Try to create the behaviour tree.
+            const bt = new BehaviourTree(definitionTextArea.value, blackboardTextArea.value);
+
+            // We created the behaviour tree without an issue.
+            resultTextArea.innerHTML             = "OK";
+            resultTextArea.style.backgroundColor = "#d6f9d4";
+
+            // Build the tree view.
+        } catch (exception) {
+            // There was an error creating the behaviour tree!
+            resultTextArea.innerHTML             = exception;
+            resultTextArea.style.backgroundColor = "#fcc2c2";
+        }
+    };
+
+    /**
+     * Handles clicks on the 'tick' button.
+     */
+    function onTickButtonPressed() {
+        console.log("tick");
+    };
+
+    /**
+     * Handles clicks on the 'reset' button.
+     */
+    function onResetButtonPressed() {
+        console.log("reset");
+    };
+
+    /**
+     * Build the tree view.
+     */
+    function buildTreeView() {
+        console.log("building tree view!");
+    };
+
+    // Do the initial definition update.
+    onDefinitionUpdate();
+
+  </script>
+</html>

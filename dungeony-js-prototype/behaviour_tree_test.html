@@ -1,8 +1,90 @@
 <!doctype html>
 <html lang="en">
+  <style>
+
+      html, body {
+        height: 100%;
+        margin: 0;
+      }
+
+      .page-container {
+        display: flex;
+        flex-direction: column;
+  
+        height: 100%;
+      }
+
+      .editor-container {
+        display: flex;
+        flex-direction: row;
+        flex-grow: 1;
+      }
+
+      .buttons-container {
+        display: flex;
+        flex-direction: row;
+        flex-grow: 0;
+        justify-content: center;
+      }
+
+      .buttons-container button {
+        margin: 5px;
+      }
+
+      .review-container {
+        display: flex;
+        flex-direction: row;
+        flex-grow: 1;
+      }
+
+      .page-tile {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        padding: 5px;
+      }
+
+      .page-tile > p {
+        margin: 5px 0;
+      }
+
+      .page-tile > textarea {
+        flex-grow: 1;
+        -webkit-box-sizing:border-box;
+        -moz-box-sizing:border-box;
+        box-sizing:border-box;
+      }
+
+  </style>
+
   <head>
     <meta charset="utf-8">
   </head>
+
+  <body>
+      <div class="page-container">
+          <div class="editor-container">
+              <div class="page-tile">
+                  <p>Definition</p>
+                  <textarea id="definition-text-area" style="width: 100%;"></textarea>
+              </div>
+              <div class="page-tile">
+                  <p>Result</p>
+                  <textarea id="console-text-area" style="width: 100%;" readonly></textarea>
+              </div>
+          </div>
+          <div class="buttons-container">
+              <button type="button">Tick</button>
+              <button type="button">Reset</button>       
+          </div>
+          <div class="review-container">
+              <div class="tree-view-container page-tile">
+              </div>
+              <div class="blackboard-view-container page-tile">
+              </div>
+          </div>
+      </div>
+  </body>
   
   <script src="js/bt/behaviourBranch.js"></script>
   <script src="js/bt/behaviourCycle.js"></script>

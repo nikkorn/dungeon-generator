@@ -1,0 +1,61 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: "Courier New", Courier, monospace;
+}
+
+.page-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.editor-container {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+}
+
+.buttons-container {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 0;
+    justify-content: center;
+}
+
+.buttons-container button {
+    margin: 5px;
+}
+
+.review-container {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+}
+
+.tree-view-container.page-tile {
+    flex-grow: 2;
+}
+
+.tree-view {
+    background-color: rgb(235, 236, 236);
+}
+
+.page-tile {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 5px;
+}
+
+.page-tile > p {
+    margin: 5px 0;
+}
+
+.page-tile > textarea, .tree-view {
+    font-family: "Courier New", Courier, monospace;
+    flex-grow: 1;
+    -webkit-box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    box-sizing:border-box;
+}
