@@ -59,3 +59,7 @@ html, body {
     -moz-box-sizing:border-box;
     box-sizing:border-box;
 }
+
+.result-view-container {
+    flex-grow: 0;
+}
