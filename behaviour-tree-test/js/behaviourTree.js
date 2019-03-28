@@ -11,38 +11,65 @@ function BehaviourTree(definition, board) {
      */
     const ASTNodeFactories = {
         "ROOT": () => ({ 
+            uid: getUid(),
+            caption: () => "ROOT",
             type: "ROOT", 
             children: [], 
             wrappingBehaviour: ASTNodeWrappingBehaviour.SINGLE 
         }),
-        "SELECTOR": () => ({ 
+        "SELECTOR": () => ({
+            uid: getUid(),
+            caption: () => "SELECTOR",
             type: "SELECTOR", 
             children: [], 
             wrappingBehaviour: ASTNodeWrappingBehaviour.MULTIPLE
         }),
-        "SEQUENCE": () => ({ 
+        "SEQUENCE": () => ({
+            uid: getUid(),
+            caption: () => "SEQUENCE",
             type: "SEQUENCE", 
             children: [], 
             wrappingBehaviour: ASTNodeWrappingBehaviour.MULTIPLE
         }),
-        "CONDITION": () => ({ 
+        "CONDITION": () => ({
+            uid: getUid(),
+            caption: function() { return this["function"]; },
             type: "CONDITION", 
             wrappingBehaviour: ASTNodeWrappingBehaviour.NONE, 
             function: "" 
         }),
-        "DECORATOR": () => ({ 
+        "DECORATOR": () => ({
+            uid: getUid(),
+            caption: () => "DECORATOR",
             type: "DECORATOR", 
             children: [], 
             wrappingBehaviour: ASTNodeWrappingBehaviour.SINGLE, 
             name: "" 
         }),
-        "ACTION": () => ({ 
+        "ACTION": () => ({
+            uid: getUid(),
+            caption: function() { return this["function"]; },
             type: "ACTION", 
             wrappingBehaviour: ASTNodeWrappingBehaviour.NONE, 
             function: "",
             arguments: []
         })
     };
+
+    /**
+     * The root AST node.
+     */
+    let rootASTNode;
+
+    /**
+     * Generate a Uid. 
+     */
+    const getUid = () => {
+        var S4 = function() {
+            return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+        };
+        return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+    }
 
     /**
      * BehaviourTree init logic.
@@ -52,10 +79,13 @@ function BehaviourTree(definition, board) {
         const tokens = this.parseDefinition();
 
         // Create the BT AST from tokens.
-        const rootASTNode = this.createRootASTNode(tokens);
-
-        console.log(rootASTNode);
+        rootASTNode = this.createRootASTNode(tokens);
     };
+
+    /**
+     * Get the root AST node.
+     */
+    this.getRootASTNode = () => rootASTNode;
 
     /**
      * Parse the BT tree definition into an array of raw tokens.
@@ -94,7 +124,7 @@ function BehaviourTree(definition, board) {
             throw "ParseError: Scope character mismatch";
         }
 
-        // Helper functionto pop the next raw token off of the stack and throw an error if it wasn't the expected one.
+        // Helper function to pop the next raw token off of the stack and throw an error if it wasn't the expected one.
         const popAndCheck = (expected) => {
             // Get and remove the next token.
             const popped = tokens.shift();

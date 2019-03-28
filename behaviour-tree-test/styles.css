@@ -13,7 +13,7 @@ html, body {
 .editor-container {
     display: flex;
     flex-direction: row;
-    flex-grow: 1;
+    flex-grow: 2;
 }
 
 .buttons-container {
@@ -37,8 +37,13 @@ html, body {
     flex-grow: 2;
 }
 
-.tree-view {
+#tree-view-wrapper {
     background-color: rgb(235, 236, 236);
+    font-size: 0.8em;
+}
+
+#tree-view-wrapper p {
+    margin: 3px;
 }
 
 .page-tile {
@@ -52,7 +57,7 @@ html, body {
     margin: 5px 0;
 }
 
-.page-tile > textarea, .tree-view {
+.page-tile > textarea, #tree-view-wrapper {
     font-family: "Courier New", Courier, monospace;
     flex-grow: 1;
     -webkit-box-sizing:border-box;

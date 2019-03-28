@@ -1,118 +1,173 @@
 <!doctype html>
 <html lang="en">
-  <link rel="stylesheet" type="text/css" href="styles.css">
-  <script src="js/behaviourBranch.js"></script>
-  <script src="js/behaviourCycle.js"></script>
-  <script src="js/behaviourNode.js"></script>
-  <script src="js/behaviourTree.js"></script>
-  <script src="js/behaviourTreeDefinition.js"></script>
+<link rel="stylesheet" type="text/css" href="styles.css">
 
-  <head>
-    <meta charset="utf-8">
-  </head>
+<!-- WorkFlo-->
+<script src="workflo/node.js"></script>
+<script src="workflo/nodecontainer.js"></script>
+<script src="workflo/connector.js"></script>
+<script src="workflo/workflo.js"></script>
+<link rel="stylesheet" type="text/css" href="workflo/workflo.css">
 
-  <body>
-      <div class="page-container">
-          <div class="editor-container">
-              <div class="page-tile">
-                <p>Definition</p>
-                <textarea id="definition-text-area" onkeyup="onDefinitionUpdate()" spellcheck="false" style="width: 100%;"></textarea>
-              </div>
-              <div class="blackboard-view-container page-tile">
-                <p>Board</p>
-                <textarea id="blackboard-text-area" spellcheck="false" style="width: 100%;"></textarea>
-              </div>
-          </div>
-          <div class="result-view-container page-tile">
-            <textarea id="result-text-area" spellcheck="false" style="width: 100%;" readonly></textarea>
-          </div>
-          <div class="buttons-container">
-              <button type="button" onclick="onTickButtonPressed()">Tick</button>
-              <button type="button" onclick="onResetButtonPressed()">Reset</button>       
-          </div>
-          <div class="review-container">
-              <div class="tree-view-container page-tile">
-                  <p>Tree View</p>
-                  <div class="tree-view" style="width: 100%;">
-                 
-                  </div>
-              </div>
-          </div>
-      </div>
-  </body>
+<!-- BT Test -->
+<script src="js/behaviourBranch.js"></script>
+<script src="js/behaviourCycle.js"></script>
+<script src="js/behaviourNode.js"></script>
+<script src="js/behaviourTree.js"></script>
+<script src="js/behaviourTreeDefinition.js"></script>
 
-  <script>
-    const definitionTextArea = document.getElementById("definition-text-area");
-    const resultTextArea     = document.getElementById("result-text-area");
-    const blackboardTextArea = document.getElementById("blackboard-text-area");
+<head>
+	<meta charset="utf-8">
+</head>
 
-    // Set a test definition.
-    definitionTextArea.innerHTML = 
+<body>
+	<div class="page-container">
+		<div class="editor-container">
+			<div class="page-tile">
+				<p>Definition</p>
+				<textarea id="definition-text-area" onkeyup="onDefinitionUpdate()" spellcheck="false" style="width: 100%;"></textarea>
+			</div>
+			<div class="blackboard-view-container page-tile">
+				<p>Board</p>
+				<textarea id="blackboard-text-area" spellcheck="false" style="width: 100%;"></textarea>
+			</div>
+		</div>
+		<div class="result-view-container page-tile">
+			<textarea id="result-text-area" spellcheck="false" style="width: 100%;" readonly></textarea>
+		</div>
+		<div class="buttons-container">
+			<button type="button" onclick="onTickButtonPressed()">Tick</button>
+			<button type="button" onclick="onResetButtonPressed()">Reset</button>
+		</div>
+		<div class="review-container">
+			<div class="tree-view-container page-tile">
+				<p>Tree View</p>
+				<div id="tree-view-wrapper" style="width: 100%;"></div>
+			</div>
+		</div>
+	</div>
+</body>
+
+<script>
+	const definitionTextArea = document.getElementById("definition-text-area");
+	const resultTextArea     = document.getElementById("result-text-area");
+	const blackboardTextArea = document.getElementById("blackboard-text-area");
+    const treeViewWrapper    = document.getElementById("tree-view-wrapper");
+
+	// Set a test definition.
+	definitionTextArea.innerHTML =
 `ROOT {
-    SELECTOR {
-        SEQUENCE {
-            CONDITION:PlayerIsInView
-            ACTION:ShoutAtPlayer
-            SEQUENCE {
-                CONDITION:PlayerIsInAttackDistance
-                ACTION:AttackPlayer
-                ACTION:Wait
-            }
-            ACTION:FollowPlayer
-        }
-        SEQUENCE {
-          ACTION:WalkToPatrolDestination
-          ACTION:Wait
-        }
-    }
+	SELECTOR {
+		SEQUENCE {
+			CONDITION:PlayerIsInView
+			ACTION:ShoutAtPlayer
+			SEQUENCE {
+				CONDITION:PlayerIsInAttackDistance
+				ACTION:AttackPlayer
+				ACTION:Wait
+			}
+			ACTION:FollowPlayer
+		}
+		SEQUENCE {
+			ACTION:WalkToPatrolDestination
+			ACTION:Wait
+		}
+	}
 }`;
 
-    // Set a test blackboard.
-    blackboardTextArea.innerHTML = `{}`;
+	// Set a test blackboard.
+	blackboardTextArea.innerHTML = `{}`;
 
-    /**
-     * Handles definition updates.
-     */
-    function onDefinitionUpdate() {
-        try {
-            // Try to create the behaviour tree.
-            const bt = new BehaviourTree(definitionTextArea.value, blackboardTextArea.value);
+	/**
+	 * Handles definition updates.
+	 */
+	function onDefinitionUpdate() {
+        let behaviourTree;
 
-            // We created the behaviour tree without an issue.
-            resultTextArea.innerHTML             = "OK";
-            resultTextArea.style.backgroundColor = "#d6f9d4";
+        // Clear away the existing tree view.
+        treeViewWrapper.innerHTML = "";
 
-            // Build the tree view.
-        } catch (exception) {
-            // There was an error creating the behaviour tree!
-            resultTextArea.innerHTML             = exception;
-            resultTextArea.style.backgroundColor = "#fcc2c2";
-        }
+		try {
+			// Try to create the behaviour tree.
+			behaviourTree = new BehaviourTree(definitionTextArea.value, blackboardTextArea.value);
+
+			// We created the behaviour tree without an issue.
+			resultTextArea.innerHTML             = "OK";
+			resultTextArea.style.backgroundColor = "#d6f9d4";
+		} catch (exception) {
+			// There was an error creating the behaviour tree!
+			resultTextArea.innerHTML             = exception;
+			resultTextArea.style.backgroundColor = "#fcc2c2";
+
+            // There is nothing left to do.
+            return;
+		}
+
+        const nodes = [];
+
+        const processNode = (node, parentUid) => {
+            // Push the current node into the nodes array.
+            nodes.push({ 
+                id: node.uid,
+                type: node.type, 
+                caption: node.caption(), 
+                parent: parentUid 
+            });
+
+            // Process each of the nodes children.
+            (node.children || []).forEach((child) => processNode(child, node.uid));
+        };
+
+        // Convert the nested AST node structure into an array of nodes with which to build the tree view.
+        processNode(behaviourTree.getRootASTNode(), null);
+
+        // Build the tree view.
+        buildTreeView(nodes);
+	};
+
+	/**
+	 * Handles clicks on the 'tick' button.
+	 */
+	function onTickButtonPressed() {
+		console.log("tick");
+	};
+
+	/**
+	 * Handles clicks on the 'reset' button.
+	 */
+	function onResetButtonPressed() {
+		console.log("reset");
+	};
+
+	/**
+	 * Build the tree view.
+	 */
+	function buildTreeView(nodes) {
+        // Build the tree view.
+        var options = {
+            data: nodes,
+            nodeIdField: "id",
+            nodeNameField: "caption",
+            nodeTypeField: "type",
+            nodeParentField: "parent",
+            line: {
+                type: "angled",
+                thickness: 2,
+                colour: "#aabbcc",
+                cap: "round"
+            },
+            layout: {
+                rootNodeOrientation: "vertical",
+                direction: "vertical"
+            }
+        };
+
+        // Create the behaviour tree view.
+        new Workflo(treeViewWrapper, options);
     };
 
-    /**
-     * Handles clicks on the 'tick' button.
-     */
-    function onTickButtonPressed() {
-        console.log("tick");
-    };
+	// Do the initial definition update.
+	onDefinitionUpdate();
 
-    /**
-     * Handles clicks on the 'reset' button.
-     */
-    function onResetButtonPressed() {
-        console.log("reset");
-    };
-
-    /**
-     * Build the tree view.
-     */
-    function buildTreeView() {
-        console.log("building tree view!");
-    };
-
-    // Do the initial definition update.
-    onDefinitionUpdate();
-
-  </script>
+</script>
 </html>
