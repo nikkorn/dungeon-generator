@@ -1,4 +1,8 @@
-
+/**
+ * The behaviour tree.
+ * @param definition The behaviour tree definition.
+ * @param board The behaviour tree board.
+ */
 function BehaviourTree(definition, board) {
 
      /**
