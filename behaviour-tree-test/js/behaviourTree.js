@@ -17,35 +17,35 @@ function BehaviourTree(definition, board) {
         "ROOT": () => ({ 
             uid: getUid(),
             caption: () => "ROOT",
-            type: "ROOT", 
+            type: "root", 
             children: [], 
             wrappingBehaviour: ASTNodeWrappingBehaviour.SINGLE 
         }),
         "SELECTOR": () => ({
             uid: getUid(),
             caption: () => "SELECTOR",
-            type: "SELECTOR", 
+            type: "selector", 
             children: [], 
             wrappingBehaviour: ASTNodeWrappingBehaviour.MULTIPLE
         }),
         "SEQUENCE": () => ({
             uid: getUid(),
             caption: () => "SEQUENCE",
-            type: "SEQUENCE", 
+            type: "sequence", 
             children: [], 
             wrappingBehaviour: ASTNodeWrappingBehaviour.MULTIPLE
         }),
         "CONDITION": () => ({
             uid: getUid(),
             caption: function() { return this["function"]; },
-            type: "CONDITION", 
+            type: "condition", 
             wrappingBehaviour: ASTNodeWrappingBehaviour.NONE, 
             function: "" 
         }),
         "DECORATOR": () => ({
             uid: getUid(),
             caption: () => "DECORATOR",
-            type: "DECORATOR", 
+            type: "decorator", 
             children: [], 
             wrappingBehaviour: ASTNodeWrappingBehaviour.SINGLE, 
             name: "" 
@@ -53,7 +53,7 @@ function BehaviourTree(definition, board) {
         "ACTION": () => ({
             uid: getUid(),
             caption: function() { return this["function"]; },
-            type: "ACTION", 
+            type: "action", 
             wrappingBehaviour: ASTNodeWrappingBehaviour.NONE, 
             function: "",
             arguments: []

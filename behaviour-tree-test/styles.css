@@ -68,3 +68,48 @@ html, body {
 .result-view-container {
     flex-grow: 0;
 }
+
+/* Worklo Nodes */
+
+.tree-view-node {
+    display: flex;
+    background-color: #4c4c4c;
+    color: #FFFFFF;
+    font-size: 0px;
+}
+
+.tree-view-caption {
+    line-height: 20px;
+}
+
+.tree-view-node > * {
+    display: inline-block;
+    padding: 5px;
+    font-size: 12px;
+}
+
+.tree-view-icon img {
+    vertical-align: middle;
+    height: 20px;
+    width: 20px;
+}
+
+.tree-view-icon-action {
+    background-color: rgb(42, 89, 218);
+}
+
+.tree-view-icon-condition {
+    background-color: rgb(196, 199, 7);
+}
+
+.tree-view-icon-selector {
+    background-color: rgb(126, 68, 173);
+}
+
+.tree-view-icon-sequence {
+    background-color: rgb(172, 42, 118);
+}
+
+.tree-view-icon-root {
+    background-color: rgb(99, 98, 104);
+}

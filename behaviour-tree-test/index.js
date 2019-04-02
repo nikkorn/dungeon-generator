@@ -111,6 +111,17 @@ function buildTreeView(nodes) {
         nodeNameField: "caption",
         nodeTypeField: "type",
         nodeParentField: "parent",
+        definition: {
+            default: {
+                tooltip: function (node) { return node.item.caption },
+                template: (node) => `<div class='tree-view-node'>
+                <div class='tree-view-icon tree-view-icon-${node.item.type}'>
+                <img src="resources/${node.item.type}.png">
+                </div>
+                <div><p class='tree-view-caption' style="margin:0px;">${node.item.caption}</p></div>
+                </div>`
+            }
+        },
         line: {
             type: "angled",
             thickness: 2,
