@@ -11,17 +11,18 @@ function Selector(children) {
    
     /**
      * Update the node and get whether the node state has changed.
+     * @param board The board.
      * @returns Whether the state of this node has changed as part of the update.
      */
-    this.update = function() {
+    this.update = function(board) {
         // Get the pre-update node state.
         const initialState = state;
 
         // Iterate over all of the children of this node.
         for (const child of children) {
-            // If the child has never been updated then we will need to do this now.
-            if (child.getState() === NodeState.READY) {
-                child.update();
+            // If the child has never been updated or is running then we will need to update it now.
+            if (child.getState() === NodeState.READY || child.getState() === NodeState.RUNNING) {
+                child.update(board);
             }
 
             // If the current child has a state of 'SUCCEEDED' then this node is also a 'SUCCEEDED' node.
