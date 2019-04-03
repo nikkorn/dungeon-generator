@@ -35,7 +35,11 @@ definitionTextArea.innerHTML =
 }`;
 
 // Set a test blackboard in the blackboard text area.
-blackboardTextArea.innerHTML = "PlayerIsInView: () => true";
+blackboardTextArea.innerHTML = 
+`PlayerIsInView: () => false,
+Wait: () => 1,
+WalkToPatrolDestination: () => 2
+`;
 
 /**
  * Handles definition updates.
@@ -100,6 +104,9 @@ function onTickButtonPressed() {
 
     // Step the behaviour tree.
     behaviourTree.step();
+
+    // Rebuild the tree view.
+    buildTreeView();
 };
 
 /**
