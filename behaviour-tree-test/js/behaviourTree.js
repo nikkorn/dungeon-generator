@@ -58,8 +58,11 @@
             "DECORATOR": () => ({
                 uid: getUid(),
                 type: "decorator",
+                function: "",
                 children: [], 
-                name: "" 
+                createNodeInstance: function () { 
+                    return new Decorator(this.uid, this["function"], this.children[0].createNodeInstance());
+                }
             }),
             "ACTION": () => ({
                 uid: getUid(),
@@ -209,7 +212,22 @@
                         break;
 
                     case "DECORATOR":
-                        // TODO ...
+                        // Create a DECORATOR AST node.
+                        node = ASTNodeFactories.DECORATOR();
+
+                        // Push the DECORATOR node into the current scope.
+                        stack[stack.length-1].push(node);
+
+                        // A ':' character splits the 'DECORATOR' token and the target function name token.
+                        popAndCheck(":");
+
+                        // The next token should be the name of the decorator function. 
+                        node.function = tokens.shift();
+
+                        popAndCheck("{");
+
+                        // The new scope is that of the new DECORATOR nodes children.
+                        stack.push(node.children);
                         break;
 
                     case "ACTION":

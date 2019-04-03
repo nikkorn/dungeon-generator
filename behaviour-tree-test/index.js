@@ -29,7 +29,9 @@ definitionTextArea.innerHTML =
         }
         SEQUENCE {
             ACTION:WalkToPatrolDestination
-            ACTION:Wait
+            DECORATOR:AlwaysResume {
+                ACTION:Wait
+            }
         }
     }
 }`;
@@ -37,8 +39,9 @@ definitionTextArea.innerHTML =
 // Set a test blackboard in the blackboard text area.
 blackboardTextArea.innerHTML = 
 `PlayerIsInView: () => false,
-Wait: (succeed, fail) => {},
-WalkToPatrolDestination: (succeed, fail) => succeed()
+Wait: (succeed, fail) => { fail() },
+WalkToPatrolDestination: (succeed, fail) => succeed(),
+AlwaysResume: (succeed, fail, resume, reset, state) => { resume() }
 `;
 
 /**

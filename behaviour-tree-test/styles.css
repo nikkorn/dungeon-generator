@@ -128,3 +128,7 @@ html, body {
 .tree-view-icon-root {
     background-color: rgb(99, 98, 104);
 }
+
+.tree-view-icon-decorator {
+    background-color: rgb(207, 144, 7);
+}
