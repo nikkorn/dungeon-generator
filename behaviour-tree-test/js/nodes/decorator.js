@@ -25,6 +25,27 @@ function Decorator(uid, decoratorFunction, child) {
             throw `cannot update decorator node as function '${decoratorFunction}' is not defined in the blackboard`;
         }
 
+        // Sets the state of this node to match that of its child state and calls the decorator function to potentially modify it.
+        const callDecoratorFunction = () => {
+             // Set the state of this node to match the state of the child one. This will remain
+            // the state of this decorator node unless it is modified via the decorator function.
+            state = child.getState();
+
+            // Call the decorator function, passing success/fail/resume/reset callbacks that the user can call to succeed/fail/resume/reset the child.
+            board[decoratorFunction](
+                () => state = NodeState.SUCCEEDED, 
+                () => state = NodeState.FAILED,
+                () => state = NodeState.RUNNING,
+                () => state = NodeState.READY,
+                this._convertNodeStateToString(state)
+            );
+
+            // If the state is 'READY' then reset the child now.
+            if (state === NodeState.READY) {
+                child.reset();
+            }
+        };
+
         // An action node should be updated until it fails or succeeds.
         if (child.getState() === NodeState.READY || child.getState() === NodeState.RUNNING) {
             // Get the actual state of the child.
@@ -35,24 +56,12 @@ function Decorator(uid, decoratorFunction, child) {
 
             // If the state of the child has changed then we should call our decorator function to potentially mutate the state of this node.
             if (child.getState() !== initialChildState) {
-                // Set the state of this node to match the state of the child one. This will remain
-                // the state of this decorator node unless it is modified via the decorator function.
-                state = child.getState();
-
-                // Call the decorator function, passing success/fail/resume/reset callbacks that the user can call to succeed/fail/resume/reset the child.
-                board[decoratorFunction](
-                    () => state = NodeState.SUCCEEDED, 
-                    () => state = NodeState.FAILED,
-                    () => state = NodeState.RUNNING,
-                    () => state = NodeState.READY,
-                    this._convertNodeStateToString(state)
-                );
-
-                // If the state is 'READY' then reset the child now.
-                if (state === NodeState.READY) {
-                    child.reset();
-                }
+                callDecoratorFunction();
             }
+        } else {
+            // If this node is still in the READY or RUNNING state even though the child one isn't, then 
+            // we should call the decorator function as we may still want to modify the state of this node.
+            callDecoratorFunction();
         }
 
         // Return whether the state of this node has changed.
