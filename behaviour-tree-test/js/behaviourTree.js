@@ -7,13 +7,10 @@
      * @param board The behaviour tree board.
      */
 	function BehaviourTree (definition, board) {
-		/**
-         * Node factories.
-         */
-        const ASTNodeWrappingBehaviour = { "NONE": 0, "SINGLE": 1, "MULTIPLE": 2 };
-
+		
         /**
-         * Generate a Uid. 
+         * Generate a Uid.
+         * @returns A random unique id.
          */
         const getUid = () => {
             var S4 = function() {
@@ -28,35 +25,31 @@
         const ASTNodeFactories = {
             "ROOT": () => ({ 
                 uid: getUid(),
-                type: "root", 
-                children: [], 
-                wrappingBehaviour: ASTNodeWrappingBehaviour.SINGLE,
+                type: "root",
+                children: [],
                 createNodeInstance: function () { 
                     return new Root(this.uid, this.children[0].createNodeInstance());
                 }
             }),
             "SELECTOR": () => ({
                 uid: getUid(),
-                type: "selector", 
+                type: "selector",
                 children: [], 
-                wrappingBehaviour: ASTNodeWrappingBehaviour.MULTIPLE,
                 createNodeInstance: function () { 
                     return new Selector(this.uid, this.children.map((child) => child.createNodeInstance()));
                 }
             }),
             "SEQUENCE": () => ({
                 uid: getUid(),
-                type: "sequence", 
+                type: "sequence",
                 children: [], 
-                wrappingBehaviour: ASTNodeWrappingBehaviour.MULTIPLE,
                 createNodeInstance: function () { 
                     return new Sequence(this.uid, this.children.map((child) => child.createNodeInstance()));
                 }
             }),
             "CONDITION": () => ({
                 uid: getUid(),
-                type: "condition", 
-                wrappingBehaviour: ASTNodeWrappingBehaviour.NONE, 
+                type: "condition",
                 function: "",
                 createNodeInstance: function () { 
                     return new Condition(this.uid, this["function"]);
@@ -64,15 +57,13 @@
             }),
             "DECORATOR": () => ({
                 uid: getUid(),
-                type: "decorator", 
+                type: "decorator",
                 children: [], 
-                wrappingBehaviour: ASTNodeWrappingBehaviour.SINGLE, 
                 name: "" 
             }),
             "ACTION": () => ({
                 uid: getUid(),
-                type: "action", 
-                wrappingBehaviour: ASTNodeWrappingBehaviour.NONE, 
+                type: "action",
                 function: "",
                 arguments: [],
                 createNodeInstance: function () {
