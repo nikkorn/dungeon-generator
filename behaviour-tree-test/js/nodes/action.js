@@ -3,7 +3,7 @@
  * This represents an immediate or ongoing state of behaviour.
  * @param actionFunction The action function. 
  */
-function Condition(actionFunction) {
+function Action(actionFunction) {
     /**
      * The node state.
      */
@@ -19,9 +19,13 @@ function Condition(actionFunction) {
         const initialState = state;
 
         // An action node should be updated until it fails or succeeds.
-        if (child.getState() === NodeState.READY || child.getState() === NodeState.RUNNING) {
-             // Call the action function to determine the state of this node.
-            state = board[actionFunction]();
+        if (state === NodeState.READY || state === NodeState.RUNNING) {
+            // Call the action function to determine the state of this node, but it must exist in the blackboard.
+            if (typeof board[actionFunction] === "function") {
+                state = board[actionFunction]();
+            } else {
+                throw `cannot update action node as function '${actionFunction}' is not defined in the blackboard`;
+            }
         }
 
         // Return whether the state of this node has changed.

@@ -8,6 +8,11 @@ const treeViewWrapper    = document.getElementById("tree-view-wrapper");
  */
 let behaviourTree;
 
+/**
+ * The behaviour tree blackboard.
+ */
+let blackboard;
+
 // Set a test definition.
 definitionTextArea.innerHTML =
 `ROOT {
@@ -29,8 +34,8 @@ definitionTextArea.innerHTML =
     }
 }`;
 
-// Set a test blackboard.
-blackboardTextArea.innerHTML = `{}`;
+// Set a test blackboard in the blackboard text area.
+blackboardTextArea.innerHTML = "PlayerIsInView: () => true";
 
 /**
  * Handles definition updates.
@@ -39,9 +44,16 @@ function onDefinitionUpdate() {
     // Clear away the existing tree view.
     treeViewWrapper.innerHTML = "";
 
+    // Create the blackboard.
+    // In this page the blackboard will be kept up-to-date with changes made to the blackboard text area. 
+    blackboard = {};
+
+    // Do the initial blackboard update.
+    onBlackboardUpdate();
+
     try {
         // Try to create the behaviour tree.
-        behaviourTree = new BehaviourTree(definitionTextArea.value, blackboardTextArea.value);
+        behaviourTree = new BehaviourTree(definitionTextArea.value, blackboard);
 
         // We created the behaviour tree without an issue.
         resultTextArea.innerHTML             = "OK";
@@ -81,6 +93,21 @@ function onDefinitionUpdate() {
 };
 
 /**
+ * Update the behaviour tree blackboard to match the blackboard defined in the editor.
+ */
+function onBlackboardUpdate() {
+    // Create the blackboard proxy.
+    const blackboardProxy = eval('({' + blackboardTextArea.value + '})');
+
+    // Update the blackboard.
+    for (var key in blackboardProxy) {
+        if (blackboardProxy.hasOwnProperty(key)) {
+            blackboard[key] = blackboardProxy[key];
+        }
+    }
+};
+
+/**
  * Handles clicks on the 'tick' button.
  */
 function onTickButtonPressed() {
@@ -89,7 +116,12 @@ function onTickButtonPressed() {
         return;
     }
 
-    console.log("tick");
+    // Update the BT blackboard.
+    onBlackboardUpdate();
+
+    // Update the behaviour tree.
+    // TODO Eventually replace with call like 'behaviourTree.update();'
+    behaviourTree.getRootBTNode().update(blackboard);
 };
 
 /**
@@ -125,7 +157,7 @@ function buildTreeView(nodes) {
         line: {
             type: "angled",
             thickness: 2,
-            colour: "#aabbcc",
+            colour: "#a3a1a1",
             cap: "round"
         },
         layout: {

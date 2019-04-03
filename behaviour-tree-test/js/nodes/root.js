@@ -20,7 +20,11 @@ function Root(child) {
 
         // If the child has never been updated or is running then we will need to update it now.
         if (child.getState() === NodeState.READY || child.getState() === NodeState.RUNNING) {
-            child.update(board);
+            try {
+                child.update(board);
+            } catch (exception) {
+                throw `TreeUpdateError: ${exception}`;
+            }
         }
 
         // The state of the root node is the state of its child.

@@ -19,28 +19,40 @@ function BehaviourTree(definition, board) {
             caption: () => "ROOT",
             type: "root", 
             children: [], 
-            wrappingBehaviour: ASTNodeWrappingBehaviour.SINGLE 
+            wrappingBehaviour: ASTNodeWrappingBehaviour.SINGLE,
+            createNodeInstance: function () { 
+                return new Root(this.children[0].createNodeInstance());
+            }
         }),
         "SELECTOR": () => ({
             uid: getUid(),
             caption: () => "SELECTOR",
             type: "selector", 
             children: [], 
-            wrappingBehaviour: ASTNodeWrappingBehaviour.MULTIPLE
+            wrappingBehaviour: ASTNodeWrappingBehaviour.MULTIPLE,
+            createNodeInstance: function () { 
+                return new Selector(this.children.map((child) => child.createNodeInstance()));
+            }
         }),
         "SEQUENCE": () => ({
             uid: getUid(),
             caption: () => "SEQUENCE",
             type: "sequence", 
             children: [], 
-            wrappingBehaviour: ASTNodeWrappingBehaviour.MULTIPLE
+            wrappingBehaviour: ASTNodeWrappingBehaviour.MULTIPLE,
+            createNodeInstance: function () { 
+                return new Sequence(this.children.map((child) => child.createNodeInstance()));
+            }
         }),
         "CONDITION": () => ({
             uid: getUid(),
             caption: function() { return this["function"]; },
             type: "condition", 
             wrappingBehaviour: ASTNodeWrappingBehaviour.NONE, 
-            function: "" 
+            function: "",
+            createNodeInstance: function () { 
+                return new Condition(this["function"]);
+            }
         }),
         "DECORATOR": () => ({
             uid: getUid(),
@@ -56,7 +68,10 @@ function BehaviourTree(definition, board) {
             type: "action", 
             wrappingBehaviour: ASTNodeWrappingBehaviour.NONE, 
             function: "",
-            arguments: []
+            arguments: [],
+            createNodeInstance: function () {
+                return new Action(this["function"]);
+            }
         })
     };
 
@@ -64,6 +79,11 @@ function BehaviourTree(definition, board) {
      * The root AST node.
      */
     let rootASTNode;
+
+    /**
+     * The root BT tree node.
+     */
+    let rootBTNode;
 
     /**
      * Generate a Uid. 
@@ -84,12 +104,20 @@ function BehaviourTree(definition, board) {
 
         // Create the BT AST from tokens.
         rootASTNode = this.createRootASTNode(tokens);
+
+        // Convert the AST to our actual tree.
+        rootBTNode = rootASTNode.createNodeInstance();
     };
 
     /**
      * Get the root AST node.
      */
     this.getRootASTNode = () => rootASTNode;
+
+    /**
+     * Get the root BT node.
+     */
+    this.getRootBTNode = () => rootBTNode;
 
     /**
      * Parse the BT tree definition into an array of raw tokens.
