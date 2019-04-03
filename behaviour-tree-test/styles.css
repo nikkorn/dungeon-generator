@@ -89,18 +89,18 @@ html, body {
 }
 
 .tree-view-node.running {
-    border-style: solid;
-    border-color: rgb(255, 255, 255);
+    background-color: #ffffff;
+    color: #4c4c4c
 }
 
 .tree-view-node.failed {
-    border-style: solid;
-    border-color: rgb(206, 4, 4);
+    background-color: rgb(131, 0, 0);
+    color: #ffffff
 }
 
 .tree-view-node.succeeded {
-    border-style: solid;
-    border-color: rgb(52, 250, 2);
+    background-color: rgb(29, 145, 0);
+    color: #ffffff
 }
 
 .tree-view-icon img {
