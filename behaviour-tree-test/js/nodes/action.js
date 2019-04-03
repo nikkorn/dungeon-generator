@@ -23,7 +23,11 @@ function Action(uid, actionFunction) {
         if (state === NodeState.READY || state === NodeState.RUNNING) {
             // Call the action function to determine the state of this node, but it must exist in the blackboard.
             if (typeof board[actionFunction] === "function") {
-                state = board[actionFunction]();
+                // Set the state to running, it will stay in this state until either the success or fail callback is invoked via the action call.
+                state = NodeState.RUNNING;
+
+                // Call the action function, passing success/fail callbacks that the user can call to succeed/fail the action.
+                board[actionFunction](() => state = NodeState.SUCCEEDED, () => state = NodeState.FAILED);
             } else {
                 throw `cannot update action node as function '${actionFunction}' is not defined in the blackboard`;
             }

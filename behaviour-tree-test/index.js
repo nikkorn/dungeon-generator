@@ -37,8 +37,8 @@ definitionTextArea.innerHTML =
 // Set a test blackboard in the blackboard text area.
 blackboardTextArea.innerHTML = 
 `PlayerIsInView: () => false,
-Wait: () => 1,
-WalkToPatrolDestination: () => 2
+Wait: (succeed, fail) => {},
+WalkToPatrolDestination: (succeed, fail) => succeed()
 `;
 
 /**
