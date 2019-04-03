@@ -1,9 +1,10 @@
 /**
  * A Root node.
  * The root node will have a single child.
+ * @param uid The unique node it.
  * @param child The child node. 
  */
-function Root(child) {
+function Root(uid, child) {
     /**
      * The node state.
      */
@@ -20,11 +21,7 @@ function Root(child) {
 
         // If the child has never been updated or is running then we will need to update it now.
         if (child.getState() === NodeState.READY || child.getState() === NodeState.RUNNING) {
-            try {
-                child.update(board);
-            } catch (exception) {
-                throw `TreeUpdateError: ${exception}`;
-            }
+            child.update(board);
         }
 
         // The state of the root node is the state of its child.
@@ -38,6 +35,26 @@ function Root(child) {
      * Gets the state of the node.
      */
     this.getState = () => state;
+
+    /**
+     * Gets the name of the node.
+     */
+    this.getName = () => "ROOT";
+
+    /**
+     * Gets the state of the node.
+     */
+    this.getChildren = () => [child];
+
+    /**
+     * Gets the type of the node.
+     */
+    this.getType = () => "root";
+
+    /**
+     * Gets the unique id of the node.
+     */
+    this.getUid = () => uid;
 
     /**
      * Reset the state of the node.

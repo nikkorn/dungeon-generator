@@ -1,9 +1,10 @@
 /**
  * A SEQUENCE node.
  * The child nodes are executed in sequence until one fails or all succeed.
+ * @param uid The unique node it.
  * @param children The child nodes. 
  */
-function Sequence(children) {
+function Sequence(uid, children) {
     /**
      * The node state.
      */
@@ -68,6 +69,26 @@ function Sequence(children) {
      * Gets the state of the node.
      */
     this.getState = () => state;
+
+    /**
+     * Gets the name of the node.
+     */
+    this.getName = () => "SEQUENCE";
+
+    /**
+     * Gets the state of the node.
+     */
+    this.getChildren = () => children;
+
+    /**
+     * Gets the type of the node.
+     */
+    this.getType = () => "sequence";
+
+    /**
+     * Gets the unique id of the node.
+     */
+    this.getUid = () => uid;
 
     /**
      * Reset the state of the node.

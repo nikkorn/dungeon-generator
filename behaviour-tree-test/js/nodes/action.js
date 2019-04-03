@@ -1,9 +1,10 @@
 /**
  * An Action node.
  * This represents an immediate or ongoing state of behaviour.
- * @param actionFunction The action function. 
+ * @param uid The unique node it.
+ * @param actionFunction The action function.
  */
-function Action(actionFunction) {
+function Action(uid, actionFunction) {
     /**
      * The node state.
      */
@@ -36,6 +37,26 @@ function Action(actionFunction) {
      * Gets the state of the node.
      */
     this.getState = () => state;
+
+    /**
+     * Gets the name of the node.
+     */
+    this.getName = () => actionFunction;
+
+    /**
+     * Gets the state of the node.
+     */
+    this.getChildren = () => null;
+
+    /**
+     * Gets the type of the node.
+     */
+    this.getType = () => "action";
+
+    /**
+     * Gets the unique id of the node.
+     */
+    this.getUid = () => uid;
 
     /**
      * Reset the state of the node.

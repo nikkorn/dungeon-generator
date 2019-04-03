@@ -41,9 +41,6 @@ blackboardTextArea.innerHTML = "PlayerIsInView: () => true";
  * Handles definition updates.
  */
 function onDefinitionUpdate() {
-    // Clear away the existing tree view.
-    treeViewWrapper.innerHTML = "";
-
     // Create the blackboard.
     // In this page the blackboard will be kept up-to-date with changes made to the blackboard text area. 
     blackboard = {};
@@ -70,26 +67,8 @@ function onDefinitionUpdate() {
         return;
     }
 
-    const nodes = [];
-
-    const processNode = (node, parentUid) => {
-        // Push the current node into the nodes array.
-        nodes.push({ 
-            id: node.uid,
-            type: node.type, 
-            caption: node.caption(), 
-            parent: parentUid 
-        });
-
-        // Process each of the nodes children.
-        (node.children || []).forEach((child) => processNode(child, node.uid));
-    };
-
-    // Convert the nested AST node structure into an array of nodes with which to build the tree view.
-    processNode(behaviourTree.getRootASTNode(), null);
-
     // Build the tree view.
-    buildTreeView(nodes);
+    buildTreeView();
 };
 
 /**
@@ -119,9 +98,8 @@ function onTickButtonPressed() {
     // Update the BT blackboard.
     onBlackboardUpdate();
 
-    // Update the behaviour tree.
-    // TODO Eventually replace with call like 'behaviourTree.update();'
-    behaviourTree.getRootBTNode().update(blackboard);
+    // Step the behaviour tree.
+    behaviourTree.step();
 };
 
 /**
@@ -135,7 +113,43 @@ function onResetButtonPressed() {
 /**
  * Build the tree view.
  */
-function buildTreeView(nodes) {
+function buildTreeView() {
+    // Clear away the existing tree view.
+    treeViewWrapper.innerHTML = "";
+
+    const nodes = [];
+
+    const processNode = (node, parentUid) => {
+        // A function to convert a node state to a string.
+        const convertNodeStateToString = (state) => {
+            switch (state) {
+                case NodeState.RUNNING:
+                    return "running";
+                case NodeState.SUCCEEDED:
+                    return "succeeded";
+                case NodeState.FAILED:
+                    return "failed";
+                default:
+                    return "ready";
+            }
+        };
+
+        // Push the current node into the nodes array.
+        nodes.push({ 
+            id: node.getUid(),
+            type: node.getType(), 
+            caption: node.getName(),
+            state: convertNodeStateToString(node.getState()),
+            parent: parentUid 
+        });
+
+        // Process each of the nodes children.
+        (node.getChildren() || []).forEach((child) => processNode(child, node.getUid()));
+    };
+
+    // Convert the nested AST node structure into an array of nodes with which to build the tree view.
+    processNode(behaviourTree.getRootNode(), null);
+
     // Build the tree view.
     var options = {
         data: nodes,
@@ -146,7 +160,7 @@ function buildTreeView(nodes) {
         definition: {
             default: {
                 tooltip: function (node) { return node.item.caption },
-                template: (node) => `<div class='tree-view-node'>
+                template: (node) => `<div class='tree-view-node ${node.item.state}'>
                 <div class='tree-view-icon tree-view-icon-${node.item.type}'>
                 <img src="resources/${node.item.type}.png">
                 </div>

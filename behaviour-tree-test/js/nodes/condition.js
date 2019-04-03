@@ -1,9 +1,10 @@
 /**
  * A Condition node.
  * This acts as a guard and will succeed or fail immediately based on a board predicate, without moving to the 'RUNNING' state.
+ * @param uid The unique node it.
  * @param conditionFunction The condition function. 
  */
-function Condition(conditionFunction) {
+function Condition(uid, conditionFunction) {
     /**
      * The node state.
      */
@@ -33,6 +34,26 @@ function Condition(conditionFunction) {
      * Gets the state of the node.
      */
     this.getState = () => state;
+
+    /**
+     * Gets the name of the node.
+     */
+    this.getName = () => conditionFunction;
+
+    /**
+     * Gets the state of the node.
+     */
+    this.getChildren = () => null;
+
+    /**
+     * Gets the type of the node.
+     */
+    this.getType = () => "condition";
+
+    /**
+     * Gets the unique id of the node.
+     */
+    this.getUid = () => uid;
 
     /**
      * Reset the state of the node.

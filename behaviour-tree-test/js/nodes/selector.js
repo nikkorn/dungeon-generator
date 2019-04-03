@@ -1,9 +1,10 @@
 /**
  * A SELECTOR node.
  * The child nodes are executed in sequence until one succeeds or all fail.
+ * @param uid The unique node it.
  * @param children The child nodes. 
  */
-function Selector(children) {
+function Selector(uid, children) {
     /**
      * The node state.
      */
@@ -68,6 +69,26 @@ function Selector(children) {
      * Gets the state of the node.
      */
     this.getState = () => state;
+
+    /**
+     * Gets the name of the node.
+     */
+    this.getName = () => "SELECTOR";
+
+    /**
+     * Gets the state of the node.
+     */
+    this.getChildren = () => children;
+
+    /**
+     * Gets the type of the node.
+     */
+    this.getType = () => "selector";
+
+    /**
+     * Gets the unique id of the node.
+     */
+    this.getUid = () => uid;
 
     /**
      * Reset the state of the node.
