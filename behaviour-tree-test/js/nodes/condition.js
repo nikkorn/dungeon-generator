@@ -18,8 +18,12 @@ function Condition(conditionFunction) {
         // Get the pre-update node state.
         const initialState = state;
 
-        // Call the condition function to determine the state of this node.
-        state = !!(board[conditionFunction]()) ? NodeState.SUCCEEDED : NodeState.FAILED;
+        // Call the condition function to determine the state of this node, but it must exist in the blackboard.
+        if (typeof board[conditionFunction] === "function") {
+            state = !!(board[conditionFunction]()) ? NodeState.SUCCEEDED : NodeState.FAILED;
+        } else {
+            throw `cannot update condition node as function '${conditionFunction}' is not defined in the blackboard`;
+        }
 
         // Return whether the state of this node has changed.
         return state !== initialState;
