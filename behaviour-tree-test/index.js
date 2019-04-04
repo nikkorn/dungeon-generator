@@ -15,22 +15,22 @@ let blackboard;
 
 // Set a test definition.
 definitionTextArea.innerHTML =
-`ROOT {
-    SELECTOR {
-        SEQUENCE {
-            CONDITION:PlayerIsInView
-            ACTION:ShoutAtPlayer
-            SEQUENCE {
-                CONDITION:PlayerIsInAttackDistance
-                ACTION:AttackPlayer
-                ACTION:Wait
+`root {
+    selector {
+        sequence {
+            condition:PlayerIsInView
+            action:ShoutAtPlayer
+            sequence {
+                condition:PlayerIsInAttackDistance
+                action:AttackPlayer
+                action:Wait
             }
-            ACTION:FollowPlayer
+            action:FollowPlayer
         }
-        SEQUENCE {
-            ACTION:WalkToPatrolDestination
-            DECORATOR:AlwaysResume {
-                ACTION:Wait
+        sequence {
+            action:WalkToPatrolDestination
+            decorator:AlwaysResume {
+                action:Wait
             }
         }
     }

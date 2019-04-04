@@ -27,6 +27,12 @@
                 uid: getUid(),
                 type: "root",
                 children: [],
+                validate: function () {
+                    // A root node must have a single node.
+                    if (this.children.length !== 1) {
+                        throw "a root node must have a single child";
+                    }
+                },
                 createNodeInstance: function () { 
                     return new Root(this.uid, this.children[0].createNodeInstance());
                 }
@@ -34,7 +40,13 @@
             "SELECTOR": () => ({
                 uid: getUid(),
                 type: "selector",
-                children: [], 
+                children: [],
+                validate: function () {
+                    // A selector node must have at least a single node.
+                    if (this.children.length < 1) {
+                        throw "a selector node must have at least a single child";
+                    }
+                },
                 createNodeInstance: function () { 
                     return new Selector(this.uid, this.children.map((child) => child.createNodeInstance()));
                 }
@@ -43,6 +55,12 @@
                 uid: getUid(),
                 type: "sequence",
                 children: [], 
+                validate: function () {
+                    // A sequence node must have at least a single node.
+                    if (this.children.length < 1) {
+                        throw "a sequence node must have at least a single child";
+                    }
+                },
                 createNodeInstance: function () { 
                     return new Sequence(this.uid, this.children.map((child) => child.createNodeInstance()));
                 }
@@ -51,6 +69,7 @@
                 uid: getUid(),
                 type: "condition",
                 function: "",
+                validate: function () {},
                 createNodeInstance: function () { 
                     return new Condition(this.uid, this["function"]);
                 }
@@ -59,7 +78,13 @@
                 uid: getUid(),
                 type: "decorator",
                 function: "",
-                children: [], 
+                children: [],
+                validate: function () {
+                    // A decorator node must have a single node.
+                    if (this.children.length !== 1) {
+                        throw "a decorator node must have a single child";
+                    }
+                },
                 createNodeInstance: function () { 
                     return new Decorator(this.uid, this["function"], this.children[0].createNodeInstance());
                 }
@@ -69,6 +94,7 @@
                 type: "action",
                 function: "",
                 arguments: [],
+                validate: function () {},
                 createNodeInstance: function () {
                     return new Action(this.uid, this["function"]);
                 }
@@ -97,8 +123,14 @@
             // Convert the definition into some tokens.
             const tokens = this._parseDefinition();
 
-            // Create the BT AST from tokens.
-            const rootASTNode = this._createRootASTNode(tokens);
+            // Try to create the behaviour tree AST from tokens, this could fail if the definition is invalid.
+            let rootASTNode;
+            try {
+                rootASTNode = this._createRootASTNode(tokens);
+            } catch (exception) {
+                // There was an issue in trying to parse the tree definition.
+                throw `TreeParseError: ${exception}`;
+            }
 
             // Convert the AST to our actual tree.
             this._rootNode = rootASTNode.createNodeInstance();
@@ -128,17 +160,17 @@
         this._createRootASTNode = function(tokens) {
             // There must be at least 3 tokens for the tree definition to be valid. 'ROOT', '{' and '}'.
             if (tokens.length < 3) {
-                throw "ParseError: Invalid token count";
+                throw "invalid token count";
             }
 
             // The first token MUST be our 'ROOT' token.
-            if (tokens[0] !== "ROOT") {
-                throw "ParseError: Initial node must be the 'ROOT' node";
+            if (tokens[0].toUpperCase() !== "ROOT") {
+                throw "initial node must be the 'ROOT' node";
             }
 
             // We should have a matching number of '{' and '}' tokens. If not, then there are scopes that have not been properly closed.
             if (tokens.filter((token) => token === "{").length !== tokens.filter((token) => token === "}").length) {
-                throw "ParseError: Scope character mismatch";
+                throw "scope character mismatch";
             }
 
             // Helper function to pop the next raw token off of the stack and throw an error if it wasn't the expected one.
@@ -147,13 +179,13 @@
                 const popped = tokens.shift();
 
                 // Was it the expected token?
-                if (popped !== expected) {
-                    throw "ParseError: Unexpected token found on the stack. Expected '" + expected + "' but got '" + popped + "'"; 
+                if (popped.toUpperCase() !== expected.toUpperCase()) {
+                    throw "unexpected token found on the stack. Expected '" + expected + "' but got '" + popped + "'"; 
                 }
             };
 
             // Throw the 'ROOT' and opening '{' token away.
-            popAndCheck("ROOT");
+            popAndCheck("root");
             popAndCheck("{");
 
             // Create the root node.
@@ -170,7 +202,7 @@
                 let node;
 
                 // How we create the next AST token depends on the current raw token value.
-                switch (token) {
+                switch (token.toUpperCase()) {
                     case "SELECTOR": 
                         // Create a SELECTOR AST node.
                         node = ASTNodeFactories.SELECTOR();
@@ -221,6 +253,11 @@
                         // A ':' character splits the 'DECORATOR' token and the target function name token.
                         popAndCheck(":");
 
+                        // If the next token is a '}' on '{'then there is a missing decorator function token.
+                        if (tokens[0] === "}" || tokens[0] === "{") {
+                            throw "missing decorator function";
+                        }
+
                         // The next token should be the name of the decorator function. 
                         node.function = tokens.shift();
 
@@ -240,6 +277,11 @@
                         // A ':' character splits the 'ACTION' token and the target function name token.
                         popAndCheck(":");
 
+                        // If the next token is a '}' then there is a missing action function token.
+                        if (tokens[0] === "}") {
+                            throw "missing action function";
+                        }
+
                         // The next token should be the name of the action function. 
                         node.function = tokens.shift();
                         break;
@@ -250,9 +292,19 @@
                         break;
 
                     default:
-                        throw "ParseError: Unexpected token: " + token
+                        throw "unexpected token: " + token
                 }
             }
+
+            // Validate each of the nodes.
+            const validateASTNode = (node) => {
+                // Validate the node.
+                node.validate();
+
+                // Validate each child of the node.
+                (node.children ||[]).forEach((child) => validateASTNode(child));
+            };
+            validateASTNode(rootASTNode);
 
             // Return the root BT AST node.
             return rootASTNode;
