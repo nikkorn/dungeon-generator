@@ -25,22 +25,34 @@ definitionTextArea.innerHTML =
                 action:UnlockDoor
                 action:OpenDoor
             }
-            action:SmashDoor
+            sequence {
+                lotto [1,2] {
+                    action:ScreamLoudly
+                    action:MutterAngrily
+                }
+                action:SmashDoor
+            }
         }
         action:WalkThroughDoor
-        action:CloseDoor
+        selector {
+            condition:DoorIsSmashed
+            action:CloseDoor
+        }
     }
 }`;
 
 // Set a test blackboard in the blackboard text area.
 blackboardTextArea.innerHTML = 
 `WalkToDoor: (succeed, fail) => { succeed() },
-DoorIsOpen: () => true, 
-OpenDoor: (succeed, fail) => {},
-UnlockDoor: (succeed, fail) => {},
-SmashDoor: (succeed, fail) => {},
-WalkThroughDoor: (succeed, fail) => {},
-CloseDoor: (succeed, fail) => {}`;
+DoorIsOpen: () => false,
+DoorIsSmashed: () => true,  
+OpenDoor: (succeed, fail) => { fail() },
+UnlockDoor: (succeed, fail) => { fail() },
+SmashDoor: (succeed, fail) => { succeed() },
+WalkThroughDoor: (succeed, fail) => { succeed() },
+CloseDoor: (succeed, fail) => { succeed() },
+ScreamLoudly: (succeed, fail) => { succeed() },
+MutterAngrily: (succeed, fail) => { succeed() }`;
 
 /**
  * Handles definition updates.
