@@ -65,6 +65,21 @@
                     return new Sequence(this.uid, this.children.map((child) => child.createNodeInstance()));
                 }
             }),
+            "LOTTO": () => ({
+                uid: getUid(),
+                type: "lotto",
+                children: [],
+                tickets: [], 
+                validate: function () {
+                    // A lotto node must have at least a single node.
+                    if (this.children.length < 1) {
+                        throw "a lotto node must have at least a single child";
+                    }
+                },
+                createNodeInstance: function () { 
+                    return new Lotto(this.uid, this.tickets, this.children.map((child) => child.createNodeInstance()));
+                }
+            }),
             "CONDITION": () => ({
                 uid: getUid(),
                 type: "condition",
@@ -142,7 +157,9 @@
             // Firstly, create a copy of the raw definition.
             let cleansedDefinition = definition;
 
-            // Add some space around '[', ']' and ',' so that they can be plucked out easier as individual tokens.
+            // Add some space around various important characters so that they can be plucked out easier as individual tokens.
+            cleansedDefinition = cleansedDefinition.replace(/\{/g, " { ");
+            cleansedDefinition = cleansedDefinition.replace(/\}/g, " } ");
             cleansedDefinition = cleansedDefinition.replace(/\]/g, " ] ");
             cleansedDefinition = cleansedDefinition.replace(/\[/g, " [ ");
             cleansedDefinition = cleansedDefinition.replace(/\,/g, " , ");
@@ -183,6 +200,50 @@
                 }
             };
 
+            // Helper function to pull an argument list off of the stack.
+            const getArguments = (argumentValidator, validationFailedMessage) => {
+                // Any lists of arguments will always be wrapped in '[]'. so we are looking for an opening
+                popAndCheck("[");
+
+                const argumentListTokens = [];
+                const argumentList = [];
+
+                // Grab all tokens between the '[' and ']'.
+                while (tokens.length && tokens[0] !== "]") {
+                    // The next token is part of our arguments list.
+                    argumentListTokens.push(tokens.shift());
+                }
+
+                // Validate the order of the argument tokens. Each token must either be a ',' or a single argument that satisfies the validator.
+                argumentListTokens.forEach((token, index) => {
+                    // Get whether this token should be an actual argument.
+                    const shouldBeArgumentToken = !(index & 1);
+
+                    // If the current token should be an actual argument then validate it,otherwise it should be a ',' token.
+                    if (shouldBeArgumentToken) {
+                        // Try to validate the argument.
+                        if (!argumentValidator(token)) {
+                            throw validationFailedMessage;
+                        }
+
+                        // This is a valid argument!
+                        argumentList.push(token);
+                    } else {
+                        // The current token should be a ',' token.
+                        if (token !== ",") {
+                            throw `invalid argument list, expected ',' but got '${token}'`;
+                        }
+                    }
+
+                });
+
+                // The arguments list should terminate with a ']' token.
+                popAndCheck("]");
+
+                // Return the argument list.
+                return argumentList;
+            }
+
             // Throw the 'ROOT' and opening '{' token away.
             popAndCheck("root");
             popAndCheck("{");
@@ -221,6 +282,25 @@
 
                         // Push the SEQUENCE node into the current scope.
                         stack[stack.length-1].push(node);
+
+                        popAndCheck("{");
+
+                        // The new scope is that of the new SEQUENCE nodes children.
+                        stack.push(node.children);
+                        break;
+
+                    case "LOTTO":
+                        // Create a SEQUENCE AST node.
+                        node = ASTNodeFactories.LOTTO();
+
+                        // Push the LOTTO node into the current scope.
+                        stack[stack.length-1].push(node);
+
+                        // If the next token is a '[' character then some ticket counts have been defined as arguments.
+                        if (tokens[0] === "[") {
+                            // Get the ticket count arguments, each argument must be a number.
+                            node.tickets = getArguments((arg) => (!isNaN(arg)) && parseFloat(arg, 10) === parseInt(arg, 10), "lotto node ticket counts must be integer values");
+                        }
 
                         popAndCheck("{");
 

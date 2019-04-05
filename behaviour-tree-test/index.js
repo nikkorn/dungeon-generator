@@ -32,6 +32,10 @@ definitionTextArea.innerHTML =
             flip {
                 action:Wait
             }
+            lotto [1,5] {
+                action:Dance
+                action:Sleep
+            }
         }
     }
 }`;
@@ -39,7 +43,9 @@ definitionTextArea.innerHTML =
 // Set a test blackboard in the blackboard text area.
 blackboardTextArea.innerHTML = 
 `PlayerIsInView: () => false,
-Wait: (succeed, fail) => { fail() },
+Wait: (succeed, fail) => { },
+Dance: (succeed, fail) => { },
+Sleep: (succeed, fail) => { },
 WalkToPatrolDestination: (succeed, fail) => succeed(),
 AlwaysResume: (succeed, fail, resume, reset, state) => { resume() }
 `;
