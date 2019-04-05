@@ -74,19 +74,18 @@
                     return new Condition(this.uid, this["function"]);
                 }
             }),
-            "DECORATOR": () => ({
+            "FLIP": () => ({
                 uid: getUid(),
-                type: "decorator",
-                function: "",
+                type: "flip",
                 children: [],
                 validate: function () {
-                    // A decorator node must have a single node.
+                    // A flip node must have a single node.
                     if (this.children.length !== 1) {
-                        throw "a decorator node must have a single child";
+                        throw "a flip node must have a single child";
                     }
                 },
                 createNodeInstance: function () { 
-                    return new Decorator(this.uid, this["function"], this.children[0].createNodeInstance());
+                    return new Flip(this.uid, this.children[0].createNodeInstance());
                 }
             }),
             "ACTION": () => ({
@@ -243,27 +242,16 @@
                         node.function = tokens.shift();
                         break;
 
-                    case "DECORATOR":
-                        // Create a DECORATOR AST node.
-                        node = ASTNodeFactories.DECORATOR();
+                    case "FLIP":
+                        // Create a FLIP AST node.
+                        node = ASTNodeFactories.FLIP();
 
-                        // Push the DECORATOR node into the current scope.
+                        // Push the Flip node into the current scope.
                         stack[stack.length-1].push(node);
-
-                        // A ':' character splits the 'DECORATOR' token and the target function name token.
-                        popAndCheck(":");
-
-                        // If the next token is a '}' on '{'then there is a missing decorator function token.
-                        if (tokens[0] === "}" || tokens[0] === "{") {
-                            throw "missing decorator function";
-                        }
-
-                        // The next token should be the name of the decorator function. 
-                        node.function = tokens.shift();
 
                         popAndCheck("{");
 
-                        // The new scope is that of the new DECORATOR nodes children.
+                        // The new scope is that of the new FLIP nodes children.
                         stack.push(node.children);
                         break;
 

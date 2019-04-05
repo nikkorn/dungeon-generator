@@ -29,7 +29,7 @@ definitionTextArea.innerHTML =
         }
         sequence {
             action:WalkToPatrolDestination
-            decorator:AlwaysResume {
+            flip {
                 action:Wait
             }
         }
