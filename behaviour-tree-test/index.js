@@ -16,43 +16,31 @@ let blackboard;
 // Set a test definition.
 definitionTextArea.innerHTML =
 `root {
-    selector {
-        sequence {
-            condition:PlayerIsInView
-            action:ShoutAtPlayer
+    sequence {
+        action:WalkToDoor
+        selector {
+        condition:DoorIsOpen
+            action:OpenDoor
             sequence {
-                condition:PlayerIsInAttackDistance
-                action:AttackPlayer
-                action:Wait
+                action:UnlockDoor
+                action:OpenDoor
             }
-            action:FollowPlayer
+            action:SmashDoor
         }
-        sequence {
-            action:WalkToPatrolDestination
-            flip {
-                action:Wait
-            }
-            lotto [5,2,2,1] {
-                action:Sleep
-                action:Dance
-                action:Sing
-                action:Explode
-            }
-        }
+        action:WalkThroughDoor
+        action:CloseDoor
     }
 }`;
 
 // Set a test blackboard in the blackboard text area.
 blackboardTextArea.innerHTML = 
-`PlayerIsInView: () => false,
-Wait: (succeed, fail) => {},
-Dance: (succeed, fail) => {},
-Sleep: (succeed, fail) => {},
-Sing: (succeed, fail) => {},
-Explode: (succeed, fail) => {},
-WalkToPatrolDestination: (succeed, fail) => succeed(),
-AlwaysResume: (succeed, fail, resume, reset, state) => { resume() }
-`;
+`WalkToDoor: (succeed, fail) => { succeed() },
+DoorIsOpen: () => true, 
+OpenDoor: (succeed, fail) => {},
+UnlockDoor: (succeed, fail) => {},
+SmashDoor: (succeed, fail) => {},
+WalkThroughDoor: (succeed, fail) => {},
+CloseDoor: (succeed, fail) => {}`;
 
 /**
  * Handles definition updates.
