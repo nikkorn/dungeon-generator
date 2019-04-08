@@ -2,11 +2,21 @@
     "use strict";
 
     /**
+	 * The states.
+	 */
+	const MistreevousState = {
+        READY: Symbol("mistreevous.ready"),
+        RUNNING: Symbol("mistreevous.running"),
+        SUCCEEDED: Symbol("mistreevous.succeeded"),
+        FAILED: Symbol("mistreevous.failed")
+    };
+
+    /**
      * The behaviour tree.
      * @param definition The behaviour tree definition.
      * @param board The behaviour tree board.
      */
-	function BehaviourTree (definition, board) {
+	const MistreevousTree = function(definition, board) {
 		
         /**
          * Generate a Uid.
@@ -159,7 +169,7 @@
         this._rootNode;
 
         /**
-         * BehaviourTree init logic.
+         * Mistreevous init logic.
          */
         this._init = function() {
             // Convert the definition into some tokens.
@@ -430,21 +440,21 @@
             return rootASTNode;
         };
 
-        // Call BehaviourTree init logic.
+        // Call Mistreevous init logic.
         this._init();
     };
     
     /**
 	 *  Get the root node.
 	 */
-	BehaviourTree.prototype.getRootNode = function () {
+	MistreevousTree.prototype.getRootNode = function () {
 		return this._rootNode;
 	};
 
 	/**
 	 * Step the tree.
 	 */
-	BehaviourTree.prototype.step = function () {
+	MistreevousTree.prototype.step = function () {
         try {
             this._rootNode.update(this._blackboard);
         } catch (exception) {
@@ -455,14 +465,14 @@
 	/**
 	 * Reset the tree from the root.
 	 */
-	BehaviourTree.prototype.reset = function () {
+	MistreevousTree.prototype.reset = function () {
         this._rootNode.reset();
 	};
 
-	// Export BehaviourTree.
+	// Export Mistreevous.
 	if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') 
 	{
-		module.exports = BehaviourTree;
+		module.exports = { MistreevousState, MistreevousTree };
 	}
 	else 
 	{
@@ -470,12 +480,13 @@
 		{
 			define([], function() 
 			{
-				return BehaviourTree;
+				return { MistreevousState, MistreevousTree };
 			});
 		}
 		else 
 		{
-			window.BehaviourTree = BehaviourTree;
+            window.MistreevousState = MistreevousState;
+			window.MistreevousTree = MistreevousTree;
 		}
 	}
 })();

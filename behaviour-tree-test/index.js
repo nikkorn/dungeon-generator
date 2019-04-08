@@ -56,13 +56,13 @@ ScreamLoudly: (succeed, fail) => { succeed() },
 MutterAngrily: (succeed, fail) => { succeed() },
 
 SomeNewTask: () => ({
-    start: (board) => {
+    onStart: (entity) => {
 
     },
-    update: (board) => {
+    onUpdate: (entity) => {
 
     },
-    end: (board) => {
+    onFinish: (entity) => {
 
     }
 })
@@ -82,7 +82,7 @@ function onDefinitionUpdate() {
 
     try {
         // Try to create the behaviour tree.
-        behaviourTree = new BehaviourTree(definitionTextArea.value, blackboard);
+        behaviourTree = new MistreevousTree(definitionTextArea.value, blackboard);
 
         // We created the behaviour tree without an issue.
         resultTextArea.innerHTML             = "OK";
