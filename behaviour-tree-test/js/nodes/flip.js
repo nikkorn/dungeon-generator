@@ -8,7 +8,7 @@ function Flip(uid, child) {
     /**
      * The node state.
      */
-    let state = NodeState.READY;
+    let state = Mistreevous.State.READY;
    
     /**
      * Update the node and get whether the node state has changed.
@@ -20,25 +20,25 @@ function Flip(uid, child) {
         const initialState = state;
 
         // If the child has never been updated or is running then we will need to update it now.
-        if (child.getState() === NodeState.READY || child.getState() === NodeState.RUNNING) {
+        if (child.getState() === Mistreevous.State.READY || child.getState() === Mistreevous.State.RUNNING) {
             child.update(board);
         }
 
         // The state of this node will depend in the state of its child.
         switch (child.getState()) {
-            case NodeState.RUNNING:
-                state = NodeState.RUNNING;
+            case Mistreevous.State.RUNNING:
+                state = Mistreevous.State.RUNNING;
                 break;
 
-            case NodeState.SUCCEEDED:
-                state = NodeState.FAILED;
+            case Mistreevous.State.SUCCEEDED:
+                state = Mistreevous.State.FAILED;
                 break;
 
-            case NodeState.FAILED:
-                state = NodeState.SUCCEEDED;
+            case Mistreevous.State.FAILED:
+                state = Mistreevous.State.SUCCEEDED;
                 break;
             default:
-                state = NodeState.READY;
+                state = Mistreevous.State.READY;
         }
 
         // Return whether the state of this node has changed.
@@ -75,7 +75,7 @@ function Flip(uid, child) {
      */
     this.reset = () => {
         // Reset the state of this node.
-        state = NodeState.READY;
+        state = Mistreevous.State.READY;
 
         // Reset the child node.
         child.reset();

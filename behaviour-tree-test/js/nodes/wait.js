@@ -9,7 +9,7 @@ function Wait(uid, duration, longestDuration) {
     /**
      * The node state.
      */
-    let state = NodeState.READY;
+    let state = Mistreevous.State.READY;
 
     /** 
      * The time in milliseconds at which this node was first updated.
@@ -31,7 +31,7 @@ function Wait(uid, duration, longestDuration) {
         const initialState = state;
 
         // If this node is in the READY state then we need to set the initial update time.
-        if (state === NodeState.READY) {
+        if (state === Mistreevous.State.READY) {
             // Set the initial update time.
             initialUpdateTime = new Date().getTime();
 
@@ -40,13 +40,13 @@ function Wait(uid, duration, longestDuration) {
             waitDuration = longestDuration ? Math.floor(Math.random() * (longestDuration - duration + 1) + duration) : duration;
 
             // The node is now running until we finish waiting.
-            state = NodeState.RUNNING;
+            state = Mistreevous.State.RUNNING;
         }
 
         // Have we waited long enough?
         if (new Date().getTime() >= (initialUpdateTime + waitDuration)) {
             // We have finished waiting!
-            state = NodeState.SUCCEEDED;
+            state = Mistreevous.State.SUCCEEDED;
         }
 
         // Return whether the state of this node has changed.
@@ -83,6 +83,6 @@ function Wait(uid, duration, longestDuration) {
      */
     this.reset = () => {
         // Reset the state of this node.
-        state = NodeState.READY;
+        state = Mistreevous.State.READY;
     };
 };

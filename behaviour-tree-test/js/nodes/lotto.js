@@ -10,7 +10,7 @@ function Lotto(uid, tickets, children) {
     /**
      * The node state.
      */
-    let state = NodeState.READY;
+    let state = Mistreevous.State.READY;
 
     /**
      * The winning child node.
@@ -83,7 +83,7 @@ function Lotto(uid, tickets, children) {
         const initialState = state;
 
         // If this node is in the READY state then we need to pick a winning child node.
-        if (state === NodeState.READY) {
+        if (state === Mistreevous.State.READY) {
             // Create a lotto draw.
             const lottoDraw = new LottoDraw();
 
@@ -95,7 +95,7 @@ function Lotto(uid, tickets, children) {
         }
 
         // If the winning child has never been updated or is running then we will need to update it now.
-        if (winningChild.getState() === NodeState.READY || winningChild.getState() === NodeState.RUNNING) {
+        if (winningChild.getState() === Mistreevous.State.READY || winningChild.getState() === Mistreevous.State.RUNNING) {
             winningChild.update(board);
         }
 
@@ -136,7 +136,7 @@ function Lotto(uid, tickets, children) {
      */
     this.reset = () => {
         // Reset the state of this node.
-        state = NodeState.READY;
+        state = Mistreevous.State.READY;
 
         // Reset each child node.
         children.forEach((child) => child.reset());

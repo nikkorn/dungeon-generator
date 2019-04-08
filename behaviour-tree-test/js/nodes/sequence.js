@@ -8,7 +8,7 @@ function Sequence(uid, children) {
     /**
      * The node state.
      */
-    let state = NodeState.READY;
+    let state = Mistreevous.State.READY;
    
     /**
      * Update the node and get whether the node state has changed.
@@ -22,17 +22,17 @@ function Sequence(uid, children) {
         // Iterate over all of the children of this node.
         for (const child of children) {
             // If the child has never been updated or is running then we will need to update it now.
-            if (child.getState() === NodeState.READY || child.getState() === NodeState.RUNNING) {
+            if (child.getState() === Mistreevous.State.READY || child.getState() === Mistreevous.State.RUNNING) {
                 child.update(board);
             }
 
             // If the current child has a state of 'SUCCEEDED' then we should move on to the next child.
-            if (child.getState() === NodeState.SUCCEEDED) {
+            if (child.getState() === Mistreevous.State.SUCCEEDED) {
                 // Find out if the current child is the last one in the sequence.
                 // If it is then this sequence node has also succeeded.
                 if (children.indexOf(child) === children.length - 1) {
                     // This node is a 'SUCCEEDED' node.
-                    state = NodeState.SUCCEEDED;
+                    state = Mistreevous.State.SUCCEEDED;
 
                     // There is no need to check the rest of the sequence as we have completed it.
                     return state !== initialState;
@@ -43,18 +43,18 @@ function Sequence(uid, children) {
             }
 
             // If the current child has a state of 'FAILED' then this node is also a 'FAILED' node.
-            if (child.getState() === NodeState.FAILED) {
+            if (child.getState() === Mistreevous.State.FAILED) {
                 // This node is a 'FAILED' node.
-                state = NodeState.FAILED;
+                state = Mistreevous.State.FAILED;
 
                 // There is no need to check the rest of the sequence.
                 return state !== initialState;
             }
 
             // The node should be in the 'RUNNING' state.
-            if (child.getState() === NodeState.RUNNING) {
+            if (child.getState() === Mistreevous.State.RUNNING) {
                 // This node is a 'RUNNING' node.
-                state = NodeState.RUNNING;
+                state = Mistreevous.State.RUNNING;
 
                 // There is no need to check the rest of the sequence as the current child is still running.
                 return state !== initialState;
@@ -95,7 +95,7 @@ function Sequence(uid, children) {
      */
     this.reset = () => {
         // Reset the state of this node.
-        state = NodeState.READY;
+        state = Mistreevous.State.READY;
 
         // Reset each child node.
         children.forEach((child) => child.reset());

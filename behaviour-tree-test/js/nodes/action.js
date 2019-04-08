@@ -8,7 +8,7 @@ function Action(uid, actionFunction) {
     /**
      * The node state.
      */
-    let state = NodeState.READY;
+    let state = Mistreevous.State.READY;
    
     /**
      * Update the node and get whether the node state has changed.
@@ -20,14 +20,14 @@ function Action(uid, actionFunction) {
         const initialState = state;
 
         // An action node should be updated until it fails or succeeds.
-        if (state === NodeState.READY || state === NodeState.RUNNING) {
+        if (state === Mistreevous.State.READY || state === Mistreevous.State.RUNNING) {
             // Call the action function to determine the state of this node, but it must exist in the blackboard.
             if (typeof board[actionFunction] === "function") {
                 // Set the state to running, it will stay in this state until either the success or fail callback is invoked via the action call.
-                state = NodeState.RUNNING;
+                state = Mistreevous.State.RUNNING;
 
                 // Call the action function, passing success/fail callbacks that the user can call to succeed/fail the action.
-                board[actionFunction](() => state = NodeState.SUCCEEDED, () => state = NodeState.FAILED);
+                board[actionFunction](() => state = Mistreevous.State.SUCCEEDED, () => state = Mistreevous.State.FAILED);
             } else {
                 throw `cannot update action node as function '${actionFunction}' is not defined in the blackboard`;
             }
@@ -67,7 +67,7 @@ function Action(uid, actionFunction) {
      */
     this.reset = () => {
         // Reset the state of this node.
-        state = NodeState.READY;
+        state = Mistreevous.State.READY;
 
         // Reset the child node.
         child.reset();

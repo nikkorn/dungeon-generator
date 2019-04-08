@@ -8,7 +8,7 @@ function Root(uid, child) {
     /**
      * The node state.
      */
-    let state = NodeState.READY;
+    let state = Mistreevous.State.READY;
    
     /**
      * Update the node and get whether the node state has changed.
@@ -20,7 +20,7 @@ function Root(uid, child) {
         const initialState = state;
 
         // If the child has never been updated or is running then we will need to update it now.
-        if (child.getState() === NodeState.READY || child.getState() === NodeState.RUNNING) {
+        if (child.getState() === Mistreevous.State.READY || child.getState() === Mistreevous.State.RUNNING) {
             child.update(board);
         }
 
@@ -61,7 +61,7 @@ function Root(uid, child) {
      */
     this.reset = () => {
         // Reset the state of this node.
-        state = NodeState.READY;
+        state = Mistreevous.State.READY;
 
         // Reset the child node.
         child.reset();

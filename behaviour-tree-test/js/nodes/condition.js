@@ -8,7 +8,7 @@ function Condition(uid, conditionFunction) {
     /**
      * The node state.
      */
-    let state = NodeState.READY;
+    let state = Mistreevous.State.READY;
    
     /**
      * Update the node and get whether the node state has changed.
@@ -21,7 +21,7 @@ function Condition(uid, conditionFunction) {
 
         // Call the condition function to determine the state of this node, but it must exist in the blackboard.
         if (typeof board[conditionFunction] === "function") {
-            state = !!(board[conditionFunction]()) ? NodeState.SUCCEEDED : NodeState.FAILED;
+            state = !!(board[conditionFunction]()) ? Mistreevous.State.SUCCEEDED : Mistreevous.State.FAILED;
         } else {
             throw `cannot update condition node as function '${conditionFunction}' is not defined in the blackboard`;
         }
@@ -60,7 +60,7 @@ function Condition(uid, conditionFunction) {
      */
     this.reset = () => {
         // Reset the state of this node.
-        state = NodeState.READY;
+        state = Mistreevous.State.READY;
 
         // Reset the child node.
         child.reset();

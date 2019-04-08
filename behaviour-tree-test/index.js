@@ -82,7 +82,7 @@ function onDefinitionUpdate() {
 
     try {
         // Try to create the behaviour tree.
-        behaviourTree = new MistreevousTree(definitionTextArea.value, blackboard);
+        behaviourTree = new Mistreevous.Tree(definitionTextArea.value, blackboard);
 
         // We created the behaviour tree without an issue.
         resultTextArea.innerHTML             = "OK";
@@ -158,11 +158,11 @@ function buildTreeView() {
         // A function to convert a node state to a string.
         const convertNodeStateToString = (state) => {
             switch (state) {
-                case NodeState.RUNNING:
+                case Mistreevous.State.RUNNING:
                     return "running";
-                case NodeState.SUCCEEDED:
+                case Mistreevous.State.SUCCEEDED:
                     return "succeeded";
-                case NodeState.FAILED:
+                case Mistreevous.State.FAILED:
                     return "failed";
                 default:
                     return "ready";
