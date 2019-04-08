@@ -114,7 +114,7 @@ function Lotto(uid, tickets, children) {
     /**
      * Gets the name of the node.
      */
-    this.getName = () =>  tickets.length ? `LOTTO [${ tickets.join(",") }]` : "LOTTO";
+    this.getName = () => tickets.length ? `LOTTO [${ tickets.join(",") }]` : "LOTTO";
 
     /**
      * Gets the state of the node.

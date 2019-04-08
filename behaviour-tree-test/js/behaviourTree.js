@@ -103,6 +103,34 @@
                     return new Flip(this.uid, this.children[0].createNodeInstance());
                 }
             }),
+            "WAIT": () => ({
+                uid: getUid(),
+                type: "wait",
+                duration: null,
+                longestDuration: null,
+                validate: function () {
+                    // A wait node must have a positive duration. 
+                    if (this.duration < 0) {
+                        throw "a wait node must have a positive duration";
+                    }
+
+                    // There is validation to carry out if a longest duration was defined.
+                    if (this.longestDuration) {
+                        // A wait node must have a positive longest duration. 
+                        if (this.longestDuration < 0) {
+                            throw "a wait node must have a positive longest duration if one is defined";
+                        }
+
+                        // A wait node must not have a duration that exceeds the longest duration.
+                        if (this.duration > this.longestDuration) {
+                            throw "a wait node must not have a shortest duration that exceeds the longest duration";
+                        }
+                    }
+                },
+                createNodeInstance: function () { 
+                    return new Wait(this.uid, this.duration, this.longestDuration);
+                }
+            }),
             "ACTION": () => ({
                 uid: getUid(),
                 type: "action",
@@ -290,7 +318,7 @@
                         break;
 
                     case "LOTTO":
-                        // Create a SEQUENCE AST node.
+                        // Create a LOTTO AST node.
                         node = ASTNodeFactories.LOTTO();
 
                         // Push the LOTTO node into the current scope.
@@ -304,7 +332,7 @@
 
                         popAndCheck("{");
 
-                        // The new scope is that of the new SEQUENCE nodes children.
+                        // The new scope is that of the new LOTTO nodes children.
                         stack.push(node.children);
                         break;
 
@@ -333,6 +361,30 @@
 
                         // The new scope is that of the new FLIP nodes children.
                         stack.push(node.children);
+                        break;
+
+                    case "WAIT":
+                        // Create a WAIT AST node.
+                        node = ASTNodeFactories.WAIT();
+
+                        // Push the WAIT node into the current scope.
+                        stack[stack.length-1].push(node);
+
+                        // Get the duration and potential longest duration of the wait.
+                        const durations = getArguments((arg) => (!isNaN(arg)) && parseFloat(arg, 10) === parseInt(arg, 10), "wait node durations must be integer values");
+
+                        // We should have got one or two durations.
+                        if (durations.length === 1) {
+                            // A static duration was defined.
+                            node.duration = parseInt(durations[0], 10);
+                        } else if (durations.length === 2) {
+                            // A shortest and longest duration was defined.
+                            node.duration        = parseInt(durations[0], 10);
+                            node.longestDuration = parseInt(durations[1], 10);
+                        } else {
+                            // An incorrect number of durations was defined.
+                            throw "invalid number of wait node duration arguments defined";
+                        }
                         break;
 
                     case "ACTION":

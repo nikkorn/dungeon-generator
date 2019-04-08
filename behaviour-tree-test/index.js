@@ -18,6 +18,7 @@ definitionTextArea.innerHTML =
 `root {
     sequence {
         action:WalkToDoor
+        wait [1000,2500]
         selector {
         condition:DoorIsOpen
             action:OpenDoor
@@ -52,7 +53,21 @@ SmashDoor: (succeed, fail) => { succeed() },
 WalkThroughDoor: (succeed, fail) => { succeed() },
 CloseDoor: (succeed, fail) => { succeed() },
 ScreamLoudly: (succeed, fail) => { succeed() },
-MutterAngrily: (succeed, fail) => { succeed() }`;
+MutterAngrily: (succeed, fail) => { succeed() },
+
+SomeNewTask: () => ({
+    start: (board) => {
+
+    },
+    update: (board) => {
+
+    },
+    end: (board) => {
+
+    }
+})
+
+`;
 
 /**
  * Handles definition updates.

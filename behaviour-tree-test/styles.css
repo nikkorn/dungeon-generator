@@ -136,3 +136,7 @@ html, body {
 .tree-view-icon-lotto {
     background-color: rgb(1, 170, 119);
 }
+
+.tree-view-icon-wait {
+    background-color: rgb(224, 125, 248);
+}
