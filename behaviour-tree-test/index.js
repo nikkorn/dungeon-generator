@@ -44,30 +44,56 @@ definitionTextArea.innerHTML =
 
 // Set a test blackboard in the blackboard text area.
 blackboardTextArea.innerHTML = 
-`WalkToDoor: (succeed, fail) => { succeed() },
-DoorIsOpen: () => false,
+`DoorIsOpen: () => false,
 DoorIsSmashed: () => true,  
-OpenDoor: (succeed, fail) => { fail() },
-UnlockDoor: (succeed, fail) => { fail() },
-SmashDoor: (succeed, fail) => { succeed() },
-WalkThroughDoor: (succeed, fail) => { succeed() },
-CloseDoor: (succeed, fail) => { succeed() },
-ScreamLoudly: (succeed, fail) => { succeed() },
-MutterAngrily: (succeed, fail) => { succeed() },
 
-SomeNewTask: () => ({
-    onStart: (entity) => {
+WalkToDoor: {
+    onStart: (entity) => {},
+    onUpdate: (entity) => Mistreevous.State.SUCCEEDED,
+    onFinish: (entity) => {}
+},
 
-    },
-    onUpdate: (entity) => {
+OpenDoor: {
+    onStart: (entity) => {},
+    onUpdate: (entity) => Mistreevous.State.FAILED,
+    onFinish: (entity) => {}
+},
 
-    },
-    onFinish: (entity) => {
+UnlockDoor: {
+    onStart: (entity) => {},
+    onUpdate: (entity) => Mistreevous.State.FAILED,
+    onFinish: (entity) => {}
+},
 
-    }
-})
+SmashDoor: {
+    onStart: (entity) => {},
+    onUpdate: (entity) => {},
+    onFinish: (entity) => {}
+},
 
-`;
+WalkThroughDoor: {
+    onStart: (entity) => {},
+    onUpdate: (entity) => Mistreevous.State.SUCCEEDED,
+    onFinish: (entity) => {}
+},
+
+CloseDoor: {
+    onStart: (entity) => {},
+    onUpdate: (entity) => Mistreevous.State.SUCCEEDED,
+    onFinish: (entity) => {}
+},
+
+ScreamLoudly: {
+    onStart: (entity) => {},
+    onUpdate: (entity) => Mistreevous.State.SUCCEEDED,
+    onFinish: (entity) => {}
+},
+
+MutterAngrily: {
+    onStart: (entity) => {},
+    onUpdate: (entity) => Mistreevous.State.SUCCEEDED,
+    onFinish: (entity) => {}
+}`;
 
 /**
  * Handles definition updates.

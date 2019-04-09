@@ -145,11 +145,10 @@
                 "ACTION": () => ({
                     uid: getUid(),
                     type: "action",
-                    function: "",
-                    arguments: [],
+                    actionName: "",
                     validate: function () {},
                     createNodeInstance: function () {
-                        return new Action(this.uid, this["function"]);
+                        return new Action(this.uid, this.actionName);
                     }
                 })
             };
@@ -405,16 +404,16 @@
                             // Push the ACTION node into the current scope.
                             stack[stack.length-1].push(node);
 
-                            // A ':' character splits the 'ACTION' token and the target function name token.
+                            // A ':' character splits the 'ACTION' token and the target action name token.
                             popAndCheck(":");
 
-                            // If the next token is a '}' then there is a missing action function token.
+                            // If the next token is a '}' then there is a missing action name token.
                             if (tokens[0] === "}") {
-                                throw "missing action function";
+                                throw "missing action name";
                             }
 
-                            // The next token should be the name of the action function. 
-                            node.function = tokens.shift();
+                            // The next token should be the name of the action. 
+                            node.actionName = tokens.shift();
                             break;
 
                         case "}": 

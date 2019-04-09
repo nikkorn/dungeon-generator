@@ -2,9 +2,9 @@
  * An Action node.
  * This represents an immediate or ongoing state of behaviour.
  * @param uid The unique node it.
- * @param actionFunction The action function.
+ * @param actionName The action name.
  */
-function Action(uid, actionFunction) {
+function Action(uid, actionName) {
     /**
      * The node state.
      */
@@ -21,15 +21,24 @@ function Action(uid, actionFunction) {
 
         // An action node should be updated until it fails or succeeds.
         if (state === Mistreevous.State.READY || state === Mistreevous.State.RUNNING) {
-            // Call the action function to determine the state of this node, but it must exist in the blackboard.
-            if (typeof board[actionFunction] === "function") {
-                // Set the state to running, it will stay in this state until either the success or fail callback is invoked via the action call.
-                state = Mistreevous.State.RUNNING;
+            // Get the corresponding action object.
+            const action = board[actionName];
 
-                // Call the action function, passing success/fail callbacks that the user can call to succeed/fail the action.
-                board[actionFunction](() => state = Mistreevous.State.SUCCEEDED, () => state = Mistreevous.State.FAILED);
-            } else {
-                throw `cannot update action node as function '${actionFunction}' is not defined in the blackboard`;
+            // Validate the action.
+            this._validateAction(action);
+
+            // If the state of this node is 'READY' then this is the fist time that we are updating this node, so call onStart if it exists.
+            if (state === Mistreevous.State.READY && typeof action.onStart === "function") {
+                action.onStart(null);
+            }
+
+            // Call the action update, the result of which will be the new state of this action node, or 'RUNNING' if undefined.
+            state = action.onUpdate(null) || Mistreevous.State.RUNNING;
+
+            // If the new action node state is either 'SUCCEEDED' or 'FAILED' then we are finished, so call onFinish if it exists.
+            // If the state of this node is 'READY' then this is the fist time that we are updating this node, so call onStart if it exists.
+            if ((state === Mistreevous.State.SUCCEEDED || state === Mistreevous.State.FAILED) && typeof action.onFinish === "function") {
+                action.onFinish(null);
             }
         }
 
@@ -45,7 +54,7 @@ function Action(uid, actionFunction) {
     /**
      * Gets the name of the node.
      */
-    this.getName = () => actionFunction;
+    this.getName = () => actionName;
 
     /**
      * Gets the state of the node.
@@ -71,5 +80,21 @@ function Action(uid, actionFunction) {
 
         // Reset the child node.
         child.reset();
+    };
+
+    /**
+     * Validate an action.
+     * @param action The action to validate.
+     */
+    this._validateAction = (action) => {
+        // The action should be defined.
+        if (!action) {
+            throw `cannot update action node as action '${actionName}' is not defined in the blackboard`;
+        }
+
+        // The action should at the very least have a onUpdate function defined.
+        if (typeof action.onUpdate !== "function") {
+            throw `action '${actionName}' does not have an 'onUpdate()' function defined`;
+        }
     };
 };
