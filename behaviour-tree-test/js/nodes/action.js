@@ -29,16 +29,15 @@ function Action(uid, actionName) {
 
             // If the state of this node is 'READY' then this is the fist time that we are updating this node, so call onStart if it exists.
             if (state === Mistreevous.State.READY && typeof action.onStart === "function") {
-                action.onStart(null);
+                action.onStart();
             }
 
             // Call the action update, the result of which will be the new state of this action node, or 'RUNNING' if undefined.
-            state = action.onUpdate(null) || Mistreevous.State.RUNNING;
+            state = action.onUpdate() || Mistreevous.State.RUNNING;
 
             // If the new action node state is either 'SUCCEEDED' or 'FAILED' then we are finished, so call onFinish if it exists.
-            // If the state of this node is 'READY' then this is the fist time that we are updating this node, so call onStart if it exists.
             if ((state === Mistreevous.State.SUCCEEDED || state === Mistreevous.State.FAILED) && typeof action.onFinish === "function") {
-                action.onFinish(null);
+                action.onFinish(state === Mistreevous.State.SUCCEEDED, false);
             }
         }
 
