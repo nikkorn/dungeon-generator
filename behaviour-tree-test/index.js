@@ -48,51 +48,51 @@ blackboardTextArea.innerHTML =
 DoorIsSmashed: () => true,  
 
 WalkToDoor: {
-    onStart: (entity) => {},
-    onUpdate: (entity) => Mistreevous.State.SUCCEEDED,
-    onFinish: (entity) => {}
+    onStart: () => {},
+    onUpdate: () => Mistreevous.State.SUCCEEDED,
+    onFinish: (succeeded, aborted) => {}
 },
 
 OpenDoor: {
-    onStart: (entity) => {},
-    onUpdate: (entity) => Mistreevous.State.FAILED,
-    onFinish: (entity) => {}
+    onStart: () => {},
+    onUpdate: () => Mistreevous.State.FAILED,
+    onFinish: (succeeded, aborted) => {}
 },
 
 UnlockDoor: {
-    onStart: (entity) => {},
-    onUpdate: (entity) => Mistreevous.State.FAILED,
-    onFinish: (entity) => {}
+    onStart: () => {},
+    onUpdate: () => Mistreevous.State.FAILED,
+    onFinish: (succeeded, aborted) => {}
 },
 
 SmashDoor: {
-    onStart: (entity) => {},
-    onUpdate: (entity) => {},
-    onFinish: (entity) => {}
+    onStart: () => {},
+    onUpdate: () => {},
+    onFinish: (succeeded, aborted) => {}
 },
 
 WalkThroughDoor: {
-    onStart: (entity) => {},
-    onUpdate: (entity) => Mistreevous.State.SUCCEEDED,
-    onFinish: (entity) => {}
+    onStart: () => {},
+    onUpdate: () => Mistreevous.State.SUCCEEDED,
+    onFinish: (succeeded, aborted) => {}
 },
 
 CloseDoor: {
-    onStart: (entity) => {},
-    onUpdate: (entity) => Mistreevous.State.SUCCEEDED,
-    onFinish: (entity) => {}
+    onStart: () => {},
+    onUpdate: () => Mistreevous.State.SUCCEEDED,
+    onFinish: (succeeded, aborted) => {}
 },
 
 ScreamLoudly: {
-    onStart: (entity) => {},
-    onUpdate: (entity) => Mistreevous.State.SUCCEEDED,
-    onFinish: (entity) => {}
+    onStart: () => {},
+    onUpdate: () => Mistreevous.State.SUCCEEDED,
+    onFinish: (succeeded, aborted) => {}
 },
 
 MutterAngrily: {
-    onStart: (entity) => {},
-    onUpdate: (entity) => Mistreevous.State.SUCCEEDED,
-    onFinish: (entity) => {}
+    onStart: () => {},
+    onUpdate: () => Mistreevous.State.SUCCEEDED,
+    onFinish: (succeeded, aborted) => {}
 }`;
 
 /**
