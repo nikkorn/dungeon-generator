@@ -81,11 +81,11 @@
 }
 
 .workflo-direction-horizontal .connector-svg-wrapper {
-    width: 50px; /* correlates with option.layout.node-gap. Default 50px; */
+    width: 30px; /* correlates with option.layout.node-gap. Default 30px; */
 }
 
 .workflo-direction-vertical .connector-svg-wrapper {
-    height: 50px; /* correlates with option.layout.node-gap. Default 50px; */
+    height: 30px; /* correlates with option.layout.node-gap. Default 30px; */
 }
 
 .connector-svg {
