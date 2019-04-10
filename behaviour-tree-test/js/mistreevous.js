@@ -91,6 +91,41 @@
                         return new Lotto(this.uid, this.tickets, this.children.map((child) => child.createNodeInstance()));
                     }
                 }),
+                "REPEAT": () => ({
+                    uid: getUid(),
+                    type: "repeat",
+                    iterations: null,
+                    maximumIterations: null,
+                    conditionFunction: null,
+                    children: [],
+                    validate: function () {
+                        // A repeat node must have a single node.
+                        if (this.children.length !== 1) {
+                            throw "a repeat node must have a single child";
+                        }
+
+                        // A repeat node must have a positive number of iterations if defined. 
+                        if (this.iterations !== null && this.iterations < 0) {
+                            throw "a repeat node must have a positive number of iterations if defined";
+                        }
+
+                        // There is validation to carry out if a longest duration was defined.
+                        if (this.maximumIterations !== null) {
+                            // A repeat node must have a positive maximum iterations count if defined. 
+                            if (this.maximumIterations < 0) {
+                                throw "a repeat node must have a positive maximum iterations count if defined";
+                            }
+
+                            // A repeat node must not have an iteration count that exceeds the maximum iteration count.
+                            if (this.iterations > this.maximumIterations) {
+                                throw "a repeat node must not have an iteration count that exceeds the maximum iteration count";
+                            }
+                        }
+                    },
+                    createNodeInstance: function () { 
+                        return new Repeat(this.uid, this.iterations, this.maximumIterations, this.conditionFunction, this.children[0].createNodeInstance());
+                    }
+                }),
                 "CONDITION": () => ({
                     uid: getUid(),
                     type: "condition",
@@ -395,6 +430,21 @@
                                 // An incorrect number of durations was defined.
                                 throw "invalid number of wait node duration arguments defined";
                             }
+                            break;
+
+                        case "REPEAT":
+                            // Create a REPEAT AST node.
+                            node = ASTNodeFactories.REPEAT();
+
+                            // Push the REPEAT node into the current scope.
+                            stack[stack.length-1].push(node);
+
+                            // TODO Check for iteration counts ([]) or condition function (:SomeCondition) 
+
+                            popAndCheck("{");
+
+                            // The new scope is that of the new REPEAT nodes children.
+                            stack.push(node.children);
                             break;
 
                         case "ACTION":
