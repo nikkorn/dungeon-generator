@@ -63,7 +63,7 @@ function Repeat(uid, iterations, maximumIterations, conditionFunction, child) {
                     Math.floor(Math.random() * (maximumIterations - iterations + 1) + iterations) : 
                     iterations;
             } else if (typeof conditionFunction === "string") {
-                // We are dealing wil a condition function.
+                // We are dealing with a condition function.
                 conditionFunctionName = conditionFunction;
             }
 
@@ -81,29 +81,31 @@ function Repeat(uid, iterations, maximumIterations, conditionFunction, child) {
             }
         }
 
-        // If the child has never been updated or is running then we will need to update it now.
-        if (child.getState() === Mistreevous.State.READY || child.getState() === Mistreevous.State.RUNNING) {
-            child.update(board);
-        }
+        do {
+            // If the child has never been updated or is running then we will need to update it now.
+            if (child.getState() === Mistreevous.State.READY || child.getState() === Mistreevous.State.RUNNING) {
+                child.update(board);
+            }
 
-        // If the child node is in the 'SUCCEEDED' state then we may be moving on to the next iteration or setting this 
-        // node as 'SUCCEEDED' if we cant. If this node is in the 'FAILED' state then this node has completely failed.
-        if (child.getState() === Mistreevous.State.SUCCEEDED) {
-            // The child node has reached the 'SUCCEEDED' state, so we have completed an iteration.
-            currentIterationCount += 1;
-            
-            // Check to see if we can iterate again.
-            if (this._canIterate()) {
+            // If the child node is in the 'SUCCEEDED' state then we may be moving on to the next iteration or setting this 
+            // node as 'SUCCEEDED' if we cant. If this node is in the 'FAILED' state then this node has completely failed.
+            if (child.getState() === Mistreevous.State.SUCCEEDED) {
+                // The child node has reached the 'SUCCEEDED' state, so we have completed an iteration.
+                currentIterationCount += 1;
+                    
                 // Reset the child node.
                 child.reset();
-            } else {
-                // This node is in the 'SUCCEEDED' state.
-                state = Mistreevous.State.SUCCEEDED;
+            } else if (child.getState() === Mistreevous.State.FAILED) {
+                // The has failed, meaning that this node has failed.
+                state = Mistreevous.State.FAILED;
+
+                // Return whether the state of this node has changed.
+                return state !== initialState;
             }
-        } else if (child.getState() === Mistreevous.State.FAILED) {
-            // The has failed, meaning that this node has failed.
-            state = Mistreevous.State.FAILED;
-        }
+        } while (this._canIterate());
+
+        // If we were able to complete our iterations without our child going into the 'FAILED' state then this node has succeeded.
+        state = Mistreevous.State.SUCCEEDED;
 
         // Return whether the state of this node has changed.
         return state !== initialState;

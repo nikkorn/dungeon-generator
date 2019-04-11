@@ -19,10 +19,7 @@ definitionTextArea.innerHTML =
     sequence {
         action:WalkToDoor
         repeat {
-            sequence {
-                action:ScreamLoudly
-                action:ScreamLoudly
-            }
+            action:Jump
         }
         wait [1000,2500]
         selector {
@@ -56,6 +53,16 @@ DoorIsSmashed: () => true,
 WalkToDoor: {
     onStart: () => {},
     onUpdate: () => Mistreevous.State.SUCCEEDED,
+    onFinish: (succeeded, aborted) => {}
+},
+
+Jump: {
+    onStart: () => {},
+    onUpdate: () => {
+        console.log("JUMP!");
+        
+        return Mistreevous.State.SUCCEEDED;
+    },
     onFinish: (succeeded, aborted) => {}
 },
 

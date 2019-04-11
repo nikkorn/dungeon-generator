@@ -123,7 +123,7 @@
                         }
                     },
                     createNodeInstance: function () { 
-                        return new Repeat(this.uid, this.iterations, this.maximumIterations, this.conditionFunction, this.children[0].createNodeInstance());
+                        return new Repeat(this.uid, /*this.iterations*/ 3, this.maximumIterations, this.conditionFunction, this.children[0].createNodeInstance());
                     }
                 }),
                 "CONDITION": () => ({
