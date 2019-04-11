@@ -118,11 +118,15 @@ html, body {
 }
 
 .tree-view-icon-selector {
-    background-color: rgb(126, 68, 173);
+    background-color: rgb(143, 62, 209);
 }
 
 .tree-view-icon-sequence {
-    background-color: rgb(172, 42, 118);
+    background-color: rgb(158, 36, 107);
+}
+
+.tree-view-icon-repeat {
+    background-color: rgb(224, 85, 115);
 }
 
 .tree-view-icon-root {

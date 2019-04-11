@@ -57,9 +57,9 @@ function Repeat(uid, iterations, maximumIterations, conditionFunction, child) {
             child.reset();
 
             // Are we dealing with a set number of iterations or a condition function?
-            if (typeof iterations !== "undefined") {
+            if (typeof iterations === "number") {
                 // If we have maximumIterations defined then we will want a random iteration count bounded by iterations and maximumIterations.
-                targetIterationCount = (typeof maximumIterations !== "undefined") ? 
+                targetIterationCount = (typeof maximumIterations === "number") ? 
                     Math.floor(Math.random() * (maximumIterations - iterations + 1) + iterations) : 
                     iterations;
             } else if (typeof conditionFunction === "string") {

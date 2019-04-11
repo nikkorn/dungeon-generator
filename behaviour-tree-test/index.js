@@ -18,6 +18,12 @@ definitionTextArea.innerHTML =
 `root {
     sequence {
         action:WalkToDoor
+        repeat {
+            sequence {
+                action:ScreamLoudly
+                action:ScreamLoudly
+            }
+        }
         wait [1000,2500]
         selector {
         condition:DoorIsOpen
