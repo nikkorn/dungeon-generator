@@ -57,11 +57,11 @@ WalkToDoor: {
 },
 
 Jump: {
-    onStart: () => {},
+    onStart: () => console.log("Getting ready to jump!"),
     onUpdate: () => {
         console.log("JUMP!");
         
-        return Mistreevous.State.SUCCEEDED;
+        return Mistreevous.State.RUNNING;
     },
     onFinish: (succeeded, aborted) => {}
 },
