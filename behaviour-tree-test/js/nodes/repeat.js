@@ -69,7 +69,7 @@ function Repeat(uid, iterations, maximumIterations, conditionFunction, child) {
 
             // Do an initial check to see if we can iterate. If we can then this node will be in the 'RUNNING' state.
             // If we cannot iterate then we have immediately failed our condition or hit our target iteration count, then the node has succeeded.
-            if (this._canIterate()) {
+            if (this._canIterate(board)) {
                 // This node is in the running state and can do its initial iteration.
                 state = Mistreevous.State.RUNNING;
             } else {
@@ -110,7 +110,7 @@ function Repeat(uid, iterations, maximumIterations, conditionFunction, child) {
                 // Return whether the state of this node has changed.
                 return state !== initialState;
             }
-        } while (this._canIterate());
+        } while (this._canIterate(board));
 
         // If we were able to complete our iterations without our child going into the 'FAILED' state then this node has succeeded.
         state = Mistreevous.State.SUCCEEDED;
@@ -127,7 +127,16 @@ function Repeat(uid, iterations, maximumIterations, conditionFunction, child) {
     /**
      * Gets the name of the node.
      */
-    this.getName = () => "REPEAT";
+    this.getName = () => {
+        if (iterations !== null) {
+            return `REPEAT ${ maximumIterations ? iterations + "x-" + maximumIterations + "x" : iterations + "x" }`;
+        } else if (conditionFunction !== null) {
+            return `WHILE ${conditionFunction}`;
+        }
+
+        // Return the default repeat node name.
+        return "REPEAT";
+    }
 
     /**
      * Gets the state of the node.
@@ -157,9 +166,10 @@ function Repeat(uid, iterations, maximumIterations, conditionFunction, child) {
 
     /**
      * Gets whether an iteration can be made.
+     * @param board The board.
      * @returns Whether an iteration can be made.
      */
-    this._canIterate = () => {
+    this._canIterate = (board) => {
         if (targetIterationCount !== null) {
             // We can iterate as long as we have not reached our target iteration count.
             return currentIterationCount < targetIterationCount;

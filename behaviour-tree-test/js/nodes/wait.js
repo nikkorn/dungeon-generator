@@ -61,7 +61,7 @@ function Wait(uid, duration, longestDuration) {
     /**
      * Gets the name of the node.
      */
-    this.getName = () => `WAIT ${ longestDuration ? duration+"ms-"+longestDuration+"ms" : duration + "ms" }`;
+    this.getName = () => `WAIT ${ longestDuration ? duration + "ms-" + longestDuration + "ms" : duration + "ms" }`;
 
     /**
      * Gets the state of the node.

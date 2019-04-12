@@ -123,16 +123,16 @@
                         }
                     },
                     createNodeInstance: function () { 
-                        return new Repeat(this.uid, /*this.iterations*/ 3, this.maximumIterations, this.conditionFunction, this.children[0].createNodeInstance());
+                        return new Repeat(this.uid, this.iterations, this.maximumIterations, this.conditionFunction, this.children[0].createNodeInstance());
                     }
                 }),
                 "CONDITION": () => ({
                     uid: getUid(),
                     type: "condition",
-                    function: "",
+                    conditionFunction: "",
                     validate: function () {},
                     createNodeInstance: function () { 
-                        return new Condition(this.uid, this["function"]);
+                        return new Condition(this.uid, this.conditionFunction);
                     }
                 }),
                 "FLIP": () => ({
@@ -391,8 +391,13 @@
                             // A ':' character splits the 'CONDITION' token and the target function name token.
                             popAndCheck(":");
 
+                            // If the next token is a '}' then there is a missing condition name token.
+                            if (tokens[0] === "}") {
+                                throw "missing condition name";
+                            }
+
                             // The next token should be the name of the condition function. 
-                            node.function = tokens.shift();
+                            node.conditionFunction = tokens.shift();
                             break;
 
                         case "FLIP":
@@ -439,7 +444,40 @@
                             // Push the REPEAT node into the current scope.
                             stack[stack.length-1].push(node);
 
-                            // TODO Check for iteration counts ([]) or condition function (:SomeCondition) 
+                            // Check for iteration counts ([]) or condition function (:SomeCondition) 
+                            if (tokens[0] === "[") {
+                                // An iteration count has been defined. Get the iteration and potential maximum iteration of the wait.
+                                const iterationArguments = getArguments((arg) => (!isNaN(arg)) && parseFloat(arg, 10) === parseInt(arg, 10), "repeat node iteration counts must be integer values");
+
+                                // We should have got one or two iteration counts.
+                                if (iterationArguments.length === 1) {
+                                    // A static iteration count was defined.
+                                    node.iterations = parseInt(iterationArguments[0], 10);
+                                } else if (iterationArguments.length === 2) {
+                                    // A minimum and maximum iteration count was defined.
+                                    node.iterations        = parseInt(iterationArguments[0], 10);
+                                    node.maximumIterations = parseInt(iterationArguments[1], 10);
+                                } else {
+                                    // An incorrect number of iteration counts was defined.
+                                    throw "invalid number of repeat node iteration count arguments defined";
+                                }
+                            } else if (tokens[0] === ":") {
+                                // A condition function name has been defined. If the next token is a '}' then there is a missing condition name token.
+                                if (tokens[0] === "}") {
+                                    throw "missing repeat condition name";
+                                }
+
+                                // A ':' character splits the 'CONDITION' token and the target function name token.
+                                popAndCheck(":");
+
+                                // Check whether we are missing a condition name.
+                                if (tokens[0] === "{") {
+                                    throw "missing repeat condition name";
+                                }
+
+                                // The next token should be the name of the condition function. 
+                                node.conditionFunction = tokens.shift();
+                            }
 
                             popAndCheck("{");
 

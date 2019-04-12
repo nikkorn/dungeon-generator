@@ -18,10 +18,10 @@ definitionTextArea.innerHTML =
 `root {
     sequence {
         action:WalkToDoor
-        repeat {
+        repeat [1,3] {
             sequence {
-                wait [2000]
-                wait [2000]
+                wait [1000]
+                wait [1000]
             }
         }
         wait [1000,2500]
