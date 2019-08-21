@@ -6,6 +6,26 @@ function Player({ x, y }) {
     this.y = y;
 
     /**
+     * The player velocity.
+     */
+    this.velocity = { 
+        x: 0, 
+        y: 0,
+        clamp: function (max) {
+            if (this.x > max) {
+                this.x = max;
+            } else if (this.x < -max) {
+                this.x = -max;
+            }
+            if (this.y > max) {
+                this.y = max;
+            } else if (this.y < -max) {
+                this.y = -max;
+            }
+        }
+    };
+
+    /**
      * Move the player.
      */
     this.move = function(xOffset, yOffset) {
@@ -25,6 +45,13 @@ function Player({ x, y }) {
      */
     this.getY = function() {
         return this.y;
+    };
+
+    /**
+     * Gets the velocity.
+     */
+    this.getVelocity = function() {
+        return this.velocity;
     };
 
     /**
