@@ -14,3 +14,12 @@
 function doSquaresIntersect(aX, aY, aWidth, aHeight, bX, bY, bWidth, bHeight) {
     return (aX < (bX + bWidth) && (aX + aWidth) > bX && aY < (bY + bHeight) && (aY + aHeight) > bY);
 };
+
+/**
+ * Get the tile position of an absolute position.
+ * @param absolute The absolute position.
+ * @return The tile position of an absolute position.
+ */
+function getTilePosition(absolute) {
+    return Math.floor(absolute / TILE_SIZE);
+};

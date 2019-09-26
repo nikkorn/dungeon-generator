@@ -5,7 +5,6 @@ const AREA_TILES         = 12;
 const TILE_SIZE          = 25;
 const CANVAS_SIZE        = AREA_TILES * TILE_SIZE;
 const CHARACTER_SIZE     = 15;
-const CHARACTER_MOVEMENT = 1;
 
 /**
  * Some colours to use.
@@ -38,3 +37,10 @@ const ENEMY_TYPE = {
     WALKER: 0,
     FOLLOWER: 1
 } 
+
+/**
+ * Physics.
+ */
+const CHARACTER_MOVEMENT     = 0.1;
+const CHARACTER_MAX_MOVEMENT = 1;
+const GRAVITY                = 0.08;

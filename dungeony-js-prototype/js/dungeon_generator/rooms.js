@@ -52,38 +52,6 @@ rooms.push(
                         id: "waypoint", 
                         x: 2,  
                         y: 2 
-                    },
-                    {
-                        participants: [
-                            {
-                                tickets: 1
-                            },
-                            {
-                                tickets: 1, 
-                                entities: [
-                                    { 
-                                        id: "enemy", 
-                                        x: 1,  
-                                        y: 1 
-                                    },
-                                    { 
-                                        id: "enemy", 
-                                        x: 3,  
-                                        y: 3 
-                                    }
-                                ]
-                            },
-                            {
-                                tickets: 1, 
-                                entities: [
-                                    { 
-                                        id: "enemy", 
-                                        x: 1,  
-                                        y: 1 
-                                    }
-                                ]
-                            }
-                        ]
                     }
                 ]
             },
@@ -268,34 +236,7 @@ rooms.push(
                 entrance: DIRECTION.EAST,
                 door: DOOR.FOUR_KEYS,
                 blocked: [DIRECTION.NORTH, DIRECTION.SOUTH, DIRECTION.WEST],
-                entities: [
-                    {
-                        participants: [
-                            {
-                                tickets: 1, 
-                                x: 2,
-                                y: 2,
-                                id: "ultra_rare_chest", 
-                                direction: DIRECTION.EAST 
-                            },
-                            {
-                                tickets: 1, 
-                                entities: [
-                                    { 
-                                        id: "enemy", 
-                                        x: 1,  
-                                        y: 1 
-                                    },
-                                    { 
-                                        id: "enemy", 
-                                        x: 3,  
-                                        y: 3 
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
+                entities: []
             }
         ]
     }
@@ -318,80 +259,17 @@ rooms.push(
                         id: "waypoint", 
                         x: 2,  
                         y: 2 
-                    },
-                    {
-                        participants: [
-                            {
-                                tickets: 1
-                            },
-                            {
-                                tickets: 1, 
-                                entities: [
-                                    { 
-                                        id: "enemy", 
-                                        x: 1,  
-                                        y: 1 
-                                    },
-                                    { 
-                                        id: "enemy", 
-                                        x: 3,  
-                                        y: 3 
-                                    }
-                                ]
-                            }
-                        ]
                     }
                 ]
             },
             {
                 position: { x: 0, y: 1 },
-                entities: [
-                    {
-                        participants: [
-                            {
-                                tickets: 3
-                            },
-                            {
-                                tickets: 1, 
-                                entities: [
-                                    { 
-                                        id: "enemy", 
-                                        x: 2,  
-                                        y: 2 
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
+                entities: []
             },
             {
                 position: { x: 0, y: 2 },
                 blocked: [],
-                entities: [
-                    {
-                        participants: [
-                            {
-                                tickets: 1
-                            },
-                            {
-                                tickets: 1, 
-                                entities: [
-                                    { 
-                                        id: "enemy", 
-                                        x: 1,  
-                                        y: 1 
-                                    },
-                                    { 
-                                        id: "enemy", 
-                                        x: 3,  
-                                        y: 3 
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
+                entities: []
             }
         ]
     }
@@ -417,28 +295,6 @@ rooms.push(
                         id: "waypoint", 
                         x: 2,  
                         y: 2 
-                    },
-                    {
-                        participants: [
-                            {
-                                tickets: 1
-                            },
-                            {
-                                tickets: 1, 
-                                entities: [
-                                    { 
-                                        id: "enemy", 
-                                        x: 0,  
-                                        y: 0 
-                                    },
-                                    { 
-                                        id: "enemy", 
-                                        x: 4,  
-                                        y: 4 
-                                    }
-                                ]
-                            }
-                        ]
                     }
                 ]
             },
@@ -717,14 +573,14 @@ rooms.push(
  */
 roomGroups.push(
     {
-        name: "shop",
+        name: "guard_room",
         min: 1,
         max: 1,
         depth: {
             minimum: 2,
             maximum: 4
         },
-        rooms: ["shop_east", "shop_west", "shop_north", "shop_south"]
+        rooms: ["guard_room_east", "guard_room_west"]
     }
 );
 
@@ -733,15 +589,26 @@ roomGroups.push(
  */
 rooms.push(
     {
-        name: "shop_east",
-        category: "shop",
+        name: "guard_room_east",
+        category: "guard_room",
         cells: [
             {
                 position: { x: 0, y: 0 },
                 entrance: DIRECTION.EAST,
                 door: DOOR.SHOP,
                 blocked: [DIRECTION.NORTH, DIRECTION.SOUTH, DIRECTION.WEST],
-                entities: []
+                entities: [
+                    { 
+                        id: "enemy", 
+                        x: 2,  
+                        y: 2 
+                    },
+                    { 
+                        id: "waypoint", 
+                        x: 1,  
+                        y: 2 
+                    }
+                ]
             }
         ]
     }
@@ -752,105 +619,26 @@ rooms.push(
  */
 rooms.push(
     {
-        name: "shop_west",
-        category: "shop",
+        name: "guard_room_west",
+        category: "guard_room",
         cells: [
             {
                 position: { x: 0, y: 0 },
                 entrance: DIRECTION.WEST,
                 door: DOOR.SHOP,
                 blocked: [DIRECTION.NORTH, DIRECTION.SOUTH, DIRECTION.EAST],
-                entities: []
-            }
-        ]
-    }
-);
-
-/**
- * A shop with its door to the north.
- */
-rooms.push(
-    {
-        name: "shop_north",
-        category: "shop",
-        cells: [
-            {
-                position: { x: 0, y: 0 },
-                entrance: DIRECTION.NORTH,
-                door: DOOR.SHOP,
-                blocked: [DIRECTION.SOUTH, DIRECTION.WEST, DIRECTION.EAST],
-                entities: []
-            }
-        ]
-    }
-);
-
-/**
- * A shop with its door to the south.
- */
-rooms.push(
-    {
-        name: "shop_south",
-        category: "shop",
-        cells: [
-            {
-                position: { x: 0, y: 0 },
-                entrance: DIRECTION.SOUTH,
-                door: DOOR.SHOP,
-                blocked: [DIRECTION.NORTH, DIRECTION.WEST, DIRECTION.EAST],
-                entities: []
-            }
-        ]
-    }
-);
-
-
-/**
- * A big cross boss room accessible from the north.
- */
-rooms.push(
-    {
-        name: "boss_room_north",
-        category: "boss",
-        depth: {
-            minimum: 2,
-            maximum: 4
-        },
-        max: 1,
-        min: 1,
-        cells: [
-            {
-                position: { x: 0, y: 0 },
-                entrance: DIRECTION.NORTH,
-                door: DOOR.BOSS,
-                blocked: [DIRECTION.WEST, DIRECTION.EAST],
-                entities: []
-            },
-            {
-                position: { x: -1, y: -1 },
-                blocked: [DIRECTION.WEST, DIRECTION.NORTH, DIRECTION.SOUTH],
-                entities: []
-            },
-            {
-                position: { x: 0, y: -1 },
                 entities: [
                     { 
-                        id: "boss", 
+                        id: "enemy", 
                         x: 2,  
-                        y: 2, 
-                        direction: DIRECTION.NORTH 
+                        y: 2 
+                    },
+                    { 
+                        id: "waypoint", 
+                        x: 3,  
+                        y: 2 
                     }
                 ]
-            },
-            {
-                position: { x: 1, y: -1 },
-                blocked: [DIRECTION.EAST, DIRECTION.NORTH, DIRECTION.SOUTH],
-                entities: []
-            },
-            {
-                position: { x: 0, y: -2 },
-                blocked: [DIRECTION.EAST, DIRECTION.WEST, DIRECTION.SOUTH],
-                entities: []
             }
         ]
     }

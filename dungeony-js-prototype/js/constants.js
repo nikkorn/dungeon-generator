@@ -1,11 +1,12 @@
 /**
  * Constants.
  */
-const CAMERA_ZOOM        = 3;
-const TILE_SIZE          = 25;
-const CANVAS_SIZE        = 2000;
-const CHARACTER_SIZE     = 15;
-const CHARACTER_MOVEMENT = 1;
+const CAMERA_ZOOM     = 3;
+const TILE_SIZE       = 25;
+const CANVAS_SIZE     = 2000;
+const CHARACTER_SIZE  = 15;
+const PLAYER_MOVEMENT = 1;
+const ENEMY_MOVEMENT  = PLAYER_MOVEMENT * 2;
 
 /**
  * Some colours to use.

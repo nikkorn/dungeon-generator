@@ -46,15 +46,19 @@ const context = getCanvasContext();
  */
 function handlePlayerMovement() 
 {
-    let xPlayerOffset = 0;
-    let yPlayerOffset = 0;
+    const playerVelocity = player.getVelocity();
 
-    if (keys[KEY_CODE.W]) yPlayerOffset -= CHARACTER_MOVEMENT;
-    if (keys[KEY_CODE.S]) yPlayerOffset += CHARACTER_MOVEMENT;
-    if (keys[KEY_CODE.A]) xPlayerOffset -= CHARACTER_MOVEMENT;
-    if (keys[KEY_CODE.D]) xPlayerOffset += CHARACTER_MOVEMENT;
+    // Apply gravity to the player velocity.
+    playerVelocity.y += GRAVITY;
 
-    handleCharacterMovement(player, xPlayerOffset, yPlayerOffset);
+    if (keys[KEY_CODE.W]) playerVelocity.y -= CHARACTER_MOVEMENT;
+    if (keys[KEY_CODE.S]) playerVelocity.y += CHARACTER_MOVEMENT;
+    if (keys[KEY_CODE.A]) playerVelocity.x -= CHARACTER_MOVEMENT;
+    if (keys[KEY_CODE.D]) playerVelocity.x += CHARACTER_MOVEMENT;
+
+    playerVelocity.clamp(CHARACTER_MAX_MOVEMENT);
+
+    handleCharacterMovement(player, playerVelocity.x, playerVelocity.y);
 };
 
 /**
