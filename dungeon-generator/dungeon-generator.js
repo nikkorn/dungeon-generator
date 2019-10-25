@@ -180,7 +180,7 @@ function doesPatternMatchSpace(pattern, x, y) {
 		const offsetY = match[1];
 		const types   = match[2].split(",");
 
-		if (types.indexOf(getSpace(x + offsetX, y + offsetY)) === -1) {
+		if (types.indexOf(getSpace(x + offsetX, y + offsetY).type) === -1) {
 			return false;
 		}
 	}

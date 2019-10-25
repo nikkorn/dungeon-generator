@@ -43,8 +43,8 @@ patterns.push({
 	    [2, 3, "WALL"]
     ],
     onMatch: function (x, y) {
-      setSpace(space.room, x - 1, y - 2, 3, 5);
-      setSpace(space.pillar, x, y + 1);
-      setSpace(space.pillar, x, y - 1);
+      setSpace("ROOM", x - 1, y - 2, 3, 5);
+      setSpace("PILLAR", x, y + 1);
+      setSpace("PILLAR", x, y - 1);
     }
 });
