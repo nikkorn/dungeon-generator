@@ -5,29 +5,29 @@
 <script src="dungeon-generator.js"></script>
 <script src="dungeon-drawer.js"></script>
 
-<button type="button" onclick="go()">Generate!</button>
-
-<svg id="dungeon" width="600" height="600">
-  <rect width="600" height="600" style="fill:rgb(0,0,0)" />
+<svg id="dungeon" onclick="go()">
+  <rect style="fill:rgb(0,0,0)" />
 </svg>
  
 </body>
 <script>
 
   function go() {
-    const tiles = generate();
+    const result = generate();
 
     // The colours to use in drawing the tiles.
     const colours = {
       "ROOM": "#ffffff",
-      "CORRIDOR": "#8acce2",
+      "CORRIDOR": "#88ffff",
       "WALL": "#000000",
       "REACHABLE-WALL": "#353c47",
       "PILLAR": "#000000"
     };
 
-    draw(tiles, colours, 10);
+    draw(result, colours, 10);
   }
+
+  go();
 
 </script>
 </html>

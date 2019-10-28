@@ -1,8 +1,8 @@
-const dungeonSize = 60;
-const maxRoomSize = 15;
-const minRoomSize = 4;
-const roomBuffer  = 2; // The minimum number of spaces allowed between each room.
-const roomCount   = 15;
+const dungeonSize = 50;
+const maxRoomSize = 12;
+const minRoomSize = 6;
+const roomBuffer  = 0; // The minimum number of spaces allowed between each room.
+const roomCount   = 10;
 const maxTry      = 1000;
 
 /** The x/y position to space type mappings. */
@@ -32,7 +32,10 @@ function generate() {
 	// Determine which walls are actually reachable (not surrounded by other walls)
 	findReachableWalls();
 
-	return Object.values(spaces);
+	return {
+		tiles: Object.values(spaces),
+		size: dungeonSize
+	};
 }
 
 /**
