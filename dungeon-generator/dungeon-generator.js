@@ -73,8 +73,8 @@ function generate(options, patterns) {
 	// Go over every space in the dungeon area and compare a series of patterns to the position.
 	applyPatterns(options, spaces, patterns);
 
-	// Determine which walls are actually reachable (not surrounded by other walls)
-	findReachableWalls(options, spaces);
+	// Determine which walls are actually reachable (not surrounded by other walls) and set them.
+	setReachableWalls(options, spaces);
 
 	return {
 		tiles: spaces.getAll(),
@@ -271,12 +271,11 @@ function applyPatterns(options, spaces, patterns) {
 }
 
 /**
- * Find all reachable walls.
- * These are walls which are reachable by the player.
+ * Set all reachable wall positions.
  * @param options The user-defined options.
  * @param spaces The dungeon spaces.
  */
-function findReachableWalls(options, spaces) {
+function setReachableWalls(options, spaces) {
 	// Helper function to determine whether the space at 
 	// the specified position is a wall or unreachable.
 	const isReachable = function (x, y) {
@@ -292,7 +291,16 @@ function findReachableWalls(options, spaces) {
 
 			// Is the current space a wall?
 			if (space.type === "WALL") {
-				if (isReachable(x + 1, y) || isReachable(x - 1, y) || isReachable(x, y + 1) || isReachable(x, y - 1)) {
+				if (
+					isReachable(x - 1, y + 1) || 
+					isReachable(x, y + 1) || 
+					isReachable(x + 1, y + 1) || 
+					isReachable(x - 1, y) ||
+					isReachable(x + 1, y) || 
+					isReachable(x - 1, y - 1) || 
+					isReachable(x, y - 1) || 
+					isReachable(x + 1, y - 1)
+				) {
 					// This wall is reachable by entities within the dungeon! Set the reachable wall.
 					spaces.set("REACHABLE-WALL", x, y);
 				}
