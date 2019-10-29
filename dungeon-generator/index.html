@@ -13,12 +13,19 @@
 <script>
 
   function go() {
-    const result = generate({}, dungeon_patterns);
+    const result = generate({
+      dungeonSize: 80,
+      maxRoomSize: 15,
+	    minRoomSize: 8,
+      roomBuffer: 1,
+      roomCount: 30,
+      corridorWidth: 2
+    }, dungeon_patterns);
 
     // The colours to use in drawing the tiles.
     const colours = {
       "ROOM": "#ffffff",
-      "CORRIDOR": "#88ffff",
+      "CORRIDOR": "#ffffff",
       "WALL": "#000000",
       "REACHABLE-WALL": "#353c47",
       "PILLAR": "#000000"

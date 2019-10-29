@@ -4,6 +4,7 @@ const defaultOptions = {
 	minRoomSize: 5,
 	roomBuffer: 1,
 	roomCount: 10,
+	corridorWidth: 1,
 	attempts: 1000
 };
 
@@ -63,7 +64,7 @@ function generate(options, patterns) {
 	var rooms = generateRooms(options);
 
 	// Generate and draw some corridors between our rooms.
-	generateCorridors(rooms, spaces);
+	generateCorridors(options, rooms, spaces);
 
 	// Apply the room tiles.
 	for (var i = 0; i < rooms.length; i++) {
@@ -151,21 +152,22 @@ function generateRooms(options) {
 
 /**
  * Generate a number of corridors between rooms in the dungeon.
+ * @param options The user-defined options.
  * @param rooms The generated rooms.
  * @param spaces The dungeon spaces.
  */
-function generateCorridors(rooms, spaces) {
+function generateCorridors(options, rooms, spaces) {
 	var previous = null;
 
 	var drawVerticalCorridor = function (x, minY, maxY) {
 		for (var y = minY; y <= maxY; y++) {
-			spaces.set("CORRIDOR", x, y);
+			spaces.set("CORRIDOR", x, y, options.corridorWidth, options.corridorWidth);
 		}
 	};
 
 	var drawHorizontalCorridor = function (y, minX, maxX) {
 		for (var x = minX; x <= maxX; x++) {
-			spaces.set("CORRIDOR", x, y);
+			spaces.set("CORRIDOR", x, y, options.corridorWidth, options.corridorWidth);
 		}
 	};
 
