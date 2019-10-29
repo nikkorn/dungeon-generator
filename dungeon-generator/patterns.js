@@ -1,8 +1,8 @@
 /** Patterns to match on areas in the dungeon. */
-const patterns = [];
+const dungeon_patterns = [];
 
 // Add vertical corridor.
-patterns.push({
+dungeon_patterns.push({
     name: "vertical-pillar-corridor",
     chance: 0.1,
     matches: [
@@ -42,7 +42,7 @@ patterns.push({
       [2, -2, "WALL"],
 	    [2, 3, "WALL"]
     ],
-    onMatch: function (x, y) {
+    onMatch: function (x, y, setSpace) {
       setSpace("ROOM", x - 1, y - 2, 3, 5);
       setSpace("PILLAR", x, y + 1);
       setSpace("PILLAR", x, y - 1);
