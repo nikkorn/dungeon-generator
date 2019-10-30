@@ -1,33 +1,61 @@
 <!DOCTYPE html>
 <html>
+
+<style>
+  html, body {
+    height: 100%;
+    background-color: #00185e;
+  }
+
+  #dungeon {
+    display: block;
+    margin: auto auto;
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+  }
+
+  #config {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+</style>
+
 <body>
 <script src="patterns.js"></script>
 <script src="dungeon-generator.js"></script>
 <script src="dungeon-drawer.js"></script>
 
 <svg id="dungeon" onclick="go()">
-  <rect style="fill:rgb(0,0,0)" />
+  <rect />
 </svg>
+
+<textarea id="config" rows="20" cols="30">
+{
+  "dungeonSize": 50,
+  "maxRoomSize": 10,
+  "minRoomSize": 5,
+  "roomBuffer": 1,
+  "roomCount": 20,
+  "corridorWidth": 1
+}
+</textarea>
  
 </body>
 <script>
 
   function go() {
-    const result = generate({
-      dungeonSize: 80,
-      maxRoomSize: 15,
-	    minRoomSize: 8,
-      roomBuffer: 1,
-      roomCount: 30,
-      corridorWidth: 2
-    }, dungeon_patterns);
+    const result = generate(JSON.parse(document.getElementById("config").value), dungeon_patterns);
 
     // The colours to use in drawing the tiles.
     const colours = {
       "ROOM": "#ffffff",
       "CORRIDOR": "#ffffff",
       "WALL": "#000000",
-      "REACHABLE-WALL": "#353c47",
+      "REACHABLE-WALL": "#454d5c",
       "PILLAR": "#000000"
     };
 

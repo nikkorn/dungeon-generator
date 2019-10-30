@@ -2,7 +2,7 @@ function draw(result, colours, tileSize) {
 	// Clear the dungeon SVG
 	document.getElementById('dungeon').style.width  = result.size * tileSize;
 	document.getElementById('dungeon').style.height = result.size * tileSize;
-	document.getElementById('dungeon').innerHTML    = `<rect width=${result.size * tileSize} height=${result.size * tileSize} style=\"fill:rgb(0,0,0)\" />`;
+	document.getElementById('dungeon').innerHTML    = `<rect width=${result.size * tileSize} height=${result.size * tileSize} style=\"fill:rgb(0,24,94)\" />`;
 
 	result.tiles.forEach((tile) => drawTile(tileSize, colours[tile.type], tile.x, tile.y));
 }
