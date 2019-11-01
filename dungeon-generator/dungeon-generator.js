@@ -282,7 +282,7 @@ function setReachableWalls(options, spaces) {
 	// the specified position is a wall or unreachable.
 	const isReachable = function (x, y) {
 		const target = spaces.get(x, y);
-		return target.type !== "WALL" && target.type !== "REACHABLE-WALL" && target.type !== "OOB";
+		return target.type !== "WALL" && target.type !== "OOB";
 	};
 
 	// Find any walls which have anything other than walls or the dungeon edge on each side.
@@ -304,7 +304,7 @@ function setReachableWalls(options, spaces) {
 					isReachable(x + 1, y - 1)
 				) {
 					// This wall is reachable by entities within the dungeon! Set the reachable wall.
-					spaces.set("REACHABLE-WALL", x, y);
+					spaces.set("WALL", x, y);
 				}
 			}
 		}

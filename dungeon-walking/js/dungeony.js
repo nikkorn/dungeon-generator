@@ -51,14 +51,15 @@ function handlePlayerMovement()
     // Apply gravity to the player velocity.
     playerVelocity.y += GRAVITY;
 
-    if (keys[KEY_CODE.W]) playerVelocity.y -= CHARACTER_MOVEMENT;
-    if (keys[KEY_CODE.S]) playerVelocity.y += CHARACTER_MOVEMENT;
-    if (keys[KEY_CODE.A]) playerVelocity.x -= CHARACTER_MOVEMENT;
-    if (keys[KEY_CODE.D]) playerVelocity.x += CHARACTER_MOVEMENT;
+    if (keys[KEY_CODE.W]) playerVelocity.y -= CHARACTER_MOVEMENT * 4;
+    if (keys[KEY_CODE.A]) playerVelocity.x -= CHARACTER_MAX_MOVEMENT;
+    if (keys[KEY_CODE.D]) playerVelocity.x += CHARACTER_MAX_MOVEMENT;
 
     playerVelocity.clamp(CHARACTER_MAX_MOVEMENT);
 
     handleCharacterMovement(player, playerVelocity.x, playerVelocity.y);
+
+    playerVelocity.x = 0;
 };
 
 /**
@@ -78,15 +79,21 @@ function handleEnemyMovement()
                 break;
 
             case ENEMY_TYPE.FOLLOWER:
-                // TODO Check whether player is close enough to follow. If not then do nothing.
+                const enemyVelocity = enemy.getVelocity();
 
-                // Follow the player at only half the player speed.
-                // TODO Add PLAYER_MOVEMENT and slower ENEMY_MOVEMENT.
-                const enemyOffsetX = player.getX() > enemy.getX() ? CHARACTER_MOVEMENT * 0.5 : CHARACTER_MOVEMENT * -0.5;
-                const enemyOffsetY = player.getY() > enemy.getY() ? CHARACTER_MOVEMENT * 0.5 : CHARACTER_MOVEMENT * -0.5;
+                // Apply gravity to the enemy velocity.
+                enemyVelocity.y += GRAVITY;
 
                 // Try to move the enemy towards the player.
-                handleCharacterMovement(enemy, enemyOffsetX, enemyOffsetY);
+                if (player.getX() < enemy.getX()) {
+                    enemyVelocity.x -= CHARACTER_MOVEMENT * 0.7
+                } else {
+                    enemyVelocity.x += CHARACTER_MOVEMENT * 0.7
+                }
+
+                enemyVelocity.clamp(CHARACTER_MAX_MOVEMENT);
+
+                handleCharacterMovement(enemy, enemyVelocity.x, enemyVelocity.y);
                 break;
         }
     }

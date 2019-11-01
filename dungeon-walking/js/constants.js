@@ -41,6 +41,6 @@ const ENEMY_TYPE = {
 /**
  * Physics.
  */
-const CHARACTER_MOVEMENT     = 0.1;
-const CHARACTER_MAX_MOVEMENT = 1;
-const GRAVITY                = 0.08;
+const CHARACTER_MOVEMENT     = 0.5;
+const CHARACTER_MAX_MOVEMENT = 1.6;
+const GRAVITY                = 0.8;
