@@ -35,12 +35,12 @@
 
 <textarea id="config" rows="20" cols="30">
 {
-  "dungeonSize": 50,
-  "maxRoomSize": 10,
+  "dungeonSize": 60,
+  "maxRoomSize": 12,
   "minRoomSize": 5,
-  "roomBuffer": 1,
-  "roomCount": 20,
-  "corridorWidth": 1
+  "roomBuffer": 0,
+  "roomCount": 18,
+  "corridorWidth": 2
 }
 </textarea>
  
@@ -55,7 +55,9 @@
       "ROOM": "#ffffff",
       "CORRIDOR": "#ffffff",
       "WALL": "#555555",
-      "PILLAR": "#000000"
+      "PILLAR": "#ff00bb",
+      "EXIT_DOOR": "#bbaaff",
+      "ENTRY_DOOR": "#bb00bb"
     };
 
     draw(result, colours, 10);

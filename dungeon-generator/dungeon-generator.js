@@ -247,7 +247,7 @@ function applyPatterns(options, spaces, patterns) {
 				// Pick a random matching space ...
 				const matchingSpace = matchingSpaces[Math.floor(Math.random() * matchingSpaces.length)];
 				// ... And apply the pattern.
-				pattern.onMatch(matchingSpace.x, matchingSpace.y);
+				pattern.onMatch(matchingSpace.x, matchingSpace.y, (...args) => spaces.set(...args));
 			};
 			// Apply the pattern randomly as many times as we need. 
 			for (var p = 0; p < pick; p++) {
