@@ -4,7 +4,6 @@ const dungeon_patterns = [];
 // A level entry.
 dungeon_patterns.push({
   name: "level-entry",
-  chance: 0.1,
   min: 1,
   max: 1,
   matches: [
@@ -29,20 +28,19 @@ dungeon_patterns.push({
     [3, 3, "ROOM"],
     [4, 3, "ROOM"]
   ],
-  onMatch: function (x, y, setSpace) {
-    setSpace("WALL", x + 1, y + 1);
-    setSpace("WALL", x + 2, y + 1);
-    setSpace("WALL", x + 3, y + 1);
-    setSpace("WALL", x + 1, y + 2);
-    setSpace("ENTRY_DOOR", x + 2, y + 2);
-    setSpace("WALL", x + 3, y + 2);
+  onMatch: function (setSpace) {
+    setSpace("WALL", 1, 1);
+    setSpace("WALL", 2, 1);
+    setSpace("WALL", 3, 1);
+    setSpace("WALL", 1, 2);
+    setSpace("ENTRY_DOOR", 2, 2);
+    setSpace("WALL", 3, 2);
   }
 });
 
 // A level exit.
 dungeon_patterns.push({
   name: "level-exit",
-  chance: 0.1,
   min: 1,
   max: 1,
   matches: [
@@ -56,8 +54,8 @@ dungeon_patterns.push({
     [0, 1, "ROOM"],
     [1, 1, "ROOM"]
   ],
-  onMatch: function (x, y, setSpace) {
-    setSpace("EXIT_DOOR", x, y);
+  onMatch: function (setSpace) {
+    setSpace("EXIT_DOOR", 0, 0);
   }
 });
 
@@ -102,9 +100,9 @@ dungeon_patterns.push({
       [2, -2, "WALL"],
 	    [2, 3, "WALL"]
     ],
-    onMatch: function (x, y, setSpace) {
-      setSpace("ROOM", x - 1, y - 2, 3, 5);
-      setSpace("PILLAR", x, y + 1);
-      setSpace("PILLAR", x, y - 1);
+    onMatch: function (setSpace) {
+      setSpace("ROOM", 1, 2, 3, 5);
+      setSpace("PILLAR", 0, 1);
+      setSpace("PILLAR", 0, 1);
     }
 });

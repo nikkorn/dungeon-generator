@@ -220,38 +220,49 @@ function applyPatterns(options, spaces, patterns) {
 		// Get the current pattern.
 		const pattern = patterns[i];
 
-		// Check if the pattern has a min/max property, if so then we are only 
+		// Check if the pattern has  min and max properties, if so then we are only 
 		// matching N times, where N >= min and N <= max. Otherwise, if there is
 		// only a chance value then we randomly choose whether to apply it to
 		// each matching space in turn.
 		if (pattern.min && pattern.max) {
-			// Pick how many patterns we are going to apply based on the pattern min/max values.
-			const pick = Math.floor(Math.random() * pattern.max) + pattern.min;
-			// A function used to find all matches for the current pattern and applies a random one.
-			const matchAndApplyPattern = function () {
-				// The list of all spaces which match the pattern.
-				let matchingSpaces = [];
-				// Check this pattern against every space in the dungeon.
-				for (var x = 0; x < options.dungeonSize; x++) {
-					for (var y = 0; y < options.dungeonSize; y++) {
-						// Check whether the pattern matches the current space, and check whether we should apply it based on chance.
-						if (doesPatternMatchSpace(pattern, x, y)) {
-							matchingSpaces.push({ x, y });
-						}
+			// The list of all x/y spaces which match the pattern.
+			const matchingSpaces = [];
+
+			// Check this pattern against every space in the dungeon.
+			for (var x = 0; x < options.dungeonSize; x++) {
+				for (var y = 0; y < options.dungeonSize; y++) {
+					// Check whether the pattern matches the current space, and check whether we should apply it based on chance.
+					if (doesPatternMatchSpace(pattern, x, y)) {
+						matchingSpaces.push({ x, y });
 					}
 				}
-				// If there were no matching spaces then we cannot apply the pattern.
-				if (matchingSpaces.length == 0) {
-					console.log("no space matches pattern: " + pattern.name);
-				}
-				// Pick a random matching space ...
-				const matchingSpace = matchingSpaces[Math.floor(Math.random() * matchingSpaces.length)];
-				// ... And apply the pattern.
-				pattern.onMatch(matchingSpace.x, matchingSpace.y, (...args) => spaces.set(...args));
-			};
+			}
+
+			// Pick how many patterns we are going to apply based on the pattern min/max values.
+			const count = Math.floor(Math.random() * pattern.max) + pattern.min;
+
 			// Apply the pattern randomly as many times as we need. 
-			for (var p = 0; p < pick; p++) {
-				matchAndApplyPattern();
+			for (var p = 0; p < count; p++) {
+				// Check whether there are no more matching spaces at which to apply a pattern.
+				if (matchingSpaces.length === 0) {
+					// We have run out of places to apply the pattern, but did we at least meet the minimum number of applications?
+					if (p < pattern.min) {
+						// We still haven't met the minimum number of applications so we cannot continue.
+						throw "could not apply pattern'" + pattern.name + "' the minimum number of times required";
+					} else {
+						// We cannot make any more applications, but we have at least already met the minimum.
+						break;
+					}
+				}
+
+				// Grab a random matching space ...
+				const matchingSpace = matchingSpaces.splice(Math.floor(Math.random() * matchingSpaces.length), 1)[0];
+
+				// ... And apply the pattern to it.
+				pattern.onMatch(
+					(type, xOffset, yOffset, width, height) => 
+						spaces.set(type, matchingSpace.x + xOffset, matchingSpace.y + yOffset, width, height)
+				);
 			}
 		}
 		else if (pattern.chance) {
@@ -260,8 +271,10 @@ function applyPatterns(options, spaces, patterns) {
 				for (var y = 0; y < options.dungeonSize; y++) {
 					// Check whether the pattern matches the current space, and check whether we should apply it based on chance.
 					if (doesPatternMatchSpace(pattern, x, y) && Math.random() <= pattern.chance) {
-						// The pattern matched the current space.
-						pattern.onMatch(x, y, (...args) => spaces.set(...args));
+						// The pattern matched the current space so apply it there.
+						pattern.onMatch(
+							(type, xOffset, yOffset, width, height) => spaces.set(type, x + xOffset, y + yOffset, width, height)
+						);
 					}
 				}
 			}
