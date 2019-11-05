@@ -239,7 +239,7 @@ function applyPatterns(options, spaces, patterns) {
 			}
 
 			// Pick how many patterns we are going to apply based on the pattern min/max values.
-			const count = Math.floor(Math.random() * pattern.max) + pattern.min;
+			const count = Math.floor(Math.random() * (pattern.max - pattern.min + 1)) + pattern.min;
 
 			// Apply the pattern randomly as many times as we need. 
 			for (var p = 0; p < count; p++) {
