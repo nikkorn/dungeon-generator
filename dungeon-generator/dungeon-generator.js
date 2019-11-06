@@ -220,73 +220,60 @@ function applyPatterns(options, spaces, patterns) {
 		// Get the current pattern.
 		const pattern = patterns[i];
 
-		// Check if the pattern has  min and max properties, if so then we are only 
-		// matching N times, where N >= min and N <= max. Otherwise, if there is
-		// only a chance value then we randomly choose whether to apply it to
-		// each matching space in turn.
-		if (pattern.min && pattern.max) {
-			// Pick how many patterns we are going to apply based on the pattern min/max values.
-			const count = Math.floor(Math.random() * (pattern.max - pattern.min + 1)) + pattern.min;
+		// Get the min/max/chance values and default them to something sensible.
+		const minimum = pattern.min || 0;
+		const maximum = pattern.max || 1;
+		const chance  = pattern.chance || 1;
 
-			// Gets a space at which the current pattern can be applied, or null if no space exists.
-			const findMatchingSpace = () => {
-				// The list of all x/y spaces which match the pattern.
-				const matchingSpaces = [];
-
-				// Check this pattern against every space in the dungeon.
-				for (var x = 0; x < options.dungeonSize; x++) {
-					for (var y = 0; y < options.dungeonSize; y++) {
-						// Check whether the pattern matches the current space, and check whether we should apply it based on chance.
-						if (doesPatternMatchSpace(pattern, x, y)) {
-							matchingSpaces.push({ x, y });
-						}
-					}
-				}
-
-				// Return a randomly picked matching space, or null if no matching spaces were found.
-				return matchingSpaces.length ?  matchingSpaces.splice(Math.floor(Math.random() * matchingSpaces.length), 1)[0] : null;
-			};
-
-			// Apply the pattern randomly as many times as we need. 
-			for (var p = 0; p < count; p++) {
-				// Get a space at which we can apply the pattern.
-				const matchingSpace = findMatchingSpace();
-
-				// Check whether there was no matching spaces at which we could apply the current pattern.
-				if (!matchingSpace) {
-					// We have run out of places to apply the pattern, but did we at least meet the minimum number of applications?
-					if (p < pattern.min) {
-						// We still haven't met the minimum number of applications so we cannot continue.
-						throw "could not apply pattern'" + pattern.name + "' the minimum number of times required";
-					} else {
-						// We cannot make any more applications, but we have at least already met the minimum.
-						break;
-					}
-				}
-
-				// Apply the current pattern to the matching space.
-				pattern.onMatch(
-					(type, xOffset, yOffset, width, height) => 
-						spaces.set(type, matchingSpace.x + xOffset, matchingSpace.y + yOffset, width, height)
-				);
-			}
+		// If there is a chance that the pattern should not be applied we should check now and skip the pattern if the chance fails.
+		if (chance < 1 && Math.random() <= pattern.chance) {
+			continue;
 		}
-		else if (pattern.chance) {
+
+		// Pick how many patterns we are going to apply based on the pattern min/max values.
+		const count = Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
+
+		// Gets a space at which the current pattern can be applied, or null if no space exists.
+		const findMatchingSpace = () => {
+			// The list of all x/y spaces which match the pattern.
+			const matchingSpaces = [];
+
 			// Check this pattern against every space in the dungeon.
 			for (var x = 0; x < options.dungeonSize; x++) {
 				for (var y = 0; y < options.dungeonSize; y++) {
 					// Check whether the pattern matches the current space, and check whether we should apply it based on chance.
-					if (doesPatternMatchSpace(pattern, x, y) && Math.random() <= pattern.chance) {
-						// The pattern matched the current space so apply it there.
-						pattern.onMatch(
-							(type, xOffset, yOffset, width, height) => spaces.set(type, x + xOffset, y + yOffset, width, height)
-						);
+					if (doesPatternMatchSpace(pattern, x, y)) {
+						matchingSpaces.push({ x, y });
 					}
 				}
 			}
-		}
-		else {
-			console.log("need to specify chance or min/max value for pattern: " + pattern.name);
+
+			// Return a randomly picked matching space, or null if no matching spaces were found.
+			return matchingSpaces.length ?  matchingSpaces.splice(Math.floor(Math.random() * matchingSpaces.length), 1)[0] : null;
+		};
+
+		// Apply the pattern randomly as many times as we need. 
+		for (var p = 0; p < count; p++) {
+			// Get a space at which we can apply the pattern.
+			const matchingSpace = findMatchingSpace();
+
+			// Check whether there was no matching spaces at which we could apply the current pattern.
+			if (!matchingSpace) {
+				// We have run out of places to apply the pattern, but did we at least meet the minimum number of applications?
+				if (p < minimum) {
+					// We still haven't met the minimum number of applications so we cannot continue.
+					throw "could not apply pattern'" + pattern.name + "' the minimum number of times required";
+				} else {
+					// We cannot make any more applications, but we have at least already met the minimum.
+					break;
+				}
+			}
+
+			// Apply the current pattern to the matching space.
+			pattern.onMatch(
+				(type, xOffset, yOffset, width, height) => 
+					spaces.set(type, matchingSpace.x + xOffset, matchingSpace.y + yOffset, width, height)
+			);
 		}
 	}
 }

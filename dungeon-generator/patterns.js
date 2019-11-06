@@ -100,3 +100,102 @@ dungeon_patterns.push({
       setSpace("ENEMY", 0, 0);
     }
 });
+
+// A couple of enemies.
+dungeon_patterns.push({
+  name: "enemy-pair-1",
+  min: 3,
+  max: 8,
+  matches: [
+    [0, 0, "ROOM"],
+    [1, 0, "ROOM"],
+    [2, 0, "ROOM"],
+    [3, 0, "ROOM"],
+    [4, 0, "ROOM"],
+    [0, 1, "ROOM"],
+    [1, 1, "ROOM"],
+    [2, 1, "ROOM"],
+    [3, 1, "ROOM"],
+    [4, 1, "ROOM"],
+    [0, 2, "ROOM"],
+    [1, 2, "ROOM"],
+    [2, 2, "ROOM"],
+    [3, 2, "ROOM"],
+    [4, 2, "ROOM"],
+    [0, 3, "ROOM"],
+    [1, 3, "ROOM"],
+    [2, 3, "ROOM"],
+    [3, 3, "ROOM"],
+    [4, 3, "ROOM"],
+    [0, 4, "ROOM"],
+    [1, 4, "ROOM"],
+    [2, 4, "ROOM"],
+    [3, 4, "ROOM"],
+    [4, 4, "ROOM"]
+    
+  ],
+  onMatch: function (setSpace) {
+    setSpace("ENEMY", 1, 1);
+    setSpace("ENEMY", 3, 3);
+  }
+});
+
+// A couple of enemies.
+dungeon_patterns.push({
+  name: "enemy-pair-2",
+  min: 3,
+  max: 8,
+  matches: [
+    [0, 0, "ROOM"],
+    [1, 0, "ROOM"],
+    [2, 0, "ROOM"],
+    [3, 0, "ROOM"],
+    [4, 0, "ROOM"],
+    [0, 1, "ROOM"],
+    [1, 1, "ROOM"],
+    [2, 1, "ROOM"],
+    [3, 1, "ROOM"],
+    [4, 1, "ROOM"],
+    [0, 2, "ROOM"],
+    [1, 2, "ROOM"],
+    [2, 2, "ROOM"],
+    [3, 2, "ROOM"],
+    [4, 2, "ROOM"],
+    [0, 3, "ROOM"],
+    [1, 3, "ROOM"],
+    [2, 3, "ROOM"],
+    [3, 3, "ROOM"],
+    [4, 3, "ROOM"],
+    [0, 4, "ROOM"],
+    [1, 4, "ROOM"],
+    [2, 4, "ROOM"],
+    [3, 4, "ROOM"],
+    [4, 4, "ROOM"]
+    
+  ],
+  onMatch: function (setSpace) {
+    setSpace("ENEMY", 1, 3);
+    setSpace("ENEMY", 3, 1);
+  }
+});
+
+// A strong enemy.
+dungeon_patterns.push({
+  name: "enemy-pair-2",
+  min: 1,
+  max: 3,
+  matches: [
+    [0, 0, "ROOM"],
+    [1, 0, "ROOM"],
+    [2, 0, "ROOM"],
+    [0, 1, "ROOM"],
+    [1, 1, "ROOM"],
+    [2, 1, "ROOM"],
+    [0, 2, "ROOM"],
+    [1, 2, "ROOM"],
+    [2, 2, "ROOM"]
+  ],
+  onMatch: function (setSpace) {
+    setSpace("ENEMY_STRONG", 1, 1);
+  }
+});
