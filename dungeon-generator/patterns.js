@@ -6,6 +6,7 @@ dungeon_patterns.push({
   name: "level-entry",
   min: 1,
   max: 1,
+  freeze: "matched",
   matches: [
     [0, 0, "ROOM"],
     [1, 0, "ROOM"],
@@ -26,7 +27,12 @@ dungeon_patterns.push({
     [1, 3, "ROOM"],
     [2, 3, "ROOM"],
     [3, 3, "ROOM"],
-    [4, 3, "ROOM"]
+    [4, 3, "ROOM"],
+    [0, 4, "ROOM"],
+    [1, 4, "ROOM"],
+    [2, 4, "ROOM"],
+    [3, 4, "ROOM"],
+    [4, 4, "ROOM"]
   ],
   onMatch: function (setSpace) {
     setSpace("WALL", 1, 1);
@@ -43,6 +49,7 @@ dungeon_patterns.push({
   name: "level-exit",
   min: 1,
   max: 1,
+  freeze: "matched",
   matches: [
     [-1, 0, "WALL"],
     [0, 0, "WALL"],
@@ -52,7 +59,10 @@ dungeon_patterns.push({
     [1, -1, "WALL"],
     [-1, 1, "ROOM"],
     [0, 1, "ROOM"],
-    [1, 1, "ROOM"]
+    [1, 1, "ROOM"],
+    [-1, 2, "ROOM"],
+    [0, 2, "ROOM"],
+    [1, 2, "ROOM"]
   ],
   onMatch: function (setSpace) {
     setSpace("EXIT_DOOR", 0, 0);
@@ -64,6 +74,7 @@ dungeon_patterns.push({
     name: "guarded-chest",
     min: 3,
     max: 3,
+    freeze: "matched",
     matches: [
       [0, 0, "ROOM"],
       [1, 0, "ROOM"],
@@ -181,7 +192,7 @@ dungeon_patterns.push({
 
 // A strong enemy.
 dungeon_patterns.push({
-  name: "enemy-pair-2",
+  name: "strong-enemy",
   min: 1,
   max: 3,
   matches: [

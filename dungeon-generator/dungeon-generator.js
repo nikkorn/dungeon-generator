@@ -199,6 +199,15 @@ function generateCorridors(options, rooms, spaces) {
  * @param patterns The applicable patterns.
  */
 function applyPatterns(options, spaces, patterns) {
+	// Create an array of frozen spaces. Any frozen spaces cannot be considered as part of pattern applications.
+	const frozenSpaces = [];
+
+	// Helper function to set a frozen space.
+	const freezeSpace = (x, y) => frozenSpaces.push(x + "-" + y);
+
+	// Helper function to get whether a space is frozen.
+	const isSpaceFrozen = (x, y) => frozenSpaces.indexOf(x + "-" + y) !== -1;
+
 	// Gets whether a pattern matches the specified space.
 	const doesPatternMatchSpace = (pattern, x, y) => {
 		for (var i = 0; i < pattern.matches.length; i++) {
@@ -207,6 +216,12 @@ function applyPatterns(options, spaces, patterns) {
 			const offsetY = match[1];
 			const types   = match[2].split(",");
 
+			// Out pattern cannot overlap any frozen spaces.
+			if (isSpaceFrozen(x + offsetX, y + offsetY)) {
+				return false;
+			} 
+
+			// Out pattern cannot overlap any incompatible spaces.
 			if (types.indexOf(spaces.get(x + offsetX, y + offsetY).type) === -1) {
 				return false;
 			}
@@ -224,6 +239,14 @@ function applyPatterns(options, spaces, patterns) {
 		const minimum = pattern.min || 0;
 		const maximum = pattern.max || 1;
 		const chance  = pattern.chance || 1;
+
+		// Get the option that defines if we are freezing any spaces on pattern application.
+		// A frozen space cannot be overwritten by any other pattern applications. 
+		// The options are:
+		//  - matched      : Any spaces included in the matched array will be frozen.
+		//  - set          : Any spaces set as part of the pattern application will be frozen.
+		//  - both         : Any spaces set as part of the pattern application and any included in the matched array will be frozen.
+		const freeze = pattern.freeze || "any";
 
 		// If there is a chance that the pattern should not be applied we should check now and skip the pattern if the chance fails.
 		if (chance < 1 && Math.random() <= pattern.chance) {
@@ -271,9 +294,29 @@ function applyPatterns(options, spaces, patterns) {
 
 			// Apply the current pattern to the matching space.
 			pattern.onMatch(
-				(type, xOffset, yOffset, width, height) => 
-					spaces.set(type, matchingSpace.x + xOffset, matchingSpace.y + yOffset, width, height)
+				(type, xOffset, yOffset, width, height) => {
+					// Get the absolute x/y of the space we are trying to set.
+					const x = matchingSpace.x + xOffset;
+					const y = matchingSpace.y + yOffset;
+
+					// Check to make sure that the space we are trying to set isn't already frozen.
+					if (isSpaceFrozen(x, y)) {
+						return;
+					}
+
+					spaces.set(type, x, y, width, height);
+
+					// The pattern we just applied may require that any set spaces be frozen.
+					if (freeze === "set" || freeze === "both") {
+						freezeSpace(x, y);
+					}
+				}
 			);
+
+			// The pattern we just applied may require that any matched spaces be frozen.
+			if (freeze === "matched" || freeze === "both") {
+				pattern.matches.forEach(([xOffset, yOffset]) => freezeSpace(matchingSpace.x + xOffset, matchingSpace.y + yOffset));
+			}
 		}
 	}
 }
