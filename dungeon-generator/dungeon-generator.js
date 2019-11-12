@@ -268,25 +268,23 @@ function generate(options, patterns) {
 				}
 
 				// Apply the current pattern to the matching space.
-				pattern.onMatch(
-					(type, xOffset, yOffset, width, height) => {
-						// Get the absolute x/y of the space we are trying to set.
-						const x = matchingSpace.x + xOffset;
-						const y = matchingSpace.y + yOffset;
+				(pattern.apply || []).forEach(([xOffset, yOffset, type]) => {
+					// Get the absolute x/y of the space we are trying to set.
+					const x = matchingSpace.x + xOffset;
+					const y = matchingSpace.y + yOffset;
 
-						// Check to make sure that the space we are trying to set isn't already frozen.
-						if (isSpaceFrozen(x, y)) {
-							return;
-						}
-
-						spaces.set(type, x, y, width, height);
-
-						// The pattern we just applied may require that any set spaces be frozen.
-						if (freeze === "set" || freeze === "both") {
-							freezeSpace(x, y);
-						}
+					// Check to make sure that the space we are trying to set isn't already frozen.
+					if (isSpaceFrozen(x, y)) {
+						return;
 					}
-				);
+
+					spaces.set(type, x, y, 1, 1);
+
+					// The pattern we just applied may require that any set spaces be frozen.
+					if (freeze === "set" || freeze === "both") {
+						freezeSpace(x, y);
+					}
+				});
 
 				// The pattern we just applied may require that any matched spaces be frozen.
 				if (freeze === "matched" || freeze === "both") {

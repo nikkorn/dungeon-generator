@@ -34,14 +34,14 @@ dungeon_patterns.push({
     [3, 4, "ROOM"],
     [4, 4, "ROOM"]
   ],
-  onMatch: function (setSpace) {
-    setSpace("WALL", 1, 1);
-    setSpace("WALL", 2, 1);
-    setSpace("WALL", 3, 1);
-    setSpace("WALL", 1, 2);
-    setSpace("ENTRY_DOOR", 2, 2);
-    setSpace("WALL", 3, 2);
-  }
+  apply: [
+    [1, 1, "WALL"],
+    [2, 1, "WALL"],
+    [3, 1, "WALL"],
+    [1, 2, "WALL"],
+    [2, 2, "ENTRY_DOOR"],
+    [3, 2, "WALL"]
+  ]
 });
 
 // A level exit.
@@ -64,9 +64,9 @@ dungeon_patterns.push({
     [0, 2, "ROOM"],
     [1, 2, "ROOM"]
   ],
-  onMatch: function (setSpace) {
-    setSpace("EXIT_DOOR", 0, 0);
-  }
+  apply: [
+    [0, 0, "EXIT_DOOR"]
+  ]
 });
 
 // Add chest surrounded by enemies.
@@ -103,13 +103,13 @@ dungeon_patterns.push({
       [4, 4, "ROOM"]
       
     ],
-    onMatch: function (setSpace) {
-      setSpace("CHEST", 2, 2);
-      setSpace("ENEMY", 0, 4);
-      setSpace("ENEMY", 4, 4);
-      setSpace("ENEMY", 4, 0);
-      setSpace("ENEMY", 0, 0);
-    }
+    apply: [
+      [2, 2, "CHEST"],
+      [0, 4, "ENEMY"],
+      [4, 4, "ENEMY"],
+      [4, 0, "ENEMY"],
+      [0, 0, "ENEMY"]
+    ]
 });
 
 // A couple of enemies.
@@ -145,10 +145,10 @@ dungeon_patterns.push({
     [4, 4, "ROOM"]
     
   ],
-  onMatch: function (setSpace) {
-    setSpace("ENEMY", 1, 1);
-    setSpace("ENEMY", 3, 3);
-  }
+  apply: [
+    [1, 1, "ENEMY"],
+    [3, 3, "ENEMY"]
+  ]
 });
 
 // A couple of enemies.
@@ -184,10 +184,10 @@ dungeon_patterns.push({
     [4, 4, "ROOM"]
     
   ],
-  onMatch: function (setSpace) {
-    setSpace("ENEMY", 1, 3);
-    setSpace("ENEMY", 3, 1);
-  }
+  apply: [
+    [1, 3, "ENEMY"],
+    [3, 1, "ENEMY"]
+  ]
 });
 
 // A strong enemy.
@@ -206,7 +206,7 @@ dungeon_patterns.push({
     [1, 2, "ROOM"],
     [2, 2, "ROOM"]
   ],
-  onMatch: function (setSpace) {
-    setSpace("ENEMY_STRONG", 1, 1);
-  }
+  apply: [
+    [1, 1, "ENEMY_STRONG"]
+  ]
 });
