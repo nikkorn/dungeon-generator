@@ -34,7 +34,7 @@ dungeon_patterns.push({
     [3, 4, "ROOM"],
     [4, 4, "ROOM"]
   ],
-  apply: [
+  applies: [
     [1, 1, "WALL"],
     [2, 1, "WALL"],
     [3, 1, "WALL"],
@@ -64,7 +64,7 @@ dungeon_patterns.push({
     [0, 2, "ROOM"],
     [1, 2, "ROOM"]
   ],
-  apply: [
+  applies: [
     [0, 0, "EXIT_DOOR"]
   ]
 });
@@ -103,7 +103,7 @@ dungeon_patterns.push({
       [4, 4, "ROOM"]
       
     ],
-    apply: [
+    applies: [
       [2, 2, "CHEST"],
       [0, 4, "ENEMY"],
       [4, 4, "ENEMY"],
@@ -112,81 +112,81 @@ dungeon_patterns.push({
     ]
 });
 
-// A couple of enemies.
 dungeon_patterns.push({
-  name: "enemy-pair-1",
+  name: "enemy-pairs",
   min: 3,
   max: 8,
-  matches: [
-    [0, 0, "ROOM"],
-    [1, 0, "ROOM"],
-    [2, 0, "ROOM"],
-    [3, 0, "ROOM"],
-    [4, 0, "ROOM"],
-    [0, 1, "ROOM"],
-    [1, 1, "ROOM"],
-    [2, 1, "ROOM"],
-    [3, 1, "ROOM"],
-    [4, 1, "ROOM"],
-    [0, 2, "ROOM"],
-    [1, 2, "ROOM"],
-    [2, 2, "ROOM"],
-    [3, 2, "ROOM"],
-    [4, 2, "ROOM"],
-    [0, 3, "ROOM"],
-    [1, 3, "ROOM"],
-    [2, 3, "ROOM"],
-    [3, 3, "ROOM"],
-    [4, 3, "ROOM"],
-    [0, 4, "ROOM"],
-    [1, 4, "ROOM"],
-    [2, 4, "ROOM"],
-    [3, 4, "ROOM"],
-    [4, 4, "ROOM"]
-    
-  ],
-  apply: [
-    [1, 1, "ENEMY"],
-    [3, 3, "ENEMY"]
-  ]
-});
-
-// A couple of enemies.
-dungeon_patterns.push({
-  name: "enemy-pair-2",
-  min: 3,
-  max: 8,
-  matches: [
-    [0, 0, "ROOM"],
-    [1, 0, "ROOM"],
-    [2, 0, "ROOM"],
-    [3, 0, "ROOM"],
-    [4, 0, "ROOM"],
-    [0, 1, "ROOM"],
-    [1, 1, "ROOM"],
-    [2, 1, "ROOM"],
-    [3, 1, "ROOM"],
-    [4, 1, "ROOM"],
-    [0, 2, "ROOM"],
-    [1, 2, "ROOM"],
-    [2, 2, "ROOM"],
-    [3, 2, "ROOM"],
-    [4, 2, "ROOM"],
-    [0, 3, "ROOM"],
-    [1, 3, "ROOM"],
-    [2, 3, "ROOM"],
-    [3, 3, "ROOM"],
-    [4, 3, "ROOM"],
-    [0, 4, "ROOM"],
-    [1, 4, "ROOM"],
-    [2, 4, "ROOM"],
-    [3, 4, "ROOM"],
-    [4, 4, "ROOM"]
-    
-  ],
-  apply: [
-    [1, 3, "ENEMY"],
-    [3, 1, "ENEMY"]
+  options: [
+    {
+      tickets: 1,
+      matches: [
+        [0, 0, "ROOM"],
+        [1, 0, "ROOM"],
+        [2, 0, "ROOM"],
+        [3, 0, "ROOM"],
+        [4, 0, "ROOM"],
+        [0, 1, "ROOM"],
+        [1, 1, "ROOM"],
+        [2, 1, "ROOM"],
+        [3, 1, "ROOM"],
+        [4, 1, "ROOM"],
+        [0, 2, "ROOM"],
+        [1, 2, "ROOM"],
+        [2, 2, "ROOM"],
+        [3, 2, "ROOM"],
+        [4, 2, "ROOM"],
+        [0, 3, "ROOM"],
+        [1, 3, "ROOM"],
+        [2, 3, "ROOM"],
+        [3, 3, "ROOM"],
+        [4, 3, "ROOM"],
+        [0, 4, "ROOM"],
+        [1, 4, "ROOM"],
+        [2, 4, "ROOM"],
+        [3, 4, "ROOM"],
+        [4, 4, "ROOM"]
+        
+      ],
+      applies: [
+        [1, 3, "ENEMY"],
+        [3, 1, "ENEMY"]
+      ]
+    },
+    {
+      tickets: 1,
+      matches: [
+        [0, 0, "ROOM"],
+        [1, 0, "ROOM"],
+        [2, 0, "ROOM"],
+        [3, 0, "ROOM"],
+        [4, 0, "ROOM"],
+        [0, 1, "ROOM"],
+        [1, 1, "ROOM"],
+        [2, 1, "ROOM"],
+        [3, 1, "ROOM"],
+        [4, 1, "ROOM"],
+        [0, 2, "ROOM"],
+        [1, 2, "ROOM"],
+        [2, 2, "ROOM"],
+        [3, 2, "ROOM"],
+        [4, 2, "ROOM"],
+        [0, 3, "ROOM"],
+        [1, 3, "ROOM"],
+        [2, 3, "ROOM"],
+        [3, 3, "ROOM"],
+        [4, 3, "ROOM"],
+        [0, 4, "ROOM"],
+        [1, 4, "ROOM"],
+        [2, 4, "ROOM"],
+        [3, 4, "ROOM"],
+        [4, 4, "ROOM"]
+        
+      ],
+      applies: [
+        [1, 1, "ENEMY"],
+        [3, 3, "ENEMY"]
+      ]
+    }   
   ]
 });
 
@@ -206,7 +206,7 @@ dungeon_patterns.push({
     [1, 2, "ROOM"],
     [2, 2, "ROOM"]
   ],
-  apply: [
+  applies: [
     [1, 1, "ENEMY_STRONG"]
   ]
 });

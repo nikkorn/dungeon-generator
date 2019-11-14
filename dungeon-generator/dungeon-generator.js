@@ -18,6 +18,61 @@ function generate(options, patterns) {
 	};
 
 	/**
+	 * Get a random item form an array. 
+	 * @param array The array of items.
+	 */
+	function getRandomItem(array) {
+		// We cant pick a random item from an empty array.
+		if (!array.length) {
+			return null;
+		}
+
+		// Return a random item.
+		return array[Math.floor(Math.random() * array.length)];
+	}
+
+	/**
+	 * Represents a lotto draw.
+	 */
+	function Lotto() {
+		/**
+		 * The participants
+		 */
+		this.participants = [];
+
+		/**
+		 * Add a participant.
+		 * @param participant The participant.
+		 * @param tickets The number of tickets held by the participant.
+		 */
+		this.add = function(participant, tickets) {
+			this.participants.push({ participant, tickets });
+			return this;
+		};
+
+		/**
+		 * Draw a winning participant.
+		 * @returns A winning participant.
+		 */
+		this.draw = function() {
+			// We cannot do anything if there are no participants.
+			if (!this.participants.length) {
+				throw "cannot draw a lotto winner when there are no participants";
+			}
+
+			const pickable = [];
+
+			this.participants.forEach(({ participant, tickets }) => {
+				for (let ticketCount = 0; ticketCount < tickets; ticketCount++) {
+					pickable.push(participant);
+				}
+			});
+
+			return getRandomItem(pickable);
+		};
+	}
+
+	/**
 	 * Creates a new instance of Spaces.
 	 * @param dungeonSize The width/height of the dungeon.
 	 */
@@ -184,9 +239,9 @@ function generate(options, patterns) {
 		const isSpaceFrozen = (x, y) => frozenSpaces.indexOf(x + "-" + y) !== -1;
 
 		// Gets whether a pattern matches the specified space.
-		const doesPatternMatchSpace = (pattern, x, y) => {
-			for (var i = 0; i < pattern.matches.length; i++) {
-				const match   = pattern.matches[i];
+		const doMatchesApplyToSpace = (matches, x, y) => {
+			for (var i = 0; i < matches.length; i++) {
+				const match   = matches[i];
 				const offsetX = match[0];
 				const offsetY = match[1];
 				const types   = match[2].split(",");
@@ -204,6 +259,81 @@ function generate(options, patterns) {
 
 			// Our pattern matched!
 			return true;
+		};
+
+		// Gets a space at which the specified pattern can be applied, or null if no space exists.
+		const findMatchingSpace = (pattern) => {
+			// If the pattern has a 'matches' array then we are not dealing with multiple options.
+			if (pattern.matches) {
+				// The list of all x/y spaces which match the pattern.
+				const matchingSpaces = [];
+
+				// Check this pattern against every space in the dungeon.
+				for (var x = 0; x < options.dungeonSize; x++) {
+					for (var y = 0; y < options.dungeonSize; y++) {
+						// Check whether the pattern matches the current space, and check whether we should apply it based on chance.
+						if (doMatchesApplyToSpace(pattern.matches || [], x, y)) {
+							matchingSpaces.push({ 
+								x, 
+								y, 
+								applies: pattern.applies || [] 
+							});
+						}
+					}
+				}
+
+				// Return a randomly picked matching space, or null if no matching spaces were found.
+				return getRandomItem(matchingSpaces);
+			} 
+			// If the pattern has an 'options' array then we have to pick one.
+			else if (pattern.options) {
+				const matchGroups = {};
+
+				// Find all options that match the current space and split them into groups defined by the ticket count of the matched pattern.
+				pattern.options.forEach((option) => {
+					// The list of all x/y spaces which match the option pattern.
+					const matchingSpaces = [];
+
+					// Check this pattern against every space in the dungeon.
+					for (var x = 0; x < options.dungeonSize; x++) {
+						for (var y = 0; y < options.dungeonSize; y++) {
+							// Check whether the pattern matches the current space, and check whether we should apply it based on chance.
+							if (doMatchesApplyToSpace(option.matches || [], x, y)) {
+								matchingSpaces.push({ 
+									x, 
+									y, 
+									applies: option.applies || [] 
+								});
+							}
+						}
+					}
+
+					if (matchingSpaces.length) {
+						// Get the ticket count for this option, or default to one.
+						const tickets = option.tickets || 1;
+
+						// Make sure that we have a group of matches for the ticket count.
+						matchGroups[tickets] = matchGroups[tickets] || [];
+
+						matchGroups[tickets].push.apply(matchGroups[tickets], matchingSpaces);
+					}
+				});
+
+				// Create a lotto with which to pick a random group based on the ticket counts of all groups.
+				const matchGroupsLotto = new Lotto();
+
+				// If we have no matching groups then there were no matching patterns at all, return null.
+				if (!Object.keys(matchGroups).length) {
+					return null;
+				}
+
+				Object.keys(matchGroups).forEach((tickets) => matchGroupsLotto.add(matchGroups[tickets], tickets));
+
+				// Pick a random group based on the ticket counts and return a random item from the winning group.
+				return getRandomItem(matchGroupsLotto.draw());
+			} else {
+				throw "pattern '" + pattern.name + "' must have 'matches' or 'options' defined";
+			}
 		};
 
 		for (var i = 0; i < patterns.length; i++) {
@@ -231,29 +361,10 @@ function generate(options, patterns) {
 			// Pick how many patterns we are going to apply based on the pattern min/max values.
 			const count = Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
 
-			// Gets a space at which the current pattern can be applied, or null if no space exists.
-			const findMatchingSpace = () => {
-				// The list of all x/y spaces which match the pattern.
-				const matchingSpaces = [];
-
-				// Check this pattern against every space in the dungeon.
-				for (var x = 0; x < options.dungeonSize; x++) {
-					for (var y = 0; y < options.dungeonSize; y++) {
-						// Check whether the pattern matches the current space, and check whether we should apply it based on chance.
-						if (doesPatternMatchSpace(pattern, x, y)) {
-							matchingSpaces.push({ x, y });
-						}
-					}
-				}
-
-				// Return a randomly picked matching space, or null if no matching spaces were found.
-				return matchingSpaces.length ?  matchingSpaces.splice(Math.floor(Math.random() * matchingSpaces.length), 1)[0] : null;
-			};
-
 			// Apply the pattern randomly as many times as we need. 
 			for (var p = 0; p < count; p++) {
 				// Get a space at which we can apply the pattern.
-				const matchingSpace = findMatchingSpace();
+				const matchingSpace = findMatchingSpace(pattern);
 
 				// Check whether there was no matching spaces at which we could apply the current pattern.
 				if (!matchingSpace) {
@@ -268,7 +379,7 @@ function generate(options, patterns) {
 				}
 
 				// Apply the current pattern to the matching space.
-				(pattern.apply || []).forEach(([xOffset, yOffset, type]) => {
+				matchingSpace.applies.forEach(([xOffset, yOffset, type]) => {
 					// Get the absolute x/y of the space we are trying to set.
 					const x = matchingSpace.x + xOffset;
 					const y = matchingSpace.y + yOffset;
