@@ -1,41 +1,82 @@
 package com.dumbpug.dungeony;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.dumbpug.dungeony.dungen.DunGen;
-import com.dumbpug.dungeony.dungen.DunGenConfiguration;
-import com.dumbpug.dungeony.dungen.DunGenPrinter;
-import com.dumbpug.dungeony.dungen.Dungeon;
-import com.dumbpug.dungeony.dungen.room.RoomResources;
-import com.dumbpug.dungeony.dungen.room.RoomResourcesReader;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import com.dumbpug.dungeony.state.StateManager;
+import com.dumbpug.dungeony.state.states.Splash;
+import com.dumbpug.dungeony.state.states.Title;
 
+/**
+ * The Dungeony application.
+ */
 public class Dungeony extends ApplicationAdapter {
-	SpriteBatch batch;
+	/**
+	 * The state manager.
+	 */
+	private StateManager stateManager;
+	/**
+	 * The sprite batch to use throughout the application.
+	 */
+	private SpriteBatch batch;
+	/**
+	 * The application camera.
+	 */
+	private OrthographicCamera camera;
+	/**
+	 * The application viewport.
+	 */
+	private Viewport viewport;
 	
 	@Override
 	public void create () {
+		// Create the state manager and add the application states.
+		stateManager = new StateManager();
+		stateManager.addState(new Splash());
+		stateManager.addState(new Title());
+
+		// Set the initial application state.
+		stateManager.setCurrentState("SPLASH");
+
+		camera = new OrthographicCamera();
+		viewport = new ExtendViewport(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, camera);
+		viewport.apply();
+
+		// camera.position.set(Constants.WINDOW_WIDTH / 2, Constants.WINDOW_HEIGHT / 2,0);
+
+		// Create the application sprite batch.
 		batch = new SpriteBatch();
-		
-		RoomResources resources = RoomResourcesReader.getResources("rooms");
-		
-		System.out.println("ROOM COUNT         : " + resources.getRooms().size());
-		System.out.println("ROOM GROUP COUNT   : " + resources.getRoomGroups().size());
-		
-		Dungeon dungeon = DunGen.generate("rooms", new DunGenConfiguration());
-		
-		System.out.println("DUNGEON TILE COUNT : " + dungeon.getTiles().size());
-		
-		DunGenPrinter.print(new SimpleDateFormat("yyyy_MM_dd__HH_mm_ss_SSS").format(new Date()), "", dungeon);
 	}
 
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		// Write the FPS to the console.
+		// System.out.println(Gdx.graphics.getFramesPerSecond() + " FPS");
+
+		// Update the current application state.
+		this.stateManager.update();
+
+		// Update the sprite batch position to match the camera.
+		camera.update();
+		batch.setProjectionMatrix(camera.combined);
+
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+		Gdx.gl.glClearColor(0.219f, 0.219f, 0.239f, 1);
+
+		// Render the current application state.
+		batch.begin();
+		this.stateManager.render(batch);
+		batch.end();
+	}
+
+	@Override
+	public void resize(int width, int height){
+		viewport.update(width, height);
+		camera.position.set(Constants.WINDOW_WIDTH / 2, Constants.WINDOW_HEIGHT / 2,0);
 	}
 	
 	@Override

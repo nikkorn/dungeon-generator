@@ -114,8 +114,8 @@ dungeon_patterns.push({
 
 dungeon_patterns.push({
   name: "enemy-pairs",
-  min: 3,
-  max: 8,
+  min: 5,
+  max: 10,
   options: [
     {
       tickets: 1,
