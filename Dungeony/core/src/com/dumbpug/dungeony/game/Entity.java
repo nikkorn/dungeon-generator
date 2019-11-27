@@ -7,16 +7,26 @@ import com.dumbpug.dungeony.utilities.spatialgrid.IAABB;
  */
 public abstract class Entity implements IAABB {
     /**
-     * The position of the entity.
+     * The origin position of the entity.
+     */
+    private Position origin;
+    /**
+     * The bottom-left position of the entity.
      */
     private Position position;
 
     /**
      * Creates a new instance of the Entity class.
-     * @param position The initial position of the entity.
+     * @param origin The initial origin of the entity.
      */
-    public Entity(Position position) {
-        this.position = position;
+    public Entity(Position origin) {
+        // Set the entity origin.
+        this.origin = origin;
+        // Find the position as the bottom-left point of the entity based on its origin and size.
+        this.position = new Position(
+                origin.getX() - (this.getWidth() / 2f),
+                origin.getY() - (this.getHeight() / 2f)
+        );
     }
 
     /**
