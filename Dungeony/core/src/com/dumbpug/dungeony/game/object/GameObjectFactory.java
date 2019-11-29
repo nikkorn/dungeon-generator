@@ -7,7 +7,6 @@ import org.json.JSONObject;
  * Factory for creating Level instances.
  */
 public class GameObjectFactory {
-
     /**
      * Create a GameObject instance of the given type.
      * @param type The game object type.

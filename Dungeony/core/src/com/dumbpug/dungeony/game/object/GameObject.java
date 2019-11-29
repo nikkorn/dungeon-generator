@@ -7,7 +7,6 @@ import com.dumbpug.dungeony.game.Position;
  * An object that can exist in the game.
  */
 public abstract class GameObject extends Entity {
-
     /**
      * Creates a new instance of the GameObject class.
      * @param origin The initial origin of the GameObject.
