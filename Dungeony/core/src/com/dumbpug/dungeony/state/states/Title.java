@@ -17,6 +17,8 @@ public class Title extends State {
 
     @Override
     public void update() {
+        // Go straight to the character selection state.
+        this.changeState("CHARACTER_SELECTION");
     }
 
     @Override

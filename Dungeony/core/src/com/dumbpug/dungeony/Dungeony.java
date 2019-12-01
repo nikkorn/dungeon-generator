@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dumbpug.dungeony.state.StateManager;
+import com.dumbpug.dungeony.state.states.CharacterSelection;
+import com.dumbpug.dungeony.state.states.Game;
 import com.dumbpug.dungeony.state.states.Splash;
 import com.dumbpug.dungeony.state.states.Title;
 
@@ -34,10 +36,15 @@ public class Dungeony extends ApplicationAdapter {
 	
 	@Override
 	public void create () {
+		// Create the application model used to share data across application states.
+		ApplicationModel applicationModel = new ApplicationModel();
+
 		// Create the state manager and add the application states.
 		stateManager = new StateManager();
 		stateManager.addState(new Splash());
 		stateManager.addState(new Title());
+		stateManager.addState(new CharacterSelection(applicationModel));
+		stateManager.addState(new Game(applicationModel));
 
 		// Set the initial application state.
 		stateManager.setCurrentState("SPLASH");
