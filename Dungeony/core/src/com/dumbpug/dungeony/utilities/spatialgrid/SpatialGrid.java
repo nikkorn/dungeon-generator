@@ -1,5 +1,6 @@
 package com.dumbpug.dungeony.utilities.spatialgrid;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -29,12 +30,21 @@ public class SpatialGrid<TAABB extends IAABB> {
     }
 
     /**
+     * Gets whether the specified AABB is already in the grid.
+     * @param aabb The AABB
+     * @return Whether the specified AABB is already in the grid.
+     */
+    public boolean contains(TAABB aabb) {
+        return this.AABBToSpatialAABBMap.containsKey(aabb);
+    }
+
+    /**
      * Add an AABB to the grid.
      * @param aabb The aabb to add.
      */
     public void add(TAABB aabb) {
         // If this AABB has already been added then there is nothing to do.
-        if (this.AABBToSpatialAABBMap.containsKey(aabb)) {
+        if (this.contains(aabb)) {
             return;
         }
 
@@ -46,12 +56,22 @@ public class SpatialGrid<TAABB extends IAABB> {
     }
 
     /**
+     * Add a list of AABB to the grid.
+     * @param list The list of aabb to add.
+     */
+    public void add(ArrayList<? extends TAABB> list) {
+        for (TAABB aabb : list) {
+            this.add(aabb);
+        }
+    }
+
+    /**
      * Remove an AABB from the grid.
      * @param aabb The aabb to remove.
      */
     public void remove(TAABB aabb) {
         // If this AABB does not exist in the grid then there is nothing to do.
-        if (!AABBToSpatialAABBMap.containsKey(aabb)) {
+        if (!this.contains(aabb)) {
             return;
         }
 
@@ -101,6 +121,44 @@ public class SpatialGrid<TAABB extends IAABB> {
                 // Add the cell key to the list of keys representing cells that the AABB intersects for quick lookup.
                 spatiallyPositionedAABB.addCell(cell);
             }
+        }
+    }
+
+    /**
+     * Update a list of AABB in the grid.
+     * @param list The list of aabb to update.
+     */
+    public void update(ArrayList<? extends TAABB> list) {
+        for (TAABB aabb : list) {
+            // Ignore the current aabb if it has not actually been added to the grid.
+            if (!this.contains(aabb)) {
+                continue;
+            }
+
+            this.update(aabb);
+        }
+    }
+
+    /**
+     * Add an AABB to the grid if it has not already been added, or update it if it has.
+     * @param aabb The aabb to add or update.
+     */
+    public void addOrUpdate(TAABB aabb) {
+        // Add the aabb if it is not already in the grid, or update it if it is.
+        if (this.contains(aabb)) {
+            this.update(aabb);
+        } else {
+            this.add(aabb);
+        }
+    }
+
+    /**
+     * Add or update a list of AABB in the grid.
+     * @param list The list of aabb to add or update.
+     */
+    public void addOrUpdate(ArrayList<? extends TAABB> list) {
+        for (TAABB aabb : list) {
+            this.addOrUpdate(aabb);
         }
     }
 

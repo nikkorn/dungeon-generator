@@ -18,5 +18,7 @@ public class Constants {
     //==============================================================================================
     // GAME
     //==============================================================================================
-    public static final float GAME_TILE_SIZE 	                    = 64;
+    public static final float GAME_TILE_SIZE 	                    = 64f;
+    public static final float GAME_GRID_CELL_SIZE                   = GAME_TILE_SIZE * 4f;
+    public static final float GAME_PLAYER_SIZE                      = GAME_TILE_SIZE * 0.75f;
 }

@@ -5,15 +5,15 @@ package com.dumbpug.dungeony.game.level;
  */
 public class LevelFactory {
 
+    public static Level createInitialLevel() {
+        return new Level();
+    }
+
     public static Level createLevel(String name) {
         return new Level();
     }
 
     public static Level createLevel(LevelCategory category, int level) {
-        return new Level();
-    }
-
-    public static Level createTestLevel() {
         return new Level();
     }
 }
