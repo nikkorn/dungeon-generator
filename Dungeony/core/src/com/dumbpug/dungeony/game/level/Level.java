@@ -1,14 +1,11 @@
 package com.dumbpug.dungeony.game.level;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.dumbpug.dungeony.Constants;
-import com.dumbpug.dungeony.game.Entity;
 import com.dumbpug.dungeony.game.character.Enemy;
 import com.dumbpug.dungeony.game.character.Player;
 import com.dumbpug.dungeony.game.character.Players;
 import com.dumbpug.dungeony.game.object.GameObject;
 import com.dumbpug.dungeony.game.tile.Tile;
-import com.dumbpug.dungeony.utilities.spatialgrid.SpatialGrid;
 import java.util.ArrayList;
 
 /**
@@ -34,7 +31,7 @@ public class Level {
     /**
      * The spatial grid to use in finding game entity collisions.
      */
-    private SpatialGrid<Entity> spatialGrid = new SpatialGrid<Entity>(Constants.GAME_GRID_CELL_SIZE);
+    private LevelGrid grid = new LevelGrid();
 
     /**
      * Creates a new instance of the Level class.
@@ -47,10 +44,10 @@ public class Level {
         this.objects = objects;
         this.enemies = enemies;
 
-        // Add the tiles, objects and enemies to our spatial grid.
-        this.spatialGrid.add(tiles);
-        this.spatialGrid.add(objects);
-        this.spatialGrid.add(enemies);
+        // Add the tiles, objects and enemies to our level grid.
+        this.grid.add(tiles);
+        this.grid.add(objects);
+        this.grid.add(enemies);
     }
 
     /**
@@ -62,9 +59,9 @@ public class Level {
 
         // TODO Assign each player a valid position in the level.
 
-        // Add each player to the level spatial grid.
+        // Add each player to the level grid.
         for (Player player : players.getAll()) {
-            this.spatialGrid.add(player);
+            this.grid.add(player);
         }
     }
 

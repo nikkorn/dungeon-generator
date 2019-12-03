@@ -70,9 +70,9 @@ public class SpatialGrid<TAABB extends IAABB> {
      * @param aabb The aabb to remove.
      */
     public void remove(TAABB aabb) {
-        // If this AABB does not exist in the grid then there is nothing to do.
+        // If this AABB does not exist in the grid then throw an error.
         if (!this.contains(aabb)) {
-            return;
+            throw new RuntimeException("The AABB is not present in the grid.");
         }
 
         // Get the spatially positioned AABB for the AABB.
@@ -168,6 +168,11 @@ public class SpatialGrid<TAABB extends IAABB> {
      * @return A set of AABBs that reside in the current or adjacent cells to the specified one excluding it.
      */
     public HashSet<TAABB> getCollisionCandidates(TAABB aabb) {
+        // If this AABB does not exist in the grid then throw an error.
+        if (!this.contains(aabb)) {
+            throw new RuntimeException("The AABB is not present in the grid.");
+        }
+
         // Get the spatially positioned AABB for the AABB.
         SpatiallyPositionedAABB<TAABB> spatiallyPositionedAABB = this.AABBToSpatialAABBMap.get(aabb);
 
@@ -185,6 +190,29 @@ public class SpatialGrid<TAABB extends IAABB> {
 
         // Return the list of neighbouring AABBs.
         return neighbouringAABBs;
+    }
+
+    /**
+     * Get a set of AABBs that reside in the current or adjacent cells to the specified one excluding it.
+     * @param aabb The AABB for which to find a set of AABBs that reside in the current or adjacent cells to it.
+     * @return A set of AABBs that reside in the current or adjacent cells to the specified one excluding it.
+     */
+    public HashSet<TAABB> getColliding(TAABB aabb) {
+        // Get the neighbouring set of AABBs that the specified AABB could be colliding with.
+        HashSet<TAABB> candidates = this.getCollisionCandidates(aabb);
+
+        // Create an empty set to hold all colliding AABBs.
+        HashSet<TAABB> colliding = new HashSet<TAABB>();
+
+        // Find all candidates that are actually colliding with the specified AABB.
+        for (TAABB candidate : candidates) {
+            if (areColliding(candidate, aabb)) {
+                colliding.add(candidate);
+            }
+        }
+
+        // Return the list of neighbouring AABBs.
+        return colliding;
     }
 
     /**
@@ -245,6 +273,19 @@ public class SpatialGrid<TAABB extends IAABB> {
      */
     private int getCellPosition(double value) {
         return (int) Math.floor(value / this.cellSize);
+    }
+
+    /**
+     * Gets whether AABB a is currently colliding with AABB b.
+     * @param a
+     * @param b
+     * @return Whether AABB a is currently colliding with AABB b.
+     */
+    private boolean areColliding(TAABB a, TAABB b) {
+        return a.getX() < (b.getX() + b.getWidth()) &&
+                (a.getX() + a.getWidth()) > b.getX() &&
+                a.getY() < (b.getY() + b.getHeight()) &&
+                (a.getY() + a.getHeight()) > b.getY();
     }
 }
 
