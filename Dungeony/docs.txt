@@ -21,3 +21,60 @@ The type of level that a level door will take you to is random, but there are re
 - A player will have to visit between 2-4? NORMAL levels before reaching a CHALLENGE or CAMP level.
 - A player will have to visit between 4-8? NORMAL or CHALLENGE levels after a CAMP level to reach the next CAMP level.
 - A player will have to visit between 16-24? NORMAL or CHALLENGE levels before reaching the FINAL level.
+
+
+
+
+
+ENTITY COLLISIONS
+#################
+
+Entity collisions can be taken care of with something like the following:
+
+const flag = {
+  "NOTHING": 0,
+  "WALL": 1,
+  "CHARACTER": 2,
+  "PICKUP":  4,
+  "PROJECTILE": 8,
+  "OBJECT":  16
+}
+
+function createObject(name, flag, mask) {
+  return {
+  	name, flag, mask
+  };
+}
+
+const objects = [
+  createObject("wall", flag.WALL, flag.CHARACTER | flag.PICKUP | flag.PROJECTILE | flag.OBJECT),
+  createObject("player", flag.CHARACTER, flag.WALL | flag.CHARACTER | flag.PICKUP | flag.OBJECT),
+  createObject("enemy", flag.CHARACTER, flag.WALL | flag.CHARACTER | flag.PICKUP | flag.OBJECT),
+  createObject("ghost", flag.CHARACTER, flag.WALL),
+  createObject("pot", flag.OBJECT, flag.WALL | flag.CHARACTER | flag.PICKUP | flag.PROJECTILE | flag.OBJECT),
+  createObject("walkable_trap", flag.OBJECT, flag.NOTHING),
+  createObject("chest", flag.OBJECT, flag.WALL | flag.CHARACTER | flag.PICKUP | flag.PROJECTILE | flag.OBJECT),
+  createObject("bullet", flag.PROJECTILE, flag.WALL | flag.CHARACTER | flag.OBJECT),
+  createObject("grenade", flag.PROJECTILE, flag.WALL | flag.CHARACTER | flag.OBJECT),
+  createObject("ammo_drop", flag.PICKUP, flag.WALL | flag.OBJECT)
+];
+
+const results = [];
+
+for (var attempt = 0; attempt < 100; attempt++) {
+  var first  = objects[Math.floor(Math.random()*objects.length)];
+  var second = objects[Math.floor(Math.random()*objects.length)];
+
+  results.push({
+  	collides: (first.mask & second.flag) && (second.mask & first.flag),
+    pair: `${first.name} and ${second.name}`
+  });
+}
+
+console.log("###################### COLLISION ######################");
+results.filter((result) => result.collides).forEach((result) => console.log(result.pair));
+console.log("#######################################################");
+
+console.log("##################### NO COLLISION ####################");
+results.filter((result) => !result.collides).forEach((result) => console.log(result.pair));
+console.log("#######################################################");

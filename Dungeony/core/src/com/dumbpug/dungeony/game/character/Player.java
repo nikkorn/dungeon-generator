@@ -39,9 +39,4 @@ public class Player extends GameCharacter {
     public float getHeight() {
         return Constants.GAME_PLAYER_SIZE;
     }
-
-    @Override
-    public int getCollisionMask() {
-        return 0;
-    }
 }

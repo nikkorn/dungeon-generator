@@ -11,4 +11,9 @@ public abstract class GameCharacter extends Entity {
     public GameCharacter(Position origin) {
         super(origin);
     }
+
+    @Override
+    public int getCollisionMask() {
+        return 0;
+    }
 }
