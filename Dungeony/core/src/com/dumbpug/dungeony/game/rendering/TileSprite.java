@@ -1,4 +1,4 @@
-package com.dumbpug.dungeony.game.resources;
+package com.dumbpug.dungeony.game.rendering;
 
 /**
  * Enumeration of tile sprite types.

@@ -127,9 +127,9 @@ public class StateManager {
      * @param batch The sprite batch.
      */
     public void render(SpriteBatch batch) {
-        // There is nothing to do if there is no state to render.
+        // There is nothing to do if there is no state to rendering.
         if (this.currentState == null) {
-            throw new RuntimeException("error: no state to render.");
+            throw new RuntimeException("error: no state to rendering.");
         }
 
         // Render the current state.

@@ -82,6 +82,6 @@ public class Level {
     public void render(SpriteBatch batch) {
         // TODO Draw the ground.
         // TODO Draw ever non-empty tile and game entity in order of the y-position of their origins.
-        // TODO We may need a 'renderables' list with all renderable entities in it so we can sort before every render.
+        // TODO We may need a 'renderables' list with all renderable entities in it so we can sort before every rendering.
     }
 }

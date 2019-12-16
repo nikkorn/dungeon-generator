@@ -1,11 +1,13 @@
 package com.dumbpug.dungeony.game;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dumbpug.dungeony.game.rendering.IRenderable;
 import com.dumbpug.dungeony.utilities.spatialgrid.IAABB;
 
 /**
  * An in-game entity with a position and size that can collide with other entities.
  */
-public abstract class Entity implements IAABB {
+public abstract class Entity implements IAABB, IRenderable {
     /**
      * The origin position of the entity.
      */
@@ -45,6 +47,34 @@ public abstract class Entity implements IAABB {
     @Override
     public float getY() {
         return this.position.getY();
+    }
+
+    /**
+     * Gets whether this entity collides with the specified entity.
+     * @param entity The entity to check.
+     * @return Whether this entity collides with the specified entity.
+     */
+    public boolean collidesWith(Entity entity) {
+        return (this.getCollisionMask() & entity.getCollisionFlag()) > 0 && (entity.getCollisionMask() & this.getCollisionFlag()) > 0;
+    }
+
+    /**
+     * Gets the renderable index to use in sorting.
+     * @return The renderable index to use in sorting.
+     */
+    @Override
+    public float getRenderOrder() {
+        // The entity render order depends on its y position by default.
+        return this.position.getY();
+    }
+
+    /**
+     * Render the renderable using the provided sprite batch.
+     * @param batch The sprite batch to use in rendering the renderable.
+     */
+    @Override
+    public void render(SpriteBatch batch) {
+        // TODO Render!
     }
 
     /**

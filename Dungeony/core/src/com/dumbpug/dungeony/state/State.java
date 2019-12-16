@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  */
 public abstract class State {
     /**
-     * This will be set to a state name if this state wants the state manager to render a different state.
+     * This will be set to a state name if this state wants the state manager to rendering a different state.
      */
     private String targetStateName = null;
 
@@ -20,7 +20,7 @@ public abstract class State {
     }
 
     /**
-     * Called by the state manager before every render. null = no request, any other value will indicate a request and will be the name of the new state.
+     * Called by the state manager before every rendering. null = no request, any other value will indicate a request and will be the name of the new state.
      * @return targetStateName The target state name.
      */
     public String getTargetStateName() {
