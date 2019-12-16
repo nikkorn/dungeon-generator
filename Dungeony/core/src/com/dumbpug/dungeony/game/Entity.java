@@ -62,6 +62,12 @@ public abstract class Entity implements IAABB {
     public abstract float getHeight();
 
     /**
+     * Gets the collision flag of the entity.
+     * @return The collision flag of the entity.
+     */
+    public abstract int getCollisionFlag();
+
+    /**
      * Gets the collision mask of the entity.
      * @return The collision mask of the entity.
      */

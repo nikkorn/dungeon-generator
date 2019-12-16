@@ -1,6 +1,7 @@
 package com.dumbpug.dungeony.game.character;
 
 import com.dumbpug.dungeony.game.Entity;
+import com.dumbpug.dungeony.game.EntityCollisionFlag;
 import com.dumbpug.dungeony.game.Position;
 
 public abstract class GameCharacter extends Entity {
@@ -13,7 +14,13 @@ public abstract class GameCharacter extends Entity {
     }
 
     @Override
+    public int getCollisionFlag() {
+        return EntityCollisionFlag.CHARACTER;
+    }
+
+    @Override
     public int getCollisionMask() {
-        return 0;
+        // Everything should collide with a character by default.
+        return EntityCollisionFlag.WALL | EntityCollisionFlag.CHARACTER | EntityCollisionFlag.PICKUP | EntityCollisionFlag.OBJECT;
     }
 }

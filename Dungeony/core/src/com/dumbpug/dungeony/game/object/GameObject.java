@@ -1,6 +1,7 @@
 package com.dumbpug.dungeony.game.object;
 
 import com.dumbpug.dungeony.game.Entity;
+import com.dumbpug.dungeony.game.EntityCollisionFlag;
 import com.dumbpug.dungeony.game.Position;
 
 /**
@@ -20,4 +21,15 @@ public abstract class GameObject extends Entity {
      * @return The type of the game object.
      */
     public abstract GameObjectType getType();
+
+    @Override
+    public int getCollisionFlag() {
+        return EntityCollisionFlag.OBJECT;
+    }
+
+    @Override
+    public int getCollisionMask() {
+        // Everything should collide with an object by default.
+        return EntityCollisionFlag.WALL | EntityCollisionFlag.CHARACTER | EntityCollisionFlag.PICKUP | EntityCollisionFlag.PROJECTILE | EntityCollisionFlag.OBJECT;
+    }
 }

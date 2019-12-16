@@ -2,6 +2,7 @@ package com.dumbpug.dungeony.game.tile;
 
 import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.game.Entity;
+import com.dumbpug.dungeony.game.EntityCollisionFlag;
 import com.dumbpug.dungeony.game.Position;
 
 /**
@@ -42,14 +43,24 @@ public class Tile extends Entity {
     }
 
     @Override
+    public int getCollisionFlag() {
+        switch (this.type) {
+            case WALL:
+                return EntityCollisionFlag.WALL;
+            default:
+                return EntityCollisionFlag.NOTHING;
+        }
+    }
+
+    @Override
     public int getCollisionMask() {
         switch (this.type) {
             case WALL:
                 // Everything bumps into a wall!
-                return Integer.MAX_VALUE;
+                return EntityCollisionFlag.CHARACTER | EntityCollisionFlag.PICKUP | EntityCollisionFlag.PROJECTILE | EntityCollisionFlag.OBJECT;
             default:
                 // Nothing bumps into an unknown tile type!
-                return 0;
+                return EntityCollisionFlag.NOTHING;
         }
     }
 }

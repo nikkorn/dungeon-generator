@@ -28,10 +28,4 @@ public class Chest extends GameObject {
         // A chest should fill the tile that it is on vertically.
         return Constants.GAME_TILE_SIZE;
     }
-
-    @Override
-    public int getCollisionMask() {
-        // Everything should collide with a chest at all times.
-        return Integer.MAX_VALUE;
-    }
 }
