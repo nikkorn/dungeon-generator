@@ -46,6 +46,16 @@ public class Renderables {
     }
 
     /**
+     * Add the list of specified renderables.
+     * @param list The list of renderables to add.
+     */
+    public void add(ArrayList<? extends IRenderable> list) {
+        for (IRenderable renderable : list) {
+            this.add(renderable);
+        }
+    }
+
+    /**
      * Remove the specified renderable.
      * @param renderable The renderable to remove.
      */

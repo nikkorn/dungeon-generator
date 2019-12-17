@@ -1,5 +1,10 @@
 package com.dumbpug.dungeony.game.character;
 
+import com.dumbpug.dungeony.characterselection.PlayerDetails;
+import com.dumbpug.dungeony.game.Position;
+import com.dumbpug.dungeony.game.level.LevelGrid;
+import com.dumbpug.dungeony.game.rendering.Renderables;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -11,13 +16,33 @@ public class Players {
      * The map of player identifiers to players.
      */
     private HashMap<PlayerIdentifier, Player> players = new HashMap<PlayerIdentifier, Player>();
+    /**
+     * The spatial grid to use in finding game entity collisions.
+     */
+    private LevelGrid levelGrid;
+    /**
+     * The renderables list to keep updated with this list.
+     */
+    private Renderables renderables;
 
     /**
-     * Add a player to the list of players.
-     * @param player The player to add.
+     * Creates a new instance of the Players class.
+     * @param playerDetails The list of player details.
+     * @param levelGrid
+     * @param renderables
+     * @param spawns
      */
-    public void addPlayer(Player player) {
-        this.players.put(player.getId(), player);
+    public Players(ArrayList<PlayerDetails> playerDetails, LevelGrid levelGrid, Renderables renderables, ArrayList<Position> spawns) {
+        for (PlayerDetails playerDetail : playerDetails) {
+            // Create a new player instance based on the player details.
+            Player player = new Player(playerDetail.getId(), null /* Add Spawn Here!!! */);
+
+            // Add the new player to the level grid.
+            this.levelGrid.add(player);
+
+            // Add the new player to the  to the renderables list.
+            this.renderables.add(player);
+        }
     }
 
     /**

@@ -1,9 +1,9 @@
 package com.dumbpug.dungeony.game.level;
 
+import com.dumbpug.dungeony.characterselection.PlayerDetails;
 import com.dumbpug.dungeony.game.character.Enemy;
 import com.dumbpug.dungeony.game.object.GameObject;
 import com.dumbpug.dungeony.game.tile.Tile;
-
 import java.util.ArrayList;
 
 /**
@@ -11,24 +11,27 @@ import java.util.ArrayList;
  */
 public class LevelFactory {
 
-    public static Level createInitialLevel() {
+    public static Level createInitialLevel(ArrayList<PlayerDetails> playerDetails) {
         return new Level(
+                playerDetails,
                 new ArrayList<Tile>(),
                 new ArrayList<GameObject>(),
                 new ArrayList<Enemy>()
         );
     }
 
-    public static Level createLevel(String name) {
+    public static Level createLevel(ArrayList<PlayerDetails> playerDetails, String name) {
         return new Level(
+                playerDetails,
                 new ArrayList<Tile>(),
                 new ArrayList<GameObject>(),
                 new ArrayList<Enemy>()
         );
     }
 
-    public static Level createLevel(LevelCategory category, int level) {
+    public static Level createLevel(ArrayList<PlayerDetails> playerDetails, LevelCategory category, int level) {
         return new Level(
+                playerDetails,
                 new ArrayList<Tile>(),
                 new ArrayList<GameObject>(),
                 new ArrayList<Enemy>()

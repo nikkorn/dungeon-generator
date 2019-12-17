@@ -33,12 +33,8 @@ public class Game extends State {
      */
     @Override
     public void onEntry(State state) {
-        // TODO Create 'Players' instance based on the player details recorded in the application model in the character selection state.
-
         // Moving to this state means that we are starting a new game from the initial level.
-        this.level = LevelFactory.createInitialLevel();
-
-        // TODO Add the players to the level.
+        this.level = LevelFactory.createInitialLevel(this.applicationModel.getPlayerDetails());
     }
 
     @Override
@@ -54,7 +50,7 @@ public class Game extends State {
 
     @Override
     public void render(SpriteBatch batch) {
-        // Render the level.
+        // Render the collection of level renderables.
         this.level.render(batch);
 
         // TODO Render the HUD.
