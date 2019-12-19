@@ -43,7 +43,7 @@ public class Players {
 
         // Create an in-level Player instance for each player, giving them each an initial spawn position.
         for (PlayerDetails playerDetail : playerDetails) {
-            // Create a new player instance based on the player details.
+            // Create a new player instance based on the player details and assign them an initial spawn.
             Player player = new Player(playerDetail.getId(), spawns.get(playerDetails.indexOf(playerDetail)));
 
             // Add the new player to the level grid.
