@@ -2,12 +2,14 @@ package com.dumbpug.dungeony.game.level;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dumbpug.dungeony.characterselection.PlayerDetails;
+import com.dumbpug.dungeony.game.character.Enemies;
 import com.dumbpug.dungeony.game.character.Enemy;
 import com.dumbpug.dungeony.game.character.Players;
 import com.dumbpug.dungeony.game.object.GameObject;
 import com.dumbpug.dungeony.game.object.GameObjects;
 import com.dumbpug.dungeony.game.rendering.Renderables;
 import com.dumbpug.dungeony.game.tile.Tile;
+import com.dumbpug.dungeony.game.tile.Tiles;
 import java.util.ArrayList;
 
 /**
@@ -17,7 +19,7 @@ public class Level {
     /**
      * The level tiles.
      */
-    private ArrayList<Tile> tiles;
+    private Tiles tiles;
     /**
      * The game objects in the level.
      */
@@ -25,7 +27,7 @@ public class Level {
     /**
      * The enemies in the level.
      */
-    private ArrayList<Enemy> enemies;
+    private Enemies enemies;
     /**
      * The players in the level.
      */
@@ -41,21 +43,16 @@ public class Level {
 
     /**
      * Creates a new instance of the Level class.
-     * @param playerDetails
-     * @param tiles
-     * @param objects
-     * @param enemies
+     * @param playerDetails The player details.
+     * @param tiles The level tiles.
+     * @param objects The level objects.
+     * @param enemies The level enemies.
      */
-    public Level(
-            ArrayList<PlayerDetails> playerDetails,
-            ArrayList<Tile> tiles,
-            ArrayList<GameObject> objects,
-            ArrayList<Enemy> enemies
-    ) {
-        // TODO this.tiles = new Tiles(tiles, this.grid, this.renderables);
+    public Level(ArrayList<PlayerDetails> playerDetails, ArrayList<Tile> tiles, ArrayList<GameObject> objects, ArrayList<Enemy> enemies) {
+        this.tiles   = new Tiles(tiles, this.grid, this.renderables);
         this.objects = new GameObjects(objects, this.grid, this.renderables);
-        // TODO this.enemies = new Enemies(enemies, this.grid, this.renderables);
-        this.players = new Players(playerDetails, this.grid, this.renderables, null);
+        this.enemies = new Enemies(enemies, this.grid, this.renderables);
+        this.players = new Players(playerDetails, this.grid, this.renderables, this.tiles.getSpawnPositions());
     }
 
     /**
@@ -78,7 +75,7 @@ public class Level {
 
     /**
      * Render the level.
-     * @param batch
+     * @param batch The sprite batch to use in rendering the level.
      */
     public void render(SpriteBatch batch) {
         // TODO Might have to have a camera here to follow the player/players and update/reapply the batch projection matrix.

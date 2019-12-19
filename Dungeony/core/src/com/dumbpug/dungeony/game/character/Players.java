@@ -28,14 +28,23 @@ public class Players {
     /**
      * Creates a new instance of the Players class.
      * @param playerDetails The list of player details.
-     * @param levelGrid
-     * @param renderables
-     * @param spawns
+     * @param levelGrid The level grid
+     * @param renderables The renderables list to keep updated with this list.
+     * @param spawns The list of available spawn positions.
      */
     public Players(ArrayList<PlayerDetails> playerDetails, LevelGrid levelGrid, Renderables renderables, ArrayList<Position> spawns) {
+        this.levelGrid   = levelGrid;
+        this.renderables = renderables;
+
+        // Check that there are enough spawn positions for our players.
+        if (playerDetails.size() > spawns.size()) {
+            throw new RuntimeException("not enough spawns for players");
+        }
+
+        // Create an in-level Player instance for each player, giving them each an initial spawn position.
         for (PlayerDetails playerDetail : playerDetails) {
             // Create a new player instance based on the player details.
-            Player player = new Player(playerDetail.getId(), null /* Add Spawn Here!!! */);
+            Player player = new Player(playerDetail.getId(), spawns.get(playerDetails.indexOf(playerDetail)));
 
             // Add the new player to the level grid.
             this.levelGrid.add(player);
