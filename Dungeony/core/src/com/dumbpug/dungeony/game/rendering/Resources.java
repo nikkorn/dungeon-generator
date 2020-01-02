@@ -17,6 +17,9 @@ public class Resources {
     static {
         tileSpriteMap = new HashMap<TileSprite, Sprite>() {{
             put(TileSprite.WALL, new Sprite(new Texture("resources/tile/WALL.png")));
+            put(TileSprite.WALL_BLOCKED, new Sprite(new Texture("resources/tile/WALL_BLOCKED.png")));
+            put(TileSprite.WALL_LIP, new Sprite(new Texture("resources/tile/WALL_LIP.png")));
+            put(TileSprite.EMPTY_GROUND, new Sprite(new Texture("resources/tile/EMPTY_GROUND.png")));
         }};
         gameObjectMap = new HashMap<GameObjectSprite, Sprite>() {{
             put(GameObjectSprite.POT, new Sprite(new Texture("resources/game_object/POT.png")));
