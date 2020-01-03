@@ -7,6 +7,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  */
 public interface IRenderable {
     /**
+     * Gets the renderable layer to use in sorting.
+     * The renderable layer will take precedence over the renderable index.
+     * @return The renderable layer to use in sorting.
+     */
+    int getRenderLayer();
+
+    /**
      * Gets the renderable index to use in sorting.
      * @return The renderable index to use in sorting.
      */

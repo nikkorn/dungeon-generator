@@ -19,6 +19,17 @@ public class Empty extends Tile {
         super(x, y);
     }
 
+    /**
+     * Gets the renderable layer to use in sorting.
+     * The renderable layer will take precedence over the renderable index.
+     * @return The renderable layer to use in sorting.
+     */
+    @Override
+    public int getRenderLayer() {
+        // Empty tiles should be rendered early as they render the level ground.
+        return 0;
+    }
+
     @Override
     public int getCollisionFlag() {
         return EntityCollisionFlag.NOTHING;

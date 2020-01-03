@@ -6,23 +6,23 @@ import java.util.Collections;
 import java.util.Comparator;
 
 /**
- * A list of renderables sorted by z-index.
+ * A collection of renderables sorted by layer depth and then by individual order.
  */
 public class Renderables {
     /**
-     * The underlying list of renderables.
+     * The list of renderable layers.
      */
-    private ArrayList<IRenderable> renderables = new ArrayList<IRenderable>();
+    private ArrayList<RenderablesLayer> layers = new ArrayList<RenderablesLayer>();
     /**
-     * The comparator to use in sorting the renderables.
+     * The comparator to use in sorting the renderable layers by order.
      */
-    private static Comparator<IRenderable> sortComparator;
+    private static Comparator<RenderablesLayer> layerOrderComparator;
 
     static {
-        sortComparator = new Comparator<IRenderable>() {
+        layerOrderComparator = new Comparator<RenderablesLayer>() {
             @Override
-            public int compare(IRenderable first, IRenderable second) {
-                float difference = first.getRenderOrder() - second.getRenderOrder();
+            public int compare(RenderablesLayer first, RenderablesLayer second) {
+                int difference = first.getDepth() - second.getDepth();
 
                 if (difference < 0) {
                     return -1;
@@ -40,9 +40,8 @@ public class Renderables {
      * @param renderable The renderable to add.
      */
     public void add(IRenderable renderable) {
-        if (!this.renderables.contains(renderable)) {
-            this.renderables.add(renderable);
-        }
+        // Get the layer at which we will add the renderable and add it.
+        getLayer(renderable.getRenderLayer()).add(renderable);
     }
 
     /**
@@ -60,22 +59,44 @@ public class Renderables {
      * @param renderable The renderable to remove.
      */
     public void remove(IRenderable renderable) {
-        if (this.renderables.contains(renderable)) {
-            this.renderables.remove(renderable);
+        // Get the layer at which we will be removing the renderable and remove it.
+        getLayer(renderable.getRenderLayer()).remove(renderable);
+    }
+
+    /**
+     * Sort and render the renderable layers.
+     * @param batch The sprite batch to use in rendering the renderable layers.
+     */
+    public void render(SpriteBatch batch) {
+        // Sort the renderables based on their rendering order.
+        Collections.sort(this.layers, Renderables.layerOrderComparator);
+
+        // Render each of the renderables.
+        for (RenderablesLayer layer : this.layers) {
+            layer.render(batch);
         }
     }
 
     /**
-     * Sort and rendering the renderables.
-     * @param batch The sprite batch to use in rendering the renderables.
+     * Gets the layer at the specified depth, or creates one if one does not already exist.
+     * @param depth The layer depth.
+     * @return The layer at the specified depth.
      */
-    public void render(SpriteBatch batch) {
-        // Sort the renderables based on their rendering order.
-        Collections.sort(this.renderables, Renderables.sortComparator);
-
-        // Render each of the renderables.
-        for (IRenderable renderable : this.renderables) {
-            renderable.render(batch);
+    private RenderablesLayer getLayer(int depth) {
+        // Try to get the layer with the specified depth if it already exists.
+        for (RenderablesLayer layer : this.layers) {
+            if (layer.getDepth() == depth) {
+                return layer;
+            }
         }
+
+        // A layer with the specified depth does not exist so create it now.
+        RenderablesLayer layer = new RenderablesLayer(depth);
+
+        // Add the new layer to the list of existing layers.
+        this.layers.add(layer);
+
+        // Return the newly created layer.
+        return layer;
     }
 }

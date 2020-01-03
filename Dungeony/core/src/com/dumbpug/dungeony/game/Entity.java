@@ -59,6 +59,17 @@ public abstract class Entity implements IAABB, IRenderable {
     }
 
     /**
+     * Gets the renderable layer to use in sorting.
+     * The renderable layer will take precedence over the renderable index.
+     * @return The renderable layer to use in sorting.
+     */
+    @Override
+    public int getRenderLayer() {
+        // Entities should be at layer 1 be default, with layer 0 reserved for things like empty floor tiles.
+        return 1;
+    }
+
+    /**
      * Gets the renderable index to use in sorting.
      * @return The renderable index to use in sorting.
      */
@@ -73,9 +84,7 @@ public abstract class Entity implements IAABB, IRenderable {
      * @param batch The sprite batch to use in rendering the renderable.
      */
     @Override
-    public void render(SpriteBatch batch) {
-        // TODO Render!
-    }
+    public void render(SpriteBatch batch) {}
 
     /**
      * Gets the width of the box.
