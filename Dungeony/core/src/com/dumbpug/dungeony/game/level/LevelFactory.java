@@ -63,4 +63,12 @@ public class LevelFactory {
                 new ArrayList<Enemy>()
         );
     }
+
+    private TileType parseTileType(String type) {
+        try {
+            return TileType.valueOf(type);
+        } catch (IllegalArgumentException exception) {
+            throw new RuntimeException("unknown tile type: " + type, exception);
+        }
+    }
 }
