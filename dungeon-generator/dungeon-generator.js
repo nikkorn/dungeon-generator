@@ -81,15 +81,16 @@ function generate(options, patterns) {
 		this.values = {},
 
 		/**
-		 * Set the space at x/y.
+		 * Set the space at x/y with width/height.
 		 */
-		this.set = function (type, x, y, width, height) {
-			for (var posX = x; posX < (x + (width || 1)); posX++) {
-				for (var posY = y; posY < (y + (height || 1)); posY++) {
+		this.set = function (type, x, y, width, height, details) {
+			for (var posX = x; posX < (x + width); posX++) {
+				for (var posY = y; posY < (y + height); posY++) {
 					this.values[posX + "-" + posY] = {
 						type,
 						x: posX,
-						y: posY
+						y: posY,
+						details: details || null
 					};
 				}
 			}
@@ -102,7 +103,7 @@ function generate(options, patterns) {
 			// Is this position outside the dungeon area?
 			const isOutOfBounds = x < 0 || x >= dungeonSize || y < 0 || y >= dungeonSize;
 			// If this position is out of bounds then return 'OOB'. Otherwise, return the space type.
-			return isOutOfBounds ? { type: "OOB", x, y } : this.values[x + "-" + y] || { type: "WALL", x, y };
+			return isOutOfBounds ? { type: "OOB", x, y, details: null } : this.values[x + "-" + y] || { type: "WALL", x, y, details: null };
 		},
 
 		/**
@@ -379,7 +380,7 @@ function generate(options, patterns) {
 				}
 
 				// Apply the current pattern to the matching space.
-				matchingSpace.applies.forEach(([xOffset, yOffset, type]) => {
+				matchingSpace.applies.forEach(([xOffset, yOffset, type, details]) => {
 					// Get the absolute x/y of the space we are trying to set.
 					const x = matchingSpace.x + xOffset;
 					const y = matchingSpace.y + yOffset;
@@ -389,7 +390,7 @@ function generate(options, patterns) {
 						return;
 					}
 
-					spaces.set(type, x, y, 1, 1);
+					spaces.set(type, x, y, 1, 1, details);
 
 					// The pattern we just applied may require that any set spaces be frozen.
 					if (freeze === "set" || freeze === "both") {
@@ -437,7 +438,7 @@ function generate(options, patterns) {
 						isReachable(x + 1, y - 1)
 					) {
 						// This wall is reachable by entities within the dungeon! Set the reachable wall.
-						spaces.set("WALL", x, y);
+						spaces.set("WALL", x, y, 1, 1);
 					}
 				}
 			}

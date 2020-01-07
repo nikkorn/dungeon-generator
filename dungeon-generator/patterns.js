@@ -207,6 +207,6 @@ dungeon_patterns.push({
     [2, 2, "ROOM"]
   ],
   applies: [
-    [1, 1, "ENEMY_STRONG"]
+    [1, 1, "ENEMY_STRONG", { "name": "super strong guy!" }]
   ]
 });
