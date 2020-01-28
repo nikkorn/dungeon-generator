@@ -1,5 +1,8 @@
 package com.dumbpug.levelgeneration;
 
+/**
+ * A definition of a tile.
+ */
 public class TileDefinition {
     /**
      * The tile id.
@@ -22,6 +25,10 @@ public class TileDefinition {
         this.y    = y;
     }
 
+    /**
+     * Gets the type of the tile.
+     * @return The typ eof the tile.
+     */
     public String getType() {
         return this.type;
     }

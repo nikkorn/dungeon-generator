@@ -6,7 +6,8 @@ package com.dumbpug.levelgeneration;
 public interface ILevelGenerator {
     /**
      * Generates a level definition.
+     * @param file The name of the file to use.
      * @return A level definition.
      */
-    LevelDefinition generate();
+    LevelDefinition generate(String file);
 }

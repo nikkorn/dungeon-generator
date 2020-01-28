@@ -3,7 +3,7 @@ package com.dumbpug.levelgeneration;
 /**
  * Generates levels based on level resource files.
  */
-public class LevelGenerator implements ILevelGenerator{
+public class LevelGenerator implements ILevelGenerator {
     /**
      * The level resources path.
      */
@@ -19,9 +19,10 @@ public class LevelGenerator implements ILevelGenerator{
 
     /**
      * Generates a level definition.
+     * @param file The name of the file to use.
      * @return A level definition.
      */
-    public LevelDefinition generate() {
+    public LevelDefinition generate(String file) {
         // TODO
         return null;
     }

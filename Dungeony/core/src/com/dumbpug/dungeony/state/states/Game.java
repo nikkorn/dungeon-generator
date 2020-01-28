@@ -5,6 +5,7 @@ import com.dumbpug.dungeony.ApplicationModel;
 import com.dumbpug.dungeony.game.level.Level;
 import com.dumbpug.dungeony.game.level.LevelFactory;
 import com.dumbpug.dungeony.state.State;
+import com.dumbpug.levelgeneration.SimpleLevelGenerator;
 
 /**
  * The 'game' state of the application.
@@ -34,7 +35,7 @@ public class Game extends State {
     @Override
     public void onEntry(State state) {
         // Moving to this state means that we are starting a new game from the initial level.
-        this.level = LevelFactory.createInitialLevel(this.applicationModel.getPlayerDetails());
+        this.level = LevelFactory.createInitialLevel(new SimpleLevelGenerator(), this.applicationModel.getPlayerDetails());
     }
 
     @Override

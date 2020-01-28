@@ -29,6 +29,10 @@ public class LevelDefinition {
         }
     }
 
+    /**
+     * Get all tile definitions.
+     * @return All tile definitions.
+     */
     public Collection<TileDefinition> getTileDefinitions() {
         return this.tileDefinitionMap.values();
     }
@@ -59,6 +63,12 @@ public class LevelDefinition {
         return tile == null ? "UNKNOWN" : tile.getType();
     }
 
+    /**
+     * Create a unique key based on an x and y value.
+     * @param x The x value.
+     * @param y The y value.
+     * @return A unique key based on an x and y value.
+     */
     private String createKey(int x, int y) {
         return x + "_" + y;
     }
