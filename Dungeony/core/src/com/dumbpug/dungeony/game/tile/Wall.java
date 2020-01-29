@@ -11,12 +11,25 @@ import com.dumbpug.dungeony.game.rendering.TileSprite;
  */
 public class Wall extends Tile {
     /**
+     * Whether the tile above this one is also a wall.
+     */
+    private boolean hasWallAbove;
+    /**
+     * Whether the tile below this one is also a wall.
+     */
+    private boolean hasWallBelow;
+
+    /**
      * Creates a new instance of the Wall class.
      * @param x The x position of the tile.
      * @param y The y position of the tile.
+     * @param hasWallAbove
+     * @param hasWallBelow
      */
-    public Wall(int x, int y) {
+    public Wall(int x, int y, boolean hasWallAbove, boolean hasWallBelow) {
         super(x, y);
+        this.hasWallAbove = hasWallAbove;
+        this.hasWallBelow = hasWallBelow;
     }
 
     @Override
@@ -37,8 +50,7 @@ public class Wall extends Tile {
     @Override
     public void render(SpriteBatch batch) {
         // Get the relevant sprite for this tile.
-        // TODO This will eventually depend on the surrounding tile types.
-        Sprite sprite = Resources.getSprite(TileSprite.WALL);
+        Sprite sprite = Resources.getSprite(this.hasWallBelow ? TileSprite.WALL_BLOCKED : TileSprite.WALL);
 
         // Set the width/height of the sprite to match the tile size.
         sprite.setSize(this.getWidth(), this.getHeight());

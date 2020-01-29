@@ -17,7 +17,10 @@ public class TileFactory {
             case EMPTY:
                 return new Empty(x, y);
             case WALL:
-                return new Wall(x, y);
+                // Find whether the tiles above and below the wall tile we are about to make are also wall tiles.
+                boolean hasWallBelow = tiles.find(x, y - 1) == TileType.WALL;
+                boolean hasWallAbove = tiles.find(x, y + 1) == TileType.WALL;
+                return new Wall(x, y, hasWallAbove, hasWallBelow);
             default:
                 throw new RuntimeException("cannot create tile instance for tile type: " + type);
         }
