@@ -1,5 +1,6 @@
 package com.dumbpug.dungeony.game.level;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dumbpug.dungeony.characterselection.PlayerDetails;
 import com.dumbpug.dungeony.game.character.Enemies;
@@ -76,10 +77,12 @@ public class Level {
     /**
      * Render the level.
      * @param batch The sprite batch to use in rendering the level.
+     * @param camera The application camera.
      */
-    public void render(SpriteBatch batch) {
+    public void render(SpriteBatch batch, OrthographicCamera camera) {
         // TODO Might have to have a camera here to follow the player/players and update/reapply the batch projection matrix.
         // TODO Alternatively, We could pass the camera thorough from 'Game' and update/reset it here.
+        camera.zoom = 0.5f;
 
         // Render every level renderable, this will be done in render order.
         this.renderables.render(batch);

@@ -39,21 +39,19 @@ public class Dungeony extends ApplicationAdapter {
 		// Create the application model used to share data across application states.
 		ApplicationModel applicationModel = new ApplicationModel();
 
+		camera = new OrthographicCamera();
+		viewport = new ExtendViewport(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, camera);
+		viewport.apply();
+
 		// Create the state manager and add the application states.
 		stateManager = new StateManager();
 		stateManager.addState(new Splash());
 		stateManager.addState(new Title());
 		stateManager.addState(new CharacterSelection(applicationModel));
-		stateManager.addState(new Game(applicationModel));
+		stateManager.addState(new Game(applicationModel, camera));
 
 		// Set the initial application state.
 		stateManager.setCurrentState("SPLASH");
-
-		camera = new OrthographicCamera();
-		viewport = new ExtendViewport(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, camera);
-		viewport.apply();
-
-		// camera.position.set(Constants.WINDOW_WIDTH / 2, Constants.WINDOW_HEIGHT / 2,0);
 
 		// Create the application sprite batch.
 		batch = new SpriteBatch();

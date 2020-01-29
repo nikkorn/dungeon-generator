@@ -1,5 +1,6 @@
 package com.dumbpug.dungeony.state.states;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dumbpug.dungeony.ApplicationModel;
 import com.dumbpug.dungeony.game.level.Level;
@@ -19,13 +20,19 @@ public class Game extends State {
      * The current level.
      */
     private Level level;
+    /**
+     * The application camera.
+     */
+    private OrthographicCamera camera;
 
     /**
      * Creates a new instance of the Game class.
-     * @param applicationModel The application model used to share data across application state
+     * @param applicationModel The application model used to share data across application state.
+     * @param camera The application camera.
      */
-    public Game(ApplicationModel applicationModel) {
+    public Game(ApplicationModel applicationModel, OrthographicCamera camera) {
         this.applicationModel = applicationModel;
+        this.camera           = camera;
     }
 
     /**
@@ -52,7 +59,7 @@ public class Game extends State {
     @Override
     public void render(SpriteBatch batch) {
         // Render the collection of level renderables.
-        this.level.render(batch);
+        this.level.render(batch, camera);
 
         // TODO Render the HUD.
         // TODO Render any game dialogs.

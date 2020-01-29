@@ -23,7 +23,8 @@ public class LevelGenerator implements ILevelGenerator {
      * @return A level definition.
      */
     public LevelDefinition generate(String file) {
-        // TODO
+        // TODO Do the thing!.
+        // TODO Substitute all tile types withe either WALL or EMPTY, more specific tile types will become entities.
         return null;
     }
 }

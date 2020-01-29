@@ -57,20 +57,22 @@ public class LevelFactory {
             }
         };
 
-        // Create the actual tiles based on the generated level tile definitions.
-        ArrayList<Tile> tiles = new ArrayList<Tile>();
+        // Create empty lists to hold the game entities.
+        ArrayList<Tile> tiles             = new ArrayList<Tile>();
+        ArrayList<GameObject> gameObjects = new ArrayList<GameObject>();
+        ArrayList<Enemy> enemies          = new ArrayList<Enemy>();
+
+        // Create the game objects enemies and actual tiles based on the generated level tile definitions.
         for (TileDefinition tileDefinition : levelDefinition.getTileDefinitions()) {
+            // TODO Create game objects, enemies and other things based on the current tile entities.
+
+            // Create the actual tile.
             tiles.add(
                     TileFactory.createTile(TileType.valueOf(tileDefinition.getType()), tileDefinition.getX(), tileDefinition.getY(), tileFinder)
             );
         }
 
         // Create and return the level instance.
-        return new Level(
-                playerDetails,
-                tiles,
-                new ArrayList<GameObject>(),
-                new ArrayList<Enemy>()
-        );
+        return new Level(playerDetails, tiles, gameObjects, enemies);
     }
 }
