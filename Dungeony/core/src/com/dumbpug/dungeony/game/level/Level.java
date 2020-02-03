@@ -80,11 +80,17 @@ public class Level {
      * @param camera The application camera.
      */
     public void render(SpriteBatch batch, OrthographicCamera camera) {
-        // TODO Might have to have a camera here to follow the player/players and update/reapply the batch projection matrix.
-        // TODO Alternatively, We could pass the camera thorough from 'Game' and update/reset it here.
+        // Update camera and sprite batch to zoom and focus on players.
         camera.zoom = 0.5f;
+        camera.update();
+        batch.setProjectionMatrix(camera.combined);
 
         // Render every level renderable, this will be done in render order.
         this.renderables.render(batch);
+
+        // Reset the application camera to its original zoom/position.
+        camera.zoom = 1f;
+        camera.update();
+        batch.setProjectionMatrix(camera.combined);
     }
 }
