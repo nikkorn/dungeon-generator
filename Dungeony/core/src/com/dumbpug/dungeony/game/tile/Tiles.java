@@ -47,7 +47,7 @@ public class Tiles {
     public ArrayList<Position> getSpawnPositions() {
         // TODO Work this out correctly eventually!!!
         return new ArrayList<Position>() {{
-           add(new Position(0, 0));
+           add(new Position(220, 800));
         }};
     }
 }

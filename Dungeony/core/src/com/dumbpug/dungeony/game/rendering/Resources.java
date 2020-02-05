@@ -2,6 +2,7 @@ package com.dumbpug.dungeony.game.rendering;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.dumbpug.dungeony.game.character.PlayerState;
 import java.util.HashMap;
 
 public class Resources {
@@ -42,5 +43,15 @@ public class Resources {
      */
     public static Sprite getSprite(GameObjectSprite gameObjectSprite) {
         return gameObjectMap.get(gameObjectSprite);
+    }
+
+    /**
+     * Gets the animation for the specified player state type.
+     * @param state The state type.
+     * @return The animation for the specified player state type.
+     */
+    public static Animation getPlayerAnimation(PlayerState state) {
+        // TODO Eventually take player type/colour into account.
+        return new Animation(new Texture("images/player/" + state + ".png"), 2, 1, 1/16f);
     }
 }

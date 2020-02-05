@@ -81,7 +81,7 @@ public class Level {
      */
     public void render(SpriteBatch batch, OrthographicCamera camera) {
         // Update camera and sprite batch to zoom and focus on players.
-        camera.zoom = 0.5f;
+        camera.zoom = 1.5f;
         camera.update();
         batch.setProjectionMatrix(camera.combined);
 
