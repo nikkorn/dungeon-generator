@@ -33,4 +33,13 @@ public abstract class Tile extends Entity {
     public float getHeight() {
         return Constants.GAME_TILE_SIZE;
     }
+
+    /**
+     * Gets the movement speed of the entity.
+     * @return The movement speed of the entity.
+     */
+    public float getMovementSpeed() {
+        // Static entities have no movement speed.
+        return 0;
+    }
 }

@@ -32,4 +32,13 @@ public class Enemy extends GameCharacter {
         // TODO Replace in derived classes.
         return 0;
     }
+
+    /**
+     * Gets the movement speed of the entity.
+     * @return The movement speed of the entity.
+     */
+    public float getMovementSpeed() {
+        // TODO Eventually should depend on enemy type.
+        return Constants.GAME_PLAYER_MOVEMENT;
+    }
 }

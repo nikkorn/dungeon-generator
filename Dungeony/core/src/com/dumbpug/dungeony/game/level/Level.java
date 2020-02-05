@@ -6,6 +6,7 @@ import com.dumbpug.dungeony.characterselection.PlayerDetails;
 import com.dumbpug.dungeony.game.character.Enemies;
 import com.dumbpug.dungeony.game.character.Enemy;
 import com.dumbpug.dungeony.game.character.Player;
+import com.dumbpug.dungeony.game.character.PlayerIdentifier;
 import com.dumbpug.dungeony.game.character.Players;
 import com.dumbpug.dungeony.game.object.GameObject;
 import com.dumbpug.dungeony.game.object.GameObjects;
@@ -85,7 +86,12 @@ public class Level {
      */
     public void render(SpriteBatch batch, OrthographicCamera camera) {
         // Update camera and sprite batch to zoom and focus on players.
-        camera.zoom = 1.5f;
+        camera.zoom = 0.5f;
+
+        // Get the camera to point at just the first player for now!
+        Player player = this.players.getPlayer(PlayerIdentifier.PLAYER_1);
+        camera.position.set(player.getX(), player.getY(), 0);
+
         camera.update();
         batch.setProjectionMatrix(camera.combined);
 

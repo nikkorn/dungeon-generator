@@ -60,7 +60,7 @@ public class Dungeony extends ApplicationAdapter {
 	@Override
 	public void render () {
 		// Write the FPS to the console.
-		// System.out.println(Gdx.graphics.getFramesPerSecond() + " FPS");
+		System.out.println(Gdx.graphics.getFramesPerSecond() + " FPS");
 
 		// Update the current application state.
 		this.stateManager.update();

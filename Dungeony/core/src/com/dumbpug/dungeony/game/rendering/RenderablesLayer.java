@@ -29,9 +29,9 @@ public class RenderablesLayer {
                 float difference = first.getRenderOrder() - second.getRenderOrder();
 
                 if (difference < 0) {
-                    return -1;
-                } else if (difference > 0) {
                     return 1;
+                } else if (difference > 0) {
+                    return -1;
                 } else {
                     return 0;
                 }

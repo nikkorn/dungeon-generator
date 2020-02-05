@@ -61,6 +61,14 @@ public class Player extends GameCharacter {
     }
 
     /**
+     * Gets the movement speed of the entity.
+     * @return The movement speed of the entity.
+     */
+    public float getMovementSpeed() {
+        return Constants.GAME_PLAYER_MOVEMENT;
+    }
+
+    /**
      * Render the renderable using the provided sprite batch.
      * @param batch The sprite batch to use in rendering the renderable.
      */
