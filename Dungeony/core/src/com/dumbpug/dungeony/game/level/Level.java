@@ -5,12 +5,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dumbpug.dungeony.characterselection.PlayerDetails;
 import com.dumbpug.dungeony.game.character.Enemies;
 import com.dumbpug.dungeony.game.character.Enemy;
+import com.dumbpug.dungeony.game.character.Player;
 import com.dumbpug.dungeony.game.character.Players;
 import com.dumbpug.dungeony.game.object.GameObject;
 import com.dumbpug.dungeony.game.object.GameObjects;
 import com.dumbpug.dungeony.game.rendering.Renderables;
 import com.dumbpug.dungeony.game.tile.Tile;
 import com.dumbpug.dungeony.game.tile.Tiles;
+import com.dumbpug.dungeony.input.IPlayerInputProvider;
 import java.util.ArrayList;
 
 /**
@@ -68,7 +70,9 @@ public class Level {
      * Update the level.
      */
     public void update() {
-        // TODO Update players, applying any player input.
+        // Update players, applying any player input.
+        updatePlayers();
+
         // TODO Update enemies.
         // TODO Update projectiles.
         // TODO Update game objects.
@@ -92,5 +96,23 @@ public class Level {
         camera.zoom = 1f;
         camera.update();
         batch.setProjectionMatrix(camera.combined);
+    }
+
+    /**
+     * Update players and apply any player input.
+     */
+    private void updatePlayers() {
+        // Process each player sequentially.
+        for (Player player : this.players.getAll()) {
+            // Get the input provider for the current player.
+            IPlayerInputProvider playerInputProvider = player.getDetails().getInputProvider();
+
+            // TODO Check for player conditions (etc death, buffs) and update.
+            // TODO Check for player actions.
+
+            // Process player input which would influence the movement of each player.
+            // Any entity movement has to be taken care of by the level grid which handles all entity collisions.
+            this.grid.move(player, playerInputProvider.getMovementAxisX(), playerInputProvider.getMovementAxisY());
+        }
     }
 }

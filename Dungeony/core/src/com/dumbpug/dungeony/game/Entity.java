@@ -41,12 +41,28 @@ public abstract class Entity implements IAABB, IRenderable {
     }
 
     /**
+     * Sets the x position of the box.
+     * @param x The x position
+     */
+    public void setX(float x) {
+        this.position.setX(x);
+    }
+
+    /**
      * Gets the y position of the box.
      * @return The y position of the box.
      */
     @Override
     public float getY() {
         return this.position.getY();
+    }
+
+    /**
+     * Sets the y position of the box.
+     * @param y The y position
+     */
+    public void setY(float y) {
+        this.position.setY(y);
     }
 
     /**

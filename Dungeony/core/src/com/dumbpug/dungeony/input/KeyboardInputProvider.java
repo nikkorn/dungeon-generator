@@ -8,7 +8,7 @@ public class KeyboardInputProvider implements IPlayerInputProvider {
     public float getMovementAxisX() {
         if (this.isControlPressed(Control.LEFT))  {
             return -1f;
-        } else if (this.isControlPressed(Control.LEFT)) {
+        } else if (this.isControlPressed(Control.RIGHT)) {
             return 1f;
         } else {
             return 0;

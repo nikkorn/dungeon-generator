@@ -3,12 +3,11 @@ package com.dumbpug.dungeony.game.character;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dumbpug.dungeony.Constants;
+import com.dumbpug.dungeony.characterselection.PlayerDetails;
 import com.dumbpug.dungeony.game.Position;
 import com.dumbpug.dungeony.game.rendering.Animation;
 import com.dumbpug.dungeony.game.rendering.GameObjectSprite;
 import com.dumbpug.dungeony.game.rendering.Resources;
-import com.dumbpug.dungeony.game.rendering.TileSprite;
-
 import java.util.HashMap;
 
 /**
@@ -16,9 +15,9 @@ import java.util.HashMap;
  */
 public class Player extends GameCharacter {
     /**
-     * The player identifier.
+     * The player details.
      */
-    private PlayerIdentifier id;
+    private PlayerDetails details;
     /**
      * The player state.
      */
@@ -30,12 +29,12 @@ public class Player extends GameCharacter {
 
     /**
      * Creates a new instance of the Player class.
-     *  @param id The player id.
+     *  @param details The player details.
      * @param origin The initial origin of the Player.
      */
-    public Player(PlayerIdentifier id, Position origin) {
+    public Player(PlayerDetails details, Position origin) {
         super(origin);
-        this.id = id;
+        this.details = details;
 
         // Populate the player animation map.
         for (PlayerState state : PlayerState.values()) {
@@ -44,11 +43,11 @@ public class Player extends GameCharacter {
     }
 
     /**
-     * Gets the player id.
-     * @return The player id.
+     * Gets the player details.
+     * @return The player details.
      */
-    public PlayerIdentifier getId() {
-        return id;
+    public PlayerDetails getDetails() {
+        return this.details;
     }
 
     @Override

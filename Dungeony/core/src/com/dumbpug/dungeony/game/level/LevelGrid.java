@@ -32,7 +32,9 @@ public class LevelGrid extends SpatialGrid<Entity> {
         // TODO Break up or movement into small maximum x/y segments if the x/y offset is really big.
         // TODO For each x/y segment:
         //       - Move X axis first and try to find intersecting and/or colliding aabbs.
+        entity.setX(entity.getX() + offsetX);
         //       - Move Y axis second and try to find intersecting and/or colliding aabbs.
+        entity.setY(entity.getY() + offsetY);
         // This way we can move a fast moving or small entity with less chance of clipping or skipping an aabb.
     }
 }
