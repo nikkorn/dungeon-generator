@@ -2,8 +2,11 @@ package com.dumbpug.dungeony.game.level;
 
 import com.badlogic.gdx.Gdx;
 import com.dumbpug.dungeony.Constants;
+import com.dumbpug.dungeony.game.Axis;
 import com.dumbpug.dungeony.game.Entity;
 import com.dumbpug.dungeony.utilities.spatialgrid.SpatialGrid;
+
+import java.util.ArrayList;
 
 /**
  * A spatial grid that handles the movement and collisions of level entities.
@@ -39,7 +42,63 @@ public class LevelGrid extends SpatialGrid<Entity> {
         // Get the delta time so we can have frame-independent movement.
         float delta = Gdx.graphics.getDeltaTime() * 50f;
 
-        entity.setX(entity.getX() + ((offsetX * entity.getMovementSpeed()) * delta));
-        entity.setY(entity.getY() + ((offsetY * entity.getMovementSpeed()) * delta));
+        moveEntityOnAxis(entity, offsetX, delta, Axis.X);
+        moveEntityOnAxis(entity, offsetY, delta, Axis.Y);
+
+        // entity.setX(entity.getX() + ((offsetX * entity.getMovementSpeed()) * delta));
+        // entity.setY(entity.getY() + ((offsetY * entity.getMovementSpeed()) * delta));
+    }
+
+    private void moveEntityOnAxis(Entity entity, float offset, float delta, Axis axis) {
+        // TODO We should chop up large movements into smaller increments.
+
+        // How the entity position is updated depends on the axis.
+        if (axis == Axis.X) {
+            // Get the initial position based on the axis we are dealing with.
+            float origin = entity.getX();
+
+            // Move to the position that we are moving to on the axis based on the entity movement speed.
+            // We apply the application delta to this value for frame-independent movement speed.
+            entity.setX(origin + ((offset * entity.getMovementSpeed()) * delta));
+
+            // Find any level entities that the entity may now be colliding with.
+            ArrayList<Entity> collidingEntities = new ArrayList<>();
+            for (Entity collidingEntity : this.getColliding(entity)) {
+                // Even though the entities collide in our level grid, they may not actually bump into each other.
+                if (collidingEntity.collidesWith(entity)) {
+                    collidingEntities.add(collidingEntity);
+                }
+            }
+
+            // Check whether the entity is now bumping into any others.
+            if (collidingEntities.size() > 0) {
+                // TODO Move the entity to the position it would be in at the point it collided with the closest entity.
+                // TODO For now just move the entity back to its original position.
+                entity.setX(origin);
+            }
+        } else {
+            // Get the initial position based on the axis we are dealing with.
+            float origin = entity.getY();
+
+            // Move to the position that we are moving to on the axis based on the entity movement speed.
+            // We apply the application delta to this value for frame-independent movement speed.
+            entity.setY(origin + ((offset * entity.getMovementSpeed()) * delta));
+
+            // Find any level entities that the entity may now be colliding with.
+            ArrayList<Entity> collidingEntities = new ArrayList<>();
+            for (Entity collidingEntity : this.getColliding(entity)) {
+                // Even though the entities collide in our level grid, they may not actually bump into each other.
+                if (collidingEntity.collidesWith(entity)) {
+                    collidingEntities.add(collidingEntity);
+                }
+            }
+
+            // Check whether the entity is now bumping into any others.
+            if (collidingEntities.size() > 0) {
+                // TODO Move the entity to the position it would be in at the point it collided with the closest entity.
+                // TODO For now just move the entity back to its original position.
+                entity.setY(origin);
+            }
+        }
     }
 }
