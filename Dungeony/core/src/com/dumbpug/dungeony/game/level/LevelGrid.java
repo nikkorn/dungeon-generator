@@ -5,7 +5,6 @@ import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.game.Axis;
 import com.dumbpug.dungeony.game.Entity;
 import com.dumbpug.dungeony.utilities.spatialgrid.SpatialGrid;
-
 import java.util.ArrayList;
 
 /**
@@ -60,6 +59,7 @@ public class LevelGrid extends SpatialGrid<Entity> {
             // Move to the position that we are moving to on the axis based on the entity movement speed.
             // We apply the application delta to this value for frame-independent movement speed.
             entity.setX(origin + ((offset * entity.getMovementSpeed()) * delta));
+            this.update(entity);
 
             // Find any level entities that the entity may now be colliding with.
             ArrayList<Entity> collidingEntities = new ArrayList<>();
@@ -75,6 +75,7 @@ public class LevelGrid extends SpatialGrid<Entity> {
                 // TODO Move the entity to the position it would be in at the point it collided with the closest entity.
                 // TODO For now just move the entity back to its original position.
                 entity.setX(origin);
+                this.update(entity);
             }
         } else {
             // Get the initial position based on the axis we are dealing with.
@@ -83,6 +84,7 @@ public class LevelGrid extends SpatialGrid<Entity> {
             // Move to the position that we are moving to on the axis based on the entity movement speed.
             // We apply the application delta to this value for frame-independent movement speed.
             entity.setY(origin + ((offset * entity.getMovementSpeed()) * delta));
+            this.update(entity);
 
             // Find any level entities that the entity may now be colliding with.
             ArrayList<Entity> collidingEntities = new ArrayList<>();
@@ -98,6 +100,7 @@ public class LevelGrid extends SpatialGrid<Entity> {
                 // TODO Move the entity to the position it would be in at the point it collided with the closest entity.
                 // TODO For now just move the entity back to its original position.
                 entity.setY(origin);
+                this.update(entity);
             }
         }
     }
