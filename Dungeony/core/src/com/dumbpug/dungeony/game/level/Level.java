@@ -95,6 +95,9 @@ public class Level {
         camera.update();
         batch.setProjectionMatrix(camera.combined);
 
+        // TODO Render a sprite matching the colour at the top of walls across the entire window.
+        // TODO Render a ground sprite for every tile position.
+
         // Render every level renderable, this will be done in render order.
         this.renderables.render(batch);
 
