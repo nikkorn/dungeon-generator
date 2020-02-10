@@ -81,7 +81,7 @@ public class Player extends GameCharacter {
         sprite.setSize(this.getWidth(), this.getHeight());
 
         // Set the x/y of the sprite to match the player position.
-        sprite.setPosition(this.getX(), this.getY());
+        sprite.setPosition(this.getX(), this.getY() + (this.getHeight() / 2f));
 
         // Draw the sprite.
         sprite.draw(batch);

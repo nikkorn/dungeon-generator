@@ -19,16 +19,16 @@ public class Wall extends Tile {
      * Creates a new instance of the Wall class.
      * @param x The x position of the tile.
      * @param y The y position of the tile.
-     * @param hasWallAbove
-     * @param hasWallBelow
-     * @param hasWallLeft
-     * @param hasWallRight
+     * @param isEmptyAbove
+     * @param isEmptyBelow
+     * @param isEmptyLeft
+     * @param isEmptyRight
      */
-    public Wall(int x, int y, boolean hasWallAbove, boolean hasWallBelow, boolean hasWallLeft, boolean hasWallRight) {
+    public Wall(int x, int y, boolean isEmptyAbove, boolean isEmptyBelow, boolean isEmptyLeft, boolean isEmptyRight) {
         super(x, y);
 
-        // Determine which tile sprite we will use for this wall tile based on the surrounding wall tiles.
-        this.tileSprite = getWallSprite(hasWallAbove, hasWallBelow, hasWallLeft, hasWallRight);
+        // Determine which tile sprite we will use for this wall tile based on the surrounding empty tiles.
+        this.tileSprite = getWallSprite(isEmptyAbove, isEmptyBelow, isEmptyLeft, isEmptyRight);
     }
 
     @Override
@@ -64,31 +64,43 @@ public class Wall extends Tile {
     }
 
     /**
-     * Gets the tile sprite for this wall tile based on the surrounding wall tiles.
-     * @param hasWallAbove
-     * @param hasWallBelow
-     * @param hasWallLeft
-     * @param hasWallRight
+     * Gets the tile sprite for this wall tile based on the surrounding empty tiles.
+     * @param isEmptyAbove
+     * @param isEmptyBelow
+     * @param isEmptyLeft
+     * @param isEmptyRight
      * @return
      */
-    private TileSprite getWallSprite(boolean hasWallAbove, boolean hasWallBelow, boolean hasWallLeft, boolean hasWallRight) {
+    private TileSprite getWallSprite(boolean isEmptyAbove, boolean isEmptyBelow, boolean isEmptyLeft, boolean isEmptyRight) {
 
         // TODO This may eventually just have to take flags saying whether there is an EMPTY tile in place, rather than a wall.
 
-        if (!hasWallAbove) {
+        if (isEmptyAbove && isEmptyBelow && isEmptyLeft && isEmptyRight) {
+            return TileSprite.BUSH;
+        }
+
+        if (isEmptyAbove && isEmptyBelow) {
+            return TileSprite.BUSH;
+        }
+
+        if (isEmptyLeft && isEmptyRight) {
+            return TileSprite.BUSH;
+        }
+
+        if (isEmptyAbove) {
             return TileSprite.WALL_BOTTOM;
         }
 
-        if (!hasWallBelow) {
+        if (isEmptyBelow) {
             return TileSprite.WALL_TOP;
         }
 
-        if (!hasWallLeft) {
-            return TileSprite.WALL_LEFT;
+        if (isEmptyLeft) {
+            return TileSprite.WALL_RIGHT;
         }
 
-        if (!hasWallRight) {
-            return TileSprite.WALL_RIGHT;
+        if (isEmptyRight) {
+            return TileSprite.WALL_LEFT;
         }
 
         return TileSprite.WALL;

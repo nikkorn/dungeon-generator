@@ -41,6 +41,14 @@ public class Tiles {
     }
 
     /**
+     * Get the collection of all tiles.
+     * @return The collection of all tiles.
+     */
+    public ArrayList<Tile> getAll() {
+        return this.tiles;
+    }
+
+    /**
      * Gets the list of available spawn positions.
      * @return The list of available spawn positions.
      */

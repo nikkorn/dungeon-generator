@@ -27,6 +27,7 @@ public class Resources {
             put(LevelSprite.UNDERLAY, new Sprite(new Texture("images/level/UNDERLAY.png")));
         }};
         tileSpriteMap = new HashMap<TileSprite, Sprite>() {{
+            put(TileSprite.BUSH, new Sprite(new Texture("images/tile/BUSH.png")));
             put(TileSprite.WALL, new Sprite(new Texture("images/tile/WALL.png")));
             put(TileSprite.WALL_BOTTOM, new Sprite(new Texture("images/tile/WALL_BOTTOM.png")));
             put(TileSprite.WALL_BOTTOM_LEFT, new Sprite(new Texture("images/tile/WALL_BOTTOM_LEFT.png")));

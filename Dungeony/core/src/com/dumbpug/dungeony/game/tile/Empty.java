@@ -1,10 +1,7 @@
 package com.dumbpug.dungeony.game.tile;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dumbpug.dungeony.game.EntityCollisionFlag;
-import com.dumbpug.dungeony.game.rendering.Resources;
-import com.dumbpug.dungeony.game.rendering.TileSprite;
 
 /**
  * An empty tile.
@@ -46,16 +43,6 @@ public class Empty extends Tile {
      */
     @Override
     public void render(SpriteBatch batch) {
-        // Get the relevant sprite for this tile.
-        Sprite sprite = Resources.getSprite(TileSprite.GROUND);
-
-        // Set the width/height of the sprite to match the tile size.
-        sprite.setSize(this.getWidth(), this.getHeight());
-
-        // Set the x/y of the sprite to match the tile position.
-        sprite.setPosition(this.getX(), this.getY());
-
-        // Draw the sprite.
-        sprite.draw(batch);
+        // There is nothing to render for an empty tile.
     }
 }

@@ -86,6 +86,9 @@ public class RenderablesLayer {
 
         // Render each of the renderables.
         for (IRenderable renderable : this.renderables) {
+
+            // TODO Ignore any renderable not within the current view.
+
             renderable.render(batch);
         }
     }

@@ -15,6 +15,7 @@ import com.dumbpug.dungeony.game.object.GameObjects;
 import com.dumbpug.dungeony.game.rendering.LevelSprite;
 import com.dumbpug.dungeony.game.rendering.Renderables;
 import com.dumbpug.dungeony.game.rendering.Resources;
+import com.dumbpug.dungeony.game.rendering.TileSprite;
 import com.dumbpug.dungeony.game.tile.Tile;
 import com.dumbpug.dungeony.game.tile.Tiles;
 import com.dumbpug.dungeony.input.IPlayerInputProvider;
@@ -105,7 +106,22 @@ public class Level {
         levelUnderlay.setSize(Constants.WINDOW_WIDTH * 4, Constants.WINDOW_HEIGHT * 4);
         levelUnderlay.draw(batch);
 
-        // TODO Render a ground sprite for every tile position.
+        // Render the ground sprite for every tile.
+        for (Tile tile : this.tiles.getAll()) {
+            // Get the ground sprite for this tile.
+            Sprite sprite = Resources.getSprite(TileSprite.GROUND);
+
+            // Set the width/height of the sprite to match the tile size.
+            sprite.setSize(tile.getWidth(), tile.getHeight());
+
+            // Set the x/y of the sprite to match the tile position.
+            sprite.setPosition(tile.getX(), tile.getY());
+
+            // Draw the sprite.
+            sprite.draw(batch);
+        }
+
+        // TODO Make a renderable be able to be added at multiple levels and rendering calls the render for each with the layer it is on.
 
         // Render every level renderable, this will be done in render order.
         this.renderables.render(batch);
