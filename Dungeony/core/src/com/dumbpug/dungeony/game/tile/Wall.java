@@ -11,13 +11,9 @@ import com.dumbpug.dungeony.game.rendering.TileSprite;
  */
 public class Wall extends Tile {
     /**
-     * Whether the tile above this one is also a wall.
+     * The tile sprite to use in rendering this wall tile.
      */
-    private boolean hasWallAbove;
-    /**
-     * Whether the tile below this one is also a wall.
-     */
-    private boolean hasWallBelow;
+    private TileSprite tileSprite;
 
     /**
      * Creates a new instance of the Wall class.
@@ -25,11 +21,14 @@ public class Wall extends Tile {
      * @param y The y position of the tile.
      * @param hasWallAbove
      * @param hasWallBelow
+     * @param hasWallLeft
+     * @param hasWallRight
      */
-    public Wall(int x, int y, boolean hasWallAbove, boolean hasWallBelow) {
+    public Wall(int x, int y, boolean hasWallAbove, boolean hasWallBelow, boolean hasWallLeft, boolean hasWallRight) {
         super(x, y);
-        this.hasWallAbove = hasWallAbove;
-        this.hasWallBelow = hasWallBelow;
+
+        // Determine which tile sprite we will use for this wall tile based on the surrounding wall tiles.
+        this.tileSprite = getWallSprite(hasWallAbove, hasWallBelow, hasWallLeft, hasWallRight);
     }
 
     @Override
@@ -50,7 +49,7 @@ public class Wall extends Tile {
     @Override
     public void render(SpriteBatch batch) {
         // Get the relevant sprite for this tile.
-        Sprite sprite = Resources.getSprite(this.hasWallBelow ? TileSprite.WALL_BLOCKED : TileSprite.WALL);
+        Sprite sprite = Resources.getSprite(this.tileSprite);
 
         // Set the width/height of the sprite to match the tile size.
         sprite.setSize(this.getWidth(), this.getHeight());
@@ -62,5 +61,36 @@ public class Wall extends Tile {
         sprite.draw(batch);
 
         // TODO If there is no wall above this tile then render a tile lip above.
+    }
+
+    /**
+     * Gets the tile sprite for this wall tile based on the surrounding wall tiles.
+     * @param hasWallAbove
+     * @param hasWallBelow
+     * @param hasWallLeft
+     * @param hasWallRight
+     * @return
+     */
+    private TileSprite getWallSprite(boolean hasWallAbove, boolean hasWallBelow, boolean hasWallLeft, boolean hasWallRight) {
+
+        // TODO This may eventually just have to take flags saying whether there is an EMPTY tile in place, rather than a wall.
+
+        if (!hasWallAbove) {
+            return TileSprite.WALL_BOTTOM;
+        }
+
+        if (!hasWallBelow) {
+            return TileSprite.WALL_TOP;
+        }
+
+        if (!hasWallLeft) {
+            return TileSprite.WALL_LEFT;
+        }
+
+        if (!hasWallRight) {
+            return TileSprite.WALL_RIGHT;
+        }
+
+        return TileSprite.WALL;
     }
 }

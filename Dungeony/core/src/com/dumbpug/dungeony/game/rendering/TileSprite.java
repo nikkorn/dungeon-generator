@@ -5,7 +5,13 @@ package com.dumbpug.dungeony.game.rendering;
  */
 public enum TileSprite {
     WALL,
-    WALL_BLOCKED,
-    WALL_LIP,
-    EMPTY_GROUND
+    WALL_BOTTOM,
+    WALL_BOTTOM_LEFT,
+    WALL_BOTTOM_RIGHT,
+    WALL_TOP,
+    WALL_TOP_LEFT,
+    WALL_TOP_RIGHT,
+    WALL_LEFT,
+    WALL_RIGHT,
+    GROUND
 }

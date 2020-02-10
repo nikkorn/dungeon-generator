@@ -5,7 +5,14 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.dumbpug.dungeony.game.character.PlayerState;
 import java.util.HashMap;
 
+/**
+ * Game resources provider.
+ */
 public class Resources {
+    /**
+     * Level sprite map.
+     */
+    private static HashMap<LevelSprite, Sprite> levelSpriteMap;
     /**
      * Tile sprite map.
      */
@@ -16,15 +23,33 @@ public class Resources {
     private static HashMap<GameObjectSprite, Sprite> gameObjectMap;
 
     static {
+        levelSpriteMap = new HashMap<LevelSprite, Sprite>() {{
+            put(LevelSprite.UNDERLAY, new Sprite(new Texture("images/level/UNDERLAY.png")));
+        }};
         tileSpriteMap = new HashMap<TileSprite, Sprite>() {{
             put(TileSprite.WALL, new Sprite(new Texture("images/tile/WALL.png")));
-            put(TileSprite.WALL_BLOCKED, new Sprite(new Texture("images/tile/WALL_BLOCKED.png")));
-            put(TileSprite.WALL_LIP, new Sprite(new Texture("images/tile/WALL_LIP.png")));
-            put(TileSprite.EMPTY_GROUND, new Sprite(new Texture("images/tile/EMPTY_GROUND.png")));
+            put(TileSprite.WALL_BOTTOM, new Sprite(new Texture("images/tile/WALL_BOTTOM.png")));
+            put(TileSprite.WALL_BOTTOM_LEFT, new Sprite(new Texture("images/tile/WALL_BOTTOM_LEFT.png")));
+            put(TileSprite.WALL_BOTTOM_RIGHT, new Sprite(new Texture("images/tile/WALL_BOTTOM_RIGHT.png")));
+            put(TileSprite.WALL_TOP, new Sprite(new Texture("images/tile/WALL_TOP.png")));
+            put(TileSprite.WALL_TOP_LEFT, new Sprite(new Texture("images/tile/WALL_TOP_LEFT.png")));
+            put(TileSprite.WALL_TOP_RIGHT, new Sprite(new Texture("images/tile/WALL_TOP_RIGHT.png")));
+            put(TileSprite.WALL_LEFT, new Sprite(new Texture("images/tile/WALL_LEFT.png")));
+            put(TileSprite.WALL_RIGHT, new Sprite(new Texture("images/tile/WALL_RIGHT.png")));
+            put(TileSprite.GROUND, new Sprite(new Texture("images/tile/GROUND.png")));
         }};
         gameObjectMap = new HashMap<GameObjectSprite, Sprite>() {{
             put(GameObjectSprite.POT, new Sprite(new Texture("images/game_object/POT.png")));
         }};
+    }
+
+    /**
+     * Gets the sprite for the specified level sprite type.
+     * @param levelSprite
+     * @return
+     */
+    public static Sprite getSprite(LevelSprite levelSprite) {
+        return levelSpriteMap.get(levelSprite);
     }
 
     /**

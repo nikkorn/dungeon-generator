@@ -1,7 +1,9 @@
 package com.dumbpug.dungeony.game.level;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.characterselection.PlayerDetails;
 import com.dumbpug.dungeony.game.character.Enemies;
 import com.dumbpug.dungeony.game.character.Enemy;
@@ -10,7 +12,9 @@ import com.dumbpug.dungeony.game.character.PlayerIdentifier;
 import com.dumbpug.dungeony.game.character.Players;
 import com.dumbpug.dungeony.game.object.GameObject;
 import com.dumbpug.dungeony.game.object.GameObjects;
+import com.dumbpug.dungeony.game.rendering.LevelSprite;
 import com.dumbpug.dungeony.game.rendering.Renderables;
+import com.dumbpug.dungeony.game.rendering.Resources;
 import com.dumbpug.dungeony.game.tile.Tile;
 import com.dumbpug.dungeony.game.tile.Tiles;
 import com.dumbpug.dungeony.input.IPlayerInputProvider;
@@ -95,7 +99,12 @@ public class Level {
         camera.update();
         batch.setProjectionMatrix(camera.combined);
 
-        // TODO Render a sprite matching the colour at the top of walls across the entire window.
+        // Render a level underlay sprite matching the colour at the top of walls across the entire window.
+        Sprite levelUnderlay = Resources.getSprite(LevelSprite.UNDERLAY);
+        levelUnderlay.setPosition(-Constants.WINDOW_WIDTH, -Constants.WINDOW_WIDTH);
+        levelUnderlay.setSize(Constants.WINDOW_WIDTH * 4, Constants.WINDOW_HEIGHT * 4);
+        levelUnderlay.draw(batch);
+
         // TODO Render a ground sprite for every tile position.
 
         // Render every level renderable, this will be done in render order.

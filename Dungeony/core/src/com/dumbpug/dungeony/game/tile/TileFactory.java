@@ -17,10 +17,12 @@ public class TileFactory {
             case EMPTY:
                 return new Empty(x, y);
             case WALL:
-                // Find whether the tiles above and below the wall tile we are about to make are also wall tiles.
+                // Find whether the tiles around the wall tile we are about to make are also wall tiles.
                 boolean hasWallBelow = tiles.find(x, y - 1) == TileType.WALL;
                 boolean hasWallAbove = tiles.find(x, y + 1) == TileType.WALL;
-                return new Wall(x, y, hasWallAbove, hasWallBelow);
+                boolean hasWallLeft  = tiles.find(x - 1, y) == TileType.WALL;
+                boolean hasWallRight = tiles.find(x + 1, y ) == TileType.WALL;
+                return new Wall(x, y, hasWallAbove, hasWallBelow, hasWallLeft, hasWallRight);
             default:
                 throw new RuntimeException("cannot create tile instance for tile type: " + type);
         }

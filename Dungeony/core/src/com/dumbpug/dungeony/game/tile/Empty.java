@@ -47,7 +47,7 @@ public class Empty extends Tile {
     @Override
     public void render(SpriteBatch batch) {
         // Get the relevant sprite for this tile.
-        Sprite sprite = Resources.getSprite(TileSprite.EMPTY_GROUND);
+        Sprite sprite = Resources.getSprite(TileSprite.GROUND);
 
         // Set the width/height of the sprite to match the tile size.
         sprite.setSize(this.getWidth(), this.getHeight());
