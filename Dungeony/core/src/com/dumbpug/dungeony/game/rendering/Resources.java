@@ -37,6 +37,7 @@ public class Resources {
             put(TileSprite.WALL_TOP_RIGHT, new Sprite(new Texture("images/tile/WALL_TOP_RIGHT.png")));
             put(TileSprite.WALL_LEFT, new Sprite(new Texture("images/tile/WALL_LEFT.png")));
             put(TileSprite.WALL_RIGHT, new Sprite(new Texture("images/tile/WALL_RIGHT.png")));
+            put(TileSprite.WALL_VERTICAL, new Sprite(new Texture("images/tile/WALL_VERTICAL.png")));
             put(TileSprite.GROUND, new Sprite(new Texture("images/tile/GROUND.png")));
         }};
         gameObjectMap = new HashMap<GameObjectSprite, Sprite>() {{

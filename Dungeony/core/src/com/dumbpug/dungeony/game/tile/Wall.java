@@ -14,6 +14,10 @@ public class Wall extends Tile {
      * The tile sprite to use in rendering this wall tile.
      */
     private TileSprite tileSprite;
+    /**
+     * Whether the tile above is empty.
+     */
+    private boolean isTileAboveEmpty;
 
     /**
      * Creates a new instance of the Wall class.
@@ -24,18 +28,11 @@ public class Wall extends Tile {
     public Wall(int x, int y, ITileFinder tileFinder) {
         super(x, y);
 
+        // Find out whether the tile above this one is empty, if so we will have to render an upper tile lip.
+        this.isTileAboveEmpty = tileFinder.find(this, TileOffset.ABOVE) == TileType.EMPTY;
+
         // Determine which tile sprite we will use for this wall tile based on the surrounding tiles.
         this.tileSprite = getWallSprite(tileFinder);
-    }
-
-    /**
-     * Gets the renderable index to use in sorting.
-     * @return The renderable index to use in sorting.
-     */
-    @Override
-    public float getRenderOrder() {
-        // As a wall tile is higher than most entities we will draw it a little higher to seem layered.
-        return this.getY() + (this.getHeight() / 2f);
     }
 
     @Override
@@ -61,11 +58,25 @@ public class Wall extends Tile {
         // Set the width/height of the sprite to match the tile size.
         sprite.setSize(this.getWidth(), this.getHeight());
 
-        // Set the x/y of the sprite to match the tile position, pushing it up to seem layered.
-        sprite.setPosition(this.getX(), this.getY() + (this.getHeight() / 2f));
+        sprite.setPosition(this.getX(), this.getY());
 
         // Draw the sprite.
         sprite.draw(batch);
+
+        // We may have to render an upper tile lip.
+        if (this.isTileAboveEmpty) {
+            // Get the relevant sprite for this tile.
+            sprite = Resources.getSprite(TileSprite.WALL_BOTTOM);
+
+            // Set the width/height of the sprite to match the tile size.
+            sprite.setSize(this.getWidth(), this.getHeight());
+
+            // Position the lip above the tile.
+            sprite.setPosition(this.getX(), this.getY() + this.getHeight());
+
+            // Draw the sprite.
+            sprite.draw(batch);
+        }
     }
 
     /**
@@ -88,16 +99,8 @@ public class Wall extends Tile {
             return TileSprite.BUSH;
         }
 
-        if (isEmptyAbove && isEmptyBelow) {
-            return TileSprite.BUSH;
-        }
-
         if (isEmptyLeft && isEmptyRight) {
-            return TileSprite.BUSH;
-        }
-
-        if (isEmptyAbove) {
-            return TileSprite.WALL_BOTTOM;
+            return TileSprite.WALL_VERTICAL;
         }
 
         if (isEmptyBelow) {

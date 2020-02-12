@@ -14,5 +14,6 @@ public enum TileSprite {
     WALL_TOP_RIGHT,
     WALL_LEFT,
     WALL_RIGHT,
+    WALL_VERTICAL,
     GROUND
 }
