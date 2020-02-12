@@ -19,16 +19,23 @@ public class Wall extends Tile {
      * Creates a new instance of the Wall class.
      * @param x The x position of the tile.
      * @param y The y position of the tile.
-     * @param isEmptyAbove
-     * @param isEmptyBelow
-     * @param isEmptyLeft
-     * @param isEmptyRight
+     * @param tileFinder The tile finder.
      */
-    public Wall(int x, int y, boolean isEmptyAbove, boolean isEmptyBelow, boolean isEmptyLeft, boolean isEmptyRight) {
+    public Wall(int x, int y, ITileFinder tileFinder) {
         super(x, y);
 
-        // Determine which tile sprite we will use for this wall tile based on the surrounding empty tiles.
-        this.tileSprite = getWallSprite(isEmptyAbove, isEmptyBelow, isEmptyLeft, isEmptyRight);
+        // Determine which tile sprite we will use for this wall tile based on the surrounding tiles.
+        this.tileSprite = getWallSprite(tileFinder);
+    }
+
+    /**
+     * Gets the renderable index to use in sorting.
+     * @return The renderable index to use in sorting.
+     */
+    @Override
+    public float getRenderOrder() {
+        // As a wall tile is higher than most entities we will draw it a little higher to seem layered.
+        return this.getY() + (this.getHeight() / 2f);
     }
 
     @Override
@@ -54,26 +61,28 @@ public class Wall extends Tile {
         // Set the width/height of the sprite to match the tile size.
         sprite.setSize(this.getWidth(), this.getHeight());
 
-        // Set the x/y of the sprite to match the tile position.
-        sprite.setPosition(this.getX(), this.getY());
+        // Set the x/y of the sprite to match the tile position, pushing it up to seem layered.
+        sprite.setPosition(this.getX(), this.getY() + (this.getHeight() / 2f));
 
         // Draw the sprite.
         sprite.draw(batch);
-
-        // TODO If there is no wall above this tile then render a tile lip above.
     }
 
     /**
-     * Gets the tile sprite for this wall tile based on the surrounding empty tiles.
-     * @param isEmptyAbove
-     * @param isEmptyBelow
-     * @param isEmptyLeft
-     * @param isEmptyRight
-     * @return
+     * Gets the tile sprite for this wall tile based on the surrounding tiles.
+     * @param tileFinder The tile finder.
+     * @return The tile sprite for this wall tile based on the surrounding tiles.
      */
-    private TileSprite getWallSprite(boolean isEmptyAbove, boolean isEmptyBelow, boolean isEmptyLeft, boolean isEmptyRight) {
-
-        // TODO This may eventually just have to take flags saying whether there is an EMPTY tile in place, rather than a wall.
+    private TileSprite getWallSprite(ITileFinder tileFinder) {
+        // Find whether the tiles around the wall tile we are about to make are empty tiles.
+        boolean isEmptyBelow = tileFinder.find(this, TileOffset.BELOW) == TileType.EMPTY;
+        boolean isEmptyAbove = tileFinder.find(this, TileOffset.ABOVE) == TileType.EMPTY;
+        boolean isEmptyLeft  = tileFinder.find(this, TileOffset.LEFT) == TileType.EMPTY;
+        boolean isEmptyRight = tileFinder.find(this, TileOffset.RIGHT) == TileType.EMPTY;
+        boolean isEmptyBelowLeft = tileFinder.find(this, TileOffset.BELOW_LEFT) == TileType.EMPTY;
+        boolean isEmptyBelowRight = tileFinder.find(this, TileOffset.BELOW_RIGHT) == TileType.EMPTY;
+        boolean isEmptyAboveLeft = tileFinder.find(this, TileOffset.ABOVE_LEFT) == TileType.EMPTY;
+        boolean isEmptyAboveRight = tileFinder.find(this, TileOffset.ABOVE_RIGHT) == TileType.EMPTY;
 
         if (isEmptyAbove && isEmptyBelow && isEmptyLeft && isEmptyRight) {
             return TileSprite.BUSH;

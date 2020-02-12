@@ -46,7 +46,7 @@ public class Splash extends State {
 
     @Override
     public void render(SpriteBatch batch) {
-        batch.draw(this.texture, 0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
+        // batch.draw(this.texture, 0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
     }
 
     @Override

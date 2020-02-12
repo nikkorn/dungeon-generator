@@ -118,10 +118,9 @@ public class Level {
             sprite.setPosition(tile.getX(), tile.getY());
 
             // Draw the sprite.
-            sprite.draw(batch);
+            // TODO Actually do this.
+            // sprite.draw(batch);
         }
-
-        // TODO Make a renderable be able to be added at multiple levels and rendering calls the render for each with the layer it is on.
 
         // Render every level renderable, this will be done in render order.
         this.renderables.render(batch);

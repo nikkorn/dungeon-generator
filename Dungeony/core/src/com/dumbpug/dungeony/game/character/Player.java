@@ -51,6 +51,12 @@ public class Player extends GameCharacter {
     }
 
     @Override
+    public float getRenderOrder() {
+        // Player sprites and animations should be rendered a little higher than their position for a 3D effect.
+        return this.getY() + (this.getHeight() / 2f);
+    }
+
+    @Override
     public float getWidth() {
         return Constants.GAME_PLAYER_SIZE;
     }

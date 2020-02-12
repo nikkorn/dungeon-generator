@@ -50,12 +50,7 @@ public class LevelFactory {
         final LevelDefinition levelDefinition = levelGenerator.generate(file);
 
         // Create the tile finder that is used by the tile factory in order to find the inspect the type of other tiles.
-        ITileFinder tileFinder = new ITileFinder() {
-            @Override
-            public TileType find(int x, int y) {
-                return TileType.valueOf(levelDefinition.getTileType(x, y));
-            }
-        };
+        ITileFinder tileFinder = new LevelTileFinder(levelDefinition);
 
         // Create empty lists to hold the game entities.
         ArrayList<Tile> tiles             = new ArrayList<Tile>();

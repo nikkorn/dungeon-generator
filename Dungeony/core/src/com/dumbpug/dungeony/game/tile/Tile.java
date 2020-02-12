@@ -7,11 +7,11 @@ import com.dumbpug.dungeony.game.Position;
 /**
  * An in-game tile entity.
  */
-public abstract class Tile extends Entity {
+public abstract class Tile extends Entity implements ITilePositionedEntity {
     /**
-     * The x/y position of the tile.
+     * The tile based x/y position of the tile.
      */
-    private int x, y;
+    private int tileX, tileY;
 
     /**
      * Creates a new instance of the Tile class.
@@ -20,8 +20,18 @@ public abstract class Tile extends Entity {
      */
     public Tile(int x, int y) {
         super(new Position((x * Constants.GAME_TILE_SIZE) + (Constants.GAME_TILE_SIZE / 2), (y * Constants.GAME_TILE_SIZE) + (Constants.GAME_TILE_SIZE / 2)));
-        this.x = x;
-        this.y = y;
+        this.tileX = x;
+        this.tileY = y;
+    }
+
+    @Override
+    public int getTileX() {
+        return this.tileX;
+    }
+
+    @Override
+    public int getTileY() {
+        return this.tileY;
     }
 
     @Override
@@ -34,10 +44,7 @@ public abstract class Tile extends Entity {
         return Constants.GAME_TILE_SIZE;
     }
 
-    /**
-     * Gets the movement speed of the entity.
-     * @return The movement speed of the entity.
-     */
+    @Override
     public float getMovementSpeed() {
         // Static entities have no movement speed.
         return 0;
