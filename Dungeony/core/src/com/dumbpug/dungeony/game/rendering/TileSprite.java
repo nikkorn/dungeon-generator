@@ -6,7 +6,10 @@ package com.dumbpug.dungeony.game.rendering;
 public enum TileSprite {
     BUSH,
     WALL,
-    WALL_BOTTOM,
+    WALL_LIP,
+    WALL_LIP_LEFT,
+    WALL_LIP_RIGHT,
+    WALL_LIP_LEFT_RIGHT,
     WALL_BOTTOM_LEFT,
     WALL_BOTTOM_RIGHT,
     WALL_TOP,

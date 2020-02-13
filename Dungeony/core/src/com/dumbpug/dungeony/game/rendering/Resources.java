@@ -29,7 +29,10 @@ public class Resources {
         tileSpriteMap = new HashMap<TileSprite, Sprite>() {{
             put(TileSprite.BUSH, new Sprite(new Texture("images/tile/BUSH.png")));
             put(TileSprite.WALL, new Sprite(new Texture("images/tile/WALL.png")));
-            put(TileSprite.WALL_BOTTOM, new Sprite(new Texture("images/tile/WALL_BOTTOM.png")));
+            put(TileSprite.WALL_LIP, new Sprite(new Texture("images/tile/WALL_LIP.png")));
+            put(TileSprite.WALL_LIP_LEFT, new Sprite(new Texture("images/tile/WALL_LIP_LEFT.png")));
+            put(TileSprite.WALL_LIP_RIGHT, new Sprite(new Texture("images/tile/WALL_LIP_RIGHT.png")));
+            put(TileSprite.WALL_LIP_LEFT_RIGHT, new Sprite(new Texture("images/tile/WALL_LIP_LEFT_RIGHT.png")));
             put(TileSprite.WALL_BOTTOM_LEFT, new Sprite(new Texture("images/tile/WALL_BOTTOM_LEFT.png")));
             put(TileSprite.WALL_BOTTOM_RIGHT, new Sprite(new Texture("images/tile/WALL_BOTTOM_RIGHT.png")));
             put(TileSprite.WALL_TOP, new Sprite(new Texture("images/tile/WALL_TOP.png")));

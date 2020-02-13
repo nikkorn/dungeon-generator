@@ -15,9 +15,9 @@ public class Wall extends Tile {
      */
     private TileSprite tileSprite;
     /**
-     * Whether the tile above is empty.
+     * The optional lip sprite render above this wall.
      */
-    private boolean isTileAboveEmpty;
+    private TileSprite lipSprite;
 
     /**
      * Creates a new instance of the Wall class.
@@ -28,11 +28,11 @@ public class Wall extends Tile {
     public Wall(int x, int y, ITileFinder tileFinder) {
         super(x, y);
 
-        // Find out whether the tile above this one is empty, if so we will have to render an upper tile lip.
-        this.isTileAboveEmpty = tileFinder.find(this, TileOffset.ABOVE) == TileType.EMPTY;
-
         // Determine which tile sprite we will use for this wall tile based on the surrounding tiles.
         this.tileSprite = getWallSprite(tileFinder);
+
+        // Try to get a lip sprite to draw above this wall tile.
+        this.lipSprite = getLipSprite(tileFinder);
     }
 
     @Override
@@ -64,9 +64,9 @@ public class Wall extends Tile {
         sprite.draw(batch);
 
         // We may have to render an upper tile lip.
-        if (this.isTileAboveEmpty) {
+        if (this.lipSprite != null) {
             // Get the relevant sprite for this tile.
-            sprite = Resources.getSprite(TileSprite.WALL_BOTTOM);
+            sprite = Resources.getSprite(this.lipSprite);
 
             // Set the width/height of the sprite to match the tile size.
             sprite.setSize(this.getWidth(), this.getHeight());
@@ -116,5 +116,36 @@ public class Wall extends Tile {
         }
 
         return TileSprite.WALL;
+    }
+
+    /**
+     * Attempt to get the lip sprite to draw above this wall tile.
+     * @param tileFinder The tile finder.
+     * @return The lip sprite to draw above this wall tile.
+     */
+    private TileSprite getLipSprite(ITileFinder tileFinder) {
+        // Find whether the tiles around the wall tile we are about to make are empty tiles.
+        boolean isEmptyAbove = tileFinder.find(this, TileOffset.ABOVE) == TileType.EMPTY;
+        boolean isEmptyLeft  = tileFinder.find(this, TileOffset.LEFT) == TileType.EMPTY;
+        boolean isEmptyRight = tileFinder.find(this, TileOffset.RIGHT) == TileType.EMPTY;
+
+        // We are not rendering a lip if there is not an empty tile above.
+        if (!isEmptyAbove) {
+            return null;
+        }
+
+        if (isEmptyLeft && isEmptyRight) {
+            return TileSprite.WALL_LIP_LEFT_RIGHT;
+        }
+
+        if (isEmptyLeft) {
+            return TileSprite.WALL_LIP_LEFT;
+        }
+
+        if (isEmptyRight) {
+            return TileSprite.WALL_LIP_RIGHT;
+        }
+
+        return TileSprite.WALL_LIP;
     }
 }
