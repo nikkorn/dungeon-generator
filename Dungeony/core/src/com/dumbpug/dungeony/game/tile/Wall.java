@@ -11,13 +11,13 @@ import com.dumbpug.dungeony.game.rendering.TileSprite;
  */
 public class Wall extends Tile {
     /**
-     * The tile sprite to use in rendering this wall tile.
+     * The four sprites we will use to render this tile
      */
-    private TileSprite tileSprite;
+    private TileSprite topLeftSprite, topRightSprite, tLeftSprite, bottomRightSprite;
     /**
-     * The optional lip sprite render above this wall.
+     * The optional lip sprites to render above this wall.
      */
-    private TileSprite lipSprite;
+    private TileSprite leftLipSprite, rightLipSprite;
 
     /**
      * Creates a new instance of the Wall class.
@@ -28,11 +28,8 @@ public class Wall extends Tile {
     public Wall(int x, int y, ITileFinder tileFinder) {
         super(x, y);
 
-        // Determine which tile sprite we will use for this wall tile based on the surrounding tiles.
-        this.tileSprite = getWallSprite(tileFinder);
-
-        // Try to get a lip sprite to draw above this wall tile.
-        this.lipSprite = getLipSprite(tileFinder);
+        getWallSprites(tileFinder);
+        getLipSprites(tileFinder);
     }
 
     @Override
@@ -52,42 +49,40 @@ public class Wall extends Tile {
      */
     @Override
     public void render(SpriteBatch batch) {
+        // Find half our tile size, each tiel sprite will use that as its dimensions.
+        float spriteSize = this.getWidth() / 2f;
 
-        // TODO Maybe look into having 4 sprites per tile?
+        // Render top-left tile.
+        Sprite sprite = Resources.getSprite(this.topLeftSprite);
+        sprite.setSize(spriteSize, spriteSize);
+        sprite.setPosition(this.getX(), this.getY() + spriteSize);
+        sprite.draw(batch);
 
-        // Get the relevant sprite for this tile.
-        Sprite sprite = Resources.getSprite(this.tileSprite);
+        // Render top-right tile.
+        sprite = Resources.getSprite(this.topLeftSprite);
+        sprite.setSize(spriteSize, spriteSize);
+        sprite.setPosition(this.getX() + spriteSize, this.getY() + spriteSize);
+        sprite.draw(batch);
 
-        // Set the width/height of the sprite to match the tile size.
-        sprite.setSize(this.getWidth(), this.getHeight());
-
+        // Render bottom-left tile.
+        sprite = Resources.getSprite(this.topLeftSprite);
+        sprite.setSize(spriteSize, spriteSize);
         sprite.setPosition(this.getX(), this.getY());
+        sprite.draw(batch);
 
-        // Draw the sprite.
+        // Render bottom-right tile.
+        sprite = Resources.getSprite(this.topLeftSprite);
+        sprite.setSize(spriteSize, spriteSize);
+        sprite.setPosition(this.getX() + spriteSize, this.getY());
         sprite.draw(batch);
 
         // We may have to render an upper tile lip.
-        if (this.lipSprite != null) {
-            // Get the relevant sprite for this tile.
-            sprite = Resources.getSprite(this.lipSprite);
-
-            // Set the width/height of the sprite to match the tile size.
-            sprite.setSize(this.getWidth(), this.getHeight());
-
-            // Position the lip above the tile.
-            sprite.setPosition(this.getX(), this.getY() + this.getHeight());
-
-            // Draw the sprite.
-            sprite.draw(batch);
+        if (this.topLeftSprite != null && this.topRightSprite != null) {
+            // TODO Draw em!
         }
     }
 
-    /**
-     * Gets the tile sprite for this wall tile based on the surrounding tiles.
-     * @param tileFinder The tile finder.
-     * @return The tile sprite for this wall tile based on the surrounding tiles.
-     */
-    private TileSprite getWallSprite(ITileFinder tileFinder) {
+    private void getWallSprites(ITileFinder tileFinder) {
         // Find whether the tiles around the wall tile we are about to make are empty tiles.
         boolean isEmptyBelow = tileFinder.find(this, TileOffset.BELOW) == TileType.EMPTY;
         boolean isEmptyAbove = tileFinder.find(this, TileOffset.ABOVE) == TileType.EMPTY;
@@ -121,12 +116,7 @@ public class Wall extends Tile {
         return TileSprite.WALL;
     }
 
-    /**
-     * Attempt to get the lip sprite to draw above this wall tile.
-     * @param tileFinder The tile finder.
-     * @return The lip sprite to draw above this wall tile.
-     */
-    private TileSprite getLipSprite(ITileFinder tileFinder) {
+    private void getLipSprites(ITileFinder tileFinder) {
         // Find whether the tiles around the wall tile we are about to make are empty tiles.
         boolean isEmptyAbove = tileFinder.find(this, TileOffset.ABOVE) == TileType.EMPTY;
         boolean isEmptyLeft  = tileFinder.find(this, TileOffset.LEFT) == TileType.EMPTY;
