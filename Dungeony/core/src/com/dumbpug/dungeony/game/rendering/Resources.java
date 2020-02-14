@@ -29,10 +29,7 @@ public class Resources {
         tileSpriteMap = new HashMap<TileSprite, Sprite>() {{
             put(TileSprite.BUSH, new Sprite(new Texture("images/tile/BUSH.png")));
             put(TileSprite.WALL, new Sprite(new Texture("images/tile/WALL.png")));
-            put(TileSprite.WALL_LIP, new Sprite(new Texture("images/tile/WALL_LIP.png")));
-            put(TileSprite.WALL_LIP_LEFT, new Sprite(new Texture("images/tile/WALL_LIP_LEFT.png")));
-            put(TileSprite.WALL_LIP_RIGHT, new Sprite(new Texture("images/tile/WALL_LIP_RIGHT.png")));
-            put(TileSprite.WALL_LIP_LEFT_RIGHT, new Sprite(new Texture("images/tile/WALL_LIP_LEFT_RIGHT.png")));
+            put(TileSprite.WALL_BOTTOM, new Sprite(new Texture("images/tile/WALL_BOTTOM.png")));
             put(TileSprite.WALL_BOTTOM_LEFT, new Sprite(new Texture("images/tile/WALL_BOTTOM_LEFT.png")));
             put(TileSprite.WALL_BOTTOM_RIGHT, new Sprite(new Texture("images/tile/WALL_BOTTOM_RIGHT.png")));
             put(TileSprite.WALL_TOP, new Sprite(new Texture("images/tile/WALL_TOP.png")));
@@ -40,7 +37,10 @@ public class Resources {
             put(TileSprite.WALL_TOP_RIGHT, new Sprite(new Texture("images/tile/WALL_TOP_RIGHT.png")));
             put(TileSprite.WALL_LEFT, new Sprite(new Texture("images/tile/WALL_LEFT.png")));
             put(TileSprite.WALL_RIGHT, new Sprite(new Texture("images/tile/WALL_RIGHT.png")));
-            put(TileSprite.WALL_VERTICAL, new Sprite(new Texture("images/tile/WALL_VERTICAL.png")));
+            put(TileSprite.WALL_CORNER_BOTTOM_LEFT, new Sprite(new Texture("images/tile/WALL_CORNER_BOTTOM_LEFT.png")));
+            put(TileSprite.WALL_CORNER_BOTTOM_RIGHT, new Sprite(new Texture("images/tile/WALL_CORNER_BOTTOM_RIGHT.png")));
+            put(TileSprite.WALL_CORNER_TOP_LEFT, new Sprite(new Texture("images/tile/WALL_CORNER_TOP_LEFT.png")));
+            put(TileSprite.WALL_CORNER_TOP_RIGHT, new Sprite(new Texture("images/tile/WALL_CORNER_TOP_RIGHT.png")));
             put(TileSprite.GROUND, new Sprite(new Texture("images/tile/GROUND.png")));
         }};
         gameObjectMap = new HashMap<GameObjectSprite, Sprite>() {{
