@@ -91,7 +91,7 @@ public class Level {
      */
     public void render(SpriteBatch batch, OrthographicCamera camera) {
         // Update camera and sprite batch to zoom and focus on players.
-        camera.zoom = 0.5f;
+        camera.zoom = 0.3f;
 
         // Get the camera to point at just the first player for now!
         Player player = this.players.getPlayer(PlayerIdentifier.PLAYER_1);
@@ -122,6 +122,7 @@ public class Level {
         }
 
         // Render every level renderable, this will be done in render order.
+        // TODO Pass in a window for which we will render contained renderables.
         this.renderables.render(batch);
 
         // Reset the application camera to its original zoom/position.
