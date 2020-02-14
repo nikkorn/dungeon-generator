@@ -118,8 +118,7 @@ public class Level {
             sprite.setPosition(tile.getX(), tile.getY());
 
             // Draw the sprite.
-            // TODO Actually do this.
-            // sprite.draw(batch);
+            sprite.draw(batch);
         }
 
         // Render every level renderable, this will be done in render order.

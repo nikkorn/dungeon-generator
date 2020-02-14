@@ -52,6 +52,9 @@ public class Wall extends Tile {
      */
     @Override
     public void render(SpriteBatch batch) {
+
+        // TODO Maybe look into having 4 sprites per tile?
+
         // Get the relevant sprite for this tile.
         Sprite sprite = Resources.getSprite(this.tileSprite);
 
