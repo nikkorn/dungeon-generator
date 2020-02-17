@@ -123,6 +123,22 @@ public class Wall extends Tile {
             this.topRightSprite    = TileSprite.WALL_RIGHT;
             this.bottomRightSprite = isEmptyBelow ? TileSprite.WALL_BOTTOM_RIGHT : TileSprite.WALL_RIGHT;
         }
+
+        if (isEmptyBelowRight && !isEmptyBelow && !isEmptyRight) {
+            this.bottomRightSprite = TileSprite.WALL_CORNER_TOP_LEFT;
+        }
+
+        if (isEmptyBelowLeft && !isEmptyBelow && !isEmptyLeft) {
+            this.bottomLeftSprite = TileSprite.WALL_CORNER_TOP_RIGHT;
+        }
+
+        if (isEmptyRight && !isEmptyBelow && !isEmptyBelowRight) {
+            this.bottomRightSprite = TileSprite.WALL_CORNER_BOTTOM_LEFT;
+        }
+
+        if (isEmptyLeft && !isEmptyBelow && !isEmptyBelowLeft) {
+            this.bottomLeftSprite = TileSprite.WALL_CORNER_BOTTOM_RIGHT;
+        }
     }
 
     private void getLipSprites(ITileFinder tileFinder) {
