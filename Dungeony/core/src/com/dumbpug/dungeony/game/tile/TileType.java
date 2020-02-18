@@ -6,7 +6,9 @@ package com.dumbpug.dungeony.game.tile;
 public enum TileType {
     UNKNOWN,
     EMPTY,
-    WALL;
+    WALL,
+    SPAWN_PAD,
+    SPAWN_DOOR;
 
     /**
      * Gets whether the tile is walkable.

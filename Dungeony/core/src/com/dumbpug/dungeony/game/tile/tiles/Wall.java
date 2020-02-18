@@ -1,10 +1,14 @@
-package com.dumbpug.dungeony.game.tile;
+package com.dumbpug.dungeony.game.tile.tiles;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dumbpug.dungeony.game.EntityCollisionFlag;
 import com.dumbpug.dungeony.game.rendering.Resources;
 import com.dumbpug.dungeony.game.rendering.TileSprite;
+import com.dumbpug.dungeony.game.tile.ITileFinder;
+import com.dumbpug.dungeony.game.tile.Tile;
+import com.dumbpug.dungeony.game.tile.TileOffset;
+import com.dumbpug.dungeony.game.tile.TileType;
 
 /**
  * A wall tile.

@@ -4,6 +4,9 @@ package com.dumbpug.dungeony.game.rendering;
  * Enumeration of tile sprite types.
  */
 public enum TileSprite {
+    /**
+     * BASIC
+     */
     BUSH,
     WALL,
     WALL_BOTTOM,
@@ -18,5 +21,10 @@ public enum TileSprite {
     WALL_CORNER_BOTTOM_RIGHT,
     WALL_CORNER_TOP_LEFT,
     WALL_CORNER_TOP_RIGHT,
-    GROUND
+    GROUND,
+
+    /**
+     * SPECIAL
+     */
+    SPAWN_PAD
 }

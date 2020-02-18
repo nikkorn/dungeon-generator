@@ -1,5 +1,9 @@
 package com.dumbpug.dungeony.game.tile;
 
+import com.dumbpug.dungeony.game.tile.tiles.Empty;
+import com.dumbpug.dungeony.game.tile.tiles.SpawnPad;
+import com.dumbpug.dungeony.game.tile.tiles.Wall;
+
 /**
  * Factory for creating Tile instances.
  */
@@ -15,12 +19,11 @@ public class TileFactory {
     public static Tile createTile(TileType type, int x, int y, ITileFinder tileFinder) {
         switch (type) {
             case EMPTY:
-
-                // TODO Maybe if there is a wall above then make this a WALLEDGE tile? Maybe?
-
                 return new Empty(x, y);
             case WALL:
                 return new Wall(x, y, tileFinder);
+            case SPAWN_PAD:
+                return new SpawnPad(x, y);
             default:
                 throw new RuntimeException("cannot create tile instance for tile type: " + type);
         }
