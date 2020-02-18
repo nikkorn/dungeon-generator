@@ -6,5 +6,19 @@ package com.dumbpug.dungeony.game.tile;
 public enum TileType {
     UNKNOWN,
     EMPTY,
-    WALL
+    WALL;
+
+    /**
+     * Gets whether the tile is walkable.
+     * @return Whether the tile is walkable.
+     */
+    public boolean isWalkable() {
+        switch(this) {
+            case UNKNOWN:
+            case WALL:
+                return false;
+            default:
+                return true;
+        }
+    }
 }

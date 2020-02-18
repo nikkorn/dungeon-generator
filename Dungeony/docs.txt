@@ -23,7 +23,13 @@ The type of level that a level door will take you to is random, but there are re
 - A player will have to visit between 16-24? NORMAL or CHALLENGE levels before reaching the FINAL level.
 
 
-
+IDEAS
+#####
+Loot weighs players down and slows them, saving loot means buying better weapons but can you get enough before you die?
+Demons can be found who will deal and give a buff/weapon but will algo give a negative buff. Some demons could also not say what the negative is as a gamble?
+Each player has their own inventory that they can open in a small portion of the display in real time?
+Other innocent (or not) travellers can be killed in levels for loot or as part of a quest. this can make you hated and not dealt with at camps or even have a chance to send a super strong bounty hunter after you.
+Players that are killed can be revived by other players with a rare item?
 
 
 ENTITY COLLISIONS

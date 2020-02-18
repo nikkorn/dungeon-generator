@@ -94,14 +94,14 @@ public class Wall extends Tile {
 
     private void getWallSprites(ITileFinder tileFinder) {
         // Find whether the tiles around the wall tile we are about to make are empty tiles.
-        boolean isEmptyBelow      = tileFinder.find(this, TileOffset.BELOW) == TileType.EMPTY;
-        boolean isEmptyAbove      = tileFinder.find(this, TileOffset.ABOVE) == TileType.EMPTY;
-        boolean isEmptyLeft       = tileFinder.find(this, TileOffset.LEFT) == TileType.EMPTY;
-        boolean isEmptyRight      = tileFinder.find(this, TileOffset.RIGHT) == TileType.EMPTY;
-        boolean isEmptyBelowLeft  = tileFinder.find(this, TileOffset.BELOW_LEFT) == TileType.EMPTY;
-        boolean isEmptyBelowRight = tileFinder.find(this, TileOffset.BELOW_RIGHT) == TileType.EMPTY;
-        boolean isEmptyAboveLeft  = tileFinder.find(this, TileOffset.ABOVE_LEFT) == TileType.EMPTY;
-        boolean isEmptyAboveRight = tileFinder.find(this, TileOffset.ABOVE_RIGHT) == TileType.EMPTY;
+        boolean isWalkableBelow      = tileFinder.find(this, TileOffset.BELOW).isWalkable();
+        boolean isWalkableAbove      = tileFinder.find(this, TileOffset.ABOVE).isWalkable();
+        boolean isWalkableLeft       = tileFinder.find(this, TileOffset.LEFT).isWalkable();
+        boolean isWalkableRight      = tileFinder.find(this, TileOffset.RIGHT).isWalkable();
+        boolean isWalkableBelowLeft  = tileFinder.find(this, TileOffset.BELOW_LEFT).isWalkable();
+        boolean isWalkableBelowRight = tileFinder.find(this, TileOffset.BELOW_RIGHT).isWalkable();
+        boolean isWalkableAboveLeft  = tileFinder.find(this, TileOffset.ABOVE_LEFT).isWalkable();
+        boolean isWalkableAboveRight = tileFinder.find(this, TileOffset.ABOVE_RIGHT).isWalkable();
 
         // Default all of the tile sprites.
         this.topLeftSprite     = TileSprite.WALL;
@@ -109,50 +109,50 @@ public class Wall extends Tile {
         this.bottomLeftSprite  = TileSprite.WALL;
         this.bottomRightSprite = TileSprite.WALL;
 
-        if (isEmptyBelow) {
+        if (isWalkableBelow) {
             this.bottomLeftSprite  = TileSprite.WALL_BOTTOM;
             this.bottomRightSprite = TileSprite.WALL_BOTTOM;
         }
 
-        if (isEmptyLeft) {
+        if (isWalkableLeft) {
             this.topLeftSprite    = TileSprite.WALL_LEFT;
-            this.bottomLeftSprite = isEmptyBelow ? TileSprite.WALL_BOTTOM_LEFT : TileSprite.WALL_LEFT;
+            this.bottomLeftSprite = isWalkableBelow ? TileSprite.WALL_BOTTOM_LEFT : TileSprite.WALL_LEFT;
         }
 
-        if (isEmptyRight) {
+        if (isWalkableRight) {
             this.topRightSprite    = TileSprite.WALL_RIGHT;
-            this.bottomRightSprite = isEmptyBelow ? TileSprite.WALL_BOTTOM_RIGHT : TileSprite.WALL_RIGHT;
+            this.bottomRightSprite = isWalkableBelow ? TileSprite.WALL_BOTTOM_RIGHT : TileSprite.WALL_RIGHT;
         }
 
-        if (isEmptyBelowRight && !isEmptyBelow && !isEmptyRight) {
+        if (isWalkableBelowRight && !isWalkableBelow && !isWalkableRight) {
             this.bottomRightSprite = TileSprite.WALL_CORNER_TOP_LEFT;
         }
 
-        if (isEmptyBelowLeft && !isEmptyBelow && !isEmptyLeft) {
+        if (isWalkableBelowLeft && !isWalkableBelow && !isWalkableLeft) {
             this.bottomLeftSprite = TileSprite.WALL_CORNER_TOP_RIGHT;
         }
 
-        if (isEmptyRight && !isEmptyBelow && !isEmptyBelowRight) {
+        if (isWalkableRight && !isWalkableBelow && !isWalkableBelowRight) {
             this.bottomRightSprite = TileSprite.WALL_CORNER_BOTTOM_LEFT;
         }
 
-        if (isEmptyLeft && !isEmptyBelow && !isEmptyBelowLeft) {
+        if (isWalkableLeft && !isWalkableBelow && !isWalkableBelowLeft) {
             this.bottomLeftSprite = TileSprite.WALL_CORNER_BOTTOM_RIGHT;
         }
     }
 
     private void getLipSprites(ITileFinder tileFinder) {
         // Find whether the tiles around the wall tile we are about to make are empty tiles.
-        boolean isEmptyAbove = tileFinder.find(this, TileOffset.ABOVE) == TileType.EMPTY;
-        boolean isEmptyLeft  = tileFinder.find(this, TileOffset.LEFT) == TileType.EMPTY;
-        boolean isEmptyRight = tileFinder.find(this, TileOffset.RIGHT) == TileType.EMPTY;
+        boolean isWalkableAbove = tileFinder.find(this, TileOffset.ABOVE) == TileType.EMPTY;
+        boolean isWalkableLeft  = tileFinder.find(this, TileOffset.LEFT) == TileType.EMPTY;
+        boolean isWalkableRight = tileFinder.find(this, TileOffset.RIGHT) == TileType.EMPTY;
 
         // We are not rendering a lip if there is not an empty tile above.
-        if (!isEmptyAbove) {
+        if (!isWalkableAbove) {
             return;
         }
 
-        this.leftLipSprite  = isEmptyLeft ? TileSprite.WALL_TOP_LEFT : TileSprite.WALL_TOP;
-        this.rightLipSprite = isEmptyRight ? TileSprite.WALL_TOP_RIGHT : TileSprite.WALL_TOP;
+        this.leftLipSprite  = isWalkableLeft ? TileSprite.WALL_TOP_LEFT : TileSprite.WALL_TOP;
+        this.rightLipSprite = isWalkableRight ? TileSprite.WALL_TOP_RIGHT : TileSprite.WALL_TOP;
     }
 }
