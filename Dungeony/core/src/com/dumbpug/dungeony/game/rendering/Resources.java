@@ -3,8 +3,6 @@ package com.dumbpug.dungeony.game.rendering;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.dumbpug.dungeony.game.character.PlayerState;
-import com.dumbpug.dungeony.game.tile.TileType;
-
 import java.util.HashMap;
 
 /**
@@ -71,7 +69,21 @@ public class Resources {
      * @return The animation for the specified player state type.
      */
     public static Animation getPlayerAnimation(PlayerState state) {
+        // The number of animation frame columns will differ between animations.
+        int columns = 0;
+        switch (state) {
+            case IDLE_LEFT:
+            case IDLE_RIGHT:
+                columns = 4;
+                break;
+            case RUNNING_LEFT:
+            case RUNNING_RIGHT:
+            case DODGING_LEFT:
+            case DODGING_RIGHT:
+                columns = 6;
+                break;
+        }
         // TODO Eventually take player type/colour into account.
-        return new Animation(new Texture("images/player/" + state + ".png"), 2, 1, 1/16f);
+        return new Animation(new Texture("images/player/" + state + ".png"), columns, 1, 1/8f);
     }
 }

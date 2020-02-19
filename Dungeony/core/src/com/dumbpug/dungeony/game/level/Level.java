@@ -137,9 +137,16 @@ public class Level {
             // TODO Check for player conditions (etc death, buffs) and update.
             // TODO Check for player actions.
 
+            // Get the movement on each axis that the player is requesting to make.
+            float movementAxisX = playerInputProvider.getMovementAxisX();
+            float movementAxisY = playerInputProvider.getMovementAxisY();
+
             // Process player input which would influence the movement of each player.
             // Any entity movement has to be taken care of by the level grid which handles all entity collisions.
-            this.grid.move(player, playerInputProvider.getMovementAxisX(), playerInputProvider.getMovementAxisY());
+            this.grid.move(player, movementAxisX, movementAxisY);
+
+            // Update the player state to reflect any changes that have happened to the player. Firstly is the player idle?
+            player.updateState(movementAxisX, movementAxisY);
         }
     }
 }

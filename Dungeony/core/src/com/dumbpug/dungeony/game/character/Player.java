@@ -1,12 +1,11 @@
 package com.dumbpug.dungeony.game.character;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.characterselection.PlayerDetails;
 import com.dumbpug.dungeony.game.Position;
 import com.dumbpug.dungeony.game.rendering.Animation;
-import com.dumbpug.dungeony.game.rendering.GameObjectSprite;
 import com.dumbpug.dungeony.game.rendering.Resources;
 import java.util.HashMap;
 
@@ -39,6 +38,33 @@ public class Player extends GameCharacter {
         // Populate the player animation map.
         for (PlayerState state : PlayerState.values()) {
             this.animations.put(state, Resources.getPlayerAnimation(state));
+        }
+    }
+
+    /**
+     * Updates the player state to reflect any external influences.
+     * @param movementX The movement on the Y axis.
+     * @param movementY The movement on the Y axis.
+     */
+    public void updateState(float movementX, float movementY) {
+        // Is the player idle and not moving in any direction?
+        if (movementX == 0f && movementY == 0f) {
+            // The player should be idle and facing whatever direction they already have been.
+            switch (this.state) {
+                case RUNNING_LEFT:
+                case DODGING_LEFT:
+                    this.state = PlayerState.IDLE_LEFT;
+                    return;
+                case RUNNING_RIGHT:
+                case DODGING_RIGHT:
+                    this.state = PlayerState.IDLE_RIGHT;
+                    return;
+                default:
+                    return;
+            }
+        } else {
+            // We are running because we are moving on either axis, but hte X axis movement determines which way we face.
+            this.state = movementX < 0 ? PlayerState.RUNNING_LEFT : PlayerState.RUNNING_RIGHT;
         }
     }
 
@@ -80,16 +106,13 @@ public class Player extends GameCharacter {
      */
     @Override
     public void render(SpriteBatch batch) {
-        // TODO Our player shall not be a pot!
-        Sprite sprite = Resources.getSprite(GameObjectSprite.POT);
+        // Get the relevant animation for the player based on their current state.
+        Animation animation = animations.get(this.state);
 
-        // Set the width/height of the sprite to match the tile size.
-        sprite.setSize(this.getWidth(), this.getHeight());
+        // Get the current animation frame for the animation.
+        TextureRegion currentFrame = animation.getCurrentFrame(true);
 
-        // Set the x/y of the sprite to match the player position.
-        sprite.setPosition(this.getX(), this.getY() + (this.getHeight() / 2f));
-
-        // Draw the sprite.
-        sprite.draw(batch);
+        // Draw the current animation frame.
+        batch.draw(currentFrame, this.getX(), this.getY() + (this.getHeight() / 2f), 0, 0, this.getWidth(), this.getHeight(),1.2f, 1.2f, 0);
     }
 }
