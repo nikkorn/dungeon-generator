@@ -1,11 +1,13 @@
 package com.dumbpug.dungeony.game.character;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.characterselection.PlayerDetails;
 import com.dumbpug.dungeony.game.Position;
 import com.dumbpug.dungeony.game.rendering.Animation;
+import com.dumbpug.dungeony.game.rendering.PlayerSprite;
 import com.dumbpug.dungeony.game.rendering.Resources;
 import java.util.HashMap;
 
@@ -106,13 +108,20 @@ public class Player extends GameCharacter {
      */
     @Override
     public void render(SpriteBatch batch) {
+        // Get the player shadow sprite.
+        Sprite shadowSprite = Resources.getSprite(PlayerSprite.PLAYER_SHADOW);
+        shadowSprite.setSize(this.getWidth(), this.getHeight());
+        shadowSprite.setPosition(this.getX(), this.getY() + (this.getHeight() / 2f));
+        shadowSprite.setScale(1.2f,  1.2f);
+
         // Get the relevant animation for the player based on their current state.
         Animation animation = animations.get(this.state);
 
         // Get the current animation frame for the animation.
         TextureRegion currentFrame = animation.getCurrentFrame(true);
 
-        // Draw the current animation frame.
+        // Draw the player shadow and then render the players current animation frame over it.
+        shadowSprite.draw(batch);
         batch.draw(currentFrame, this.getX(), this.getY() + (this.getHeight() / 2f), 0, 0, this.getWidth(), this.getHeight(),1.2f, 1.2f, 0);
     }
 }

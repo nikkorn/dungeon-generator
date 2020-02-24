@@ -20,7 +20,11 @@ public class Resources {
     /**
      * Game object sprite map.
      */
-    private static HashMap<GameObjectSprite, Sprite> gameObjectMap;
+    private static HashMap<GameObjectSprite, Sprite> gameObjectSpriteMap;
+    /**
+     * Player sprite map.
+     */
+    private static HashMap<PlayerSprite, Sprite> playerSpriteMap;
 
     static {
         levelSpriteMap = new HashMap<LevelSprite, Sprite>() {{
@@ -31,8 +35,13 @@ public class Resources {
                 put(sprite, new Sprite(new Texture("images/tile/" + sprite + ".png")));
             }
         }};
-        gameObjectMap = new HashMap<GameObjectSprite, Sprite>() {{
+        gameObjectSpriteMap = new HashMap<GameObjectSprite, Sprite>() {{
             put(GameObjectSprite.POT, new Sprite(new Texture("images/game_object/POT.png")));
+        }};
+        playerSpriteMap = new HashMap<PlayerSprite, Sprite>() {{
+            for (PlayerSprite sprite : PlayerSprite.values()) {
+                put(sprite, new Sprite(new Texture("images/player/" + sprite + ".png")));
+            }
         }};
     }
 
@@ -60,7 +69,16 @@ public class Resources {
      * @return
      */
     public static Sprite getSprite(GameObjectSprite gameObjectSprite) {
-        return gameObjectMap.get(gameObjectSprite);
+        return gameObjectSpriteMap.get(gameObjectSprite);
+    }
+
+    /**
+     * Gets the sprite for the specified player sprite type.
+     * @param playerSprite
+     * @return
+     */
+    public static Sprite getSprite(PlayerSprite playerSprite) {
+        return playerSpriteMap.get(playerSprite);
     }
 
     /**
