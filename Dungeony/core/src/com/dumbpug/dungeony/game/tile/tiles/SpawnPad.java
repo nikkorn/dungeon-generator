@@ -3,9 +3,12 @@ package com.dumbpug.dungeony.game.tile.tiles;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dumbpug.dungeony.game.EntityCollisionFlag;
+import com.dumbpug.dungeony.game.Position;
 import com.dumbpug.dungeony.game.rendering.Resources;
 import com.dumbpug.dungeony.game.rendering.TileSprite;
 import com.dumbpug.dungeony.game.tile.Tile;
+import com.dumbpug.dungeony.game.tile.TileSpawn;
+import java.util.ArrayList;
 
 /**
  * A player spawn pad.
@@ -39,6 +42,23 @@ public class SpawnPad extends Tile {
     @Override
     public int getCollisionMask() {
         return EntityCollisionFlag.NOTHING;
+    }
+
+    /**
+     * Gets the list of entity spawn positions for this tile.
+     * @return The list of entity spawn positions for this tile.
+     */
+    @Override
+    public ArrayList<TileSpawn> getTileSpawns() {
+        ArrayList<TileSpawn> spawns = new ArrayList<TileSpawn>();
+
+        // A spawn pad provides 4 spawn positions at each of its corners.
+        spawns.add(new TileSpawn(new Position(this.getX(), this.getY())));
+        spawns.add(new TileSpawn(new Position(this.getX() + (this.getWidth() / 2f), this.getY())));
+        spawns.add(new TileSpawn(new Position(this.getX(), this.getY() + (this.getHeight() / 2f))));
+        spawns.add(new TileSpawn(new Position(this.getX() + (this.getWidth() / 2f), this.getY() + (this.getHeight() / 2f))));
+
+        return spawns;
     }
 
     /**

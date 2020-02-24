@@ -56,6 +56,10 @@ public class LevelGrid extends SpatialGrid<Entity> {
             // Get the initial position based on the axis we are dealing with.
             float origin = entity.getX();
 
+            // TODO Determine whether we should stop a moving entity if our entity is ALREADY colliding with another.
+            // It makes sense that two collidable entities that have got themselves in a state where they already
+            // overlap at the start of a movement update should be given the chance to move off of each other.
+
             // Move to the position that we are moving to on the axis based on the entity movement speed.
             // We apply the application delta to this value for frame-independent movement speed.
             entity.setX(origin + ((offset * entity.getMovementSpeed()) * delta));
@@ -80,6 +84,10 @@ public class LevelGrid extends SpatialGrid<Entity> {
         } else {
             // Get the initial position based on the axis we are dealing with.
             float origin = entity.getY();
+
+            // TODO Determine whether we should stop a moving entity if our entity is ALREADY colliding with another.
+            // It makes sense that two collidable entities that have got themselves in a state where they already
+            // overlap at the start of a movement update should be given the chance to move off of each other.
 
             // Move to the position that we are moving to on the axis based on the entity movement speed.
             // We apply the application delta to this value for frame-independent movement speed.

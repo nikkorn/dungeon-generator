@@ -1,6 +1,5 @@
 package com.dumbpug.dungeony.game.tile;
 
-import com.dumbpug.dungeony.game.Position;
 import com.dumbpug.dungeony.game.level.LevelGrid;
 import com.dumbpug.dungeony.game.rendering.Renderables;
 import java.util.ArrayList;
@@ -49,13 +48,18 @@ public class Tiles {
     }
 
     /**
-     * Gets the list of available spawn positions.
-     * @return The list of available spawn positions.
+     * Gets the list of all available tile spawns.
+     * @return The list of all available tile spawns.
      */
-    public ArrayList<Position> getSpawnPositions() {
-        // TODO Work this out correctly eventually!!!
-        return new ArrayList<Position>() {{
-           add(new Position(220, 800));
-        }};
+    public ArrayList<TileSpawn> getSpawns() {
+        ArrayList<TileSpawn> spawns = new ArrayList<TileSpawn>();
+
+        for (Tile tile : this.tiles) {
+            if (tile.getTileSpawns() != null) {
+                spawns.addAll(tile.getTileSpawns());
+            }
+        }
+
+        return spawns;
     }
 }

@@ -59,7 +59,7 @@ public class Level {
         this.tiles   = new Tiles(tiles, this.grid, this.renderables);
         this.objects = new GameObjects(objects, this.grid, this.renderables);
         this.enemies = new Enemies(enemies, this.grid, this.renderables);
-        this.players = new Players(playerDetails, this.grid, this.renderables, this.tiles.getSpawnPositions());
+        this.players = new Players(playerDetails, this.grid, this.renderables, this.tiles.getSpawns());
     }
 
     /**

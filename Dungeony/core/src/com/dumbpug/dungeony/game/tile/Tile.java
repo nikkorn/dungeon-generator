@@ -4,6 +4,8 @@ import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.game.Entity;
 import com.dumbpug.dungeony.game.Position;
 
+import java.util.ArrayList;
+
 /**
  * An in-game tile entity.
  */
@@ -48,5 +50,14 @@ public abstract class Tile extends Entity implements ITilePositionedEntity {
     public float getMovementSpeed() {
         // Static entities have no movement speed.
         return 0;
+    }
+
+    /**
+     * Gets the list of entity spawn positions for this tile.
+     * @return The list of entity spawn positions for this tile.
+     */
+    public ArrayList<TileSpawn> getTileSpawns() {
+        // General tiles do not provide spawn positions.
+        return null;
     }
 }

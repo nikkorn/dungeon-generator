@@ -15,7 +15,7 @@ public class SimpleLevelGenerator implements ILevelGenerator {
     public LevelDefinition generate(String file) {
         // Create a few tile definitions.
         ArrayList<TileDefinition> tiles = new ArrayList<TileDefinition>() {{
-            add(new TileDefinition("SPAWN_PAD", 5, 17));
+            add(new TileDefinition("EMPTY", 5, 17));
             add(new TileDefinition("EMPTY", 5, 18));
             add(new TileDefinition("EMPTY", 6, 17));
             add(new TileDefinition("EMPTY", 6, 18));
@@ -59,7 +59,7 @@ public class SimpleLevelGenerator implements ILevelGenerator {
             add(new TileDefinition("EMPTY", 25, 18));
             add(new TileDefinition("EMPTY", 26, 17));
             add(new TileDefinition("EMPTY", 26, 18));
-            add(new TileDefinition("EMPTY", 5, 14));
+            add(new TileDefinition("SPAWN_PAD", 5, 14));
             add(new TileDefinition("EMPTY", 5, 15));
             add(new TileDefinition("EMPTY", 6, 14));
             add(new TileDefinition("EMPTY", 6, 15));
