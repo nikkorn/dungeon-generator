@@ -2,6 +2,8 @@ package com.dumbpug.dungeony.game.rendering;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.dumbpug.dungeony.game.character.EnemyState;
+import com.dumbpug.dungeony.game.character.EnemyType;
 import com.dumbpug.dungeony.game.character.PlayerState;
 import java.util.HashMap;
 
@@ -82,6 +84,17 @@ public class Resources {
     }
 
     /**
+     * Gets the sprite for the specified enemy sprite and type.
+     * @param enemySprite The enemy sprite.
+     * @param type The enemy type.
+     * @return The sprite for the specified enemy sprite and type.
+     */
+    public static Sprite getSprite(EnemySprite enemySprite, EnemyType type) {
+        // TODO Cache these in resource sprite maps.
+        return new Sprite(new Texture("images/enemy/" + type  + "/" + enemySprite + ".png"));
+    }
+
+    /**
      * Gets the animation for the specified player state type.
      * @param state The state type.
      * @return The animation for the specified player state type.
@@ -103,5 +116,29 @@ public class Resources {
         }
         // TODO Eventually take player type/colour into account.
         return new Animation(new Texture("images/player/" + state + ".png"), columns, 1, 1/8f);
+    }
+
+    /**
+     * Gets the animation for the specified enemy state type.
+     * @param state The state type.
+     * @param type The enemy type.
+     * @return The animation for the specified enemy state and type.
+     */
+    public static Animation getEnemyAnimation(EnemyState state, EnemyType type) {
+        // The number of animation frame columns will differ between animations.
+        int columns = 0;
+        switch (state) {
+            case HIDDEN:
+                columns = 1;
+            case IDLE_LEFT:
+            case IDLE_RIGHT:
+                columns = 4;
+                break;
+            case RUNNING_LEFT:
+            case RUNNING_RIGHT:
+                columns = 6;
+                break;
+        }
+        return new Animation(new Texture("images/enemy/" + type  + "/" + state + ".png"), columns, 1, 1/8f);
     }
 }

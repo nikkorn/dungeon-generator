@@ -1,7 +1,9 @@
 package com.dumbpug.dungeony.game.level;
 
 import com.dumbpug.dungeony.characterselection.PlayerDetails;
+import com.dumbpug.dungeony.game.Position;
 import com.dumbpug.dungeony.game.character.Enemy;
+import com.dumbpug.dungeony.game.character.enemies.Fishman;
 import com.dumbpug.dungeony.game.object.GameObject;
 import com.dumbpug.dungeony.game.tile.ITileFinder;
 import com.dumbpug.dungeony.game.tile.Tile;
@@ -56,6 +58,9 @@ public class LevelFactory {
         ArrayList<Tile> tiles             = new ArrayList<Tile>();
         ArrayList<GameObject> gameObjects = new ArrayList<GameObject>();
         ArrayList<Enemy> enemies          = new ArrayList<Enemy>();
+
+        // TODO Remove!
+        enemies.add(new Fishman(new Position(260, 840)));
 
         // Create the game objects enemies and actual tiles based on the generated level tile definitions.
         for (TileDefinition tileDefinition : levelDefinition.getTileDefinitions()) {

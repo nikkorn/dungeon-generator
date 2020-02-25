@@ -109,7 +109,7 @@ public class Player extends GameCharacter {
     @Override
     public void render(SpriteBatch batch) {
         // Get the player shadow sprite.
-        Sprite shadowSprite = Resources.getSprite(PlayerSprite.PLAYER_SHADOW);
+        Sprite shadowSprite = Resources.getSprite(PlayerSprite.SHADOW);
         shadowSprite.setSize(this.getWidth(), this.getHeight());
         shadowSprite.setPosition(this.getX(), this.getY() + (this.getHeight() / 2f));
         shadowSprite.setScale(1.2f,  1.2f);

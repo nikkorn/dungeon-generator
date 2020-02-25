@@ -1,8 +1,8 @@
 package com.dumbpug.dungeony.game.rendering;
 
 /**
- * Enumeration of player sprite types.
+ * Enumeration of enemy sprite types.
  */
-public enum PlayerSprite {
+public enum EnemySprite {
     SHADOW
 }
