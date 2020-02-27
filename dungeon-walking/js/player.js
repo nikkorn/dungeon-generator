@@ -1,15 +1,14 @@
 function Player({ x, y }) {
     /**
-     * The player position.
+     * The position.
      */
     this.x = x;
     this.y = y;
-
     /**
-     * The player velocity.
+     * The velocity.
      */
-    this.velocity = { 
-        x: 0, 
+    this.velocity = {
+        x: 0,
         y: 0,
         clamp: function (max) {
             if (this.x > max) {
@@ -28,7 +27,7 @@ function Player({ x, y }) {
     /**
      * Move the player.
      */
-    this.move = function(xOffset, yOffset) {
+    this.move = function (xOffset, yOffset) {
         this.x += xOffset;
         this.y += yOffset;
     };
@@ -36,28 +35,28 @@ function Player({ x, y }) {
     /**
      * Gets the x position.
      */
-    this.getX = function() {
+    this.getX = function () {
         return this.x;
     };
 
     /**
      * Gets the y position.
      */
-    this.getY = function() {
+    this.getY = function () {
         return this.y;
     };
 
     /**
      * Gets the velocity.
      */
-    this.getVelocity = function() {
+    this.getVelocity = function () {
         return this.velocity;
     };
 
     /**
      * Gets the size.
      */
-    this.getSize = function() {
+    this.getSize = function () {
         return CHARACTER_SIZE;
     };
 };

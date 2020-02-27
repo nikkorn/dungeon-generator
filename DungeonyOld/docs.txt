@@ -1,0 +1,41 @@
+GAMEPLAY
+Single or online multiplayer rougelike where you descend through generated levels in a dungeon to see how far you get.
+
+Floors cannot be revisited.
+
+Different types of keys are collected throughout, which can be used for different types of doors.
+These keys are carried throught the game and do not disappear between levels.
+
+For example:
+	- Basic keys are the most common and can be used to open most types of door, but some doors will require multiple basic keys.
+	   - Doors hiding rooms where there will be enemies and chances of lower level loot take 1 key.
+		 - Doors hiding rooms where there will be no enemies and chances of lower level loot take 2 keys.
+		 - Doors hiding rooms where there will be stronger enemies and chances of higher level loot take 3 keys.
+		 - Doors hiding rooms where there will be no enemies and chances of higher level loot take 4 keys.
+		 - Doors hiding rooms where there will be no enemies guaranteed good loot will take 5 keys.
+	- Shop keys are rarer and can be used to open shop doors. If the team has a lot of equipment then these should be saved until later levels.
+	- Level keys are one-per-level and will open doors to the room leading to the next floor down, these will be dropped in rooms with the levels strongest enemies or can be bought for a lot of gold.
+
+	Doors that take multiple keys can have keys placed in them one at a time, even by different players. Keys can NEVER be removed from doors.
+	
+ITEMS
+Items can be found in containers, dropped from enemies or bought from a level shop.
+Items fit into the categories of:
+	- WEAPON
+	- AMMO (For certain weapons like bows)
+	- SHIELD
+	- ARMOUR
+	- BOOTS
+	- KEY
+	- POTION
+	- FOOD
+	- THROWABLE (Like bombs or gravity traps)
+	
+Some items stack while others do not.
+Stackable : KEY, POTION, FOOD, THROWABLE, AMMO
+Non-Stackable : WEAPON, SHIELD, BOOTS, ARMOUR
+
+All items can be dropped on to the floor and be picked up again by whoever dropped it or another player. ITems that are stackable can be dropped with a quantity. When dropping stackable items the player can choose the quantity.
+
+GOLD
+Gold will be dropped by enemies and the only use for it is to purchase items in the level shop.

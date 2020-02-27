@@ -1,50 +1,212 @@
 /** Patterns to match on areas in the dungeon. */
-const patterns = [];
+const dungeon_patterns = [];
 
-// Add vertical corridor.
-patterns.push({
-    name: "vertical-pillar-corridor",
-    chance: 0.1,
+// A level entry.
+dungeon_patterns.push({
+  name: "level-entry",
+  min: 1,
+  max: 1,
+  freeze: "matched",
+  matches: [
+    [0, 0, "ROOM"],
+    [1, 0, "ROOM"],
+    [2, 0, "ROOM"],
+    [3, 0, "ROOM"],
+    [4, 0, "ROOM"],
+    [0, 1, "ROOM"],
+    [1, 1, "ROOM"],
+    [2, 1, "ROOM"],
+    [3, 1, "ROOM"],
+    [4, 1, "ROOM"],
+    [0, 2, "ROOM"],
+    [1, 2, "ROOM"],
+    [2, 2, "ROOM"],
+    [3, 2, "ROOM"],
+    [4, 2, "ROOM"],
+    [0, 3, "ROOM"],
+    [1, 3, "ROOM"],
+    [2, 3, "ROOM"],
+    [3, 3, "ROOM"],
+    [4, 3, "ROOM"],
+    [0, 4, "ROOM"],
+    [1, 4, "ROOM"],
+    [2, 4, "ROOM"],
+    [3, 4, "ROOM"],
+    [4, 4, "ROOM"]
+  ],
+  applies: [
+    [1, 1, "WALL"],
+    [2, 1, "WALL"],
+    [3, 1, "WALL"],
+    [1, 2, "WALL"],
+    [2, 2, "ENTRY_DOOR"],
+    [3, 2, "WALL"]
+  ]
+});
+
+// A level exit.
+dungeon_patterns.push({
+  name: "level-exit",
+  min: 1,
+  max: 1,
+  freeze: "matched",
+  matches: [
+    [-1, 0, "WALL"],
+    [0, 0, "WALL"],
+    [1, 0, "WALL"],
+    [-1, -1, "WALL"],
+    [0, -1, "WALL"],
+    [1, -1, "WALL"],
+    [-1, 1, "ROOM"],
+    [0, 1, "ROOM"],
+    [1, 1, "ROOM"],
+    [-1, 2, "ROOM"],
+    [0, 2, "ROOM"],
+    [1, 2, "ROOM"]
+  ],
+  applies: [
+    [0, 0, "EXIT_DOOR"]
+  ]
+});
+
+// Add chest surrounded by enemies.
+dungeon_patterns.push({
+    name: "guarded-chest",
+    min: 3,
+    max: 3,
+    freeze: "matched",
     matches: [
-	    [-2, 3, "WALL"],
-      [-2, 2, "WALL"],
-      [-2, 1, "WALL"],
-      [-2, 0, "WALL"],
-      [-2, -1, "WALL"],
-      [-2, -2, "WALL"],
-	    [-2, -3, "WALL"],
-	    [-1, 3, "WALL"],
-      [-1, 2, "WALL"],
-      [-1, 1, "WALL"],
-      [-1, 0, "WALL"],
-      [-1, -1, "WALL"],
-      [-1, -2, "WALL"],
-	    [-1, -3, "WALL"],
-	    [0, 3, "CORRIDOR"],
-      [0, 2, "CORRIDOR"],
-      [0, 1, "CORRIDOR"],
-      [0, 0, "CORRIDOR"],
-      [0, -1, "CORRIDOR"],
-      [0, -2, "CORRIDOR"],
-	    [0, -3, "CORRIDOR"],
-	    [1, 3, "WALL"],
-      [1, 2, "WALL"],
-      [1, 1, "WALL"],
-      [1, 0, "WALL"],
-      [1, -1, "WALL"],
-      [1, -2, "WALL"],
-	    [1, 3, "WALL"],
-	    [2, 3, "WALL"],
-      [2, 2, "WALL"],
-      [2, 1, "WALL"],
-      [2, 0, "WALL"],
-      [2, -1, "WALL"],
-      [2, -2, "WALL"],
-	    [2, 3, "WALL"]
+      [0, 0, "ROOM"],
+      [1, 0, "ROOM"],
+      [2, 0, "ROOM"],
+      [3, 0, "ROOM"],
+      [4, 0, "ROOM"],
+      [0, 1, "ROOM"],
+      [1, 1, "ROOM"],
+      [2, 1, "ROOM"],
+      [3, 1, "ROOM"],
+      [4, 1, "ROOM"],
+      [0, 2, "ROOM"],
+      [1, 2, "ROOM"],
+      [2, 2, "ROOM"],
+      [3, 2, "ROOM"],
+      [4, 2, "ROOM"],
+      [0, 3, "ROOM"],
+      [1, 3, "ROOM"],
+      [2, 3, "ROOM"],
+      [3, 3, "ROOM"],
+      [4, 3, "ROOM"],
+      [0, 4, "ROOM"],
+      [1, 4, "ROOM"],
+      [2, 4, "ROOM"],
+      [3, 4, "ROOM"],
+      [4, 4, "ROOM"]
+      
     ],
-    onMatch: function (x, y) {
-      setSpace(space.room, x - 1, y - 2, 3, 5);
-      setSpace(space.pillar, x, y + 1);
-      setSpace(space.pillar, x, y - 1);
-    }
+    applies: [
+      [2, 2, "CHEST"],
+      [0, 4, "ENEMY"],
+      [4, 4, "ENEMY"],
+      [4, 0, "ENEMY"],
+      [0, 0, "ENEMY"]
+    ]
+});
+
+dungeon_patterns.push({
+  name: "enemy-pairs",
+  min: 5,
+  max: 10,
+  options: [
+    {
+      tickets: 1,
+      matches: [
+        [0, 0, "ROOM"],
+        [1, 0, "ROOM"],
+        [2, 0, "ROOM"],
+        [3, 0, "ROOM"],
+        [4, 0, "ROOM"],
+        [0, 1, "ROOM"],
+        [1, 1, "ROOM"],
+        [2, 1, "ROOM"],
+        [3, 1, "ROOM"],
+        [4, 1, "ROOM"],
+        [0, 2, "ROOM"],
+        [1, 2, "ROOM"],
+        [2, 2, "ROOM"],
+        [3, 2, "ROOM"],
+        [4, 2, "ROOM"],
+        [0, 3, "ROOM"],
+        [1, 3, "ROOM"],
+        [2, 3, "ROOM"],
+        [3, 3, "ROOM"],
+        [4, 3, "ROOM"],
+        [0, 4, "ROOM"],
+        [1, 4, "ROOM"],
+        [2, 4, "ROOM"],
+        [3, 4, "ROOM"],
+        [4, 4, "ROOM"]
+        
+      ],
+      applies: [
+        [1, 3, "ENEMY"],
+        [3, 1, "ENEMY"]
+      ]
+    },
+    {
+      tickets: 1,
+      matches: [
+        [0, 0, "ROOM"],
+        [1, 0, "ROOM"],
+        [2, 0, "ROOM"],
+        [3, 0, "ROOM"],
+        [4, 0, "ROOM"],
+        [0, 1, "ROOM"],
+        [1, 1, "ROOM"],
+        [2, 1, "ROOM"],
+        [3, 1, "ROOM"],
+        [4, 1, "ROOM"],
+        [0, 2, "ROOM"],
+        [1, 2, "ROOM"],
+        [2, 2, "ROOM"],
+        [3, 2, "ROOM"],
+        [4, 2, "ROOM"],
+        [0, 3, "ROOM"],
+        [1, 3, "ROOM"],
+        [2, 3, "ROOM"],
+        [3, 3, "ROOM"],
+        [4, 3, "ROOM"],
+        [0, 4, "ROOM"],
+        [1, 4, "ROOM"],
+        [2, 4, "ROOM"],
+        [3, 4, "ROOM"],
+        [4, 4, "ROOM"]
+        
+      ],
+      applies: [
+        [1, 1, "ENEMY"],
+        [3, 3, "ENEMY"]
+      ]
+    }   
+  ]
+});
+
+// A strong enemy.
+dungeon_patterns.push({
+  name: "strong-enemy",
+  min: 1,
+  max: 3,
+  matches: [
+    [0, 0, "ROOM"],
+    [1, 0, "ROOM"],
+    [2, 0, "ROOM"],
+    [0, 1, "ROOM"],
+    [1, 1, "ROOM"],
+    [2, 1, "ROOM"],
+    [0, 2, "ROOM"],
+    [1, 2, "ROOM"],
+    [2, 2, "ROOM"]
+  ],
+  applies: [
+    [1, 1, "ENEMY_STRONG", { "name": "super strong guy!" }]
+  ]
 });

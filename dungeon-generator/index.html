@@ -1,14 +1,71 @@
 <!DOCTYPE html>
 <html>
+
+<style>
+  html, body {
+    height: 100%;
+    background-color: #00185e;
+  }
+
+  #dungeon {
+    display: block;
+    margin: auto auto;
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+  }
+
+  #config {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+</style>
+
 <body>
 <script src="patterns.js"></script>
 <script src="dungeon-generator.js"></script>
+<script src="dungeon-drawer.js"></script>
 
-<button type="button" onclick="generate()">Generate!</button>
-
-<svg id="dungeon" width="600" height="600">
-  <rect width="600" height="600" style="fill:rgb(0,0,0)" />
+<svg id="dungeon" onclick="go()">
+  <rect />
 </svg>
+
+<textarea id="config" rows="20" cols="30">
+{
+  "dungeonSize": 60,
+  "maxRoomSize": 12,
+  "minRoomSize": 5,
+  "roomBuffer": 0,
+  "roomCount": 18,
+  "corridorWidth": 2
+}
+</textarea>
  
 </body>
+<script>
+
+  function go() {
+    const result = generate(JSON.parse(document.getElementById("config").value), dungeon_patterns);
+
+    // The colours to use in drawing the tiles.
+    const colours = {
+      "ROOM": "#ffffff",
+      "CORRIDOR": "#ffffff",
+      "WALL": "#555555",
+      "EXIT_DOOR": "#bbaaff",
+      "ENTRY_DOOR": "#bb00bb",
+      "ENEMY": "#ffb108",
+      "ENEMY_STRONG": "#ff0000",
+      "CHEST": "#00ffbb"
+    };
+
+    draw(result, colours, 10);
+  }
+
+  go();
+
+</script>
 </html>

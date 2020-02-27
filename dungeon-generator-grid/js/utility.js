@@ -17,16 +17,16 @@ function getCellKey(cell) {
 
 /**
  * Get a random item form an array. 
- * @param items Th array of items.
+ * @param array The array of items.
  */
-function getRandomItem(items) {
+function getRandomItem(array) {
     // We cant pick a random item from an empty array.
-    if (!items.length) {
+    if (!array.length) {
         return undefined;
     }
 
     // Return a random item.
-    return items[Math.floor(Math.random() * items.length)]; 
+    return array[Math.floor(Math.random() * array.length)]; 
 }
 
 /**
@@ -34,20 +34,20 @@ function getRandomItem(items) {
  * @param array The array to shuffle.
  */
 function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
-  
-    // While there remain elements to shuffle...
-    while (0 !== currentIndex) {
-  
-      // Pick a remaining element...
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex -= 1;
-  
-      // And swap it with the current element.
-      temporaryValue = array[currentIndex];
-      array[currentIndex] = array[randomIndex];
-      array[randomIndex] = temporaryValue;
-    }
-  
-    return array;
-  }
+   var currentIndex = array.length, temporaryValue, randomIndex;
+
+	// While there remain elements to shuffle...
+	while (0 !== currentIndex) {
+
+		// Pick a remaining element...
+		randomIndex = Math.floor(Math.random() * currentIndex);
+		currentIndex -= 1;
+
+		// And swap it with the current element.
+		temporaryValue = array[currentIndex];
+		array[currentIndex] = array[randomIndex];
+		array[randomIndex] = temporaryValue;
+	}
+
+	return array;
+}

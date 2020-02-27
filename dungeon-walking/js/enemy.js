@@ -1,9 +1,28 @@
 function Enemy({ x, y, type, movements }) {
     /**
-     * The enemy position.
+     * The position.
      */
     this.x = x;
     this.y = y;
+    /**
+     * The velocity.
+     */
+    this.velocity = {
+        x: 0,
+        y: 0,
+        clamp: function (max) {
+            if (this.x > max) {
+                this.x = max;
+            } else if (this.x < -max) {
+                this.x = -max;
+            }
+            if (this.y > max) {
+                this.y = max;
+            } else if (this.y < -max) {
+                this.y = -max;
+            }
+        }
+    };
     /**
      * The enemy movements position.
      */
@@ -55,6 +74,13 @@ function Enemy({ x, y, type, movements }) {
      */
     this.getY = function() {
         return this.y;
+    };
+
+      /**
+     * Gets the velocity.
+     */
+    this.getVelocity = function () {
+        return this.velocity;
     };
 
     /**
