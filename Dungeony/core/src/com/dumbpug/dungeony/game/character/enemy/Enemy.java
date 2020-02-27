@@ -1,9 +1,10 @@
-package com.dumbpug.dungeony.game.character;
+package com.dumbpug.dungeony.game.character.enemy;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.game.Position;
+import com.dumbpug.dungeony.game.character.GameCharacter;
 import com.dumbpug.dungeony.game.level.LevelGrid;
 import com.dumbpug.dungeony.game.rendering.Animation;
 import com.dumbpug.dungeony.game.rendering.Resources;

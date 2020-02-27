@@ -1,4 +1,4 @@
-package com.dumbpug.dungeony.game.character;
+package com.dumbpug.dungeony.game.character.enemy;
 
 /**
  * Enumeration of enemy types.

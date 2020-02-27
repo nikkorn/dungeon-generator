@@ -1,6 +1,6 @@
 package com.dumbpug.dungeony.characterselection;
 
-import com.dumbpug.dungeony.game.character.PlayerIdentifier;
+import com.dumbpug.dungeony.game.character.player.PlayerIdentifier;
 import com.dumbpug.dungeony.input.IPlayerInputProvider;
 
 /**

@@ -2,9 +2,9 @@ package com.dumbpug.dungeony.game.rendering;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.dumbpug.dungeony.game.character.EnemyState;
-import com.dumbpug.dungeony.game.character.EnemyType;
-import com.dumbpug.dungeony.game.character.PlayerState;
+import com.dumbpug.dungeony.game.character.enemy.EnemyState;
+import com.dumbpug.dungeony.game.character.enemy.EnemyType;
+import com.dumbpug.dungeony.game.character.player.PlayerState;
 import java.util.HashMap;
 
 /**

@@ -1,11 +1,9 @@
 package com.dumbpug.dungeony.state.states;
 
-import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dumbpug.dungeony.ApplicationModel;
 import com.dumbpug.dungeony.characterselection.PlayerDetails;
-import com.dumbpug.dungeony.game.character.PlayerIdentifier;
-import com.dumbpug.dungeony.input.IPlayerInputProvider;
+import com.dumbpug.dungeony.game.character.player.PlayerIdentifier;
 import com.dumbpug.dungeony.input.KeyboardInputProvider;
 import com.dumbpug.dungeony.state.State;
 

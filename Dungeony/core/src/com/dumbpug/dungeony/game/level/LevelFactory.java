@@ -2,8 +2,8 @@ package com.dumbpug.dungeony.game.level;
 
 import com.dumbpug.dungeony.characterselection.PlayerDetails;
 import com.dumbpug.dungeony.game.Position;
-import com.dumbpug.dungeony.game.character.Enemy;
-import com.dumbpug.dungeony.game.character.enemies.Fishman;
+import com.dumbpug.dungeony.game.character.enemy.Enemy;
+import com.dumbpug.dungeony.game.character.enemy.enemies.Fishman;
 import com.dumbpug.dungeony.game.object.GameObject;
 import com.dumbpug.dungeony.game.tile.ITileFinder;
 import com.dumbpug.dungeony.game.tile.Tile;

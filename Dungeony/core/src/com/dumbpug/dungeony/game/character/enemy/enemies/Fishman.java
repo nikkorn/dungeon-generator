@@ -1,9 +1,9 @@
-package com.dumbpug.dungeony.game.character.enemies;
+package com.dumbpug.dungeony.game.character.enemy.enemies;
 
 import com.dumbpug.dungeony.game.Position;
-import com.dumbpug.dungeony.game.character.Enemy;
-import com.dumbpug.dungeony.game.character.EnemyState;
-import com.dumbpug.dungeony.game.character.EnemyType;
+import com.dumbpug.dungeony.game.character.enemy.Enemy;
+import com.dumbpug.dungeony.game.character.enemy.EnemyState;
+import com.dumbpug.dungeony.game.character.enemy.EnemyType;
 import com.dumbpug.dungeony.game.level.LevelGrid;
 
 /**

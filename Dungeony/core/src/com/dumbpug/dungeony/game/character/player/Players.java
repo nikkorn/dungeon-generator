@@ -1,13 +1,11 @@
-package com.dumbpug.dungeony.game.character;
+package com.dumbpug.dungeony.game.character.player;
 
 import com.dumbpug.dungeony.characterselection.PlayerDetails;
 import com.dumbpug.dungeony.game.level.LevelGrid;
 import com.dumbpug.dungeony.game.rendering.Renderables;
 import com.dumbpug.dungeony.game.tile.TileSpawn;
-import com.dumbpug.dungeony.input.IPlayerInputProvider;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 
 /**
