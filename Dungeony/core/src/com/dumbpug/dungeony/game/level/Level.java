@@ -16,7 +16,6 @@ import com.dumbpug.dungeony.game.rendering.Resources;
 import com.dumbpug.dungeony.game.rendering.TileSprite;
 import com.dumbpug.dungeony.game.tile.Tile;
 import com.dumbpug.dungeony.game.tile.Tiles;
-import com.dumbpug.dungeony.input.IPlayerInputProvider;
 import java.util.ArrayList;
 
 /**
@@ -63,21 +62,15 @@ public class Level {
     }
 
     /**
-     * Gets the level renderables.
-     * @return The level renderables.
-     */
-    public Renderables getRenderables() {
-        return this.renderables;
-    }
-
-    /**
      * Update the level.
      */
     public void update() {
-        // Update players, applying any player input.
-        updatePlayers();
+        // Update each of the players.
+        this.players.update(this.grid);
 
-        // TODO Update enemies.
+        // Update each of the enemies.
+        this.enemies.update(this.grid);
+
         // TODO Update projectiles.
         // TODO Update game objects.
     }
@@ -123,30 +116,5 @@ public class Level {
         camera.zoom = 1f;
         camera.update();
         batch.setProjectionMatrix(camera.combined);
-    }
-
-    /**
-     * Update players and apply any player input.
-     */
-    private void updatePlayers() {
-        // Process each player sequentially.
-        for (Player player : this.players.getAll()) {
-            // Get the input provider for the current player.
-            IPlayerInputProvider playerInputProvider = player.getDetails().getInputProvider();
-
-            // TODO Check for player conditions (etc death, buffs) and update.
-            // TODO Check for player actions.
-
-            // Get the movement on each axis that the player is requesting to make.
-            float movementAxisX = playerInputProvider.getMovementAxisX();
-            float movementAxisY = playerInputProvider.getMovementAxisY();
-
-            // Process player input which would influence the movement of each player.
-            // Any entity movement has to be taken care of by the level grid which handles all entity collisions.
-            this.grid.move(player, movementAxisX, movementAxisY);
-
-            // Update the player state to reflect any changes that have happened to the player. Firstly is the player idle?
-            player.updateState(movementAxisX, movementAxisY);
-        }
     }
 }

@@ -4,6 +4,8 @@ import com.dumbpug.dungeony.characterselection.PlayerDetails;
 import com.dumbpug.dungeony.game.level.LevelGrid;
 import com.dumbpug.dungeony.game.rendering.Renderables;
 import com.dumbpug.dungeony.game.tile.TileSpawn;
+import com.dumbpug.dungeony.input.IPlayerInputProvider;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -69,10 +71,13 @@ public class Players {
     }
 
     /**
-     * Gets the collection of all players.
-     * @return The collection of all players.
+     * Update each of the players sequentially.
+     * @param grid The level grid used to handle player movement during an update.
      */
-    public Collection<Player> getAll() {
-        return this.players.values();
+    public void update(LevelGrid grid) {
+        // Update each of the players sequentially.
+        for (Player player : this.players.values()) {
+            player.update(grid);
+        }
     }
 }

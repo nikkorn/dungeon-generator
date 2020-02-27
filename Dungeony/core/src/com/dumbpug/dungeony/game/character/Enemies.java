@@ -38,4 +38,15 @@ public class Enemies {
         // Add the initial list of enemies to the renderables list.
         this.renderables.add(enemies);
     }
+
+    /**
+     * Update each of the enemies sequentially.
+     * @param grid The level grid used to handle enemy movement during an update.
+     */
+    public void update(LevelGrid grid) {
+        // Update each of the enemies sequentially.
+        for (Enemy enemy : this.enemies) {
+            enemy.update(grid);
+        }
+    }
 }

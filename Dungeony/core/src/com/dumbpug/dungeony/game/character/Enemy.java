@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.game.Position;
+import com.dumbpug.dungeony.game.level.LevelGrid;
 import com.dumbpug.dungeony.game.rendering.Animation;
 import com.dumbpug.dungeony.game.rendering.Resources;
 import java.util.HashMap;
@@ -15,7 +16,7 @@ public abstract class Enemy extends GameCharacter {
     /**
      * The enemy state.
      */
-    private EnemyState state = EnemyState.IDLE_LEFT;
+    protected EnemyState state = EnemyState.IDLE_LEFT;
     /**
      * The enemy state to animation map.
      */
@@ -66,6 +67,12 @@ public abstract class Enemy extends GameCharacter {
      * @return The enemy type.
      */
     public abstract EnemyType getEnemyType();
+
+    /**
+     * Update the enemy as part of a single level update.
+     * @param grid The level grid used to handle player movement during an update.
+     */
+    public abstract void update(LevelGrid grid);
 
     /**
      * Render the renderable using the provided sprite batch.

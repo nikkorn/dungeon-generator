@@ -6,9 +6,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.characterselection.PlayerDetails;
 import com.dumbpug.dungeony.game.Position;
+import com.dumbpug.dungeony.game.level.LevelGrid;
 import com.dumbpug.dungeony.game.rendering.Animation;
 import com.dumbpug.dungeony.game.rendering.PlayerSprite;
 import com.dumbpug.dungeony.game.rendering.Resources;
+import com.dumbpug.dungeony.input.IPlayerInputProvider;
 import java.util.HashMap;
 
 /**
@@ -44,33 +46,6 @@ public class Player extends GameCharacter {
     }
 
     /**
-     * Updates the player state to reflect any external influences.
-     * @param movementX The movement on the Y axis.
-     * @param movementY The movement on the Y axis.
-     */
-    public void updateState(float movementX, float movementY) {
-        // Is the player idle and not moving in any direction?
-        if (movementX == 0f && movementY == 0f) {
-            // The player should be idle and facing whatever direction they already have been.
-            switch (this.state) {
-                case RUNNING_LEFT:
-                case DODGING_LEFT:
-                    this.state = PlayerState.IDLE_LEFT;
-                    return;
-                case RUNNING_RIGHT:
-                case DODGING_RIGHT:
-                    this.state = PlayerState.IDLE_RIGHT;
-                    return;
-                default:
-                    return;
-            }
-        } else {
-            // We are running because we are moving on either axis, but hte X axis movement determines which way we face.
-            this.state = movementX < 0 ? PlayerState.RUNNING_LEFT : PlayerState.RUNNING_RIGHT;
-        }
-    }
-
-    /**
      * Gets the player details.
      * @return The player details.
      */
@@ -100,6 +75,47 @@ public class Player extends GameCharacter {
      */
     public float getMovementSpeed() {
         return Constants.GAME_PLAYER_MOVEMENT;
+    }
+
+    /**
+     * Update the player.
+     * @param grid The level grid used to handle player movement during an update.
+     */
+    public void update(LevelGrid grid) {
+        // Get the input provider for the player.
+        IPlayerInputProvider playerInputProvider = this.getDetails().getInputProvider();
+
+        // TODO Check for player conditions (etc death, buffs) and update.
+        // TODO Check for player actions.
+
+        // Get the movement on each axis that the player is requesting to make.
+        float movementAxisX = playerInputProvider.getMovementAxisX();
+        float movementAxisY = playerInputProvider.getMovementAxisY();
+
+        // Process player input which would influence the movement of the player.
+        // Any entity movement has to be taken care of by the level grid which handles all entity collisions.
+        grid.move(this, movementAxisX, movementAxisY);
+
+        // Update the actual state of the player to reflect and changes that have happened during this update.
+        // Is the player idle and not moving in any direction?
+        if (movementAxisX == 0f && movementAxisY == 0f) {
+            // The player should be idle and facing whatever direction they already have been.
+            switch (this.state) {
+                case RUNNING_LEFT:
+                case DODGING_LEFT:
+                    this.state = PlayerState.IDLE_LEFT;
+                    return;
+                case RUNNING_RIGHT:
+                case DODGING_RIGHT:
+                    this.state = PlayerState.IDLE_RIGHT;
+                    return;
+                default:
+                    return;
+            }
+        } else {
+            // We are running because we are moving on either axis, but hte X axis movement determines which way we face.
+            this.state = movementAxisX < 0 ? PlayerState.RUNNING_LEFT : PlayerState.RUNNING_RIGHT;
+        }
     }
 
     /**
