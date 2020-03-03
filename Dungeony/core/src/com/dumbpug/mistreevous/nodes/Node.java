@@ -1,5 +1,7 @@
 package com.dumbpug.mistreevous.nodes;
 
+import java.util.ArrayList;
+
 /**
  * A tree node.
  */
@@ -17,5 +19,11 @@ public class Node {
         this.type = type;
     }
 
-
+    /**
+     * Gets the node type.
+     * @return The node type.
+     */
+    public NodeType getNodeType() {
+        return this.type;
+    }
 }

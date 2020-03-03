@@ -44,6 +44,14 @@ public class Tokens {
     }
 
     /**
+     * Peeks at the next token from the queue, or null if none exist.
+     * @return The next token from the queue, or null if none exist.
+     */
+    public String peek() {
+        return this.tokens.isEmpty() ? null : this.tokens.get(0);
+    }
+
+    /**
      * Gets the count of tokens that match the given token.
      * @param token The token to count.
      * @return The count of tokens that match the given token.
@@ -70,7 +78,7 @@ public class Tokens {
         }
 
         // If an expected token was defined, was it the expected one?
-        if (!expected.trim().toUpperCase().equals(this.tokens.get(0).toUpperCase())) {
+        if (!expected.trim().toUpperCase().equals(this.peek().toUpperCase())) {
             throw new RuntimeException("token to pop is not the expected one.");
         }
 
