@@ -1,4 +1,4 @@
-package com.dumbpug.mistreevous.nodes;
+package com.dumbpug.mistreevous.node;
 
 public enum NodeType {
     ROOT,

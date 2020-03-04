@@ -1,7 +1,7 @@
 package com.dumbpug.mistreevous;
 
 import com.dumbpug.mistreevous.builder.TreeBuilder;
-import com.dumbpug.mistreevous.nodes.Root;
+import com.dumbpug.mistreevous.node.Root;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -24,7 +24,7 @@ public class BehaviourTree {
         Tokens tokens = parseDefinitionTokens(definition);
 
         try {
-            // Attempt to convert our tokens into a tree of nodes.
+            // Attempt to convert our tokens into a tree of node.
             this.root = TreeBuilder.createTree(tokens);
         } catch (Exception e) {
             throw new RuntimeException("Failed to create tree instance", e);

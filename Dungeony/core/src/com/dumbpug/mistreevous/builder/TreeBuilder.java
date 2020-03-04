@@ -1,9 +1,11 @@
 package com.dumbpug.mistreevous.builder;
 
 import com.dumbpug.mistreevous.Tokens;
-import com.dumbpug.mistreevous.nodes.Action;
-import com.dumbpug.mistreevous.nodes.Node;
-import com.dumbpug.mistreevous.nodes.Root;
+import com.dumbpug.mistreevous.decorator.Decorator;
+import com.dumbpug.mistreevous.decorator.Decorators;
+import com.dumbpug.mistreevous.node.Action;
+import com.dumbpug.mistreevous.node.Node;
+import com.dumbpug.mistreevous.node.Root;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -31,6 +33,8 @@ public class TreeBuilder {
         Stack<ArrayList<Node>> tree = new Stack<ArrayList<Node>>();
         tree.add(new ArrayList<Node>());
 
+        Decorators decorators = null;
+
         // We should keep processing the raw tokens until we run out of them.
         while (tokens.hasNext()) {
             // Grab the next token.
@@ -42,15 +46,16 @@ public class TreeBuilder {
                     // Create the list of children for the root node.
                     ArrayList<Node> children = new ArrayList<Node>();
 
-                    // Create and add the root node to the stack.
-                    tree.peek().add(new Root(children));
+                    // Try to pick any decorators off of the token stack.
+                    decorators = getDecorators(tokens);
 
-                    // TODO Try to pick any decorators off of the token stack.
+                    // Create and add the root node to the stack.
+                    tree.peek().add(new Root(decorators, children));
 
                     // The next token we expect is a '{' which represents the start of children.
                     tokens.pop("{");
 
-                    // The new tree scope is that of the new root nodes children.
+                    // The new tree scope is that of the new root node children.
                     tree.push(children);
                     break;
 
@@ -63,13 +68,14 @@ public class TreeBuilder {
                         throw new RuntimeException("expected single action name argument");
                     }
 
-                    // TODO Try to pick any decorators off of the token stack.
-
                     // Get the action name.
                     String actionName = arguments.get(0);
 
+                    // Try to pick any decorators off of the token stack.
+                    decorators = getDecorators(tokens);
+
                     // Create and add the action node to the stack.
-                    tree.peek().add(new Action(actionName));
+                    tree.peek().add(new Action(decorators, actionName));
                     break;
 
                 case "}":
@@ -141,5 +147,30 @@ public class TreeBuilder {
 
         // Return the argument list.
         return argumentTokens;
+    }
+
+    /**
+     * Attempt to parse a number of decorators from a tokens queue.
+     * Any decorators will be defined using the syntax "name[arg1,arg2,arg3]".
+     * @param tokens The tokens queue.
+     * @return The node decorators.
+     */
+    public static Decorators getDecorators(Tokens tokens) {
+        // Create a list to hold the decorators we find.
+        ArrayList<Decorator> decorators = new ArrayList<Decorator>();
+
+        // Attempt to get the first decorator.
+        Decorator next = DecoratorBuilder.createDecorator(tokens);
+
+        // Keep trying to parse decorators from the tokens queue.
+        while (next != null) {
+            // Add the decorator we found to the list of decorators.
+            decorators.add(next);
+
+            // Attempt to get the next decorator.
+            next = DecoratorBuilder.createDecorator(tokens);
+        }
+
+        return new Decorators(decorators);
     }
 }
