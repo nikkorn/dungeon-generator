@@ -1,5 +1,6 @@
 package com.dumbpug.mistreevous.decorator;
 
+import com.dumbpug.mistreevous.guard.Guard;
 import java.util.ArrayList;
 
 /**
@@ -7,9 +8,13 @@ import java.util.ArrayList;
  */
 public class Decorators {
     /**
-     * The list of decorators.
+     * The list of all decorators.
      */
     private ArrayList<Decorator> decorators;
+    /**
+     * The list of guard decorators.
+     */
+    private ArrayList<Guard> guards = new ArrayList<Guard>();
 
     /**
      * Creates an instance of the Decorators class.
@@ -18,8 +23,23 @@ public class Decorators {
     public Decorators(ArrayList<Decorator> decorators) {
         this.decorators = decorators;
 
+        // Collect any guard decorators into their own list.
+        for (Decorator decorator : decorators) {
+            if (decorator.isGuard()) {
+                guards.add((Guard)decorator);
+            }
+        }
+
         // Verify that there are no duplicate decorator types.
         verifyDecoratorsAreUnique();
+    }
+
+    /**
+     * Gets the list of guard nodes.
+     * @return The list of guard nodes.
+     */
+    public ArrayList<Guard> getGuards() {
+        return this.guards;
     }
 
     /**
