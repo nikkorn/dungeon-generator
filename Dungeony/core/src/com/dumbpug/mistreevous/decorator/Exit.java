@@ -1,6 +1,8 @@
 package com.dumbpug.mistreevous.decorator;
 
 import com.dumbpug.mistreevous.IBoard;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * An EXIT decorator which defines a blackboard function to call when the
@@ -22,7 +24,19 @@ public class Exit extends Decorator {
      * @param isAborted Whether the decorated node was aborted.
      */
     public void call(IBoard board, boolean isSuccess, boolean isAborted) {
-        // TODO Call the relevant board method.
+        try {
+            // Attempt to get the relevant board method.
+            Method method = board.getClass().getMethod(this.method, boolean.class, boolean.class);
+
+            // Attempt to invoke the board method.
+            method.invoke(board, isSuccess, isAborted);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException("cannot call EXIT decorator method '" + this.method + "' as it is not defined in the blackboard", e);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

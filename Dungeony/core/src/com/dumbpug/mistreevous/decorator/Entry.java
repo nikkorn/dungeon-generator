@@ -1,6 +1,8 @@
 package com.dumbpug.mistreevous.decorator;
 
 import com.dumbpug.mistreevous.IBoard;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * An ENTRY decorator which defines a blackboard function to call
@@ -20,7 +22,19 @@ public class Entry extends Decorator {
      * @param board The board.
      */
     public void call(IBoard board) {
-        // TODO Call the relevant board method.
+        try {
+            // Attempt to get the relevant board method.
+            Method method = board.getClass().getMethod(this.method);
+
+            // Attempt to invoke the board method.
+            method.invoke(board);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException("cannot call ENTRY decorator method '" + this.method + "' as it is not defined in the blackboard", e);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
