@@ -4,8 +4,11 @@ import com.dumbpug.mistreevous.Tokens;
 import com.dumbpug.mistreevous.decorator.Decorator;
 import com.dumbpug.mistreevous.decorator.Decorators;
 import com.dumbpug.mistreevous.node.Action;
+import com.dumbpug.mistreevous.node.Composite;
+import com.dumbpug.mistreevous.node.Condition;
 import com.dumbpug.mistreevous.node.Node;
 import com.dumbpug.mistreevous.node.Root;
+import com.dumbpug.mistreevous.node.Sequence;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -33,7 +36,9 @@ public class TreeBuilder {
         Stack<ArrayList<Node>> tree = new Stack<ArrayList<Node>>();
         tree.add(new ArrayList<Node>());
 
-        Decorators decorators = null;
+        ArrayList<Node> children    = null;
+        Decorators decorators       = null;
+        ArrayList<String> arguments = null;
 
         // We should keep processing the raw tokens until we run out of them.
         while (tokens.hasNext()) {
@@ -44,7 +49,7 @@ public class TreeBuilder {
             switch (token) {
                 case "ROOT":
                     // Create the list of children for the root node.
-                    ArrayList<Node> children = new ArrayList<Node>();
+                    children = new ArrayList<Node>();
 
                     // Try to pick any decorators off of the token stack.
                     decorators = getDecorators(tokens);
@@ -59,9 +64,28 @@ public class TreeBuilder {
                     tree.push(children);
                     break;
 
+
+                case "SEQUENCE":
+                    // Create the list of children for the sequence node.
+                    children = new ArrayList<Node>();
+
+                    // Try to pick any decorators off of the token stack.
+                    decorators = getDecorators(tokens);
+
+                    // Create and add the sequence node to the stack.
+                    tree.peek().add(new Sequence(decorators, children));
+
+                    // The next token we expect is a '{' which represents the start of children.
+                    tokens.pop("{");
+
+                    // The new tree scope is that of the new sequence node children.
+                    tree.push(children);
+                    break;
+
+
                 case "ACTION":
                     // We must have arguments defined, as we require an action name argument.
-                    ArrayList<String> arguments = getArguments(tokens, null);
+                    arguments = getArguments(tokens, null);
 
                     // Only a single argument should be defined, the action name.
                     if (arguments.size() != 1) {
@@ -78,18 +102,46 @@ public class TreeBuilder {
                     tree.peek().add(new Action(decorators, actionName));
                     break;
 
+
+                case "CONDITION":
+                    // We must have arguments defined, as we require a condition name argument.
+                    arguments = getArguments(tokens, null);
+
+                    // Only a single argument should be defined, the condition name.
+                    if (arguments.size() != 1) {
+                        throw new RuntimeException("expected single condition name argument");
+                    }
+
+                    // Get the condition name.
+                    String conditionName = arguments.get(0);
+
+                    // Try to pick any decorators off of the token stack.
+                    decorators = getDecorators(tokens);
+
+                    // Create and add the condition node to the stack.
+                    tree.peek().add(new Condition(decorators, conditionName));
+                    break;
+
+
                 case "}":
                     // The '}' character closes the current scope.
                     tree.pop();
                     break;
+
 
                 default:
                     throw new RuntimeException("unknown token: " + token);
             }
         }
 
-        // Return the root tree node at the base of our tree.
-        return (Root)tree.peek().get(0);
+        // Get the root node at the base of out tree.
+        Root root = (Root)tree.peek().get(0);
+
+        // Validate our root node, and subsequently all child nodes in the tree.
+        validateNode(root);
+
+        // Return the root tree node.
+        return root;
     }
 
     /**
@@ -172,5 +224,21 @@ public class TreeBuilder {
         }
 
         return new Decorators(decorators);
+    }
+
+    /**
+     * Validate the specified node and any child nodes recursively.
+     * @param node The node to validate.
+     */
+    public static void validateNode(Node node) {
+        // Validate the node.
+        node.validate();
+
+        // Validate any child nodes.
+        if (!node.isLeafNode()) {
+            for (Node child : ((Composite)node).getChildren()) {
+                validateNode(child);
+            }
+        }
     }
 }

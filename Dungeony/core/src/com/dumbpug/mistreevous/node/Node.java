@@ -179,6 +179,11 @@ public abstract class Node {
     }
 
     /**
+     * Validate the node.
+     */
+    public void validate() {}
+
+    /**
      * Update the node and get whether the node state has changed.
      * @param board The board.
      */

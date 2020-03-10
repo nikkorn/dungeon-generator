@@ -13,6 +13,10 @@ public class BehaviourTree {
      * The root tree node.
      */
     private Root root;
+    /**
+     * The board.
+     */
+    private IBoard board;
 
     /**
      * Creates a new instance of the BehaviourTree class.
@@ -20,6 +24,9 @@ public class BehaviourTree {
      * @param board The board.
      */
     public BehaviourTree(String definition, IBoard board) {
+        // Grab a reference to the board.
+        this.board = board;
+
         // Get the definition as a list of tokens.
         Tokens tokens = parseDefinitionTokens(definition);
 
@@ -29,6 +36,38 @@ public class BehaviourTree {
         } catch (Exception e) {
             throw new RuntimeException("Failed to create tree instance", e);
         }
+    }
+
+    /**
+     * Gets whether the tree is in the running state.
+     * @returns Whether the tree is in the running state.
+     */
+    public boolean isRunning() {
+        return this.root.is(State.RUNNING);
+    }
+
+    /**
+     * Step the tree.
+     */
+    public void step() {
+        // If the root node has already been stepped to completion then we need to reset it.
+        if (this.root.is(State.SUCCEEDED) || this.root.is(State.FAILED)) {
+            this.root.reset();
+        }
+
+        try {
+            // Update the root node, which will subsequently update the entire tree.
+            this.root.update(this.board);
+        } catch (Exception e) {
+            throw new RuntimeException("error stepping tree", e);
+        }
+    }
+
+    /**
+     * Reset the tree.
+     */
+    public void reset() {
+        this.root.reset();
     }
 
     /**

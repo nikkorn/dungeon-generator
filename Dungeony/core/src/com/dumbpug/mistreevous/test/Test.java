@@ -6,8 +6,9 @@ import com.dumbpug.mistreevous.decorator.Step;
 public class Test {
     public static void main(String[] args) {
         Test test = new Test();
-        test.createTreeTest();
-        test.reflectiveInvokeTest();
+        //test.createTreeTest();
+        //test.reflectiveInvokeTest();
+        test.enemyTest();
     }
 
     public void createTreeTest() {
@@ -22,5 +23,15 @@ public class Test {
         Step step = new Step("someThing");
 
         step.call(testClass);
+    }
+
+    public void enemyTest() {
+        String definition = "root{sequence{condition[isHungry]action[roar]action[scream]}}";
+
+        BehaviourTree tree = new BehaviourTree(definition, new TestEnemy());
+
+        tree.step();
+        tree.step();
+        tree.step();
     }
 }
