@@ -47,6 +47,14 @@ public class BehaviourTree {
     }
 
     /**
+     * Gets whether the tree has moved to a completed state.
+     * @returns Whether the tree has moved to a completed state.
+     */
+    public boolean isComplete() {
+        return this.root.is(State.SUCCEEDED) || this.root.is(State.FAILED);
+    }
+
+    /**
      * Step the tree.
      */
     public void step() {

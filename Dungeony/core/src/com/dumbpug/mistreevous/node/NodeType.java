@@ -9,10 +9,12 @@ public enum NodeType {
      */
     ACTION,
     CONDITION,
+    WAIT,
 
     /**
      * Composite.
      */
     ROOT,
-    SEQUENCE
+    SEQUENCE,
+    SELECTOR
 }

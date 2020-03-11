@@ -8,7 +8,8 @@ public class Test {
         Test test = new Test();
         //test.createTreeTest();
         //test.reflectiveInvokeTest();
-        test.enemyTest();
+        //test.enemyTest();
+        test.waitTest();
     }
 
     public void createTreeTest() {
@@ -33,5 +34,15 @@ public class Test {
         tree.step();
         tree.step();
         tree.step();
+    }
+
+    public void waitTest() {
+        String definition = "root{sequence{wait[1000]action[roar]wait[1000]action[scream]wait[1000]action[roar]wait[1000]action[scream]}}";
+
+        BehaviourTree tree = new BehaviourTree(definition, new TestEnemy());
+
+        while (!tree.isComplete()) {
+            tree.step();
+        }
     }
 }

@@ -8,7 +8,10 @@ import com.dumbpug.mistreevous.node.Composite;
 import com.dumbpug.mistreevous.node.Condition;
 import com.dumbpug.mistreevous.node.Node;
 import com.dumbpug.mistreevous.node.Root;
+import com.dumbpug.mistreevous.node.Selector;
 import com.dumbpug.mistreevous.node.Sequence;
+import com.dumbpug.mistreevous.node.Wait;
+
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -83,6 +86,24 @@ public class TreeBuilder {
                     break;
 
 
+                case "SELECTOR":
+                    // Create the list of children for the selector node.
+                    children = new ArrayList<Node>();
+
+                    // Try to pick any decorators off of the token stack.
+                    decorators = getDecorators(tokens);
+
+                    // Create and add the selector node to the stack.
+                    tree.peek().add(new Selector(decorators, children));
+
+                    // The next token we expect is a '{' which represents the start of children.
+                    tokens.pop("{");
+
+                    // The new tree scope is that of the new selector node children.
+                    tree.push(children);
+                    break;
+
+
                 case "ACTION":
                     // We must have arguments defined, as we require an action name argument.
                     arguments = getArguments(tokens, null);
@@ -120,6 +141,33 @@ public class TreeBuilder {
 
                     // Create and add the condition node to the stack.
                     tree.peek().add(new Condition(decorators, conditionName));
+                    break;
+
+
+                case "WAIT":
+                    // We must have arguments defined, as we require at least a single duration defined.
+                    arguments = getArguments(tokens, new IArgumentValidator() {
+                        @Override
+                        public void validate(String argument, int index) {
+                            // Each wait node argument must be a valid long number.
+                            Long.parseLong(argument);
+                        }
+                    });
+
+                    // Either 1 or 2 arguments should be defined.
+                    if (arguments.size() < 1 || arguments.size() > 2) {
+                        throw new RuntimeException("invalid number of wait node duration arguments defined");
+                    }
+
+                    // Get the wait duration and optional longest duration.
+                    long duration        = Long.parseLong(arguments.get(0));
+                    Long longestDuration = arguments.size() > 1 ? Long.parseLong(arguments.get(1)) : null;
+
+                    // Try to pick any decorators off of the token stack.
+                    decorators = getDecorators(tokens);
+
+                    // Create and add the wait node to the stack.
+                    tree.peek().add(new Wait(decorators, duration, longestDuration));
                     break;
 
 
@@ -172,9 +220,12 @@ public class TreeBuilder {
         ArrayList<String> argumentTokens = new ArrayList<String>();
 
         // Process all the tokens between the '[' and ']'.
-        for (String token : argumentListTokens) {
+        for (int tokenIndex = 0; tokenIndex < argumentListTokens.size(); tokenIndex++) {
+            // Get the current token.
+            String token = argumentListTokens.get(tokenIndex);
+
             // Get whether the next token should be an argument or separating comma.
-            boolean isExpectingArgument = (argumentTokens.size() % 2) == 0;
+            boolean isExpectingArgument = (tokenIndex % 2) == 0;
 
             // If the current token should be an actual argument then validate it, otherwise it should be a ',' token.
             if (isExpectingArgument) {
