@@ -71,7 +71,7 @@ public abstract class Composite extends Node {
      * Reset the state of the node.
      */
     public void reset() {
-        this.setState(State.READY);
+        super.reset();
 
         // Reset the state of any child nodes.
         for (Node child : this.children) {

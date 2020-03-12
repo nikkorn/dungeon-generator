@@ -16,5 +16,6 @@ public enum NodeType {
      */
     ROOT,
     SEQUENCE,
-    SELECTOR
+    SELECTOR,
+    REPEAT
 }

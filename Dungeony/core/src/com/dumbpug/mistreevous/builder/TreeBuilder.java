@@ -7,11 +7,11 @@ import com.dumbpug.mistreevous.node.Action;
 import com.dumbpug.mistreevous.node.Composite;
 import com.dumbpug.mistreevous.node.Condition;
 import com.dumbpug.mistreevous.node.Node;
+import com.dumbpug.mistreevous.node.Repeat;
 import com.dumbpug.mistreevous.node.Root;
 import com.dumbpug.mistreevous.node.Selector;
 import com.dumbpug.mistreevous.node.Sequence;
 import com.dumbpug.mistreevous.node.Wait;
-
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -104,6 +104,42 @@ public class TreeBuilder {
                     break;
 
 
+                case "REPEAT":
+                    // We may have two optional arguments defined.
+                    arguments = getArguments(tokens, new IArgumentValidator() {
+                        @Override
+                        public void validate(String argument, int index) {
+                            // Each repeat node argument must be a valid integer number.
+                            Integer.parseInt(argument);
+                        }
+                    });
+
+                    // Up to two arguments can be defined.
+                    if (arguments.size() > 2) {
+                        throw new RuntimeException("invalid number of repeat node arguments defined");
+                    }
+
+                    // Get the optional iteration and max iteration arguments.
+                    Integer iterations    = arguments.size() > 0 ? Integer.parseInt(arguments.get(0)) : null;
+                    Integer maxIterations = arguments.size() > 1 ? Integer.parseInt(arguments.get(1)) : null;
+
+                    // Try to pick any decorators off of the token stack.
+                    decorators = getDecorators(tokens);
+
+                    // Create the list of children for the repeat node.
+                    children = new ArrayList<Node>();
+
+                    // Create and add the repeat node to the stack.
+                    tree.peek().add(new Repeat(decorators, children, iterations, maxIterations));
+
+                    // The next token we expect is a '{' which represents the start of children.
+                    tokens.pop("{");
+
+                    // The new tree scope is that of the new repeat node children.
+                    tree.push(children);
+                    break;
+
+
                 case "ACTION":
                     // We must have arguments defined, as we require an action name argument.
                     arguments = getArguments(tokens, null);
@@ -187,6 +223,8 @@ public class TreeBuilder {
 
         // Validate our root node, and subsequently all child nodes in the tree.
         validateNode(root);
+
+        // TODO Apply guard paths to all nodes.
 
         // Return the root tree node.
         return root;
