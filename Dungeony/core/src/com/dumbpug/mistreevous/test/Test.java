@@ -9,7 +9,8 @@ public class Test {
         //test.createTreeTest();
         //test.reflectiveInvokeTest();
         //test.enemyTest();
-        test.waitTest();
+        //test.waitTest();
+        test.guardTest();
     }
 
     public void createTreeTest() {
@@ -38,6 +39,16 @@ public class Test {
 
     public void waitTest() {
         String definition = "root{sequence{wait[1000]action[roar]wait[1000]action[scream]wait[1000]action[roar]wait[1000]action[scream]}}";
+
+        BehaviourTree tree = new BehaviourTree(definition, new TestEnemy());
+
+        while (!tree.isComplete()) {
+            tree.step();
+        }
+    }
+
+    public void guardTest() {
+        String definition = "root{ repeat until[isHungry] { sequence{ wait[500] action[roar] } } }";
 
         BehaviourTree tree = new BehaviourTree(definition, new TestEnemy());
 

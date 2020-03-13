@@ -3,6 +3,7 @@ package com.dumbpug.mistreevous.builder;
 import com.dumbpug.mistreevous.Tokens;
 import com.dumbpug.mistreevous.decorator.Decorator;
 import com.dumbpug.mistreevous.decorator.Decorators;
+import com.dumbpug.mistreevous.guard.GuardPath;
 import com.dumbpug.mistreevous.node.Action;
 import com.dumbpug.mistreevous.node.Composite;
 import com.dumbpug.mistreevous.node.Condition;
@@ -224,7 +225,8 @@ public class TreeBuilder {
         // Validate our root node, and subsequently all child nodes in the tree.
         validateNode(root);
 
-        // TODO Apply guard paths to all nodes.
+        // Apply guard paths to all nodes from the root.
+        applyLeafNodeGuardPaths(root);
 
         // Return the root tree node.
         return root;
@@ -313,6 +315,65 @@ public class TreeBuilder {
         }
 
         return new Decorators(decorators);
+    }
+
+    /**
+     * Apply guard paths for every leaf node in the behaviour tree.
+     * @param root The root node.
+     */
+    public static void applyLeafNodeGuardPaths(Root root) {
+        for (ArrayList<Node> path : getNodePaths(root)) {
+            // Each node in the current path will have to be assigned a guard path, working from the root outwards.
+            for (int depth = 0; depth < path.size(); depth++) {
+                // Get the node in the path at the current depth.
+                Node currentNode = path.get(depth);
+
+                // The node may already have been assigned a guard path, if so just skip it.
+                if (currentNode.hasGuardPath()) {
+                    continue;
+                }
+
+                // Create the path of nodes to the current node.
+                ArrayList<Node> nodes = new ArrayList<Node>(path.subList(0, depth + 1));
+
+                // Assign the guard path to the current node.
+                currentNode.setGuardPath(new GuardPath(nodes));
+            }
+        }
+    }
+
+    /**
+     * Gets a multi-dimensional list of root->leaf node paths.
+     * @param root The root node.
+     * @returns A multi-dimensional list of root->leaf node paths.
+     */
+    public static ArrayList<ArrayList<Node>> getNodePaths(Root root) {
+        ArrayList<ArrayList<Node>> paths = new ArrayList<ArrayList<Node>>();
+
+        // Find all leaf node paths, starting from the root.
+        findLeafNodes(paths, new ArrayList<Node>(), root);
+
+        return paths;
+    }
+
+    /**
+     * Collects all leaf nodes in the given node.
+     * @param paths All node paths.
+     * @param path The current node path.
+     * @param node The current node.
+     */
+    private static void findLeafNodes(ArrayList<ArrayList<Node>> paths, ArrayList<Node> path, Node node) {
+        // Add the current node to the path.
+        path.add(node);
+
+        // Check whether the current node is a leaf node.
+        if (node.isLeafNode()) {
+            paths.add(path);
+        } else {
+            for (Node child : ((Composite)node).getChildren()) {
+                findLeafNodes(paths, path, child);
+            }
+        }
     }
 
     /**
