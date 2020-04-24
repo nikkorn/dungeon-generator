@@ -33,7 +33,7 @@ public class Dungeony extends ApplicationAdapter {
 	 * The application viewport.
 	 */
 	private Viewport viewport;
-	
+
 	@Override
 	public void create () {
 		// Create the application model used to share data across application states.
@@ -59,6 +59,9 @@ public class Dungeony extends ApplicationAdapter {
 
 	@Override
 	public void render () {
+		Gdx.gl.glClearColor(0,0,0,1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
 		// Write the FPS to the console.
 		System.out.println(Gdx.graphics.getFramesPerSecond() + " FPS");
 
@@ -68,9 +71,6 @@ public class Dungeony extends ApplicationAdapter {
 		// Update the sprite batch position to match the camera.
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
-
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-		Gdx.gl.glClearColor(0.219f, 0.219f, 0.239f, 1);
 
 		// Render the current application state.
 		batch.begin();
