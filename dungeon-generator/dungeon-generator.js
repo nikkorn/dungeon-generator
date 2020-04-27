@@ -372,7 +372,7 @@ function generate(options, patterns) {
 					// We have run out of places to apply the pattern, but did we at least meet the minimum number of applications?
 					if (p < minimum) {
 						// We still haven't met the minimum number of applications so we cannot continue.
-						throw "could not apply pattern'" + pattern.name + "' the minimum number of times required";
+						throw "could not apply pattern '" + pattern.name + "' the minimum number of times required";
 					} else {
 						// We cannot make any more applications, but we have at least already met the minimum.
 						break;

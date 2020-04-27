@@ -1,0 +1,1 @@
+The camera will follow any players a zoom in or out based on the distance between players in order to keep them all in view.

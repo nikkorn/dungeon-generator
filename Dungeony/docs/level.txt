@@ -1,0 +1,2 @@
+A level can have up to 4 players.
+A level is only complete when every player leaves via a gate/door/portal/hole.

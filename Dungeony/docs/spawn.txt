@@ -1,0 +1,10 @@
+Spawn is the first level that players will start in.
+It is randomly generated but will be considerably smaller than other levels.
+
+It will contain:
+    - A few containers with basic weapons, or no weapons, or rarely some better weapons.
+    - No enemies at all.
+    - Some tents and camping entities.
+
+Players will just be standing around a bonfire in the center when the level starts.
+The idea with the spawn is that players can run around and collect some basic supplies from around camp before leaving through a door to get to the first real level.

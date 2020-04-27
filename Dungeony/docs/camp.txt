@@ -1,0 +1,6 @@
+ A safe level which is a campsite where players can upgrade gear and skills and rest at a bonfire for HP and a door to the next level (NORMAL/CHALLENGE).
+
+  Quests can also be picked up from camp for mad rewards, like:
+    - Take a package to another npc at a future camp level, which may be heavy and slow to move while carrying or have other negative effects.
+    - Collect multiple items or a rare item from levels.
+    - Escort an NPC through levels to a future camp, keeping them alive along the way.
