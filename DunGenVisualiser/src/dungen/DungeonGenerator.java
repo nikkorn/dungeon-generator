@@ -3,10 +3,16 @@ package dungen;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
+import org.json.JSONArray;
+import dungen.pattern.Pattern;
+import dungen.pattern.PatternApplicator;
 
 public class DungeonGenerator {
 	/** The configuration to use in generating the dungeon. */
 	private Configuration configuration;
+	
+	/** The patterns to apply after initial dungeon generation. */
+	private ArrayList<Pattern> patterns;
 	
 	/** The RNG to use in generating the dungeon. */
 	private Random rng;
@@ -17,9 +23,11 @@ public class DungeonGenerator {
     /**
      * Creates a new instance of the DungeonGenerator class.
      * @param configuration The configuration.
+     * @param patterns The patterns to apply after initial dungeon generation. 
      */
-    private DungeonGenerator(Configuration configuration) {
+    private DungeonGenerator(Configuration configuration, ArrayList<Pattern> patterns) {
     	this.configuration = configuration;
+    	this.patterns      = patterns;
     	
     	// Set the RNG to use in generating this dungeon.
 		this.rng = new Random(configuration.seed);
@@ -44,10 +52,10 @@ public class DungeonGenerator {
 			this.cells.set("ROOM", null, room.getX(), room.getY(), room.getWidth(), room.getHeight());
 		}
 		
-		// TODO Go over every space in the dungeon area and compare a series of patterns to the position.
-		
-		// Determine which walls are actually reachable (not surrounded by other walls)
-		// this.findReachableWalls();
+		// Go over every pattern any attempt to apply it to our grid-based cells.
+		for (Pattern pattern : this.patterns) {
+			PatternApplicator.apply(pattern, this.cells, this.configuration, this.rng);
+		}
 		
 		// Return our generated dungeon.
 		return new Result(configuration, cells);
@@ -147,7 +155,30 @@ public class DungeonGenerator {
 	    }
 	}
     
+	/**
+	 * Generate a dungeon with patterns and return the result.
+	 * @param configuration The configuration.
+	 * @param patternsJSON The stringy patterns JSON array.
+	 * @return
+	 */
+    public static Result Generate(Configuration configuration, String patternsJSON) {
+    	ArrayList<Pattern> patterns = new ArrayList<Pattern>();
+    	
+    	JSONArray patternsJSONArray = new JSONArray(patternsJSON);
+    	
+    	for (int patternIndex = 0; patternIndex < patternsJSONArray.length(); patternIndex++) {
+    		patterns.add(Pattern.fromJSON(patternsJSONArray.getJSONObject(patternIndex)));
+		} 	
+    	
+    	return new DungeonGenerator(configuration, patterns).generate();
+    }
+    
+    /**
+     * Generate a dungeon without patterns and return the result.
+     * @param configuration The configuration.
+     * @return
+     */
     public static Result Generate(Configuration configuration) {
-    	return new DungeonGenerator(configuration).generate();
+    	return Generate(configuration, "[]");
     }
 }

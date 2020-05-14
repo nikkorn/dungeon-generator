@@ -8,6 +8,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -36,6 +37,7 @@ public class VisualiserFrame extends JFrame {
 	JTextField roomBufferField;
 	JTextField roomCountField;
 	JTextField corridorWidthField;
+	JTextArea patternsField;
 
 	/**
      * Creates a new instance of the VisualiserFrame class.
@@ -135,7 +137,7 @@ public class VisualiserFrame extends JFrame {
         
         // Add the DUNGEON WIDTH field.
         centerPanel.add(new JLabel("PATTERNS: "));
-        JTextArea patternsField = new JTextArea(35, 25);
+        patternsField = new JTextArea(35, 25);
         JScrollPane sp = new JScrollPane(patternsField); 
         patternsField.setText("[]");
         centerPanel.add(sp);
@@ -179,9 +181,14 @@ public class VisualiserFrame extends JFrame {
         config.roomBuffer    = Integer.parseInt(this.roomBufferField.getText());
         config.corridorWidth = Integer.parseInt(this.corridorWidthField.getText());
         
-        // Generate dungeon!
-        Result result = DungeonGenerator.Generate(config);
-		
-		ResultsFrame.create(Long.toString(result.getConfiguration().seed), result);
+        try {
+        	// Generate dungeon!
+        	Result result = DungeonGenerator.Generate(config, patternsField.getText());
+    		
+        	// Show results of the attempt.
+    		ResultsFrame.create(Long.toString(result.getConfiguration().seed), result);
+        } catch (Exception e) {
+        	JOptionPane.showMessageDialog(this, e.getMessage());
+        }
     }
 }

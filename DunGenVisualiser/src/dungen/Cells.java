@@ -35,7 +35,7 @@ public class Cells {
 	 * @param width
 	 * @param height
 	 */
-	public void set(String type, String details, int x, int y, int width, int height) {
+	public void set(String type, HashMap<String, String> details, int x, int y, int width, int height) {
 		for (int posX = x; posX < (x + width); posX++) {
 			for (int posY = y; posY < (y + height); posY++) {
 				this.cells.put(getKey(posX, posY), new Cell(type, details));
@@ -50,7 +50,7 @@ public class Cells {
 	 * @param x
 	 * @param y
 	 */
-	public void set(String type, String details, int x, int y) {
+	public void set(String type, HashMap<String, String> details, int x, int y) {
 		this.set(type, details, x, y, 1, 1);
 	}
 	
