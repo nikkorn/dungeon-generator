@@ -28,12 +28,25 @@ public class PatternApplicator {
 		// Pick how many patterns we are going to apply based on the pattern min/max values.
 		int totalApplications = (int) (Math.floor(rng.nextInt() * (pattern.getMaximumApplications() - pattern.getMinimumApplications() + 1)) + pattern.getMinimumApplications());
 		
+		// Keep track of how many applications were actually made for the current pattern.
+		int applicationsMade = 0;
+		
 		// Apply the pattern randomly as many times as we have decided to.
 		for (int count = 0; count < totalApplications; count++) {
 			// Get a matching cell position.
 			ApplicationPosition applicationPosition = findApplicationPosition(pattern, cells, config, rng);
 			
-			
+			// Check whether we were able to actually find a valid position at which to apply a sequence of the current pattern.
+			if (applicationPosition != null) {
+				// Apply the sequence to the position at which it can be applied.
+				applySequence(applicationPosition, cells, pattern.getFreeze());
+				applicationsMade++;		
+			}
+		}
+		
+		// Check that we were able to meet at least the minimum number of applications required for the current pattern.
+		if (applicationsMade < pattern.getMinimumApplications()) {
+			throw new RuntimeException("could not apply pattern '" + pattern.getName() + "' the minimum number of times required");
 		}
 	}
 	
@@ -66,6 +79,11 @@ public class PatternApplicator {
 			}
 		}
 		
+		// There may have been no applicable positions for the sequence.
+		if (applicablePositions.isEmpty()) {
+			return null;
+		}
+		
 		// Return a random position at which we were able to apply the sequence.
 		return applicablePositions.get(rng.nextInt(applicablePositions.size()));
 	}
@@ -82,7 +100,7 @@ public class PatternApplicator {
 		// A sequence will apply to a cell if every match cell in the sequence 
 		for (PatternCell cell : sequence.getMatchCells()) {
 			// Get the absolute positioned existing cell.
-			Cell target = cells.get(x + cell.getxOffset(), y + cell.getyOffset());
+			Cell target = cells.get(x + cell.getOffsetX(), y + cell.getOffsetY());
 			
 			// No out-of-bounds cell can be treated as a matching cell.
 			if (target == Cells.OUT_OF_BOUNDS) {
@@ -94,10 +112,55 @@ public class PatternApplicator {
 				return false;
 			}
 			
-			// TODO Make sure cell.name (possible csv list of names) contains the name of target.name.
+			// The type of the cell that exists at the specified position must be a match for the matching pattern cell.
+			if (!cell.matchesType(target.getType())) {
+				return false;
+			}
 		}
 
 		// Our pattern matched!
 		return true;
+	}
+	
+	/**
+	 * Apply the given applicationPosition with associated sequence to a cells collection.
+	 * @param applicationPosition
+	 * @param cells
+	 * @param freeze
+	 */
+	private static void applySequence(ApplicationPosition applicationPosition, Cells cells, PatternFreeze freeze) {
+		// Apply the sequence application cells to our cells grid.
+		for (PatternCell applyCell : applicationPosition.getSequence().getApplyCells()) {
+			// Get the absolute x/y of the cell we are trying to set.
+			int x = (int) (applicationPosition.getPosition().getX() + applyCell.getOffsetX());
+			int y = (int) (applicationPosition.getPosition().getY() + applyCell.getOffsetY());
+			
+			// Set the apply cell.
+			cells.set(applyCell.getName(), applyCell.getDetails(), x, y);
+		}
+		
+		// Are we freezing our matched cells?
+		if (freeze == PatternFreeze.ON_MATCH || freeze == PatternFreeze.ON_MATCH_OR_SET) {
+			for (PatternCell matchCell : applicationPosition.getSequence().getMatchCells()) {
+				// Get the absolute x/y of the cell we are trying to freeze.
+				int x = (int) (applicationPosition.getPosition().getX() + matchCell.getOffsetX());
+				int y = (int) (applicationPosition.getPosition().getY() + matchCell.getOffsetY());
+				
+				// Freeze the matched cell.
+				cells.get(x, y).setFrozen(true);
+			}
+		}
+		
+		// Are we freezing our applied cells?
+		if (freeze == PatternFreeze.ON_SET || freeze == PatternFreeze.ON_MATCH_OR_SET) {
+			for (PatternCell applyCell : applicationPosition.getSequence().getApplyCells()) {
+				// Get the absolute x/y of the cell we are trying to freeze.
+				int x = (int) (applicationPosition.getPosition().getX() + applyCell.getOffsetX());
+				int y = (int) (applicationPosition.getPosition().getY() + applyCell.getOffsetY());
+				
+				// Freeze the set cell.
+				cells.get(x, y).setFrozen(true);
+			}
+		}
 	}
 }

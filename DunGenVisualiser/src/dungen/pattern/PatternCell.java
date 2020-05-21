@@ -46,16 +46,34 @@ public class PatternCell {
 		return name;
 	}
 
-	public int getxOffset() {
+	public int getOffsetX() {
 		return xOffset;
 	}
 
-	public int getyOffset() {
+	public int getOffsetY() {
 		return yOffset;
 	}
 
 	public HashMap<String, String> getDetails() {
 		return details;
+	}
+	
+	/**
+	 * Gets whether this pattern cell matches the given type.
+	 * @param type
+	 * @return Whether this pattern cell matches the given type.
+	 */
+	public boolean matchesType(String type) {
+		// The name of this cell can represent a number of applicable types.
+		String[] names = this.name.split(",");
+		
+		for(int nameIndex = 0; nameIndex < names.length; nameIndex++){
+			if(names[nameIndex].equalsIgnoreCase(type)) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	/**
