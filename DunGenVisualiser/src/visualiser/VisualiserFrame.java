@@ -2,10 +2,11 @@ package visualiser;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.Random;
-
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -13,6 +14,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import org.json.JSONObject;
 import dungen.Configuration;
 import dungen.DungeonGenerator;
 import dungen.Result;
@@ -30,6 +33,7 @@ public class VisualiserFrame extends JFrame {
 	 * The frame fields.
 	 */
 	JTextField seedField;
+	JTextField nameField;
 	JTextField dungeonWidthField;
 	JTextField dungeonHeightField;
 	JTextField maxRoomSizeField;
@@ -62,6 +66,12 @@ public class VisualiserFrame extends JFrame {
         seedField = new JTextField(20);
         seedField.setText(Long.toString(config.seed));
         leftPanel.add(seedField);
+        
+        // Add the NAME field.
+        leftPanel.add(new JLabel("NAME: "));
+        nameField = new JTextField(20);
+        nameField.setText("untitled");
+        leftPanel.add(nameField);
 
         // Add the DUNGEON WIDTH field.
         leftPanel.add(new JLabel("DUNGEON WIDTH: "));
@@ -74,18 +84,18 @@ public class VisualiserFrame extends JFrame {
         dungeonHeightField = new JTextField(10);
         dungeonHeightField.setText(Integer.toString(config.height));
         leftPanel.add(dungeonHeightField);
+        
+        // Add the MIN ROOM SIZE field.
+        leftPanel.add(new JLabel("MIN ROOM SIZE: "));
+        minRoomSizeField = new JTextField(20);
+        minRoomSizeField.setText(Integer.toString(config.minRoomSize));
+        leftPanel.add(minRoomSizeField);
 
         // Add the MAX ROOM SIZE field.
         leftPanel.add(new JLabel("MAX ROOM SIZE: "));
         maxRoomSizeField = new JTextField(20);
         maxRoomSizeField.setText(Integer.toString(config.maxRoomSize));
         leftPanel.add(maxRoomSizeField);
-
-        // Add the MIN ROOM SIZE field.
-        leftPanel.add(new JLabel("MIN ROOM SIZE: "));
-        minRoomSizeField = new JTextField(20);
-        minRoomSizeField.setText(Integer.toString(config.minRoomSize));
-        leftPanel.add(minRoomSizeField);
 
         // Add the ROOM BUFFER field.
         leftPanel.add(new JLabel("ROOM BUFFER: "));
@@ -106,6 +116,17 @@ public class VisualiserFrame extends JFrame {
         leftPanel.add(corridorWidthField);
 
         leftPanel.add(new JLabel(" "));
+        
+        // Add the open file button.
+        JButton openFileButton = new JButton("Open *.dungen.json file");
+        openFileButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                onOpenFileButtonClick();
+            }
+        });
+        leftPanel.add(openFileButton);
+
 
         // Add the generate button.
         JButton generateButton = new JButton("Generate");
@@ -137,7 +158,7 @@ public class VisualiserFrame extends JFrame {
         
         // Add the DUNGEON WIDTH field.
         centerPanel.add(new JLabel("PATTERNS: "));
-        patternsField = new JTextArea(35, 25);
+        patternsField = new JTextArea(35, 40);
         JScrollPane sp = new JScrollPane(patternsField); 
         patternsField.setText("[]");
         centerPanel.add(sp);
@@ -159,6 +180,36 @@ public class VisualiserFrame extends JFrame {
         this.pack();
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
+    }
+    
+    /**
+     * Handler for clicks of the 'Open File' button.
+     */
+    private void onOpenFileButtonClick() {
+    	FileNameExtensionFilter filter = new FileNameExtensionFilter("Dungen definition file", "dungen");
+    	JFileChooser fileChooser = new JFileChooser();
+    	fileChooser.setFileFilter(filter);
+    	fileChooser.setCurrentDirectory(new File("."));
+    	int result = fileChooser.showOpenDialog(this);
+    	if (result == JFileChooser.APPROVE_OPTION) {
+    	    File selectedFile = fileChooser.getSelectedFile();
+    	    
+    	    try {
+    	    	JSONObject configFileJSON = FileUtilities.readJSONObjectFromFile(selectedFile);
+    	    	this.nameField.setText(configFileJSON.getString("name"));
+    	    	this.dungeonWidthField.setText(Integer.toString(configFileJSON.getInt("width")));
+    	    	this.dungeonHeightField.setText(Integer.toString(configFileJSON.getInt("height")));
+    	    	this.minRoomSizeField.setText(Integer.toString(configFileJSON.getInt("minRoomSize")));
+    	    	this.maxRoomSizeField.setText(Integer.toString(configFileJSON.getInt("maxRoomSize")));
+    	    	this.roomCountField.setText(Integer.toString(configFileJSON.getInt("rooms")));
+    	    	this.roomBufferField.setText(Integer.toString(configFileJSON.getInt("roomBuffer")));
+    	    	this.corridorWidthField.setText(Integer.toString(configFileJSON.getInt("corridorWidth")));
+    	    	this.patternsField.setText(configFileJSON.getJSONArray("patterns").toString(4));
+    	    	this.setTitle("DunGen Editor - " + configFileJSON.getString("name"));
+    	    } catch (Exception e) {
+    	    	JOptionPane.showMessageDialog(this, "not a valid .dungen file: " + e.getMessage());
+    	    }
+    	}
     }
 
     /**
