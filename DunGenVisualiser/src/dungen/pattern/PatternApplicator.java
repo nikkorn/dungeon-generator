@@ -56,7 +56,7 @@ public class PatternApplicator {
 	 */
 	private static ApplicationPosition findApplicationPosition(Pattern pattern, Cells cells, Configuration config, Random rng) {
 		// Create a lotto to use in selecting a sequence based on ticket counts.
-		Lotto<Sequence> sequenceLotto = new Lotto<Sequence>();
+		Lotto<Sequence> sequenceLotto = new Lotto<Sequence>(rng);
 		
 		// Add each pattern sequence to our lotto.
 		for (Sequence sequence : pattern.getSequences()) {

@@ -109,7 +109,7 @@ public class ResultsFrame extends JPanel {
 		} else {
 			BufferedImage cellImage;
 			try {
-				cellImage = ImageIO.read(new File("cell_images/CORRIDOR.png"));
+				cellImage = ImageIO.read(imageFile);
 			} catch (IOException e) {
 				System.out.println("cannot open cell image for cell type '" + type + "' in cell_images!");
 				cellImage = cellTypeImages.get("UNKNOWN_CELL_TYPE");

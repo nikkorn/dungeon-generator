@@ -1,9 +1,9 @@
 {
     "name": "tester",
-    "width": 50,
-    "height": 50,
+    "width": 40,
+    "height": 40,
     "minRoomSize": 4,
-    "maxRoomSize": 10,
+    "maxRoomSize": 12,
     "rooms": 10,
     "roomBuffer": 2,
     "corridorWidth": 2,
@@ -29,6 +29,54 @@
             ],
             "applies": [
                 [0, 0, "EXIT_DOOR"]
+            ]
+        },
+        {
+            "name": "fake-walls",
+            "min": 0,
+            "max": 5,
+            "freeze": "on_match",
+            "options": [
+            	{
+            		"tickets": 1,
+            		"matches": [
+		                [-1, 0, "ROOM"],
+		                [0, 0, "WALL"]
+		            ],
+		            "applies": [
+		                [0, 0, "FAKE_WALL"]
+		            ]
+            	},
+            	{
+            		"tickets": 1,
+            		"matches": [
+		                [1, 0, "ROOM"],
+		                [0, 0, "WALL"]
+		            ],
+		            "applies": [
+		                [0, 0, "FAKE_WALL"]
+		            ]
+            	},
+            	{
+            		"tickets": 1,
+            		"matches": [
+		                [0, -1, "ROOM"],
+		                [0, 0, "WALL"]
+		            ],
+		            "applies": [
+		                [0, 0, "FAKE_WALL"]
+		            ]
+            	},
+            	{
+            		"tickets": 1,
+            		"matches": [
+		                [0, 1, "ROOM"],
+		                [0, 0, "WALL"]
+		            ],
+		            "applies": [
+		                [0, 0, "FAKE_WALL"]
+		            ]
+            	}
             ]
         },
         {
