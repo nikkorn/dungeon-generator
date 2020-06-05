@@ -21,12 +21,12 @@ public class PatternApplicator {
 	 */
 	public static void apply(Pattern pattern, Cells cells, Configuration config, Random rng) {		
 		// If there is a chance that the pattern should not be applied we should check now and skip the pattern if the chance fails.
-		if (rng.nextDouble() <= pattern.getApplicationChance()) {
+		if (pattern.getApplicationChance() != 1 && rng.nextDouble() <= pattern.getApplicationChance()) {
 			return;
 		}
 		
 		// Pick how many patterns we are going to apply based on the pattern min/max values.
-		int totalApplications = (int) (Math.floor(rng.nextInt() * (pattern.getMaximumApplications() - pattern.getMinimumApplications() + 1)) + pattern.getMinimumApplications());
+		int totalApplications = pattern.getMinimumApplications() + rng.nextInt(pattern.getMaximumApplications() - pattern.getMinimumApplications() + 1);
 		
 		// Keep track of how many applications were actually made for the current pattern.
 		int applicationsMade = 0;

@@ -1,12 +1,14 @@
 package visualiser;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.util.Random;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
 import dungen.Cell;
 import dungen.Result;
 
@@ -39,13 +41,30 @@ public class ResultsFrame extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         
+		HashMap<String, BufferedImage> cellTypeImages = new HashMap<String, BufferedImage>();
+		try {
+			cellTypeImages.put("UNKNOWN_CELL_TYPE", ImageIO.read(new File("cell_images/UNKNOWN_CELL_TYPE.png")));
+			cellTypeImages.put("WALL", ImageIO.read(new File("cell_images/WALL.png")));
+			cellTypeImages.put("ROOM", ImageIO.read(new File("cell_images/ROOM.png")));
+			cellTypeImages.put("CORRIDOR", ImageIO.read(new File("cell_images/CORRIDOR.png")));
+		} catch (IOException e) {
+			System.out.println("cannot open default cell images in cell_images!");
+		}
+        
         // Draw each pixel to the display.
         for (int y = 0; y < result.getConfiguration().height; y++) {
         	for (int x = 0; x < result.getConfiguration().width; x++) {
-        		// TODO Do this right!
+        		// Get the current cell.
         		Cell cell = result.getCells().get(x, y);
-        		g.setColor(cell != null && !cell.getType().equals("WALL") ? Color.WHITE : Color.BLACK);
-        		g.fillRect(x * Constants.RESULTS_FRAME_CELL_SIZE, y * Constants.RESULTS_FRAME_CELL_SIZE, Constants.RESULTS_FRAME_CELL_SIZE, Constants.RESULTS_FRAME_CELL_SIZE);
+        		
+        		// Get the cell type.
+    			String cellType = cell.getType().toUpperCase();
+    			
+    			// Get the image for the cell type.
+    			BufferedImage cellImage = getCellTypeImage(cellType, cellTypeImages);
+    			
+    			// Draw the cell image.
+    			g.drawImage(cellImage, x * Constants.RESULTS_FRAME_CELL_SIZE, y * Constants.RESULTS_FRAME_CELL_SIZE, Constants.RESULTS_FRAME_CELL_SIZE, Constants.RESULTS_FRAME_CELL_SIZE, null);
             }        	
         }
     }
@@ -66,5 +85,38 @@ public class ResultsFrame extends JPanel {
 		frame.setVisible(true);
 		
 		return display;
+	}
+	
+	/**
+	 * Gets the cell image for a cell image type.
+	 * @param type
+	 * @param cellTypeImages
+	 * @return
+	 */
+	private BufferedImage getCellTypeImage(String type, HashMap<String, BufferedImage> cellTypeImages) {
+		// Do we already have the cell type image cached?
+		if (cellTypeImages.containsKey(type)) {
+			return cellTypeImages.get(type);
+		}
+		
+		// Grab a file handle for the image, which may not exist.
+		File imageFile = new File("cell_images/" + type + ".png");
+		
+		// If no image exists for the cell type then just return the default unknown cell image.
+		if (!imageFile.exists()) {
+			System.out.println("cannot find cell image for cell type '" + type + "' in cell_images!");
+			cellTypeImages.put(type, cellTypeImages.get("UNKNOWN_CELL_TYPE"));
+		} else {
+			BufferedImage cellImage;
+			try {
+				cellImage = ImageIO.read(new File("cell_images/CORRIDOR.png"));
+			} catch (IOException e) {
+				System.out.println("cannot open cell image for cell type '" + type + "' in cell_images!");
+				cellImage = cellTypeImages.get("UNKNOWN_CELL_TYPE");
+			}
+			cellTypeImages.put(type, cellImage);
+		}
+		
+		return cellTypeImages.get(type);
 	}
 }
