@@ -140,7 +140,7 @@ public class PatternApplicator {
 		}
 		
 		// Are we freezing our matched cells?
-		if (freeze == PatternFreeze.ON_MATCH || freeze == PatternFreeze.ON_MATCH_OR_SET) {
+		if (freeze == PatternFreeze.ON_MATCH || freeze == PatternFreeze.ON_BOTH) {
 			for (PatternCell matchCell : applicationPosition.getSequence().getMatchCells()) {
 				// Get the absolute x/y of the cell we are trying to freeze.
 				int x = (int) (applicationPosition.getPosition().getX() + matchCell.getOffsetX());
@@ -152,7 +152,7 @@ public class PatternApplicator {
 		}
 		
 		// Are we freezing our applied cells?
-		if (freeze == PatternFreeze.ON_SET || freeze == PatternFreeze.ON_MATCH_OR_SET) {
+		if (freeze == PatternFreeze.ON_SET || freeze == PatternFreeze.ON_BOTH) {
 			for (PatternCell applyCell : applicationPosition.getSequence().getApplyCells()) {
 				// Get the absolute x/y of the cell we are trying to freeze.
 				int x = (int) (applicationPosition.getPosition().getX() + applyCell.getOffsetX());

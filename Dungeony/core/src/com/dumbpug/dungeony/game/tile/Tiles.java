@@ -1,6 +1,6 @@
 package com.dumbpug.dungeony.game.tile;
 
-import com.dumbpug.dungeony.game.level.LevelGrid;
+import com.dumbpug.dungeony.game.level.LevelCollisionGrid;
 import com.dumbpug.dungeony.game.rendering.Renderables;
 import java.util.ArrayList;
 
@@ -15,7 +15,7 @@ public class Tiles {
     /**
      * The spatial grid to use in finding game entity collisions.
      */
-    private LevelGrid levelGrid;
+    private LevelCollisionGrid levelCollisionGrid;
     /**
      * The renderables list to keep updated with this list.
      */
@@ -24,16 +24,16 @@ public class Tiles {
     /**
      * Creates an instance of the Tiles class.
      * @param tiles The list of tiles.
-     * @param levelGrid The level grid.
+     * @param levelCollisionGrid The level grid.
      * @param renderables The renderables list to keep updated with this list.
      */
-    public Tiles(ArrayList<Tile> tiles, LevelGrid levelGrid, Renderables renderables) {
+    public Tiles(ArrayList<Tile> tiles, LevelCollisionGrid levelCollisionGrid, Renderables renderables) {
         this.tiles       = tiles;
-        this.levelGrid   = levelGrid;
+        this.levelCollisionGrid = levelCollisionGrid;
         this.renderables = renderables;
 
         // Add the initial list of tiles to the level grid.
-        this.levelGrid.add(tiles);
+        this.levelCollisionGrid.add(tiles);
 
         // Add the initial list of tiles to the renderables list.
         this.renderables.add(tiles);

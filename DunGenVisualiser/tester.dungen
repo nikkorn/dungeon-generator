@@ -8,6 +8,49 @@
     "roomBuffer": 2,
     "corridorWidth": 2,
     "patterns": [
+    	{
+            "name": "level-spawn",
+            "min": 1,
+            "max": 1,
+            "freeze": "on_both",
+            "matches": [
+            	[-2, -2, "ROOM"],
+                [-1, -2, "ROOM"],
+                [0, -2, "ROOM"],
+                [1, -2, "ROOM"],
+                [2, -2, "ROOM"],
+                
+                [-2, -1, "ROOM"],
+                [-1, -1, "ROOM"],
+                [0, -1, "ROOM"],
+                [1, -1, "ROOM"],
+                [2, -1, "ROOM"],
+                
+                [-2, 0, "ROOM"],
+                [-1, 0, "ROOM"],
+                [0, 0, "ROOM"],
+                [1, 0, "ROOM"],
+                [2, 0, "ROOM"],
+                
+                [-2, 1, "ROOM"],
+                [-1, 1, "ROOM"],
+                [0, 1, "ROOM"],
+                [1, 1, "ROOM"],
+                [2, 1, "ROOM"],
+                
+                [-2, 2, "ROOM"],
+                [-1, 2, "ROOM"],
+                [0, 2, "ROOM"],
+                [1, 2, "ROOM"],
+                [2, 2, "ROOM"]
+            ],
+            "applies": [
+                [-1, -1, "SPAWN", { "id": "0" }],
+                [1, 1, "SPAWN", { "id": "1" }],
+                [-1, 1, "SPAWN", { "id": "2" }],
+                [1, -1, "SPAWN", { "id": "3" }]
+            ]
+        },
         {
             "name": "level-exit",
             "min": 1,

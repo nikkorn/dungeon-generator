@@ -10,11 +10,11 @@ import java.util.ArrayList;
 /**
  * A spatial grid that handles the movement and collisions of level entities.
  */
-public class LevelGrid extends SpatialGrid<Entity> {
+public class LevelCollisionGrid extends SpatialGrid<Entity> {
     /**
-     * Create a new instance of the LevelGrid class.
+     * Create a new instance of the LevelCollisionGrid class.
      */
-    public LevelGrid() {
+    public LevelCollisionGrid() {
         super(Constants.GAME_GRID_CELL_SIZE);
     }
 

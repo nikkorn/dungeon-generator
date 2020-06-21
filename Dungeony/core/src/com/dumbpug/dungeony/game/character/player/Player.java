@@ -7,7 +7,7 @@ import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.characterselection.PlayerDetails;
 import com.dumbpug.dungeony.game.Position;
 import com.dumbpug.dungeony.game.character.GameCharacter;
-import com.dumbpug.dungeony.game.level.LevelGrid;
+import com.dumbpug.dungeony.game.level.LevelCollisionGrid;
 import com.dumbpug.dungeony.game.rendering.Animation;
 import com.dumbpug.dungeony.game.rendering.PlayerSprite;
 import com.dumbpug.dungeony.game.rendering.Resources;
@@ -82,7 +82,7 @@ public class Player extends GameCharacter {
      * Update the player.
      * @param grid The level grid used to handle player movement during an update.
      */
-    public void update(LevelGrid grid) {
+    public void update(LevelCollisionGrid grid) {
         // Get the input provider for the player.
         IPlayerInputProvider playerInputProvider = this.getDetails().getInputProvider();
 

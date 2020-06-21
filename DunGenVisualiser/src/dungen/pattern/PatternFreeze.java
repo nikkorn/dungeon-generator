@@ -24,5 +24,5 @@ public enum PatternFreeze {
 	/**
 	 * Any spaces set as part of the pattern application and any included in the matched array will be frozen.
 	 */
-	ON_MATCH_OR_SET
+	ON_BOTH
 }

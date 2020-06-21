@@ -41,7 +41,7 @@ public class Level {
     /**
      * The spatial grid to use in finding game entity collisions.
      */
-    private LevelGrid grid = new LevelGrid();
+    private LevelCollisionGrid grid = new LevelCollisionGrid();
     /**
      * The list of level renderables.
      */

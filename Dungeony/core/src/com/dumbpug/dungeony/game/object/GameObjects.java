@@ -1,6 +1,6 @@
 package com.dumbpug.dungeony.game.object;
 
-import com.dumbpug.dungeony.game.level.LevelGrid;
+import com.dumbpug.dungeony.game.level.LevelCollisionGrid;
 import com.dumbpug.dungeony.game.rendering.Renderables;
 import java.util.ArrayList;
 
@@ -15,7 +15,7 @@ public class GameObjects {
     /**
      * The spatial grid to use in finding game entity collisions.
      */
-    private LevelGrid levelGrid;
+    private LevelCollisionGrid levelCollisionGrid;
     /**
      * The renderables list to keep updated with this list.
      */
@@ -24,16 +24,16 @@ public class GameObjects {
     /**
      * Creates an instance of the GameObjects class.
      * @param gameObjects The list of game objects.
-     * @param levelGrid The level grid.
+     * @param levelCollisionGrid The level grid.
      * @param renderables The renderables list to keep updated with this list.
      */
-    public GameObjects(ArrayList<GameObject> gameObjects, LevelGrid levelGrid, Renderables renderables) {
+    public GameObjects(ArrayList<GameObject> gameObjects, LevelCollisionGrid levelCollisionGrid, Renderables renderables) {
         this.gameObjects = gameObjects;
-        this.levelGrid   = levelGrid;
+        this.levelCollisionGrid = levelCollisionGrid;
         this.renderables = renderables;
 
         // Add the initial list of game objects to the level grid.
-        this.levelGrid.add(gameObjects);
+        this.levelCollisionGrid.add(gameObjects);
 
         // Add the initial list of game objects to the renderables list.
         this.renderables.add(gameObjects);

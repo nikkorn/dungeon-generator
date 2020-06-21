@@ -1,7 +1,7 @@
 package com.dumbpug.dungeony.game.character.player;
 
 import com.dumbpug.dungeony.characterselection.PlayerDetails;
-import com.dumbpug.dungeony.game.level.LevelGrid;
+import com.dumbpug.dungeony.game.level.LevelCollisionGrid;
 import com.dumbpug.dungeony.game.rendering.Renderables;
 import com.dumbpug.dungeony.game.tile.TileSpawn;
 
@@ -19,7 +19,7 @@ public class Players {
     /**
      * The spatial grid to use in finding game entity collisions.
      */
-    private LevelGrid levelGrid;
+    private LevelCollisionGrid levelCollisionGrid;
     /**
      * The renderables list to keep updated with this list.
      */
@@ -28,12 +28,12 @@ public class Players {
     /**
      * Creates a new instance of the Players class.
      * @param playerDetails The list of player details.
-     * @param levelGrid The level grid
+     * @param levelCollisionGrid The level grid
      * @param renderables The renderables list to keep updated with this list.
      * @param spawns The list of available spawn positions.
      */
-    public Players(ArrayList<PlayerDetails> playerDetails, LevelGrid levelGrid, Renderables renderables, ArrayList<TileSpawn> spawns) {
-        this.levelGrid   = levelGrid;
+    public Players(ArrayList<PlayerDetails> playerDetails, LevelCollisionGrid levelCollisionGrid, Renderables renderables, ArrayList<TileSpawn> spawns) {
+        this.levelCollisionGrid = levelCollisionGrid;
         this.renderables = renderables;
 
         // Check that there are enough spawn positions for our players.
@@ -52,7 +52,7 @@ public class Players {
             this.players.put(playerDetail.getId(), player);
 
             // Add the new player to the level grid.
-            this.levelGrid.add(player);
+            this.levelCollisionGrid.add(player);
 
             // Add the new player to the  to the renderables list.
             this.renderables.add(player);
@@ -72,7 +72,7 @@ public class Players {
      * Update each of the players sequentially.
      * @param grid The level grid used to handle player movement during an update.
      */
-    public void update(LevelGrid grid) {
+    public void update(LevelCollisionGrid grid) {
         // Update each of the players sequentially.
         for (Player player : this.players.values()) {
             player.update(grid);

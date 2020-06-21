@@ -1,4 +1,4 @@
-package com.dumbpug.dungeony.game.character.enemy;
+package com.dumbpug.dungeony.game.character.friendly;
 
 import com.dumbpug.dungeony.game.Position;
 import com.dumbpug.dungeony.game.character.npc.NPC;
@@ -7,27 +7,21 @@ import com.dumbpug.dungeony.game.character.npc.NPCType;
 import com.dumbpug.dungeony.game.rendering.Resources;
 
 /**
- * An enemy NPC.
+ * A friendly NPC.
  */
-public abstract class Enemy extends NPC {
+public abstract class Friendly extends NPC {
     /**
-     * Creates a new instance of the Enemy class.
-     * @param origin The initial origin of the Enemy.
+     * Creates a new instance of the NPC class.
+     * @param origin The initial origin of the NPC.
      */
-    public Enemy(Position origin) {
+    public Friendly(Position origin) {
         super(origin);
 
         // Populate the enemy animation map.
         for (NPCState state : NPCState.values()) {
-            this.animations.put(state, Resources.getEnemyAnimation(state, this.getEnemyType()));
+            this.animations.put(state, Resources.getFriendlyAnimation(state, this.getFriendlyType()));
         }
     }
-
-    /**
-     * Gets the enemy type.
-     * @return The enemy type.
-     */
-    public abstract EnemyType getEnemyType();
 
     /**
      * Gets the NPC type.
@@ -35,6 +29,12 @@ public abstract class Enemy extends NPC {
      */
     @Override
     public NPCType getNPCType() {
-        return NPCType.ENEMY;
+        return NPCType.FRIENDLY;
     }
+
+    /**
+     * Gets the friendly type.
+     * @return The friendly type.
+     */
+    public abstract FriendlyType getFriendlyType();
 }

@@ -1,0 +1,12 @@
+Things to do!
+
+NPC/Enemy
+- Add ability to define a behaviour script for an enemy/npc.
+
+Collision
+- Refine the collision handling to take care of intermediate steps for long updates.
+
+Level
+- Maybe add tile behaviour scripts? To handle things like a trap door being walked over, or a door tile being interacted with to walk through.
+- Level objects could have optional scripts too i guess to allow for special behaviour.
+- Fix stupid delta use in level grid, totes not using it right.
