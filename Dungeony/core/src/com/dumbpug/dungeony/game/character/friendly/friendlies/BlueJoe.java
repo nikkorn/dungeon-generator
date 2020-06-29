@@ -40,9 +40,4 @@ public class BlueJoe extends Friendly {
     public FriendlyType getFriendlyType() {
         return FriendlyType.BLUEJOE;
     }
-
-    @Override
-    public void update(LevelCollisionGrid grid) {
-        // Blue joe just does a bunch o' nothin'.
-    }
 }

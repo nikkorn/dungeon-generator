@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.game.Position;
 import com.dumbpug.dungeony.game.character.GameCharacter;
+import com.dumbpug.dungeony.game.character.behaviour.INPCBehaviour;
 import com.dumbpug.dungeony.game.level.LevelCollisionGrid;
 import com.dumbpug.dungeony.game.rendering.Animation;
 import java.util.HashMap;
@@ -16,11 +17,15 @@ public abstract class NPC extends GameCharacter {
     /**
      * The current NPC state.
      */
-    protected NPCState state = NPCState.IDLE_LEFT;
+    private NPCState state = NPCState.IDLE_LEFT;
     /**
      * The NPC state to animation map.
      */
     protected HashMap<NPCState, Animation> animations = new HashMap<NPCState, Animation>();
+    /**
+     * The NPC behaviour.
+     */
+    private INPCBehaviour behaviour = null;
 
     /**
      * Creates a new instance of the NPC class.
@@ -30,12 +35,35 @@ public abstract class NPC extends GameCharacter {
         super(origin);
     }
 
+    /**
+     * Sets the NPC behaviour.
+     * @param behaviour The NPC behaviour.
+     */
+    protected void setBehaviour(INPCBehaviour behaviour) {
+        this.behaviour = behaviour;
+    }
+
+    /**
+     * Gets the NPC state.
+     * @return The NPC state.
+     */
+    public NPCState getState() {
+        return state;
+    }
+
+    /**
+     * Set the NPC state.
+     * @param state The NPC state.
+     */
+    public void setState(NPCState state) {
+        this.state = state;
+    }
+
     @Override
     public float getRenderOrder() {
         // Enemy sprites and animations should be rendered a little higher than their position for a 3D effect.
         return this.getY() + (Constants.GAME_TILE_SIZE / 4f);
     }
-
 
     /**
      * Render the renderable using the provided sprite batch.
@@ -57,7 +85,12 @@ public abstract class NPC extends GameCharacter {
      * Update the enemy as part of a single level update.
      * @param grid The level grid used to handle player movement during an update.
      */
-    public abstract void update(LevelCollisionGrid grid);
+    public void update(LevelCollisionGrid grid) {
+        // Tick the enemy behaviour if any has been defined.
+        if (this.behaviour != null) {
+            this.behaviour.tick(this, grid);
+        }
+    }
 
     /**
      * Gets the NPC type.

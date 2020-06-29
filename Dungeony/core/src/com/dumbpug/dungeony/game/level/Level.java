@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dumbpug.dungeony.characterselection.PlayerDetails;
 import com.dumbpug.dungeony.game.character.enemy.Enemies;
 import com.dumbpug.dungeony.game.character.enemy.Enemy;
+import com.dumbpug.dungeony.game.character.friendly.Friendlies;
+import com.dumbpug.dungeony.game.character.friendly.Friendly;
 import com.dumbpug.dungeony.game.character.player.Player;
 import com.dumbpug.dungeony.game.character.player.PlayerIdentifier;
 import com.dumbpug.dungeony.game.character.player.Players;
@@ -31,9 +33,13 @@ public class Level {
      */
     private GameObjects objects;
     /**
-     * The enemies in the level.
+     * The enemy NPCs in the level.
      */
     private Enemies enemies;
+    /**
+     * The friendly NPCs in the level.
+     */
+    private Friendlies friendlies;
     /**
      * The players in the level.
      */
@@ -52,13 +58,15 @@ public class Level {
      * @param playerDetails The player details.
      * @param tiles The level tiles.
      * @param objects The level objects.
-     * @param enemies The level enemies.
+     * @param enemies The level enemy NPCs.
+     * @param friendlies The level friendly NPCs.
      */
-    public Level(ArrayList<PlayerDetails> playerDetails, ArrayList<Tile> tiles, ArrayList<GameObject> objects, ArrayList<Enemy> enemies) {
-        this.tiles   = new Tiles(tiles, this.grid, this.renderables);
-        this.objects = new GameObjects(objects, this.grid, this.renderables);
-        this.enemies = new Enemies(enemies, this.grid, this.renderables);
-        this.players = new Players(playerDetails, this.grid, this.renderables, this.tiles.getSpawns());
+    public Level(ArrayList<PlayerDetails> playerDetails, ArrayList<Tile> tiles, ArrayList<GameObject> objects, ArrayList<Enemy> enemies, ArrayList<Friendly> friendlies) {
+        this.tiles      = new Tiles(tiles, this.grid, this.renderables);
+        this.objects    = new GameObjects(objects, this.grid, this.renderables);
+        this.enemies    = new Enemies(enemies, this.grid, this.renderables);
+        this.friendlies = new Friendlies(friendlies, this.grid, this.renderables);
+        this.players    = new Players(playerDetails, this.grid, this.renderables, this.tiles.getSpawns());
     }
 
     /**
@@ -68,7 +76,10 @@ public class Level {
         // Update each of the players.
         this.players.update(this.grid);
 
-        // Update each of the enemies.
+        // Update each of the friendly NPCs.
+        this.friendlies.update(this.grid);
+
+        // Update each of the enemy NPCs.
         this.enemies.update(this.grid);
 
         // TODO Update projectiles.

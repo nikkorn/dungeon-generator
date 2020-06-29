@@ -4,6 +4,8 @@ import com.dumbpug.dungeony.characterselection.PlayerDetails;
 import com.dumbpug.dungeony.game.Position;
 import com.dumbpug.dungeony.game.character.enemy.Enemy;
 import com.dumbpug.dungeony.game.character.enemy.enemies.Fishman;
+import com.dumbpug.dungeony.game.character.friendly.Friendly;
+import com.dumbpug.dungeony.game.character.friendly.friendlies.BlueJoe;
 import com.dumbpug.dungeony.game.object.GameObject;
 import com.dumbpug.dungeony.game.tile.ITileFinder;
 import com.dumbpug.dungeony.game.tile.Tile;
@@ -58,9 +60,11 @@ public class LevelFactory {
         ArrayList<Tile> tiles             = new ArrayList<Tile>();
         ArrayList<GameObject> gameObjects = new ArrayList<GameObject>();
         ArrayList<Enemy> enemies          = new ArrayList<Enemy>();
+        ArrayList<Friendly> friendlies    = new ArrayList<Friendly>();
 
         // TODO Remove!
         enemies.add(new Fishman(new Position(260, 840)));
+        friendlies.add(new BlueJoe(new Position(360, 800)));
 
         // Create the game objects enemies and actual tiles based on the generated level tile definitions.
         for (TileDefinition tileDefinition : levelDefinition.getTileDefinitions()) {
@@ -73,6 +77,6 @@ public class LevelFactory {
         }
 
         // Create and return the level instance.
-        return new Level(playerDetails, tiles, gameObjects, enemies);
+        return new Level(playerDetails, tiles, gameObjects, enemies, friendlies);
     }
 }
