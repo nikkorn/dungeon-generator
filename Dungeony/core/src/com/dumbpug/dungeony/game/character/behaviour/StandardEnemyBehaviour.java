@@ -3,13 +3,12 @@ package com.dumbpug.dungeony.game.character.behaviour;
 import com.dumbpug.dungeony.game.character.npc.NPC;
 import com.dumbpug.dungeony.game.character.npc.NPCState;
 import com.dumbpug.dungeony.game.level.IInteractiveLevel;
-import com.dumbpug.dungeony.game.level.LevelCollisionGrid;
 
 /**
  * Very basic enemy NPC behaviour.
  * @param <TNPC> The type of NPC.
  */
-public class BasicEnemyBehaviour<TNPC extends NPC> implements INPCBehaviour<TNPC> {
+public class StandardEnemyBehaviour<TNPC extends NPC> implements INPCBehaviour<TNPC> {
     /**
      * Tick the NPC behaviour.
      * @param subject The NPC.

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /**
  * A spatial grid that handles the movement and collisions of level entities.
  */
-public class LevelCollisionGrid extends SpatialGrid<Entity> {
+public class LevelCollisionGrid extends SpatialGrid<Entity> implements IInteractiveLevel {
     /**
      * Create a new instance of the LevelCollisionGrid class.
      */
@@ -19,18 +19,22 @@ public class LevelCollisionGrid extends SpatialGrid<Entity> {
     }
 
     /**
-     * Update the position of the specified entity by applying the given x/y offset.
+     * Attempt to update the position of the specified entity by applying the given x/y offset.
      * Entity movements are shortened or prevented entirely if a full movement
      * would cause the entity to overlap another entity that it collides with.
-     * @param entity The entity to move.
+     * @param subject The subject entity to move.
      * @param offsetX A value between -1 and 1 representing the movement to make to the X position of the entity.
      * @param offsetY A value between -1 and 1 representing the movement to make to the Y position of the entity.
      */
-    public void move(Entity entity, float offsetX, float offsetY) {
+    public void move(Entity subject, float offsetX, float offsetY) {
         // The entity must have already been added to the grid.
-        if (!this.contains(entity)) {
+        if (!this.contains(subject)) {
             return;
         }
+
+        // Clamp the x/y offsets to values between -1 and 1.
+        offsetX = Math.max(-1, Math.min(1, offsetX));
+        offsetY = Math.max(-1, Math.min(1, offsetY));
 
         // TODO Break up or movement into small maximum x/y segments if the x/y offset is really big.
         // TODO For each x/y segment:
@@ -41,13 +45,28 @@ public class LevelCollisionGrid extends SpatialGrid<Entity> {
         // Get the delta time so we can have frame-independent movement.
         float delta = Gdx.graphics.getDeltaTime() * 50f;
 
-        moveEntityOnAxis(entity, offsetX, delta, Axis.X);
-        moveEntityOnAxis(entity, offsetY, delta, Axis.Y);
-
-        // entity.setX(entity.getX() + ((offsetX * entity.getMovementSpeed()) * delta));
-        // entity.setY(entity.getY() + ((offsetY * entity.getMovementSpeed()) * delta));
+        // Update the position of the given entity on the each axis.
+        moveEntityOnAxis(subject, offsetX, delta, Axis.X);
+        moveEntityOnAxis(subject, offsetY, delta, Axis.Y);
     }
 
+    @Override
+    public void canSee(Entity subject, Entity target) {
+        // TODO
+    }
+
+    @Override
+    public void getDistanceBetween(Entity subject, Entity target) {
+        // TODO
+    }
+
+    /**
+     * Update the position of the given entity on the specified axis.
+     * @param entity
+     * @param offset
+     * @param delta
+     * @param axis
+     */
     private void moveEntityOnAxis(Entity entity, float offset, float delta, Axis axis) {
         // TODO We should chop up large movements into smaller increments.
 
