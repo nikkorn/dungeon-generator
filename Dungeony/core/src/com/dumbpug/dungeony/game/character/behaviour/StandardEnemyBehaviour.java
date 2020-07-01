@@ -2,7 +2,7 @@ package com.dumbpug.dungeony.game.character.behaviour;
 
 import com.dumbpug.dungeony.game.character.npc.NPC;
 import com.dumbpug.dungeony.game.character.npc.NPCState;
-import com.dumbpug.dungeony.game.level.IInteractiveLevel;
+import com.dumbpug.dungeony.game.level.InteractiveLevel;
 
 /**
  * Very basic enemy NPC behaviour.
@@ -14,7 +14,7 @@ public class StandardEnemyBehaviour<TNPC extends NPC> implements INPCBehaviour<T
      * @param subject The NPC.
      * @param level The interactive level.
      */
-    public void tick (TNPC subject, IInteractiveLevel level) {
+    public void tick (TNPC subject, InteractiveLevel level) {
         // Get the movement on each axis that the enemy is trying to make.
         // TODO For now just walking up and right.
         float movementAxisX = 0.5f;

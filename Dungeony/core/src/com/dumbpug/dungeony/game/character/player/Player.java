@@ -7,6 +7,7 @@ import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.characterselection.PlayerDetails;
 import com.dumbpug.dungeony.game.Position;
 import com.dumbpug.dungeony.game.character.GameCharacter;
+import com.dumbpug.dungeony.game.level.InteractiveLevel;
 import com.dumbpug.dungeony.game.level.LevelCollisionGrid;
 import com.dumbpug.dungeony.game.rendering.Animation;
 import com.dumbpug.dungeony.game.rendering.PlayerSprite;
@@ -80,9 +81,9 @@ public class Player extends GameCharacter {
 
     /**
      * Update the player.
-     * @param grid The level grid used to handle player movement during an update.
+     * @param level The interactive level.
      */
-    public void update(LevelCollisionGrid grid) {
+    public void update(InteractiveLevel level) {
         // Get the input provider for the player.
         IPlayerInputProvider playerInputProvider = this.getDetails().getInputProvider();
 
@@ -95,7 +96,7 @@ public class Player extends GameCharacter {
 
         // Process player input which would influence the movement of the player.
         // Any entity movement has to be taken care of by the level grid which handles all entity collisions.
-        grid.move(this, movementAxisX, movementAxisY);
+        level.move(this, movementAxisX, movementAxisY);
 
         // Update the actual state of the player to reflect and changes that have happened during this update.
         // Is the player idle and not moving in any direction?

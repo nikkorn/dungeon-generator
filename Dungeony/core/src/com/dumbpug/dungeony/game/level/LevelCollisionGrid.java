@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /**
  * A spatial grid that handles the movement and collisions of level entities.
  */
-public class LevelCollisionGrid extends SpatialGrid<Entity> implements IInteractiveLevel {
+public class LevelCollisionGrid extends SpatialGrid<Entity> {
     /**
      * Create a new instance of the LevelCollisionGrid class.
      */
@@ -48,16 +48,6 @@ public class LevelCollisionGrid extends SpatialGrid<Entity> implements IInteract
         // Update the position of the given entity on the each axis.
         moveEntityOnAxis(subject, offsetX, delta, Axis.X);
         moveEntityOnAxis(subject, offsetY, delta, Axis.Y);
-    }
-
-    @Override
-    public void canSee(Entity subject, Entity target) {
-        // TODO
-    }
-
-    @Override
-    public void getDistanceBetween(Entity subject, Entity target) {
-        // TODO
     }
 
     /**

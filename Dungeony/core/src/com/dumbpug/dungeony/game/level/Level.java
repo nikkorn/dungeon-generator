@@ -70,17 +70,29 @@ public class Level {
     }
 
     /**
+     * Gets the level collision grid.
+     * @return The level collision grid.
+     */
+    public LevelCollisionGrid getGrid() {
+        return grid;
+    }
+
+    /**
      * Update the level.
      */
     public void update() {
+        // Create a wrapper around this level instance that exposes functionality and information
+        // that would be required as part of the update of any individual level entities.
+        InteractiveLevel interactiveLevel = new InteractiveLevel(this);
+
         // Update each of the players.
-        this.players.update(this.grid);
+        this.players.update(interactiveLevel);
 
         // Update each of the friendly NPCs.
-        this.friendlies.update(this.grid);
+        this.friendlies.update(interactiveLevel);
 
         // Update each of the enemy NPCs.
-        this.enemies.update(this.grid);
+        this.enemies.update(interactiveLevel);
 
         // TODO Update projectiles.
         // TODO Update game objects.

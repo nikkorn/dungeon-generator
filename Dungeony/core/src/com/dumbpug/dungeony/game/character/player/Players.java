@@ -1,6 +1,7 @@
 package com.dumbpug.dungeony.game.character.player;
 
 import com.dumbpug.dungeony.characterselection.PlayerDetails;
+import com.dumbpug.dungeony.game.level.InteractiveLevel;
 import com.dumbpug.dungeony.game.level.LevelCollisionGrid;
 import com.dumbpug.dungeony.game.rendering.Renderables;
 import com.dumbpug.dungeony.game.tile.TileSpawn;
@@ -70,12 +71,12 @@ public class Players {
 
     /**
      * Update each of the players sequentially.
-     * @param grid The level grid used to handle player movement during an update.
+     * @param level The interactive level.
      */
-    public void update(LevelCollisionGrid grid) {
+    public void update(InteractiveLevel level) {
         // Update each of the players sequentially.
         for (Player player : this.players.values()) {
-            player.update(grid);
+            player.update(level);
         }
     }
 }

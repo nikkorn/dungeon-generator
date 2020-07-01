@@ -1,5 +1,6 @@
 package com.dumbpug.dungeony.game.character.npc;
 
+import com.dumbpug.dungeony.game.level.InteractiveLevel;
 import com.dumbpug.dungeony.game.level.LevelCollisionGrid;
 import com.dumbpug.dungeony.game.rendering.Renderables;
 import java.util.ArrayList;
@@ -41,12 +42,12 @@ public class NPCs {
 
     /**
      * Update each of the NPCs sequentially.
-     * @param grid The level grid used to handle NPC movement during an update.
+     * @param level The interactive level.
      */
-    public void update(LevelCollisionGrid grid) {
+    public void update(InteractiveLevel level) {
         // Update each of the NPCs sequentially.
         for (NPC npc : this.npcs) {
-            npc.update(grid);
+            npc.update(level);
         }
     }
 }

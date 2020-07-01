@@ -6,7 +6,7 @@ import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.game.Position;
 import com.dumbpug.dungeony.game.character.GameCharacter;
 import com.dumbpug.dungeony.game.character.behaviour.INPCBehaviour;
-import com.dumbpug.dungeony.game.level.LevelCollisionGrid;
+import com.dumbpug.dungeony.game.level.InteractiveLevel;
 import com.dumbpug.dungeony.game.rendering.Animation;
 import java.util.HashMap;
 
@@ -83,12 +83,12 @@ public abstract class NPC extends GameCharacter {
 
     /**
      * Update the enemy as part of a single level update.
-     * @param grid The level grid used to handle player movement during an update.
+     * @param level The interactive level.
      */
-    public void update(LevelCollisionGrid grid) {
+    public void update(InteractiveLevel level) {
         // Tick the enemy behaviour if any has been defined.
         if (this.behaviour != null) {
-            this.behaviour.tick(this, grid);
+            this.behaviour.tick(this, level);
         }
     }
 
