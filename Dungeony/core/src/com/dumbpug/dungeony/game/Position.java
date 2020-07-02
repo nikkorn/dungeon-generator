@@ -57,4 +57,15 @@ public class Position {
     public void setY(float y) {
         this.y = y;
     }
+
+    /**
+     * Get the angle from this position to the target position.
+     * @param target The target position.
+     * @return The angle from this position to the target position.
+     */
+    public float getAngleTo(Position target) {
+        double xDiff = target.getX() - this.getX();
+        double yDiff = target.getY() - this.getY();
+        return (float) Math.toDegrees(Math.atan2(yDiff, xDiff));
+    }
 }

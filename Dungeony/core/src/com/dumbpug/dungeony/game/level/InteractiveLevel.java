@@ -1,5 +1,6 @@
 package com.dumbpug.dungeony.game.level;
 
+import com.dumbpug.dungeony.game.Direction;
 import com.dumbpug.dungeony.game.Entity;
 
 /**
@@ -17,6 +18,30 @@ public class InteractiveLevel {
      */
     public InteractiveLevel(Level level) {
         this.level = level;
+    }
+
+    /**
+     * Attempt to update the position of the specified entity in a specified direction.
+     * Entity movements are shortened or prevented entirely if a full movement
+     * would cause the entity to overlap another entity that it collides with.
+     * @param subject The subject entity to move.
+     * @param direction The direction to move in.
+     * @param amount A value between -1 and 1 representing the amount of movement to make based on subject movement speed.
+     */
+    public void moveByDirection(Entity subject, Direction direction, float amount) {
+        this.level.getGrid().moveByDirection(subject, direction, amount);
+    }
+
+    /**
+     * Attempt to update the position of the specified entity at a specified angle.
+     * Entity movements are shortened or prevented entirely if a full movement
+     * would cause the entity to overlap another entity that it collides with.
+     * @param subject The subject entity to move.
+     * @param angle A value between 0 and 360 representing the angle of movement.
+     * @param amount A value between -1 and 1 representing the amount of movement to make based on subject movement speed.
+     */
+    public void moveByAngle(Entity subject, float angle, float amount) {
+        this.level.getGrid().moveByAngle(subject, angle, amount);
     }
 
     /**

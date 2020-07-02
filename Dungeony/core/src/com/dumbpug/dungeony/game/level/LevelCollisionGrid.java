@@ -3,6 +3,7 @@ package com.dumbpug.dungeony.game.level;
 import com.badlogic.gdx.Gdx;
 import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.game.Axis;
+import com.dumbpug.dungeony.game.Direction;
 import com.dumbpug.dungeony.game.Entity;
 import com.dumbpug.dungeony.utilities.spatialgrid.SpatialGrid;
 import java.util.ArrayList;
@@ -16,6 +17,38 @@ public class LevelCollisionGrid extends SpatialGrid<Entity> {
      */
     public LevelCollisionGrid() {
         super(Constants.GAME_GRID_CELL_SIZE);
+    }
+
+    /**
+     * Attempt to update the position of the specified entity in a specified direction.
+     * Entity movements are shortened or prevented entirely if a full movement
+     * would cause the entity to overlap another entity that it collides with.
+     * @param subject The subject entity to move.
+     * @param direction The direction to move in.
+     * @param amount A value between -1 and 1 representing the amount of movement to make based on subject movement speed.
+     */
+    public void moveByDirection(Entity subject, Direction direction, float amount) {
+        this.moveByAngle(subject, direction.getAngle(), amount);
+    }
+
+    /**
+     * Attempt to update the position of the specified entity at a specified angle.
+     * Entity movements are shortened or prevented entirely if a full movement
+     * would cause the entity to overlap another entity that it collides with.
+     * @param subject The subject entity to move.
+     * @param angle A value between 0 and 360 representing the angle of movement.
+     * @param amount A value between -1 and 1 representing the amount of movement to make based on subject movement speed.
+     */
+    public void moveByAngle(Entity subject, float angle, float amount) {
+        // Clamp the movement amount to a value between -1 and 1.
+        amount = Math.max(0, Math.min(1, amount));
+
+        // Calculate the new position of the entity to move.
+        float offsetX = (float) Math.sin(angle * Math.PI / 180) * (amount * subject.getMovementSpeed());
+        float offsetY = (float) Math.cos(angle * Math.PI / 180) * (amount * subject.getMovementSpeed());
+
+        // Move the subject entity by finding the x/y offsets.
+        this.move(subject, offsetX, offsetY);
     }
 
     /**
@@ -52,10 +85,10 @@ public class LevelCollisionGrid extends SpatialGrid<Entity> {
 
     /**
      * Update the position of the given entity on the specified axis.
-     * @param entity
-     * @param offset
-     * @param delta
-     * @param axis
+     * @param entity The entity to move.
+     * @param offset The offset to be applied.
+     * @param delta The delta.
+     * @param axis The axis on which to update the entity position.
      */
     private void moveEntityOnAxis(Entity entity, float offset, float delta, Axis axis) {
         // TODO We should chop up large movements into smaller increments.
