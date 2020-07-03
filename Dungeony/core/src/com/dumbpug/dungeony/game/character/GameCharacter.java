@@ -4,6 +4,9 @@ import com.dumbpug.dungeony.game.Entity;
 import com.dumbpug.dungeony.game.EntityCollisionFlag;
 import com.dumbpug.dungeony.game.Position;
 
+/**
+ * Represents an in-game character.
+ */
 public abstract class GameCharacter extends Entity {
     /**
      * Creates a new instance of the GameCharacter class.
@@ -23,4 +26,10 @@ public abstract class GameCharacter extends Entity {
         // Everything should collide with a character by default.
         return EntityCollisionFlag.WALL | EntityCollisionFlag.CHARACTER | EntityCollisionFlag.PICKUP | EntityCollisionFlag.OBJECT;
     }
+
+    /**
+     * Gets the character movements speed.
+     * @return The character movements speed.
+     */
+    public abstract float getMovementSpeed();
 }

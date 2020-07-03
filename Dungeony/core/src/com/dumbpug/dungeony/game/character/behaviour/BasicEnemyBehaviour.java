@@ -16,8 +16,8 @@ public class BasicEnemyBehaviour<TNPC extends NPC> implements INPCBehaviour<TNPC
      * @param level The interactive level.
      */
     public void tick (TNPC subject, InteractiveLevel level) {
-        // Move the NPC north-east at 60% their usual speed.
-        level.moveByDirection(subject, Direction.NORTH_EAST, 0.6f);
+        // Move the NPC north-east at their normal movement speed.
+        level.moveByDirection(subject, Direction.NORTH_EAST, subject.getMovementSpeed());
 
         // We are running to the right.
         subject.setState(NPCState.RUNNING_RIGHT);

@@ -127,10 +127,4 @@ public abstract class Entity implements IAABB, IRenderable {
      * @return The collision mask of the entity.
      */
     public abstract int getCollisionMask();
-
-    /**
-     * Gets the movement speed of the entity.
-     * @return The movement speed of the entity.
-     */
-    public abstract float getMovementSpeed();
 }

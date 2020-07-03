@@ -25,10 +25,10 @@ public class LevelCollisionGrid extends SpatialGrid<Entity> {
      * would cause the entity to overlap another entity that it collides with.
      * @param subject The subject entity to move.
      * @param direction The direction to move in.
-     * @param amount A value between -1 and 1 representing the amount of movement to make based on subject movement speed.
+     * @param distance The distance to move the entity.
      */
-    public void moveByDirection(Entity subject, Direction direction, float amount) {
-        this.moveByAngle(subject, direction.getAngle(), amount);
+    public void moveByDirection(Entity subject, Direction direction, float distance) {
+        this.moveByAngle(subject, direction.getAngle(), distance);
     }
 
     /**
@@ -37,18 +37,20 @@ public class LevelCollisionGrid extends SpatialGrid<Entity> {
      * would cause the entity to overlap another entity that it collides with.
      * @param subject The subject entity to move.
      * @param angle A value between 0 and 360 representing the angle of movement.
-     * @param amount A value between -1 and 1 representing the amount of movement to make based on subject movement speed.
+     * @param distance The distance to move the entity.
      */
-    public void moveByAngle(Entity subject, float angle, float amount) {
-        // Clamp the movement amount to a value between -1 and 1.
-        amount = Math.max(0, Math.min(1, amount));
+    public void moveByAngle(Entity subject, float angle, float distance) {
+        // The entity must have already been added to the grid.
+        if (!this.contains(subject)) {
+            return;
+        }
 
-        // Calculate the new position of the entity to move.
-        float offsetX = (float) Math.sin(angle * Math.PI / 180) * (amount * subject.getMovementSpeed());
-        float offsetY = (float) Math.cos(angle * Math.PI / 180) * (amount * subject.getMovementSpeed());
+        // Calculate the new position of the entity to move based on the amount to move and the entity movement speed.
+        float offsetX = (float) Math.sin(angle * Math.PI / 180) * distance;
+        float offsetY = (float) Math.cos(angle * Math.PI / 180) * distance;
 
         // Move the subject entity by finding the x/y offsets.
-        this.move(subject, offsetX, offsetY);
+        this.moveEntity(subject, offsetX, offsetY);
     }
 
     /**
@@ -56,8 +58,8 @@ public class LevelCollisionGrid extends SpatialGrid<Entity> {
      * Entity movements are shortened or prevented entirely if a full movement
      * would cause the entity to overlap another entity that it collides with.
      * @param subject The subject entity to move.
-     * @param offsetX A value between -1 and 1 representing the movement to make to the X position of the entity.
-     * @param offsetY A value between -1 and 1 representing the movement to make to the Y position of the entity.
+     * @param offsetX The offset to apply on the X axis.
+     * @param offsetY The offset to apply on the Y axis.
      */
     public void move(Entity subject, float offsetX, float offsetY) {
         // The entity must have already been added to the grid.
@@ -65,10 +67,17 @@ public class LevelCollisionGrid extends SpatialGrid<Entity> {
             return;
         }
 
-        // Clamp the x/y offsets to values between -1 and 1.
-        offsetX = Math.max(-1, Math.min(1, offsetX));
-        offsetY = Math.max(-1, Math.min(1, offsetY));
+        this.moveEntity(subject, offsetX, offsetY);
+    }
 
+    /**
+     * Attempt to update the position of the specified entity by applying the given x/y offset.
+     * Delta time is applied to any position updates.
+     * @param subject The subject entity to move.
+     * @param offsetX The offset to apply on the X axis.
+     * @param offsetY The offset to apply on the Y axis.
+     */
+    private void moveEntity(Entity subject, float offsetX, float offsetY) {
         // TODO Break up or movement into small maximum x/y segments if the x/y offset is really big.
         // TODO For each x/y segment:
         //       - Move X axis first and try to find intersecting and/or colliding aabbs.
@@ -76,7 +85,8 @@ public class LevelCollisionGrid extends SpatialGrid<Entity> {
         // This way we can move a fast moving or small entity with less chance of clipping or skipping an aabb.
 
         // Get the delta time so we can have frame-independent movement.
-        float delta = Gdx.graphics.getDeltaTime() * 50f;
+        // TODO This being such a high number doesn't seem right :/
+        float delta = Gdx.graphics.getDeltaTime() * 70f;
 
         // Update the position of the given entity on the each axis.
         moveEntityOnAxis(subject, offsetX, delta, Axis.X);
@@ -102,9 +112,9 @@ public class LevelCollisionGrid extends SpatialGrid<Entity> {
             // It makes sense that two collidable entities that have got themselves in a state where they already
             // overlap at the start of a movement update should be given the chance to move off of each other.
 
-            // Move to the position that we are moving to on the axis based on the entity movement speed.
+            // Move to the position that we are moving to on the current axis.
             // We apply the application delta to this value for frame-independent movement speed.
-            entity.setX(origin + ((offset * entity.getMovementSpeed()) * delta));
+            entity.setX(origin + (offset * delta));
             this.update(entity);
 
             // Find any level entities that the entity may now be colliding with.
@@ -131,9 +141,9 @@ public class LevelCollisionGrid extends SpatialGrid<Entity> {
             // It makes sense that two collidable entities that have got themselves in a state where they already
             // overlap at the start of a movement update should be given the chance to move off of each other.
 
-            // Move to the position that we are moving to on the axis based on the entity movement speed.
+            // Move to the position that we are moving to on the current axis.
             // We apply the application delta to this value for frame-independent movement speed.
-            entity.setY(origin + ((offset * entity.getMovementSpeed()) * delta));
+            entity.setY(origin + (offset * delta));
             this.update(entity);
 
             // Find any level entities that the entity may now be colliding with.

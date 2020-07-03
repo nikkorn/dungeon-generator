@@ -46,12 +46,6 @@ public abstract class Tile extends Entity implements ITilePositionedEntity {
         return Constants.GAME_TILE_SIZE;
     }
 
-    @Override
-    public float getMovementSpeed() {
-        // Static entities have no movement speed.
-        return 0;
-    }
-
     /**
      * Gets the list of entity spawn positions for this tile.
      * @return The list of entity spawn positions for this tile.

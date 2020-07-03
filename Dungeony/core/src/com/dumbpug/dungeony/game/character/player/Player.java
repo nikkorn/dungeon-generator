@@ -91,8 +91,8 @@ public class Player extends GameCharacter {
         // TODO Check for player actions.
 
         // Get the movement on each axis that the player is requesting to make.
-        float movementAxisX = playerInputProvider.getMovementAxisX();
-        float movementAxisY = playerInputProvider.getMovementAxisY();
+        float movementAxisX = playerInputProvider.getMovementAxisX() * this.getMovementSpeed();
+        float movementAxisY = playerInputProvider.getMovementAxisY() * this.getMovementSpeed();
 
         // Process player input which would influence the movement of the player.
         // Any entity movement has to be taken care of by the level grid which handles all entity collisions.

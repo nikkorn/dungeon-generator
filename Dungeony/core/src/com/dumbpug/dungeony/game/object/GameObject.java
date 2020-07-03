@@ -32,13 +32,4 @@ public abstract class GameObject extends Entity {
         // Everything should collide with an object by default.
         return EntityCollisionFlag.WALL | EntityCollisionFlag.CHARACTER | EntityCollisionFlag.PICKUP | EntityCollisionFlag.PROJECTILE | EntityCollisionFlag.OBJECT;
     }
-
-    /**
-     * Gets the movement speed of the entity.
-     * @return The movement speed of the entity.
-     */
-    public float getMovementSpeed() {
-        // Static entities have no movement speed.
-        return 0;
-    }
 }
