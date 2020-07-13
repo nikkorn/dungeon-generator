@@ -10,3 +10,16 @@ Level
 - Maybe add tile behaviour scripts? To handle things like a trap door being walked over, or a door tile being interacted with to walk through.
 - Level objects could have optional scripts too i guess to allow for special behaviour.
 - Fix stupid delta use in level grid, totes not using it right.
+
+
+First Pass
+==========
+
+Aim for single-player first.
+
+Only use a set number of standard level categories, with a single spawn and single locked exit door that is opened by a single key held by one enemy.
+
+Enemy behaviour is limited to waiting for players to come within a range and then follow/attack based on weapon range and RNG.
+On killing an enemy, the enemy will drop a number of items.
+
+The only items to be added will be the pistol weapon, pistol ammo and the level exit key.

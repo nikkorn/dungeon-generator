@@ -28,8 +28,8 @@ public abstract class GameCharacter extends Entity {
     }
 
     /**
-     * Gets the character movements speed.
-     * @return The character movements speed.
+     * Gets the character movements speed per second.
+     * @return The character movements speed per second.
      */
     public abstract float getMovementSpeed();
 }

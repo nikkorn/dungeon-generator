@@ -36,7 +36,7 @@ public class Fishman extends Enemy {
     @Override
     public float getMovementSpeed() {
         // Fishman can move at 80% of the default speed of the player.
-        return Constants.GAME_PLAYER_MOVEMENT * 0.8f;
+        return Constants.GAME_PLAYER_MOVEMENT_PS * 0.8f;
     }
 
     @Override

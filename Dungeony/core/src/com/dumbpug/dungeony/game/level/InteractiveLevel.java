@@ -26,10 +26,10 @@ public class InteractiveLevel {
      * would cause the entity to overlap another entity that it collides with.
      * @param subject The subject entity to move.
      * @param direction The direction to move in.
-     * @param amount A value between -1 and 1 representing the amount of movement to make based on subject movement speed.
+     * @param distance The distance to move the entity.
      */
-    public void moveByDirection(Entity subject, Direction direction, float amount) {
-        this.level.getGrid().moveByDirection(subject, direction, amount);
+    public void moveByDirection(Entity subject, Direction direction, float distance) {
+        this.level.getGrid().moveByDirection(subject, direction, distance);
     }
 
     /**
@@ -38,10 +38,10 @@ public class InteractiveLevel {
      * would cause the entity to overlap another entity that it collides with.
      * @param subject The subject entity to move.
      * @param angle A value between 0 and 360 representing the angle of movement.
-     * @param amount A value between -1 and 1 representing the amount of movement to make based on subject movement speed.
+     * @param distance The distance to move the entity.
      */
-    public void moveByAngle(Entity subject, float angle, float amount) {
-        this.level.getGrid().moveByAngle(subject, angle, amount);
+    public void moveByAngle(Entity subject, float angle, float distance) {
+        this.level.getGrid().moveByAngle(subject, angle, distance);
     }
 
     /**

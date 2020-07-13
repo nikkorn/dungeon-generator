@@ -8,7 +8,6 @@ import com.dumbpug.dungeony.characterselection.PlayerDetails;
 import com.dumbpug.dungeony.game.Position;
 import com.dumbpug.dungeony.game.character.GameCharacter;
 import com.dumbpug.dungeony.game.level.InteractiveLevel;
-import com.dumbpug.dungeony.game.level.LevelCollisionGrid;
 import com.dumbpug.dungeony.game.rendering.Animation;
 import com.dumbpug.dungeony.game.rendering.PlayerSprite;
 import com.dumbpug.dungeony.game.rendering.Resources;
@@ -76,7 +75,7 @@ public class Player extends GameCharacter {
      * @return The movement speed of the entity.
      */
     public float getMovementSpeed() {
-        return Constants.GAME_PLAYER_MOVEMENT;
+        return Constants.GAME_PLAYER_MOVEMENT_PS;
     }
 
     /**

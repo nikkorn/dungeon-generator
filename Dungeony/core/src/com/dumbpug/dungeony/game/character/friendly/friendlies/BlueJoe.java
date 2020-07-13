@@ -4,7 +4,6 @@ import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.game.Position;
 import com.dumbpug.dungeony.game.character.friendly.Friendly;
 import com.dumbpug.dungeony.game.character.friendly.FriendlyType;
-import com.dumbpug.dungeony.game.level.LevelCollisionGrid;
 
 /**
  * Just ol' Blue Joe.
@@ -33,7 +32,7 @@ public class BlueJoe extends Friendly {
     @Override
     public float getMovementSpeed() {
         // BlueJoe can move at the default speed of the player.
-        return Constants.GAME_PLAYER_MOVEMENT;
+        return Constants.GAME_PLAYER_MOVEMENT_PS;
     }
 
     @Override

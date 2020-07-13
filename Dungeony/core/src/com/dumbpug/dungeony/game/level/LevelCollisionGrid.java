@@ -84,23 +84,18 @@ public class LevelCollisionGrid extends SpatialGrid<Entity> {
         //       - Move Y axis second and try to find intersecting and/or colliding aabbs.
         // This way we can move a fast moving or small entity with less chance of clipping or skipping an aabb.
 
-        // Get the delta time so we can have frame-independent movement.
-        // TODO This being such a high number doesn't seem right :/
-        float delta = Gdx.graphics.getDeltaTime() * 70f;
-
         // Update the position of the given entity on the each axis.
-        moveEntityOnAxis(subject, offsetX, delta, Axis.X);
-        moveEntityOnAxis(subject, offsetY, delta, Axis.Y);
+        moveEntityOnAxis(subject, offsetX, Axis.X);
+        moveEntityOnAxis(subject, offsetY, Axis.Y);
     }
 
     /**
      * Update the position of the given entity on the specified axis.
      * @param entity The entity to move.
      * @param offset The offset to be applied.
-     * @param delta The delta.
      * @param axis The axis on which to update the entity position.
      */
-    private void moveEntityOnAxis(Entity entity, float offset, float delta, Axis axis) {
+    private void moveEntityOnAxis(Entity entity, float offset, Axis axis) {
         // TODO We should chop up large movements into smaller increments.
 
         // How the entity position is updated depends on the axis.
@@ -114,7 +109,7 @@ public class LevelCollisionGrid extends SpatialGrid<Entity> {
 
             // Move to the position that we are moving to on the current axis.
             // We apply the application delta to this value for frame-independent movement speed.
-            entity.setX(origin + (offset * delta));
+            entity.setX(origin + (offset * Gdx.graphics.getDeltaTime()));
             this.update(entity);
 
             // Find any level entities that the entity may now be colliding with.
@@ -143,7 +138,7 @@ public class LevelCollisionGrid extends SpatialGrid<Entity> {
 
             // Move to the position that we are moving to on the current axis.
             // We apply the application delta to this value for frame-independent movement speed.
-            entity.setY(origin + (offset * delta));
+            entity.setY(origin + (offset * Gdx.graphics.getDeltaTime()));
             this.update(entity);
 
             // Find any level entities that the entity may now be colliding with.
