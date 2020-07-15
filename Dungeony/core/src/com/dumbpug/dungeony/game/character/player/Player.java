@@ -61,7 +61,7 @@ public class Player extends GameCharacter {
 
     @Override
     public float getLengthY() {
-        return Constants.GAME_PLAYER_SIZE;
+        return Constants.GAME_PLAYER_SIZE * 0.5f;
     }
 
     @Override
@@ -126,7 +126,7 @@ public class Player extends GameCharacter {
     public void render(SpriteBatch batch) {
         // Get the player shadow sprite.
         Sprite shadowSprite = Resources.getSprite(PlayerSprite.SHADOW);
-        shadowSprite.setSize(this.getLengthX(), this.getLengthY());
+        shadowSprite.setSize(this.getLengthX(), this.getLengthZ());
         shadowSprite.setPosition(this.getX(), this.getY());
         shadowSprite.setScale(1.2f,  1.2f);
 
@@ -138,6 +138,6 @@ public class Player extends GameCharacter {
 
         // Draw the player shadow and then render the players current animation frame over it.
         shadowSprite.draw(batch);
-        batch.draw(currentFrame, this.getX(), this.getY(), 0, 0, this.getLengthX(), this.getLengthY(),1.2f, 1.2f, 0);
+        batch.draw(currentFrame, this.getX(), this.getY(), 0, 0, this.getLengthX(), this.getLengthZ(), 1.2f, 1.2f, 0);
     }
 }

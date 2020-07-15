@@ -23,7 +23,7 @@ public class Vendor extends GameObject {
 
     @Override
     public float getLengthX() {
-        return 20f;
+        return 40f;
     }
 
     @Override
@@ -33,6 +33,6 @@ public class Vendor extends GameObject {
 
     @Override
     public float getLengthZ() {
-        return 30f;
+        return 60f;
     }
 }

@@ -63,7 +63,16 @@ public class SimpleLevelGenerator implements ILevelGenerator {
             add(new TileDefinition("EMPTY", 5, 15));
             add(new TileDefinition("EMPTY", 6, 14));
             add(new TileDefinition("EMPTY", 6, 15));
-            add(new TileDefinition("EMPTY", 5, 16));
+
+            EntityDefinition vendor = new EntityDefinition("VENDOR");
+            vendor.setProperty("item_rarity", "0");
+
+            TileDefinition tile_5_16 = new TileDefinition("EMPTY", 5, 16);
+            tile_5_16.getEntities().add(vendor);
+
+            add(tile_5_16);
+
+
             add(new TileDefinition("EMPTY", 6, 16));
             add(new TileDefinition("EMPTY", 13, 7));
             add(new TileDefinition("EMPTY", 13, 8));

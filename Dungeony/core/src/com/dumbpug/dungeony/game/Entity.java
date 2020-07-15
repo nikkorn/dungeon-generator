@@ -32,6 +32,14 @@ public abstract class Entity implements IAABB, IRenderable {
     }
 
     /**
+     * Gets the entity origin.
+     * @return The entity origin.
+     */
+    public Position getOrigin() {
+        return origin;
+    }
+
+    /**
      * Gets the x position of the box.
      * @return The y position of the box.
      */

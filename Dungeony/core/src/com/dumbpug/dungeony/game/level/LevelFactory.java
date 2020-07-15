@@ -3,14 +3,19 @@ package com.dumbpug.dungeony.game.level;
 import com.dumbpug.dungeony.characterselection.PlayerDetails;
 import com.dumbpug.dungeony.game.Position;
 import com.dumbpug.dungeony.game.character.enemy.Enemy;
+import com.dumbpug.dungeony.game.character.enemy.EnemyType;
 import com.dumbpug.dungeony.game.character.enemy.enemies.Fishman;
 import com.dumbpug.dungeony.game.character.friendly.Friendly;
+import com.dumbpug.dungeony.game.character.friendly.FriendlyType;
 import com.dumbpug.dungeony.game.character.friendly.friendlies.BlueJoe;
 import com.dumbpug.dungeony.game.object.GameObject;
+import com.dumbpug.dungeony.game.object.GameObjectFactory;
+import com.dumbpug.dungeony.game.object.GameObjectType;
 import com.dumbpug.dungeony.game.tile.ITileFinder;
 import com.dumbpug.dungeony.game.tile.Tile;
 import com.dumbpug.dungeony.game.tile.TileFactory;
 import com.dumbpug.dungeony.game.tile.TileType;
+import com.dumbpug.levelgeneration.EntityDefinition;
 import com.dumbpug.levelgeneration.ILevelGenerator;
 import com.dumbpug.levelgeneration.LevelDefinition;
 import com.dumbpug.levelgeneration.TileDefinition;
@@ -68,12 +73,29 @@ public class LevelFactory {
 
         // Create the game objects enemies and actual tiles based on the generated level tile definitions.
         for (TileDefinition tileDefinition : levelDefinition.getTileDefinitions()) {
-            // TODO Create game objects, enemies and other things based on the current tile entities.
-
             // Create the actual tile.
-            tiles.add(
-                    TileFactory.createTile(TileType.valueOf(tileDefinition.getType()), tileDefinition.getX(), tileDefinition.getY(), tileFinder)
-            );
+            Tile tile = TileFactory.createTile(TileType.valueOf(tileDefinition.getType()), tileDefinition.getX(), tileDefinition.getY(), tileFinder);
+
+            // Add the tile to the list of all tiles.
+            tiles.add(tile);
+
+            // Create game objects, enemies and other things based on the current tile entities.
+            for (EntityDefinition entity : tileDefinition.getEntities()) {
+                // Get the entity position relative to the tile position.
+                // TODO For now the entity will just be placed at the tile origin, works well until we have multiple entities per tile.
+                Position entityPosition = new Position(tile.getOrigin().getX(), tile.getOrigin().getY());
+
+                if (GameObjectType.isValue(entity.getName())) {
+                    // We are creating a game object.
+                    gameObjects.add(GameObjectFactory.create(GameObjectType.valueOf(entity.getName().toUpperCase()), entityPosition, null));
+                } else if (EnemyType.isValue(entity.getName())) {
+                    // TODO Call EnemyFactory.create() and add to gameObjects list.
+                } else if (FriendlyType.isValue(entity.getName())) {
+                    // TODO Call FriendlyFactory.create() and add to gameObjects list.
+                } else {
+                    throw new RuntimeException("cannot create entity instance for entity definition: " + entity.getName());
+                }
+            }
         }
 
         // Create and return the level instance.
