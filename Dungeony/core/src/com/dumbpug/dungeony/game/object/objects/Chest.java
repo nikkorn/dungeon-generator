@@ -1,7 +1,8 @@
-package com.dumbpug.dungeony.game.object;
+package com.dumbpug.dungeony.game.object.objects;
 
-import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.game.Position;
+import com.dumbpug.dungeony.game.object.GameObject;
+import com.dumbpug.dungeony.game.object.GameObjectType;
 
 public class Chest extends GameObject {
     /**
@@ -19,13 +20,11 @@ public class Chest extends GameObject {
 
     @Override
     public float getWidth() {
-        // A chest should fill the tile that it is on horizontally.
-        return Constants.GAME_TILE_SIZE;
+        return 24f;
     }
 
     @Override
     public float getHeight() {
-        // A chest should fill the tile that it is on vertically.
-        return Constants.GAME_TILE_SIZE;
+        return 24f;
     }
 }

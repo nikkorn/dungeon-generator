@@ -281,7 +281,7 @@ public class SpatialGrid<TAABB extends IAABB> {
      * @param b
      * @return Whether AABB a is currently colliding with AABB b.
      */
-    private boolean areColliding(TAABB a, TAABB b) {
+    public static boolean areColliding(IAABB a, IAABB b) {
         return a.getX() < (b.getX() + b.getWidth()) &&
                 (a.getX() + a.getWidth()) > b.getX() &&
                 a.getY() < (b.getY() + b.getHeight()) &&

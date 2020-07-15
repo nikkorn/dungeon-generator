@@ -66,4 +66,13 @@ public class Position {
     public float getAngleTo(Position target) {
         return GameMath.getAngle(this.getX(), this.getY(), target.getX(), target.getY());
     }
+
+    /**
+     * Get the distance from this position to the target position.
+     * @param target The target position.
+     * @return The distance from this position to the target position.
+     */
+    public float getDistanceTo(Position target) {
+        return GameMath.getLength(this.getX(), this.getY(), target.getX(), target.getY());
+    }
 }
