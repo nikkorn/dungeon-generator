@@ -22,12 +22,17 @@ public class Vendor extends GameObject {
     }
 
     @Override
-    public float getWidth() {
+    public float getLengthX() {
         return 20f;
     }
 
     @Override
-    public float getHeight() {
+    public float getLengthY() {
+        return 20f;
+    }
+
+    @Override
+    public float getLengthZ() {
         return 30f;
     }
 }

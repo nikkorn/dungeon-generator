@@ -22,13 +22,19 @@ public class Fishman extends Enemy {
     }
 
     @Override
-    public float getWidth() {
+    public float getLengthX() {
         // Fishman is the same width as the player.
         return Constants.GAME_PLAYER_SIZE;
     }
 
     @Override
-    public float getHeight() {
+    public float getLengthY() {
+        // Fishman is the same height as the player.
+        return Constants.GAME_PLAYER_SIZE;
+    }
+
+    @Override
+    public float getLengthZ() {
         // Fishman is the same height as the player.
         return Constants.GAME_PLAYER_SIZE;
     }

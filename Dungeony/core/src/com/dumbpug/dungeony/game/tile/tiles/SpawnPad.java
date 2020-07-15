@@ -54,9 +54,9 @@ public class SpawnPad extends Tile {
 
         // A spawn pad provides 4 spawn positions at each of its corners.
         spawns.add(new TileSpawn(new Position(this.getX(), this.getY())));
-        spawns.add(new TileSpawn(new Position(this.getX() + (this.getWidth() / 2f), this.getY())));
-        spawns.add(new TileSpawn(new Position(this.getX(), this.getY() + (this.getHeight() / 2f))));
-        spawns.add(new TileSpawn(new Position(this.getX() + (this.getWidth() / 2f), this.getY() + (this.getHeight() / 2f))));
+        spawns.add(new TileSpawn(new Position(this.getX() + (this.getLengthX() / 2f), this.getY())));
+        spawns.add(new TileSpawn(new Position(this.getX(), this.getY() + (this.getLengthY() / 2f))));
+        spawns.add(new TileSpawn(new Position(this.getX() + (this.getLengthX() / 2f), this.getY() + (this.getLengthY() / 2f))));
 
         return spawns;
     }
@@ -70,7 +70,7 @@ public class SpawnPad extends Tile {
         Sprite sprite = Resources.getSprite(TileSprite.SPAWN_PAD);
 
         // Set the width/height of the sprite to match the tile size.
-        sprite.setSize(this.getWidth(), this.getHeight());
+        sprite.setSize(this.getLengthX(), this.getLengthY());
 
         // Set the x/y of the sprite to match the tile position.
         sprite.setPosition(this.getX(), this.getY());

@@ -122,7 +122,7 @@ public class Level {
             Sprite sprite = Resources.getSprite(TileSprite.GROUND);
 
             // Set the width/height of the sprite to match the tile size.
-            sprite.setSize(tile.getWidth(), tile.getHeight());
+            sprite.setSize(tile.getLengthX(), tile.getLengthY());
 
             // Set the x/y of the sprite to match the tile position.
             sprite.setPosition(tile.getX(), tile.getY());

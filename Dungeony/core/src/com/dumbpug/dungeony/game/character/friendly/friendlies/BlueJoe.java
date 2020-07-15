@@ -18,14 +18,20 @@ public class BlueJoe extends Friendly {
     }
 
     @Override
-    public float getWidth() {
-        // Fishman is the same width as the player.
+    public float getLengthX() {
+        // BlueJoe is the same width as the player.
         return Constants.GAME_PLAYER_SIZE;
     }
 
     @Override
-    public float getHeight() {
-        // Fishman is the same height as the player.
+    public float getLengthY() {
+        // BlueJoe is the same depth as the player.
+        return Constants.GAME_PLAYER_SIZE;
+    }
+
+    @Override
+    public float getLengthZ() {
+        // BlueJoe is the same height as the player.
         return Constants.GAME_PLAYER_SIZE;
     }
 

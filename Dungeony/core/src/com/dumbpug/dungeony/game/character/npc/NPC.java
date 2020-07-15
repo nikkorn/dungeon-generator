@@ -78,7 +78,7 @@ public abstract class NPC extends GameCharacter {
         TextureRegion currentFrame = animation.getCurrentFrame(true);
 
         // Render the enemies current animation frame.
-        batch.draw(currentFrame, this.getX(), this.getY() + (Constants.GAME_TILE_SIZE / 4f), 0, 0, this.getWidth(), this.getHeight(),1.2f, 1.2f, 0);
+        batch.draw(currentFrame, this.getX(), this.getY() + (Constants.GAME_TILE_SIZE / 4f), 0, 0, this.getLengthX(), this.getLengthY(),1.2f, 1.2f, 0);
     }
 
     /**

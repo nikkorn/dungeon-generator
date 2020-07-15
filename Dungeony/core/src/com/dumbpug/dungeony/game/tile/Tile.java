@@ -37,12 +37,17 @@ public abstract class Tile extends Entity implements ITilePositionedEntity {
     }
 
     @Override
-    public float getWidth() {
+    public float getLengthX() {
         return Constants.GAME_TILE_SIZE;
     }
 
     @Override
-    public float getHeight() {
+    public float getLengthY() {
+        return Constants.GAME_TILE_SIZE;
+    }
+
+    @Override
+    public float getLengthZ() {
         return Constants.GAME_TILE_SIZE;
     }
 

@@ -55,18 +55,17 @@ public class Player extends GameCharacter {
     }
 
     @Override
-    public float getRenderOrder() {
-        // Player sprites and animations should be rendered a little higher than their position for a 3D effect.
-        return this.getY() + (this.getHeight() / 2f);
-    }
-
-    @Override
-    public float getWidth() {
+    public float getLengthX() {
         return Constants.GAME_PLAYER_SIZE;
     }
 
     @Override
-    public float getHeight() {
+    public float getLengthY() {
+        return Constants.GAME_PLAYER_SIZE;
+    }
+
+    @Override
+    public float getLengthZ() {
         return Constants.GAME_PLAYER_SIZE;
     }
 
@@ -127,8 +126,8 @@ public class Player extends GameCharacter {
     public void render(SpriteBatch batch) {
         // Get the player shadow sprite.
         Sprite shadowSprite = Resources.getSprite(PlayerSprite.SHADOW);
-        shadowSprite.setSize(this.getWidth(), this.getHeight());
-        shadowSprite.setPosition(this.getX(), this.getY() + (this.getHeight() / 2f));
+        shadowSprite.setSize(this.getLengthX(), this.getLengthY());
+        shadowSprite.setPosition(this.getX(), this.getY());
         shadowSprite.setScale(1.2f,  1.2f);
 
         // Get the relevant animation for the player based on their current state.
@@ -139,6 +138,6 @@ public class Player extends GameCharacter {
 
         // Draw the player shadow and then render the players current animation frame over it.
         shadowSprite.draw(batch);
-        batch.draw(currentFrame, this.getX(), this.getY() + (this.getHeight() / 2f), 0, 0, this.getWidth(), this.getHeight(),1.2f, 1.2f, 0);
+        batch.draw(currentFrame, this.getX(), this.getY(), 0, 0, this.getLengthX(), this.getLengthY(),1.2f, 1.2f, 0);
     }
 }

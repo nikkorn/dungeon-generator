@@ -105,9 +105,9 @@ public class SpatialGrid<TAABB extends IAABB> {
 
         // Get the cell bounds of the AABB.
         int xStartCell = this.getCellPosition(aabb.getX());
-        int xEndCell   = this.getCellPosition(aabb.getX() + aabb.getWidth());
+        int xEndCell   = this.getCellPosition(aabb.getX() + aabb.getLengthX());
         int yStartCell = this.getCellPosition(aabb.getY());
-        int yEndCell   = this.getCellPosition(aabb.getY() + aabb.getHeight());
+        int yEndCell   = this.getCellPosition(aabb.getY() + aabb.getLengthY());
 
         // Find all cells that the AABB intersects and record the AABB against each one.
         for (int cellX = xStartCell; cellX <= xEndCell; cellX++) {
@@ -282,10 +282,10 @@ public class SpatialGrid<TAABB extends IAABB> {
      * @return Whether AABB a is currently colliding with AABB b.
      */
     public static boolean areColliding(IAABB a, IAABB b) {
-        return a.getX() < (b.getX() + b.getWidth()) &&
-                (a.getX() + a.getWidth()) > b.getX() &&
-                a.getY() < (b.getY() + b.getHeight()) &&
-                (a.getY() + a.getHeight()) > b.getY();
+        return a.getX() < (b.getX() + b.getLengthX()) &&
+                (a.getX() + a.getLengthX()) > b.getX() &&
+                a.getY() < (b.getY() + b.getLengthY()) &&
+                (a.getY() + a.getLengthY()) > b.getY();
     }
 }
 

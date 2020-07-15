@@ -54,7 +54,7 @@ public class Wall extends Tile {
     @Override
     public void render(SpriteBatch batch) {
         // Find half our tile size, each tiel sprite will use that as its dimensions.
-        float spriteSize = this.getWidth() / 2f;
+        float spriteSize = this.getLengthX() / 2f;
 
         // Render top-left tile.
         Sprite sprite = Resources.getSprite(this.topLeftSprite);
@@ -85,13 +85,13 @@ public class Wall extends Tile {
             // Render left lip tile.
             sprite = Resources.getSprite(this.leftLipSprite);
             sprite.setSize(spriteSize, spriteSize);
-            sprite.setPosition(this.getX(), this.getY() + getHeight());
+            sprite.setPosition(this.getX(), this.getY() + getLengthY());
             sprite.draw(batch);
 
             // Render right lip tile.
             sprite = Resources.getSprite(this.rightLipSprite);
             sprite.setSize(spriteSize, spriteSize);
-            sprite.setPosition(this.getX() + spriteSize, this.getY() + getHeight());
+            sprite.setPosition(this.getX() + spriteSize, this.getY() + getLengthY());
             sprite.draw(batch);
         }
     }

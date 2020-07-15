@@ -26,8 +26,8 @@ public abstract class Entity implements IAABB, IRenderable {
         this.origin = origin;
         // Find the position as the bottom-left point of the entity based on its origin and size.
         this.position = new Position(
-                origin.getX() - (this.getWidth() / 2f),
-                origin.getY() - (this.getHeight() / 2f)
+                origin.getX() - (this.getLengthX() / 2f),
+                origin.getY() - (this.getLengthY() / 2f)
         );
     }
 
@@ -103,18 +103,24 @@ public abstract class Entity implements IAABB, IRenderable {
     public void render(SpriteBatch batch) {}
 
     /**
-     * Gets the width of the box.
-     * @return The width of the box.
+     * Gets the length of the box on the X axis.
+     * @return The length of the box on the X axis.
      */
     @Override
-    public abstract float getWidth();
+    public abstract float getLengthX();
 
     /**
-     * Gets the height of the box.
-     * @return The height of the box.
+     * Gets the length of the box on the Y axis.
+     * @return The length of the box on the Y axis.
      */
     @Override
-    public abstract float getHeight();
+    public abstract float getLengthY();
+
+    /**
+     * Gets the length of the box on the Z axis.
+     * @return The length of the box on the Z axis.
+     */
+    public abstract float getLengthZ();
 
     /**
      * Gets the collision flag of the entity.

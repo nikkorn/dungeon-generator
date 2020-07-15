@@ -51,7 +51,7 @@ public class Empty extends Tile {
         Sprite sprite = Resources.getSprite(TileSprite.GROUND);
 
         // Set the width/height of the sprite to match the tile size.
-        sprite.setSize(this.getWidth(), this.getHeight());
+        sprite.setSize(this.getLengthX(), this.getLengthY());
 
         // Set the x/y of the sprite to match the tile position.
         sprite.setPosition(this.getX(), this.getY());

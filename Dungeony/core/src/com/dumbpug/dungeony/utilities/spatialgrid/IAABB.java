@@ -17,14 +17,14 @@ public interface IAABB {
     float getY();
 
     /**
-     * Gets the width of the box.
-     * @return The width of the box.
+     * Gets the length of the box on the X axis.
+     * @return The length of the box on the X axis.
      */
-    float getWidth();
+    float getLengthX();
 
     /**
-     * Gets the height of the box.
-     * @return The height of the box.
+     * Gets the length of the box on the Y axis.
+     * @return The length of the box on the Y axis.
      */
-    float getHeight();
+    float getLengthY();
 }
