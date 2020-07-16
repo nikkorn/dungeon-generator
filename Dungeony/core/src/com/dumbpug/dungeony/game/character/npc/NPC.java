@@ -59,12 +59,6 @@ public abstract class NPC extends GameCharacter {
         this.state = state;
     }
 
-    @Override
-    public float getRenderOrder() {
-        // Enemy sprites and animations should be rendered a little higher than their position for a 3D effect.
-        return this.getY() + (Constants.GAME_TILE_SIZE / 4f);
-    }
-
     /**
      * Render the renderable using the provided sprite batch.
      * @param batch The sprite batch to use in rendering the renderable.
@@ -78,7 +72,7 @@ public abstract class NPC extends GameCharacter {
         TextureRegion currentFrame = animation.getCurrentFrame(true);
 
         // Render the enemies current animation frame.
-        batch.draw(currentFrame, this.getX(), this.getY() + (Constants.GAME_TILE_SIZE / 4f), 0, 0, this.getLengthX(), this.getLengthY(),1.2f, 1.2f, 0);
+        batch.draw(currentFrame, this.getX(), this.getY(), 0, 0, this.getLengthX(), this.getLengthZ(),1.2f, 1.2f, 0);
     }
 
     /**

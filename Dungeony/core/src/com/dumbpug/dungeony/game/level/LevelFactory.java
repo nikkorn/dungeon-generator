@@ -1,6 +1,8 @@
 package com.dumbpug.dungeony.game.level;
 
+import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.characterselection.PlayerDetails;
+import com.dumbpug.dungeony.game.Entity;
 import com.dumbpug.dungeony.game.Position;
 import com.dumbpug.dungeony.game.character.enemy.Enemy;
 import com.dumbpug.dungeony.game.character.enemy.EnemyType;
@@ -16,6 +18,7 @@ import com.dumbpug.dungeony.game.tile.Tile;
 import com.dumbpug.dungeony.game.tile.TileFactory;
 import com.dumbpug.dungeony.game.tile.TileType;
 import com.dumbpug.levelgeneration.EntityDefinition;
+import com.dumbpug.levelgeneration.EntityOffset;
 import com.dumbpug.levelgeneration.ILevelGenerator;
 import com.dumbpug.levelgeneration.LevelDefinition;
 import com.dumbpug.levelgeneration.TileDefinition;
@@ -82,12 +85,17 @@ public class LevelFactory {
             // Create game objects, enemies and other things based on the current tile entities.
             for (EntityDefinition entity : tileDefinition.getEntities()) {
                 // Get the entity position relative to the tile position.
-                // TODO For now the entity will just be placed at the tile origin, works well until we have multiple entities per tile.
                 Position entityPosition = new Position(tile.getOrigin().getX(), tile.getOrigin().getY());
 
                 if (GameObjectType.isValue(entity.getName())) {
-                    // We are creating a game object.
-                    gameObjects.add(GameObjectFactory.create(GameObjectType.valueOf(entity.getName().toUpperCase()), entityPosition, null));
+                    // Create the game object.
+                    GameObject gameObject = GameObjectFactory.create(GameObjectType.valueOf(entity.getName().toUpperCase()), entityPosition, null);
+
+                    // Apply the positional offset of the entity relative to the tile position.
+                    applyEntityPositionOffset(gameObject, entity.getOffset());
+
+                    // Add the game object to the list of game objects.
+                    gameObjects.add(gameObject);
                 } else if (EnemyType.isValue(entity.getName())) {
                     // TODO Call EnemyFactory.create() and add to gameObjects list.
                 } else if (FriendlyType.isValue(entity.getName())) {
@@ -100,5 +108,29 @@ public class LevelFactory {
 
         // Create and return the level instance.
         return new Level(playerDetails, tiles, gameObjects, enemies, friendlies);
+    }
+
+    /**
+     * Apply the positional offset of the entity relative to the tile position.
+     * @param entity The entity to offset.
+     * @param offset The offset to apply.
+     */
+    private static void applyEntityPositionOffset(Entity entity, EntityOffset offset) {
+        float halfTileSize           = Constants.GAME_TILE_SIZE / 2f;
+        float entityVerticalOffset   = halfTileSize - (entity.getLengthY() / 2F);
+        float entityHorizontalOffset = halfTileSize - (entity.getLengthX() / 2F);
+
+        // Are we moving the entity to the top or bottom of the tile?
+        if (offset == EntityOffset.TOP_LEFT || offset == EntityOffset.TOP || offset == EntityOffset.TOP_RIGHT) {
+            entity.setY(entity.getY() + entityVerticalOffset);
+        } else if (offset == EntityOffset.BOTTOM_LEFT || offset == EntityOffset.BOTTOM || offset == EntityOffset.BOTTOM_RIGHT) {
+            entity.setY(entity.getY() - entityVerticalOffset);
+        }
+        // Are we moving the entity to the left or right of the tile?
+        if (offset == EntityOffset.TOP_LEFT || offset == EntityOffset.LEFT || offset == EntityOffset.BOTTOM_LEFT) {
+            entity.setX(entity.getX() - entityHorizontalOffset);
+        } else if (offset == EntityOffset.TOP_RIGHT || offset == EntityOffset.RIGHT || offset == EntityOffset.BOTTOM_RIGHT) {
+            entity.setX(entity.getX() + entityHorizontalOffset);
+        }
     }
 }

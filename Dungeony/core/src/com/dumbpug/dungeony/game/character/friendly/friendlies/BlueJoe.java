@@ -26,7 +26,7 @@ public class BlueJoe extends Friendly {
     @Override
     public float getLengthY() {
         // BlueJoe is the same depth as the player.
-        return Constants.GAME_PLAYER_SIZE;
+        return Constants.GAME_PLAYER_SIZE * 0.5f;
     }
 
     @Override
