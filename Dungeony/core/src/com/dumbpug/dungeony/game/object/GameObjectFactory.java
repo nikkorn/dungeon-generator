@@ -2,11 +2,10 @@ package com.dumbpug.dungeony.game.object;
 
 import com.dumbpug.dungeony.game.Position;
 import com.dumbpug.dungeony.game.object.objects.Vendor;
-
 import org.json.JSONObject;
 
 /**
- * Factory for creating Level instances.
+ * Factory for creating game object instances.
  */
 public class GameObjectFactory {
     /**

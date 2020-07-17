@@ -5,9 +5,11 @@ import com.dumbpug.dungeony.characterselection.PlayerDetails;
 import com.dumbpug.dungeony.game.Entity;
 import com.dumbpug.dungeony.game.Position;
 import com.dumbpug.dungeony.game.character.enemy.Enemy;
+import com.dumbpug.dungeony.game.character.enemy.EnemyFactory;
 import com.dumbpug.dungeony.game.character.enemy.EnemyType;
 import com.dumbpug.dungeony.game.character.enemy.enemies.Fishman;
 import com.dumbpug.dungeony.game.character.friendly.Friendly;
+import com.dumbpug.dungeony.game.character.friendly.FriendlyFactory;
 import com.dumbpug.dungeony.game.character.friendly.FriendlyType;
 import com.dumbpug.dungeony.game.character.friendly.friendlies.BlueJoe;
 import com.dumbpug.dungeony.game.object.GameObject;
@@ -70,10 +72,6 @@ public class LevelFactory {
         ArrayList<Enemy> enemies          = new ArrayList<Enemy>();
         ArrayList<Friendly> friendlies    = new ArrayList<Friendly>();
 
-        // TODO Remove!
-        enemies.add(new Fishman(new Position(260, 840)));
-        friendlies.add(new BlueJoe(new Position(360, 800)));
-
         // Create the game objects enemies and actual tiles based on the generated level tile definitions.
         for (TileDefinition tileDefinition : levelDefinition.getTileDefinitions()) {
             // Create the actual tile.
@@ -97,9 +95,23 @@ public class LevelFactory {
                     // Add the game object to the list of game objects.
                     gameObjects.add(gameObject);
                 } else if (EnemyType.isValue(entity.getName())) {
-                    // TODO Call EnemyFactory.create() and add to gameObjects list.
+                    // Create the enemy.
+                    Enemy enemy = EnemyFactory.create(EnemyType.valueOf(entity.getName().toUpperCase()), entityPosition, null);
+
+                    // Apply the positional offset of the entity relative to the tile position.
+                    applyEntityPositionOffset(enemy, entity.getOffset());
+
+                    // Add the enemy to the list of enemies.
+                    enemies.add(enemy);
                 } else if (FriendlyType.isValue(entity.getName())) {
-                    // TODO Call FriendlyFactory.create() and add to gameObjects list.
+                    // Create the friendly.
+                    Friendly friendly = FriendlyFactory.create(FriendlyType.valueOf(entity.getName().toUpperCase()), entityPosition, null);
+
+                    // Apply the positional offset of the entity relative to the tile position.
+                    applyEntityPositionOffset(friendly, entity.getOffset());
+
+                    // Add the enemy to the list of friendlies.
+                    friendlies.add(friendly);
                 } else {
                     throw new RuntimeException("cannot create entity instance for entity definition: " + entity.getName());
                 }
