@@ -119,7 +119,7 @@ public class Level {
         // Render the ground sprite for every tile.
         for (Tile tile : this.tiles.getAll()) {
             // Get the ground sprite for this tile.
-            Sprite sprite = Resources.getSprite(TileSprite.GROUND);
+            Sprite sprite = Resources.getSprite(TileSprite.GROUND_0);
 
             // Set the width/height of the sprite to match the tile size.
             sprite.setSize(tile.getLengthX(), tile.getLengthY());
