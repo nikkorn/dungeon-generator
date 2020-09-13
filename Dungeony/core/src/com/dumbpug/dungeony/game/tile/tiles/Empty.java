@@ -94,6 +94,14 @@ public class Empty extends Tile {
         allGroundSprites.add(TileSprite.GROUND_10);
         allGroundSprites.add(TileSprite.GROUND_11);
         allGroundSprites.add(TileSprite.GROUND_12);
+        allGroundSprites.add(TileSprite.GROUND_9);
+        allGroundSprites.add(TileSprite.GROUND_10);
+        allGroundSprites.add(TileSprite.GROUND_11);
+        allGroundSprites.add(TileSprite.GROUND_12);
+        allGroundSprites.add(TileSprite.GROUND_9);
+        allGroundSprites.add(TileSprite.GROUND_10);
+        allGroundSprites.add(TileSprite.GROUND_11);
+        allGroundSprites.add(TileSprite.GROUND_12);
 
         // Pick and return a random tile sprite.
         return allGroundSprites.get(new Random().nextInt(allGroundSprites.size()));

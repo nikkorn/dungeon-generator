@@ -25,17 +25,17 @@ public class PlayerSpawn extends GameObject {
 
     @Override
     public float getLengthX() {
-        return Constants.GAME_TILE_SIZE * 0.5f;
+        return Constants.LEVEL_TILE_SIZE * 0.5f;
     }
 
     @Override
     public float getLengthY() {
-        return Constants.GAME_TILE_SIZE * 0.5f;
+        return Constants.LEVEL_TILE_SIZE * 0.5f;
     }
 
     @Override
     public float getLengthZ() {
-        return Constants.GAME_TILE_SIZE * 0.5f;
+        return Constants.LEVEL_TILE_SIZE * 0.5f;
     }
 
     @Override

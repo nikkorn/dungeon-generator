@@ -20,25 +20,25 @@ public class BlueJoe extends Friendly {
     @Override
     public float getLengthX() {
         // BlueJoe is the same width as the player.
-        return Constants.GAME_PLAYER_SIZE;
+        return Constants.PLAYER_SIZE;
     }
 
     @Override
     public float getLengthY() {
         // BlueJoe is the same depth as the player.
-        return Constants.GAME_PLAYER_SIZE * 0.5f;
+        return Constants.PLAYER_SIZE * 0.5f;
     }
 
     @Override
     public float getLengthZ() {
         // BlueJoe is the same height as the player.
-        return Constants.GAME_PLAYER_SIZE;
+        return Constants.PLAYER_SIZE;
     }
 
     @Override
     public float getMovementSpeed() {
         // BlueJoe can move at the default speed of the player.
-        return Constants.GAME_PLAYER_MOVEMENT_PS;
+        return Constants.PLAYER_MOVEMENT_PS;
     }
 
     @Override

@@ -7,11 +7,9 @@ import com.dumbpug.dungeony.game.Position;
 import com.dumbpug.dungeony.game.character.enemy.Enemy;
 import com.dumbpug.dungeony.game.character.enemy.EnemyFactory;
 import com.dumbpug.dungeony.game.character.enemy.EnemyType;
-import com.dumbpug.dungeony.game.character.enemy.enemies.Fishman;
 import com.dumbpug.dungeony.game.character.friendly.Friendly;
 import com.dumbpug.dungeony.game.character.friendly.FriendlyFactory;
 import com.dumbpug.dungeony.game.character.friendly.FriendlyType;
-import com.dumbpug.dungeony.game.character.friendly.friendlies.BlueJoe;
 import com.dumbpug.dungeony.game.object.GameObject;
 import com.dumbpug.dungeony.game.object.GameObjectFactory;
 import com.dumbpug.dungeony.game.object.GameObjectType;
@@ -128,7 +126,7 @@ public class LevelFactory {
      * @param offset The offset to apply.
      */
     private static void applyEntityPositionOffset(Entity entity, EntityOffset offset) {
-        float halfTileSize           = Constants.GAME_TILE_SIZE / 2f;
+        float halfTileSize           = Constants.LEVEL_TILE_SIZE / 2f;
         float entityVerticalOffset   = halfTileSize - (entity.getLengthY() / 2F);
         float entityHorizontalOffset = halfTileSize - (entity.getLengthX() / 2F);
 

@@ -13,12 +13,14 @@ import com.dumbpug.dungeony.game.character.player.PlayerIdentifier;
 import com.dumbpug.dungeony.game.character.player.Players;
 import com.dumbpug.dungeony.game.object.GameObject;
 import com.dumbpug.dungeony.game.object.GameObjects;
+import com.dumbpug.dungeony.game.rendering.LevelSprite;
 import com.dumbpug.dungeony.game.rendering.Renderables;
 import com.dumbpug.dungeony.game.rendering.Resources;
 import com.dumbpug.dungeony.game.rendering.TileSprite;
 import com.dumbpug.dungeony.game.tile.Tile;
 import com.dumbpug.dungeony.game.tile.Tiles;
 import java.util.ArrayList;
+import com.dumbpug.dungeony.Constants;
 
 /**
  * An in-game level.
@@ -105,7 +107,7 @@ public class Level {
      */
     public void render(SpriteBatch batch, OrthographicCamera camera) {
         // Update camera and sprite batch to zoom and focus on players.
-        camera.zoom = 0.3f;
+        camera.zoom = Constants.LEVEL_DEFAULT_ZOOM;
 
         // Get the camera to point at just the first player for now!
         Player player = this.players.getPlayer(PlayerIdentifier.PLAYER_1);
@@ -114,9 +116,14 @@ public class Level {
         camera.update();
         batch.setProjectionMatrix(camera.combined);
 
-        // TODO Render a level underlay sprite matching the colour at the top of walls across the entire window.
+        // Render a level underlay sprite matching the colour at the top of walls across the entire window.
+        Sprite underlay = Resources.getSprite(LevelSprite.UNDERLAY);
+        underlay.setSize(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
+        underlay.setCenterX(camera.position.x);
+        underlay.setCenterY(camera.position.y);
+        underlay.draw(batch);
 
-        // Render the ground sprite for every tile.
+        // Render an empty ground sprite for every tile.
         for (Tile tile : this.tiles.getAll()) {
             // Get the ground sprite for this tile.
             Sprite sprite = Resources.getSprite(TileSprite.GROUND_0);

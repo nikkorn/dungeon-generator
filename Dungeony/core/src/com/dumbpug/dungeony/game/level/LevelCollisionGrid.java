@@ -16,7 +16,7 @@ public class LevelCollisionGrid extends SpatialGrid<Entity> {
      * Create a new instance of the LevelCollisionGrid class.
      */
     public LevelCollisionGrid() {
-        super(Constants.GAME_GRID_CELL_SIZE);
+        super(Constants.LEVEL_GRID_CELL_SIZE);
     }
 
     /**

@@ -21,7 +21,7 @@ public abstract class Tile extends Entity implements ITilePositionedEntity {
      * @param y The y position of the tile.
      */
     public Tile(int x, int y) {
-        super(new Position((x * Constants.GAME_TILE_SIZE) + (Constants.GAME_TILE_SIZE / 2), (y * Constants.GAME_TILE_SIZE) + (Constants.GAME_TILE_SIZE / 2)));
+        super(new Position((x * Constants.LEVEL_TILE_SIZE) + (Constants.LEVEL_TILE_SIZE / 2), (y * Constants.LEVEL_TILE_SIZE) + (Constants.LEVEL_TILE_SIZE / 2)));
         this.tileX = x;
         this.tileY = y;
     }
@@ -38,17 +38,17 @@ public abstract class Tile extends Entity implements ITilePositionedEntity {
 
     @Override
     public float getLengthX() {
-        return Constants.GAME_TILE_SIZE;
+        return Constants.LEVEL_TILE_SIZE;
     }
 
     @Override
     public float getLengthY() {
-        return Constants.GAME_TILE_SIZE;
+        return Constants.LEVEL_TILE_SIZE;
     }
 
     @Override
     public float getLengthZ() {
-        return Constants.GAME_TILE_SIZE;
+        return Constants.LEVEL_TILE_SIZE;
     }
 
     /**

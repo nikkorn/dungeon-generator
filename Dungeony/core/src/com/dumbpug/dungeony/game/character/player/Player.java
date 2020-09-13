@@ -56,17 +56,17 @@ public class Player extends GameCharacter {
 
     @Override
     public float getLengthX() {
-        return Constants.GAME_PLAYER_SIZE;
+        return Constants.PLAYER_SIZE;
     }
 
     @Override
     public float getLengthY() {
-        return Constants.GAME_PLAYER_SIZE * 0.5f;
+        return Constants.PLAYER_SIZE * 0.5f;
     }
 
     @Override
     public float getLengthZ() {
-        return Constants.GAME_PLAYER_SIZE;
+        return Constants.PLAYER_SIZE;
     }
 
     /**
@@ -74,7 +74,7 @@ public class Player extends GameCharacter {
      * @return The movement speed of the entity.
      */
     public float getMovementSpeed() {
-        return Constants.GAME_PLAYER_MOVEMENT_PS;
+        return Constants.PLAYER_MOVEMENT_PS;
     }
 
     /**

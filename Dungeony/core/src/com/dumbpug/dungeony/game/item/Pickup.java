@@ -26,17 +26,17 @@ public class Pickup extends Entity {
 
     @Override
     public float getLengthX() {
-        return Constants.GAME_PICKUP_SIZE;
+        return Constants.PICKUP_SIZE;
     }
 
     @Override
     public float getLengthY() {
-        return Constants.GAME_PICKUP_SIZE;
+        return Constants.PICKUP_SIZE;
     }
 
     @Override
     public float getLengthZ() {
-        return Constants.GAME_PICKUP_SIZE;
+        return Constants.PICKUP_SIZE;
     }
 
     @Override
