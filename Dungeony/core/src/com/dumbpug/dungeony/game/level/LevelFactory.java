@@ -90,6 +90,9 @@ public class LevelFactory {
                     // Apply the positional offset of the entity relative to the tile position.
                     applyEntityPositionOffset(gameObject, entity.getOffset());
 
+                    // Call the game objects 'onPositioned' method to let it know that it has been given its proper position.
+                    gameObject.onPositioned();
+
                     // Add the game object to the list of game objects.
                     gameObjects.add(gameObject);
                 } else if (EnemyType.isValue(entity.getName())) {

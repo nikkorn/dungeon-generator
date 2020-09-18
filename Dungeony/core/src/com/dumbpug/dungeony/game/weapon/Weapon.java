@@ -1,5 +1,7 @@
 package com.dumbpug.dungeony.game.weapon;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dumbpug.dungeony.game.Position;
 import com.dumbpug.dungeony.game.projectile.Projectile;
 import java.util.ArrayList;
 
@@ -11,6 +13,10 @@ public abstract class Weapon {
      * The weapon quality.
      */
     private WeaponQuality quality;
+    /**
+     * The last time the weapon was used.
+     */
+    protected long lastUsed = 0l;
 
     /**
      * Creates a new instance of the Weapon class.
@@ -29,34 +35,32 @@ public abstract class Weapon {
     }
 
     /**
+     * Attempt to use the weapon.
+     * @param origin The origin of the player using the weapon.
+     * @param angleOfUse The angle at which the weapon was used.
+     * @return Any projectiles generated
+     */
+    public abstract ArrayList<Projectile> use(Position origin, float angleOfUse, boolean isTriggerJustPressed);
+
+    /**
+     * Handles a use of the weapon.
+     * @param origin The origin of the weapon.
+     * @param angleOfUse The angle at which the weapon was used.
+     * @return Any projectiles generated.
+     */
+    public abstract ArrayList<Projectile> onUse(Position origin, float angleOfUse);
+
+    /**
      * Gets the name of the weapon.
      * @return The name of the weapon.
      */
     public abstract String getName();
 
     /**
-     * Gets the effective range of the weapon.
-     * @return The effective range of the weapon.
-     */
-    public abstract double getRange();
-
-    /**
-     * Gets the effective spread of the weapon.
-     * @return The effective spread of the weapon.
-     */
-    public abstract double getSpread();
-
-    /**
      * Gets the cooldown time of the weapon.
      * @return The cooldown time of the weapon.
      */
     public abstract long getCoolDown();
-
-    /**
-     * Gets whether the weapon is automatic fire.
-     * @return Whether the weapon is automatic fire.
-     */
-    public abstract boolean isAutomatic();
 
     /**
      * Gets the type of the weapon.
@@ -71,13 +75,10 @@ public abstract class Weapon {
     public abstract WeaponCategory getWeaponCategory();
 
     /**
-     * Attempt to use the weapon.
-     * @return Any projectiles generated
+     * Render the weapon using the provided sprite batch.
+     * @param batch The sprite batch to use in rendering the renderable.
+     * @param origin The origin of the player using the weapon.
+     * @param angle The angle at which the weapon is positioned.
      */
-    public abstract ArrayList<Projectile> use();
-
-    /**
-     * Reload the weapon.
-     */
-    public abstract void reload();
+    public abstract void render(SpriteBatch batch, Position origin, float angle);
 }

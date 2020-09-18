@@ -76,8 +76,24 @@ public class Empty extends Tile {
      */
     private TileSprite pickTileSprite() {
         // Create a list that holds all possible ground tile sprite types.
-        // This will exclude the empty GROUND_0 as that is better suited for use with full tile types.
         ArrayList<TileSprite> allGroundSprites = new ArrayList<TileSprite>();
+        allGroundSprites.add(TileSprite.GROUND_0);
+        allGroundSprites.add(TileSprite.GROUND_0);
+        allGroundSprites.add(TileSprite.GROUND_0);
+        allGroundSprites.add(TileSprite.GROUND_0);
+        allGroundSprites.add(TileSprite.GROUND_0);
+        allGroundSprites.add(TileSprite.GROUND_0);
+        allGroundSprites.add(TileSprite.GROUND_0);
+        allGroundSprites.add(TileSprite.GROUND_0);
+        allGroundSprites.add(TileSprite.GROUND_0);
+        allGroundSprites.add(TileSprite.GROUND_0);
+        allGroundSprites.add(TileSprite.GROUND_0);
+        allGroundSprites.add(TileSprite.GROUND_0);
+        allGroundSprites.add(TileSprite.GROUND_0);
+        allGroundSprites.add(TileSprite.GROUND_0);
+        allGroundSprites.add(TileSprite.GROUND_0);
+        allGroundSprites.add(TileSprite.GROUND_0);
+        allGroundSprites.add(TileSprite.GROUND_0);
         allGroundSprites.add(TileSprite.GROUND_1);
         allGroundSprites.add(TileSprite.GROUND_2);
         allGroundSprites.add(TileSprite.GROUND_3);

@@ -6,7 +6,7 @@ package com.dumbpug.dungeony.game.weapon;
 public enum WeaponCategory {
     MELEE,
     BAT,
-    PISTOL,
+    HANDGUN,
     RIFLE,
     AUTO_RIFLE,
     SHOTGUN,

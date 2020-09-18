@@ -54,6 +54,7 @@ public abstract class Entity implements IAABB, IRenderable {
      */
     public void setX(float x) {
         this.position.setX(x);
+        this.origin.setX(x + (this.getLengthX() / 2f));
     }
 
     /**
@@ -71,6 +72,7 @@ public abstract class Entity implements IAABB, IRenderable {
      */
     public void setY(float y) {
         this.position.setY(y);
+        this.origin.setY(y + (this.getLengthY() / 2f));
     }
 
     /**

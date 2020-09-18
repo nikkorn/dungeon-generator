@@ -2,9 +2,10 @@ package com.dumbpug.dungeony.game.level;
 
 import com.dumbpug.dungeony.game.Direction;
 import com.dumbpug.dungeony.game.Entity;
+import java.util.ArrayList;
 
 /**
- * A level that a character can inspect and interact with.
+ * A level that a character or object can inspect and interact with.
  */
 public class InteractiveLevel {
     /**
@@ -60,8 +61,9 @@ public class InteractiveLevel {
      * Attempt to update the position of the specified entity by moving them towards a target.
      * @param subject The subject entity to move.
      * @param target The target entity to move towards.
+     * @param distance The distance to move the entity towards the target.
      */
-    public void move(Entity subject, Entity target) {
+    public void move(Entity subject, Entity target, float distance) {
         throw new UnsupportedOperationException();
     }
 
@@ -69,9 +71,10 @@ public class InteractiveLevel {
      * Gets whether the subject entity has a line of sight to the target entity.
      * @param subject The subject entity.
      * @param target The target entity.
+     * @param distance The max line of sight distance.
      * @returns Whether the subject entity has a line of sight to the target entity.
      */
-    public boolean canSee(Entity subject, Entity target) {
+    public boolean canSee(Entity subject, Entity target, float distance) {
         throw new UnsupportedOperationException();
     }
 
@@ -83,5 +86,14 @@ public class InteractiveLevel {
      */
     public float getDistanceBetween(Entity subject, Entity target) {
         throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Gets a list of all level entities that overlap th specified area.
+     * @param area The area of overlap.
+     * @return A list of all level entities that overlap th specified area.
+     */
+    public ArrayList<Entity> getEntitiesInArea(Area area) {
+        return new ArrayList<Entity>(this.level.getGrid().getOverlapping(area));
     }
 }

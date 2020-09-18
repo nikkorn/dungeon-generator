@@ -96,8 +96,10 @@ public class Level {
         // Update each of the enemy NPCs.
         this.enemies.update(interactiveLevel);
 
+        // Update each of the in-game objects.
+        this.objects.update(interactiveLevel);
+
         // TODO Update projectiles.
-        // TODO Update game objects.
     }
 
     /**

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.dumbpug.dungeony.game.Entity;
 import com.dumbpug.dungeony.game.EntityCollisionFlag;
 import com.dumbpug.dungeony.game.Position;
+import com.dumbpug.dungeony.game.level.InteractiveLevel;
 import com.dumbpug.dungeony.game.rendering.Animation;
 import com.dumbpug.dungeony.game.rendering.Resources;
 import java.util.HashMap;
@@ -34,6 +35,12 @@ public abstract class GameObject extends Entity {
             this.animations.put(state, Resources.getGameObjectAnimation(state, this.getType()));
         }
     }
+
+    /**
+     * Update the game object as part of a single level update.
+     * @param level The interactive level.
+     */
+    public abstract void update(InteractiveLevel level);
 
     /**
      * Gets the type of the game object.
@@ -67,4 +74,9 @@ public abstract class GameObject extends Entity {
         // Draw the current animation frame.
         batch.draw(currentFrame, this.getX(), this.getY(), this.getLengthX(), this.getLengthZ());
     }
+
+    /**
+     * Called after the absolute position for this entity has been applied.
+     */
+    public void onPositioned() { }
 }

@@ -3,6 +3,7 @@ package com.dumbpug.dungeony.game.object.objects;
 import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.game.EntityCollisionFlag;
 import com.dumbpug.dungeony.game.Position;
+import com.dumbpug.dungeony.game.level.InteractiveLevel;
 import com.dumbpug.dungeony.game.object.GameObject;
 import com.dumbpug.dungeony.game.object.GameObjectType;
 
@@ -16,6 +17,11 @@ public class PlayerSpawn extends GameObject {
      */
     public PlayerSpawn(Position origin) {
         super(origin);
+    }
+
+    @Override
+    public void update(InteractiveLevel level) {
+
     }
 
     @Override
