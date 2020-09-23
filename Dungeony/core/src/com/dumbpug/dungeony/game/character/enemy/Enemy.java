@@ -1,5 +1,6 @@
 package com.dumbpug.dungeony.game.character.enemy;
 
+import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.character.npc.NPC;
 import com.dumbpug.dungeony.game.character.npc.NPCState;
 import com.dumbpug.dungeony.game.character.npc.NPCType;

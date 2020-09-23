@@ -1,6 +1,7 @@
 package com.dumbpug.dungeony.game.object.objects;
 
 import com.dumbpug.dungeony.Constants;
+import com.dumbpug.dungeony.engine.InteractiveEnvironment;
 import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.EntityCollisionFlag;
 import com.dumbpug.dungeony.game.object.GameObject;
@@ -43,6 +44,18 @@ public class PlayerSpawn extends GameObject {
         // Nothing should collide with a player spawn.
         return EntityCollisionFlag.NOTHING;
     }
+
+    @Override
+    public void onEnvironmentEntry(InteractiveEnvironment environment) { }
+
+    @Override
+    public void onEnvironmentExit(InteractiveEnvironment environment) { }
+
+    @Override
+    public void onDestroy() { }
+
+    @Override
+    public void update(InteractiveEnvironment environment, float delta) { }
 
     @Override
     public GameObjectType getType() {

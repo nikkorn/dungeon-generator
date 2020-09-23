@@ -26,7 +26,7 @@ public class Tiles {
         this.environment = environment;
 
         // Add all of the tile entities to the game environment.
-        this.environment.addEntities(tiles);
+        this.environment.addEntities(tiles, "tile");
     }
 
     /**

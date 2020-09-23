@@ -67,6 +67,15 @@ public class Environment<TRenderContext> {
     }
 
     /**
+     * Gets the group that the entity resides in, or null if the entity is not in the environment or a group.
+     * @param entity The entity.
+     * @return The group that the entity resides in, or null if the entity is not in the environment or a group.
+     */
+    public String getEntityGroup(Entity entity) {
+        return this.entities.getEntityGroup(entity);
+    }
+
+    /**
      * Add an entity to the environment.
      * @param entity The entity to add.
      * @param group The group to add the entity against.

@@ -39,7 +39,7 @@ public class Empty extends Tile {
     @Override
     public int getRenderLayer() {
         // Empty tiles should be rendered early as they render the level ground.
-        return 0;
+        return -1;
     }
 
     @Override

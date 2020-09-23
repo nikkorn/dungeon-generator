@@ -1,5 +1,6 @@
 package com.dumbpug.dungeony.game.character.npc;
 
+import com.dumbpug.dungeony.engine.Environment;
 import java.util.ArrayList;
 
 /**
@@ -11,40 +12,17 @@ public class NPCs {
      */
     private ArrayList<? extends NPC> npcs;
     /**
-     * The spatial grid to use in finding game entity collisions.
+     * The game environment.
      */
-    private EnvironmentCollisionGrid EnvironmentCollisionGrid;
-    /**
-     * The renderables list to keep updated with this list.
-     */
-    private Renderables renderables;
+    private Environment environment;
 
     /**
      * Creates an instance of the NPCs class.
      * @param npcs The list of NPCs.
-     * @param EnvironmentCollisionGrid The level grid.
-     * @param renderables The renderables list to keep updated with this list.
+     * @param environment The game environment.
      */
-    public NPCs(ArrayList<? extends NPC> npcs, EnvironmentCollisionGrid EnvironmentCollisionGrid, Renderables renderables) {
-        this.npcs               = npcs;
-        this.EnvironmentCollisionGrid = EnvironmentCollisionGrid;
-        this.renderables        = renderables;
-
-        // Add the initial list of NPCs to the level grid.
-        this.EnvironmentCollisionGrid.add(npcs);
-
-        // Add the initial list of NPCs to the renderables list.
-        this.renderables.add(npcs);
-    }
-
-    /**
-     * Update each of the NPCs sequentially.
-     * @param level The interactive level.
-     */
-    public void update(InteractiveEnvironment level) {
-        // Update each of the NPCs sequentially.
-        for (NPC npc : this.npcs) {
-            npc.update(level);
-        }
+    public NPCs(ArrayList<? extends NPC> npcs, Environment environment) {
+        this.npcs        = npcs;
+        this.environment = environment;
     }
 }

@@ -1,6 +1,8 @@
 package com.dumbpug.dungeony.game.character.friendly.friendlies;
 
 import com.dumbpug.dungeony.Constants;
+import com.dumbpug.dungeony.engine.InteractiveEnvironment;
+import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.character.friendly.Friendly;
 import com.dumbpug.dungeony.game.character.friendly.FriendlyType;
 
@@ -33,6 +35,15 @@ public class BlueJoe extends Friendly {
         // BlueJoe is the same height as the player.
         return Constants.PLAYER_SIZE;
     }
+
+    @Override
+    public void onEnvironmentEntry(InteractiveEnvironment environment) { }
+
+    @Override
+    public void onEnvironmentExit(InteractiveEnvironment environment) { }
+
+    @Override
+    public void onDestroy() { }
 
     @Override
     public float getMovementSpeed() {

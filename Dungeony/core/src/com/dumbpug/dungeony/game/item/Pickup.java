@@ -1,12 +1,16 @@
 package com.dumbpug.dungeony.game.item;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dumbpug.dungeony.Constants;
+import com.dumbpug.dungeony.engine.Entity;
+import com.dumbpug.dungeony.engine.InteractiveEnvironment;
+import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.EntityCollisionFlag;
 
 /**
  * An item pickup entity.
  */
-public class Pickup extends Entity {
+public class Pickup extends Entity<SpriteBatch> {
     /**
      * The pickup item.
      */
@@ -38,7 +42,7 @@ public class Pickup extends Entity {
     }
 
     @Override
-    public int getCollisionFlag() {
+    public int getCollisionLayers() {
         return EntityCollisionFlag.PICKUP;
     }
 
@@ -47,6 +51,21 @@ public class Pickup extends Entity {
         // Only walls and game objects should collide with pickups.
         return EntityCollisionFlag.WALL | EntityCollisionFlag.OBJECT;
     }
+
+    @Override
+    public void onEnvironmentEntry(InteractiveEnvironment environment) { }
+
+    @Override
+    public void onEnvironmentExit(InteractiveEnvironment environment) { }
+
+    @Override
+    public void onDestroy() { }
+
+    @Override
+    public void update(InteractiveEnvironment environment, float delta) { }
+
+    @Override
+    public void render(SpriteBatch spriteBatch) { }
 
     /**
      * Gets whether the pickup is automatically picked up when walked over.

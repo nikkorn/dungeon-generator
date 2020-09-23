@@ -1,7 +1,7 @@
 package com.dumbpug.dungeony.game.character.enemy;
 
+import com.dumbpug.dungeony.engine.Environment;
 import com.dumbpug.dungeony.game.character.npc.NPCs;
-
 import java.util.ArrayList;
 
 /**
@@ -10,11 +10,13 @@ import java.util.ArrayList;
 public class Enemies extends NPCs {
     /**
      * Creates an instance of the Enemies class.
-     * @param enemies            The list of enemies.
-     * @param EnvironmentCollisionGrid The level grid.
-     * @param renderables        The renderables list to keep updated with this list.
+     * @param enemies The list of enemies.
+     * @param environment The game environment.
      */
-    public Enemies(ArrayList<Enemy> enemies, EnvironmentCollisionGrid EnvironmentCollisionGrid, Renderables renderables) {
-        super(enemies, EnvironmentCollisionGrid, renderables);
+    public Enemies(ArrayList<Enemy> enemies, Environment environment) {
+        super(enemies, environment);
+
+        // Add the enemies to the game environment.
+        environment.addEntities(enemies, "enemy");
     }
 }

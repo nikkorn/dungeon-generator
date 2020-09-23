@@ -1,6 +1,8 @@
 package com.dumbpug.dungeony.game.character.enemy.enemies;
 
 import com.dumbpug.dungeony.Constants;
+import com.dumbpug.dungeony.engine.InteractiveEnvironment;
+import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.character.behaviour.BasicEnemyBehaviour;
 import com.dumbpug.dungeony.game.character.enemy.Enemy;
 import com.dumbpug.dungeony.game.character.enemy.EnemyType;
@@ -37,6 +39,15 @@ public class Fishman extends Enemy {
         // Fishman is the same height as the player.
         return Constants.PLAYER_SIZE;
     }
+
+    @Override
+    public void onEnvironmentEntry(InteractiveEnvironment environment) { }
+
+    @Override
+    public void onEnvironmentExit(InteractiveEnvironment environment) { }
+
+    @Override
+    public void onDestroy() { }
 
     @Override
     public float getMovementSpeed() {

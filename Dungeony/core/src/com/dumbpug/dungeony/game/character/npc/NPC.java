@@ -2,6 +2,8 @@ package com.dumbpug.dungeony.game.character.npc;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.dumbpug.dungeony.engine.InteractiveEnvironment;
+import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.character.GameCharacter;
 import com.dumbpug.dungeony.game.character.behaviour.INPCBehaviour;
 import com.dumbpug.dungeony.game.rendering.Animation;
@@ -72,14 +74,11 @@ public abstract class NPC extends GameCharacter {
         batch.draw(currentFrame, this.getX(), this.getY(), 0, 0, this.getLengthX(), this.getLengthZ(),1.2f, 1.2f, 0);
     }
 
-    /**
-     * Update the enemy as part of a single level update.
-     * @param level The interactive level.
-     */
-    public void update(InteractiveEnvironment level) {
+    @Override
+    public void update(InteractiveEnvironment environment, float delta) {
         // Tick the enemy behaviour if any has been defined.
         if (this.behaviour != null) {
-            this.behaviour.tick(this, level);
+            this.behaviour.tick(this, environment, delta);
         }
     }
 

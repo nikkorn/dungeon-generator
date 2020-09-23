@@ -1,6 +1,7 @@
 package com.dumbpug.dungeony.game.weapon;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.projectile.Projectile;
 import java.util.ArrayList;
 

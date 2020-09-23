@@ -35,14 +35,6 @@ public class Vendor extends GameObject {
     }
 
     @Override
-    public void update(InteractiveEnvironment level) {
-        // TODO Find all players that are in front of the machine.
-        for (Entity entity : level.getEntitiesInArea(this.areaOfInteraction)) {
-            System.out.println(entity.getClass().getName());
-        }
-    }
-
-    @Override
     public float getLengthX() {
         return 40f;
     }
@@ -70,7 +62,12 @@ public class Vendor extends GameObject {
     public void update(InteractiveEnvironment environment, float delta) {
         // TODO Find all players that are in front of the machine.
         for (Entity entity : environment.getEntitiesInArea(this.areaOfInteraction)) {
-            System.out.println(entity.getClass().getName());
+            // Get the group that the current entity is in.
+            String group = environment.getEntityGroup(entity);
+
+            if (group != null && group.equalsIgnoreCase("player")) {
+                System.out.println(entity.getClass().getName());
+            }
         }
     }
 

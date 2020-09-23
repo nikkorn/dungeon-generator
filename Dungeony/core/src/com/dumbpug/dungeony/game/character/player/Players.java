@@ -1,8 +1,8 @@
 package com.dumbpug.dungeony.game.character.player;
 
 import com.dumbpug.dungeony.characterselection.PlayerDetails;
+import com.dumbpug.dungeony.engine.Environment;
 import com.dumbpug.dungeony.game.tile.TileSpawn;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -15,24 +15,18 @@ public class Players {
      */
     private HashMap<PlayerIdentifier, Player> players = new HashMap<PlayerIdentifier, Player>();
     /**
-     * The spatial grid to use in finding game entity collisions.
+     * The game environment.
      */
-    private EnvironmentCollisionGrid EnvironmentCollisionGrid;
-    /**
-     * The renderables list to keep updated with this list.
-     */
-    private Renderables renderables;
+    private Environment environment;
 
     /**
      * Creates a new instance of the Players class.
      * @param playerDetails The list of player details.
-     * @param EnvironmentCollisionGrid The level grid
-     * @param renderables The renderables list to keep updated with this list.
+     * @param environment The game environment.
      * @param spawns The list of available spawn positions.
      */
-    public Players(ArrayList<PlayerDetails> playerDetails, EnvironmentCollisionGrid EnvironmentCollisionGrid, Renderables renderables, ArrayList<TileSpawn> spawns) {
-        this.EnvironmentCollisionGrid = EnvironmentCollisionGrid;
-        this.renderables = renderables;
+    public Players(ArrayList<PlayerDetails> playerDetails, Environment environment, ArrayList<TileSpawn> spawns) {
+        this.environment = environment;
 
         // Check that there are enough spawn positions for our players.
         if (playerDetails.size() > spawns.size()) {
@@ -46,14 +40,11 @@ public class Players {
             // Create a new player instance based on the player details and assign them an initial spawn.
             Player player = new Player(playerDetail, spawns.get(playerDetails.indexOf(playerDetail)).getLocation());
 
+            // Add the player to the game environment.
+            this.environment.addEntity(player, "player");
+
             // Add the player to our players map.
             this.players.put(playerDetail.getId(), player);
-
-            // Add the new player to the level grid.
-            this.EnvironmentCollisionGrid.add(player);
-
-            // Add the new player to the  to the renderables list.
-            this.renderables.add(player);
         }
     }
 
@@ -64,16 +55,5 @@ public class Players {
      */
     public Player getPlayer(PlayerIdentifier id) {
         return this.players.get(id);
-    }
-
-    /**
-     * Update each of the players sequentially.
-     * @param level The interactive level.
-     */
-    public void update(InteractiveEnvironment level) {
-        // Update each of the players sequentially.
-        for (Player player : this.players.values()) {
-            player.update(level);
-        }
     }
 }

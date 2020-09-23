@@ -1,16 +1,14 @@
 package com.dumbpug.dungeony.game.character;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dumbpug.dungeony.engine.Entity;
+import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.EntityCollisionFlag;
 
 /**
  * Represents an in-game character.
  */
-public abstract class GameCharacter extends Entity {
-    /**
-     * The angle at which the character is facing.
-     */
-    private float facingAngle = 0;
-
+public abstract class GameCharacter extends Entity<SpriteBatch> {
     /**
      * Creates a new instance of the GameCharacter class.
      * @param origin The initial origin of the GameCharacter.
@@ -20,7 +18,7 @@ public abstract class GameCharacter extends Entity {
     }
 
     @Override
-    public int getCollisionFlag() {
+    public int getCollisionLayers() {
         return EntityCollisionFlag.CHARACTER;
     }
 

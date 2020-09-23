@@ -1,9 +1,12 @@
 package com.dumbpug.dungeony.game.level;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dumbpug.dungeony.characterselection.PlayerDetails;
+import com.dumbpug.dungeony.engine.Environment;
+import com.dumbpug.dungeony.engine.EnvironmentConfiguration;
 import com.dumbpug.dungeony.game.character.enemy.Enemies;
 import com.dumbpug.dungeony.game.character.enemy.Enemy;
 import com.dumbpug.dungeony.game.character.friendly.Friendlies;
@@ -26,6 +29,10 @@ import com.dumbpug.dungeony.Constants;
  */
 public class Level {
     /**
+     * The game environment.
+     */
+    private Environment environment;
+    /**
      * The level tiles.
      */
     private Tiles tiles;
@@ -45,14 +52,6 @@ public class Level {
      * The players in the level.
      */
     private Players players;
-    /**
-     * The spatial grid to use in finding game entity collisions.
-     */
-    private EnvironmentCollisionGrid grid = new EnvironmentCollisionGrid();
-    /**
-     * The list of level renderables.
-     */
-    private Renderables renderables = new Renderables();
 
     /**
      * Creates a new instance of the Level class.
@@ -63,42 +62,20 @@ public class Level {
      * @param friendlies The level friendly NPCs.
      */
     public Level(ArrayList<PlayerDetails> playerDetails, ArrayList<Tile> tiles, ArrayList<GameObject> objects, ArrayList<Enemy> enemies, ArrayList<Friendly> friendlies) {
-        this.tiles      = new Tiles(tiles, this.grid, this.renderables);
-        this.objects    = new GameObjects(objects, this.grid, this.renderables);
-        this.enemies    = new Enemies(enemies, this.grid, this.renderables);
-        this.friendlies = new Friendlies(friendlies, this.grid, this.renderables);
-        this.players    = new Players(playerDetails, this.grid, this.renderables, this.tiles.getSpawns());
-    }
-
-    /**
-     * Gets the level collision grid.
-     * @return The level collision grid.
-     */
-    public EnvironmentCollisionGrid getGrid() {
-        return grid;
+        this.environment = createEnvironment();
+        this.tiles       = new Tiles(tiles, this.environment);
+        this.objects     = new GameObjects(objects, this.environment);
+        this.enemies     = new Enemies(enemies, this.environment);
+        this.friendlies  = new Friendlies(friendlies, this.environment);
+        this.players     = new Players(playerDetails, this.environment, this.tiles.getSpawns());
     }
 
     /**
      * Update the level.
      */
     public void update() {
-        // Create a wrapper around this level instance that exposes functionality and information
-        // that would be required as part of the update of any individual level entities.
-        InteractiveEnvironment InteractiveEnvironment = new InteractiveEnvironment(this);
-
-        // Update each of the players.
-        this.players.update(InteractiveEnvironment);
-
-        // Update each of the friendly NPCs.
-        this.friendlies.update(InteractiveEnvironment);
-
-        // Update each of the enemy NPCs.
-        this.enemies.update(InteractiveEnvironment);
-
-        // Update each of the in-game objects.
-        this.objects.update(InteractiveEnvironment);
-
-        // TODO Update projectiles.
+        // Update the game environment, passing the delta time to use for frame-independent operations.
+        this.environment.update(Gdx.graphics.getDeltaTime());
     }
 
     /**
@@ -139,13 +116,27 @@ public class Level {
             sprite.draw(batch);
         }
 
-        // Render every level renderable, this will be done in render order.
+        // Render the game environment.
         // TODO Pass in a window for which we will render contained renderables.
-        this.renderables.render(batch);
+        this.environment.render(batch);
 
         // Reset the application camera to its original zoom/position.
         camera.zoom = 1f;
         camera.update();
         batch.setProjectionMatrix(camera.combined);
+    }
+
+    /**
+     * Creates the game environment.
+     * @return The game environment.
+     */
+    private static Environment createEnvironment() {
+        // Create the environment config.
+        EnvironmentConfiguration config = new EnvironmentConfiguration();
+
+        // Set the environment grid cell size.
+        config.gridCellSize = Constants.LEVEL_GRID_CELL_SIZE;
+
+        return new Environment(config);
     }
 }

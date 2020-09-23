@@ -38,7 +38,7 @@ public class Projectiles {
         this.projectiles.add(projectile);
 
         // Add the projectile to the game environment.
-        this.environment.addEntity(projectile);
+        this.environment.addEntity(projectile, "projectile");
     }
 
     /**

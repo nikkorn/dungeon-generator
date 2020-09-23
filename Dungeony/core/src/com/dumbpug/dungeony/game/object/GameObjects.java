@@ -25,7 +25,7 @@ public class GameObjects {
         this.environment = environment;
 
         // Add all of the game objects to the game environment.
-        this.environment.addEntities(gameObjects);
+        this.environment.addEntities(gameObjects, "object");
     }
 
     /**
@@ -42,7 +42,7 @@ public class GameObjects {
         this.gameObjects.add(gameObject);
 
         // Add the game object to the game environment.
-        this.environment.addEntity(gameObject);
+        this.environment.addEntity(gameObject, "object");
     }
 
     /**

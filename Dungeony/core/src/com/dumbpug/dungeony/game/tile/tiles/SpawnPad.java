@@ -32,7 +32,7 @@ public class SpawnPad extends Tile {
     @Override
     public int getRenderLayer() {
         // Spawn pads are drawn at ground level.
-        return 0;
+        return -1;
     }
 
     @Override

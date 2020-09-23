@@ -1,14 +1,12 @@
 package com.dumbpug.dungeony.engine;
 
-import com.dumbpug.dungeony.engine.rendering.IRenderable;
 import com.dumbpug.dungeony.engine.rendering.Renderables;
-import com.dumbpug.dungeony.engine.rendering.RenderablesLayer;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 /**
  * The list of the entities within an environment.
@@ -71,6 +69,23 @@ public class Entities<TRenderContext>  {
                 }
             }
         };
+    }
+
+    /**
+     * Gets the group that the entity resides in, or null if the entity is not in the entities list or a group.
+     * @param entity The entity.
+     * @return The group that the entity resides in, or null if the entity is not in the entities list or a group.
+     */
+    public String getEntityGroup(Entity entity) {
+        for (Map.Entry<String, ArrayList<Entity<TRenderContext>>> entry : this.groups.entrySet()) {
+            if (entry.getValue().contains(entity)) {
+                // The entity was in the current group list.
+                return entry.getKey();
+            }
+        }
+
+        // The entity was not in any group lists.
+        return null;
     }
 
     /**

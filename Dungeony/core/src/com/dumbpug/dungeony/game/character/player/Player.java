@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.characterselection.PlayerDetails;
+import com.dumbpug.dungeony.engine.InteractiveEnvironment;
+import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.character.GameCharacter;
 import com.dumbpug.dungeony.game.rendering.Animation;
 import com.dumbpug.dungeony.game.rendering.PlayerSprite;
@@ -53,6 +55,11 @@ public class Player extends GameCharacter {
     }
 
     @Override
+    public float getMovementSpeed() {
+        return Constants.PLAYER_MOVEMENT_PS;
+    }
+
+    @Override
     public float getLengthX() {
         return Constants.PLAYER_SIZE;
     }
@@ -67,19 +74,17 @@ public class Player extends GameCharacter {
         return Constants.PLAYER_SIZE;
     }
 
-    /**
-     * Gets the movement speed of the entity.
-     * @return The movement speed of the entity.
-     */
-    public float getMovementSpeed() {
-        return Constants.PLAYER_MOVEMENT_PS;
-    }
+    @Override
+    public void onEnvironmentEntry(InteractiveEnvironment environment) { }
 
-    /**
-     * Update the player.
-     * @param level The interactive level.
-     */
-    public void update(InteractiveEnvironment level) {
+    @Override
+    public void onEnvironmentExit(InteractiveEnvironment environment) { }
+
+    @Override
+    public void onDestroy() { }
+
+    @Override
+    public void update(InteractiveEnvironment environment, float delta) {
         // Get the input provider for the player.
         IPlayerInputProvider playerInputProvider = this.getDetails().getInputProvider();
 
@@ -92,7 +97,7 @@ public class Player extends GameCharacter {
 
         // Process player input which would influence the movement of the player.
         // Any entity movement has to be taken care of by the level grid which handles all entity collisions.
-        level.move(this, movementAxisX, movementAxisY);
+        environment.move(this, movementAxisX, movementAxisY, delta);
 
         // Update the actual state of the player to reflect and changes that have happened during this update.
         // Is the player idle and not moving in any direction?

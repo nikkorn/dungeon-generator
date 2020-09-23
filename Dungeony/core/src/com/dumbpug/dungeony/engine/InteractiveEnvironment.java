@@ -90,6 +90,15 @@ public class InteractiveEnvironment {
     }
 
     /**
+     * Gets the group that the entity resides in, or null if the entity is not in the environment or a group.
+     * @param entity The entity.
+     * @return The group that the entity resides in, or null if the entity is not in the environment or a group.
+     */
+    public String getEntityGroup(Entity entity) {
+        return this.environment.getEntityGroup(entity);
+    }
+
+    /**
      * Gets a list of all level entities that overlap th specified area.
      * @param area The area of overlap.
      * @return A list of all level entities that overlap th specified area.

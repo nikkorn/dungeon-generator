@@ -1,5 +1,6 @@
 package com.dumbpug.dungeony.game.character.behaviour;
 
+import com.dumbpug.dungeony.engine.InteractiveEnvironment;
 import com.dumbpug.dungeony.game.character.npc.NPC;
 
 /**
@@ -9,7 +10,8 @@ public interface INPCBehaviour<TNPC extends NPC> {
     /**
      * Tick the NPC behaviour.
      * @param subject The NPC.
-     * @param level The interactive level.
+     * @param environment The game environment.
+     * @param delta The delta time.
      */
-    void tick (TNPC subject, InteractiveEnvironment level);
+    void tick (TNPC subject, InteractiveEnvironment environment, float delta);
 }
