@@ -3,6 +3,7 @@ package com.dumbpug.dungeony.game.tile;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.engine.Entity;
+import com.dumbpug.dungeony.engine.EntityUpdateStrategy;
 import com.dumbpug.dungeony.engine.InteractiveEnvironment;
 import com.dumbpug.dungeony.engine.Position;
 import java.util.ArrayList;
@@ -50,6 +51,15 @@ public abstract class Tile extends Entity<SpriteBatch> implements ITilePositione
     @Override
     public float getLengthZ() {
         return Constants.LEVEL_TILE_SIZE;
+    }
+
+    /**
+     * Gets the update strategy of the entity.
+     * @return The update strategy of the entity.
+     */
+    public EntityUpdateStrategy getUpdateStrategy() {
+        // Tiles will not have their own update by default.
+        return EntityUpdateStrategy.NONE;
     }
 
     @Override

@@ -101,6 +101,31 @@ public abstract class Entity<TRenderContext> implements IAABB, IRenderable<TRend
     }
 
     /**
+     * Gets the update strategy of the entity.
+     * @return The update strategy of the entity.
+     */
+    public EntityUpdateStrategy getUpdateStrategy() {
+        return EntityUpdateStrategy.PER_UPDATE;
+    }
+
+    /**
+     * Gets the update delay of the entity which is applied if the entity update strategy type is 'DELAY'.
+     * @return The update delay of the entity which is applied if the entity update strategy type is 'DELAY'.
+     */
+    public long getUpdateDelay() {
+        return 0;
+    }
+
+    /**
+     * Gets the update order of the entity, defining the order in which an entity update is processed as part of an environment update.
+     * @return The update order of the entity, defining the order in which an entity update is processed as part of an environment update.
+     */
+    public int getUpdateOrder() {
+        // By default all entities will have an update order of 0.
+        return 0;
+    }
+
+    /**
      * Gets whether the entity has been marked as to be destroyed.
      * @return Whether the entity has been marked as to be destroyed.
      */
@@ -120,18 +145,6 @@ public abstract class Entity<TRenderContext> implements IAABB, IRenderable<TRend
      * @return The length of the box on the Z axis.
      */
     public abstract float getLengthZ();
-
-    /**
-     * Gets the update strategy of the entity.
-     * @return The update strategy of the entity.
-     */
-    public abstract EntityUpdateStrategy getUpdateStrategy();
-
-    /**
-     * Gets the update delay of the entity which is applied if the entity update strategy type is 'DELAY'.
-     * @return The update delay of the entity which is applied if the entity update strategy type is 'DELAY'.
-     */
-    public abstract long getUpdateDelay();
 
     /**
      * Gets the collision layer of the entity.

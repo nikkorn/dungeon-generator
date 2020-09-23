@@ -1,7 +1,12 @@
 package com.dumbpug.dungeony.engine;
 
+import com.dumbpug.dungeony.engine.rendering.IRenderable;
 import com.dumbpug.dungeony.engine.rendering.Renderables;
+import com.dumbpug.dungeony.engine.rendering.RenderablesLayer;
+
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -18,7 +23,7 @@ public class Entities<TRenderContext>  {
      * The underlying list of all updatable entities.
      * This is kept separate from the list of all entities to speed up updates.
      */
-    private ArrayList<Entity<TRenderContext>> updatables = new ArrayList<Entity<TRenderContext>>();
+    private ArrayList<Entity<TRenderContext>> updatableEntities = new ArrayList<Entity<TRenderContext>>();
     /**
      * The mapping of entity group names to entity group lists.
      */
@@ -35,6 +40,10 @@ public class Entities<TRenderContext>  {
      * The environment interactivity layer that is available to entities during updates.
      */
     private InteractiveEnvironment interactiveEnvironment;
+    /**
+     * The comparator to use in sorting entities by update order.
+     */
+    private Comparator<Entity<TRenderContext>> updateOrderComparator;
 
     /**
      * Creates an instance of the Entities class.
@@ -46,6 +55,22 @@ public class Entities<TRenderContext>  {
         this.environmentCollisionGrid = environmentCollisionGrid;
         this.renderables              = renderables;
         this.interactiveEnvironment   = environment;
+
+        // Create the comparator we will use to sort the updatable entities whenever the collection changes.
+        this.updateOrderComparator = new Comparator<Entity<TRenderContext>>() {
+            @Override
+            public int compare(Entity<TRenderContext> first, Entity<TRenderContext> second) {
+                float difference = first.getUpdateOrder() - second.getUpdateOrder();
+
+                if (difference < 0) {
+                    return 1;
+                } else if (difference > 0) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            }
+        };
     }
 
     /**
@@ -96,7 +121,11 @@ public class Entities<TRenderContext>  {
 
         // Are we adding this to the list of updatable entities?
         if (entity.getUpdateStrategy() != EntityUpdateStrategy.NONE) {
-            this.updatables.add(entity);
+            // Add the entity to our list of updatable entities.
+            this.updatableEntities.add(entity);
+
+            // Sort the updatable entities based on their update order.
+            Collections.sort(this.updatableEntities, this.updateOrderComparator);
         }
 
         // Add the entity to the level grid.
@@ -130,6 +159,16 @@ public class Entities<TRenderContext>  {
         // Remove the entity from our list of all entities.
         this.entities.remove(entity);
 
+        // Look through any groups we have and attempt to remove the entity.
+        for (ArrayList<Entity<TRenderContext>> group : this.groups.values()) {
+            if (group.remove(entity)) {
+                break;
+            }
+        }
+
+        // This entity may have been added to our list of updatable entities so attempt to remove it.
+        this.updatableEntities.remove(entity);
+
         // Remove the entity from the level grid.
         this.environmentCollisionGrid.remove(entity);
 
@@ -148,8 +187,10 @@ public class Entities<TRenderContext>  {
         // Create a set of all entities that must be destroyed and removed from the collection.
         HashSet<Entity<TRenderContext>> pendingDestroy = new HashSet<Entity<TRenderContext>>();
 
-        // Update each of the entities sequentially.
-        for (Entity<TRenderContext> entity : this.entities) {
+        // Update each of the updatable entities sequentially.
+        for (Entity<TRenderContext> entity : this.updatableEntities) {
+            // TODO: Skip here if the update strategy of the entity is 'DELAY' and we have not waited long enough for the next update.
+
             // The entity may have already been marked for destruction, maybe via another entities update.
             if (entity.isMarkedForDestroy()) {
                 pendingDestroy.add(entity);

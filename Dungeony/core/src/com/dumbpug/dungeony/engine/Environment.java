@@ -1,7 +1,6 @@
 package com.dumbpug.dungeony.engine;
 
 import com.dumbpug.dungeony.engine.rendering.Renderables;
-
 import java.util.ArrayList;
 
 /**
@@ -70,9 +69,29 @@ public class Environment<TRenderContext> {
     /**
      * Add an entity to the environment.
      * @param entity The entity to add.
+     * @param group The group to add the entity against.
+     */
+    public void addEntity(Entity<TRenderContext> entity, String group) {
+        this.entities.add(entity);
+    }
+
+    /**
+     * Add an entity to the environment.
+     * @param entity The entity to add.
      */
     public void addEntity(Entity<TRenderContext> entity) {
-        this.entities.add(entity);
+        this.addEntity(entity, null);
+    }
+
+    /**
+     * Add a list of entities to the environment.
+     * @param list The list of entities to add.
+     * @param group The group to add the entities against.
+     */
+    public void addEntities(ArrayList<Entity<TRenderContext>> list, String group) {
+        for (Entity<TRenderContext> entity : list) {
+            this.addEntity(entity, group);
+        }
     }
 
     /**
@@ -80,9 +99,7 @@ public class Environment<TRenderContext> {
      * @param list The list of entities to add.
      */
     public void addEntities(ArrayList<Entity<TRenderContext>> list) {
-        for (Entity<TRenderContext> entity : list) {
-            this.addEntity(entity);
-        }
+        this.addEntities(list, null);
     }
 
     /**
