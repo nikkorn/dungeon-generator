@@ -6,7 +6,7 @@ import java.util.ArrayList;
 /**
  * A spatial grid that handles the movement and collisions of entities in an environment.
  */
-public class EnvironmentCollisionGrid<TEntity extends Entity> extends SpatialGrid<TEntity> {
+public class EnvironmentCollisionGrid extends SpatialGrid<Entity> {
     /**
      * Create a new instance of the EnvironmentCollisionGrid class.
      * @param cellSize The size of cells in the spatial grid.
@@ -24,7 +24,7 @@ public class EnvironmentCollisionGrid<TEntity extends Entity> extends SpatialGri
      * @param distance The distance to move the entity.
      * @param delta The delta time.
      */
-    public void moveByDirection(TEntity subject, Direction direction, float distance, float delta) {
+    public void moveByDirection(Entity subject, Direction direction, float distance, float delta) {
         this.moveByAngle(subject, direction.getAngle(), distance, delta);
     }
 
@@ -37,7 +37,7 @@ public class EnvironmentCollisionGrid<TEntity extends Entity> extends SpatialGri
      * @param distance The distance to move the entity.
      * @param delta The delta time.
      */
-    public void moveByAngle(TEntity subject, float angle, float distance, float delta) {
+    public void moveByAngle(Entity subject, float angle, float distance, float delta) {
         // The entity must have already been added to the grid.
         if (!this.contains(subject)) {
             return;
@@ -60,7 +60,7 @@ public class EnvironmentCollisionGrid<TEntity extends Entity> extends SpatialGri
      * @param offsetY The offset to apply on the Y axis.
      * @param delta The delta time.
      */
-    public void move(TEntity subject, float offsetX, float offsetY, float delta) {
+    public void move(Entity subject, float offsetX, float offsetY, float delta) {
         // The entity must have already been added to the grid.
         if (!this.contains(subject)) {
             return;
@@ -77,7 +77,7 @@ public class EnvironmentCollisionGrid<TEntity extends Entity> extends SpatialGri
      * @param offsetY The offset to apply on the Y axis.
      * @param delta The delta time.
      */
-    private void moveEntity(TEntity subject, float offsetX, float offsetY, float delta) {
+    private void moveEntity(Entity subject, float offsetX, float offsetY, float delta) {
         // TODO Break up or movement into small maximum x/y segments if the x/y offset is really big.
         // TODO For each x/y segment:
         //       - Move X axis first and try to find intersecting and/or colliding aabbs.
@@ -96,7 +96,7 @@ public class EnvironmentCollisionGrid<TEntity extends Entity> extends SpatialGri
      * @param axis The axis on which to update the entity position.
      * @param delta The delta time.
      */
-    private void moveEntityOnAxis(TEntity entity, float offset, Axis axis, float delta) {
+    private void moveEntityOnAxis(Entity entity, float offset, Axis axis, float delta) {
         // TODO We should chop up large movements into smaller increments.
 
         // How the entity position is updated depends on the axis.
@@ -114,8 +114,8 @@ public class EnvironmentCollisionGrid<TEntity extends Entity> extends SpatialGri
             this.update(entity);
 
             // Find any level entities that the entity may now be colliding with.
-            ArrayList<TEntity> collidingEntities = new ArrayList<>();
-            for (TEntity collidingEntity : this.getColliding(entity)) {
+            ArrayList<Entity> collidingEntities = new ArrayList<>();
+            for (Entity collidingEntity : this.getColliding(entity)) {
                 // Even though the entities collide in our level grid, they may not actually bump into each other.
                 if (canEntitiesCollide(collidingEntity, entity)) {
                     collidingEntities.add(collidingEntity);
@@ -143,8 +143,8 @@ public class EnvironmentCollisionGrid<TEntity extends Entity> extends SpatialGri
             this.update(entity);
 
             // Find any level entities that the entity may now be colliding with.
-            ArrayList<TEntity> collidingEntities = new ArrayList<>();
-            for (TEntity collidingEntity : this.getColliding(entity)) {
+            ArrayList<Entity> collidingEntities = new ArrayList<>();
+            for (Entity collidingEntity : this.getColliding(entity)) {
                 // Even though the entities collide in our level grid, they may not actually bump into each other.
                 if (canEntitiesCollide(collidingEntity, entity)) {
                     collidingEntities.add(collidingEntity);
@@ -167,7 +167,7 @@ public class EnvironmentCollisionGrid<TEntity extends Entity> extends SpatialGri
      * @param b Entity b.
      * @return Whether entity a can collide with entity b.
      */
-    private boolean canEntitiesCollide(TEntity a, TEntity b) {
+    private boolean canEntitiesCollide(Entity a, Entity b) {
         return (a.getCollisionMask() & b.getCollisionLayers()) > 0 || (b.getCollisionMask() & a.getCollisionLayers()) > 0;
     }
 }

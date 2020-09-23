@@ -2,10 +2,9 @@ package com.dumbpug.dungeony.game.object;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.dumbpug.dungeony.game.Entity;
+import com.dumbpug.dungeony.engine.Entity;
+import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.EntityCollisionFlag;
-import com.dumbpug.dungeony.game.Position;
-import com.dumbpug.dungeony.game.level.InteractiveLevel;
 import com.dumbpug.dungeony.game.rendering.Animation;
 import com.dumbpug.dungeony.game.rendering.Resources;
 import java.util.HashMap;
@@ -13,7 +12,7 @@ import java.util.HashMap;
 /**
  * An object that can exist in the game.
  */
-public abstract class GameObject extends Entity {
+public abstract class GameObject extends Entity<SpriteBatch> {
     /**
      * The object state.
      */
@@ -36,20 +35,8 @@ public abstract class GameObject extends Entity {
         }
     }
 
-    /**
-     * Update the game object as part of a single level update.
-     * @param level The interactive level.
-     */
-    public abstract void update(InteractiveLevel level);
-
-    /**
-     * Gets the type of the game object.
-     * @return The type of the game object.
-     */
-    public abstract GameObjectType getType();
-
     @Override
-    public int getCollisionFlag() {
+    public int getCollisionLayers() {
         return EntityCollisionFlag.OBJECT;
     }
 
@@ -58,6 +45,12 @@ public abstract class GameObject extends Entity {
         // Everything should collide with an object by default.
         return EntityCollisionFlag.WALL | EntityCollisionFlag.CHARACTER | EntityCollisionFlag.PICKUP | EntityCollisionFlag.PROJECTILE | EntityCollisionFlag.OBJECT;
     }
+
+    /**
+     * Gets the type of the game object.
+     * @return The type of the game object.
+     */
+    public abstract GameObjectType getType();
 
     /**
      * Render the renderable using the provided sprite batch.
@@ -78,5 +71,7 @@ public abstract class GameObject extends Entity {
     /**
      * Called after the absolute position for this entity has been applied.
      */
-    public void onPositioned() { }
+    public void onPositioned() {
+        // An object does nothing by default when it is positioned.
+    }
 }

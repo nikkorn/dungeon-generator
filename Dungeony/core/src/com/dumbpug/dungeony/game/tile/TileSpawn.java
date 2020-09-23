@@ -1,6 +1,6 @@
 package com.dumbpug.dungeony.game.tile;
 
-import com.dumbpug.dungeony.game.Position;
+import com.dumbpug.dungeony.engine.Position;
 
 /**
  * Defines an entity spawn position provided by a tile.

@@ -1,9 +1,7 @@
 package com.dumbpug.dungeony.game.item;
 
 import com.dumbpug.dungeony.Constants;
-import com.dumbpug.dungeony.game.Entity;
 import com.dumbpug.dungeony.game.EntityCollisionFlag;
-import com.dumbpug.dungeony.game.Position;
 
 /**
  * An item pickup entity.

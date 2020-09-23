@@ -1,15 +1,16 @@
 package com.dumbpug.dungeony.game.tile;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dumbpug.dungeony.Constants;
-import com.dumbpug.dungeony.game.Entity;
-import com.dumbpug.dungeony.game.Position;
-
+import com.dumbpug.dungeony.engine.Entity;
+import com.dumbpug.dungeony.engine.InteractiveEnvironment;
+import com.dumbpug.dungeony.engine.Position;
 import java.util.ArrayList;
 
 /**
  * An in-game tile entity.
  */
-public abstract class Tile extends Entity implements ITilePositionedEntity {
+public abstract class Tile extends Entity<SpriteBatch> implements ITilePositionedEntity {
     /**
      * The tile based x/y position of the tile.
      */
@@ -50,6 +51,15 @@ public abstract class Tile extends Entity implements ITilePositionedEntity {
     public float getLengthZ() {
         return Constants.LEVEL_TILE_SIZE;
     }
+
+    @Override
+    public void onEnvironmentEntry(InteractiveEnvironment environment) {}
+
+    @Override
+    public void onEnvironmentExit(InteractiveEnvironment environment) {}
+
+    @Override
+    public void onDestroy() {}
 
     /**
      * Gets the list of entity spawn positions for this tile.

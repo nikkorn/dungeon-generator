@@ -1,6 +1,6 @@
 package com.dumbpug.dungeony.game.object;
 
-import com.dumbpug.dungeony.game.Position;
+import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.object.objects.Vendor;
 import org.json.JSONObject;
 

@@ -1,7 +1,6 @@
 package com.dumbpug.dungeony.game.character.enemy.enemies;
 
 import com.dumbpug.dungeony.Constants;
-import com.dumbpug.dungeony.game.Position;
 import com.dumbpug.dungeony.game.character.behaviour.BasicEnemyBehaviour;
 import com.dumbpug.dungeony.game.character.enemy.Enemy;
 import com.dumbpug.dungeony.game.character.enemy.EnemyType;

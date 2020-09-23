@@ -1,9 +1,9 @@
 package com.dumbpug.dungeony.game.object.objects;
 
-import com.dumbpug.dungeony.game.Entity;
-import com.dumbpug.dungeony.game.Position;
-import com.dumbpug.dungeony.game.level.Area;
-import com.dumbpug.dungeony.game.level.InteractiveLevel;
+import com.dumbpug.dungeony.engine.Area;
+import com.dumbpug.dungeony.engine.Entity;
+import com.dumbpug.dungeony.engine.InteractiveEnvironment;
+import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.object.GameObject;
 import com.dumbpug.dungeony.game.object.GameObjectType;
 
@@ -35,16 +35,11 @@ public class Vendor extends GameObject {
     }
 
     @Override
-    public void update(InteractiveLevel level) {
+    public void update(InteractiveEnvironment level) {
         // TODO Find all players that are in front of the machine.
         for (Entity entity : level.getEntitiesInArea(this.areaOfInteraction)) {
             System.out.println(entity.getClass().getName());
         }
-    }
-
-    @Override
-    public GameObjectType getType() {
-        return GameObjectType.VENDOR;
     }
 
     @Override
@@ -60,5 +55,27 @@ public class Vendor extends GameObject {
     @Override
     public float getLengthZ() {
         return 62f;
+    }
+
+    @Override
+    public void onEnvironmentEntry(InteractiveEnvironment environment) { }
+
+    @Override
+    public void onEnvironmentExit(InteractiveEnvironment environment) { }
+
+    @Override
+    public void onDestroy() { }
+
+    @Override
+    public void update(InteractiveEnvironment environment, float delta) {
+        // TODO Find all players that are in front of the machine.
+        for (Entity entity : environment.getEntitiesInArea(this.areaOfInteraction)) {
+            System.out.println(entity.getClass().getName());
+        }
+    }
+
+    @Override
+    public GameObjectType getType() {
+        return GameObjectType.VENDOR;
     }
 }

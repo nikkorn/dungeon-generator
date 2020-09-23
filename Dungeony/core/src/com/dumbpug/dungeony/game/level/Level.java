@@ -14,7 +14,6 @@ import com.dumbpug.dungeony.game.character.player.Players;
 import com.dumbpug.dungeony.game.object.GameObject;
 import com.dumbpug.dungeony.game.object.GameObjects;
 import com.dumbpug.dungeony.game.rendering.LevelSprite;
-import com.dumbpug.dungeony.game.rendering.Renderables;
 import com.dumbpug.dungeony.game.rendering.Resources;
 import com.dumbpug.dungeony.game.rendering.TileSprite;
 import com.dumbpug.dungeony.game.tile.Tile;
@@ -49,7 +48,7 @@ public class Level {
     /**
      * The spatial grid to use in finding game entity collisions.
      */
-    private LevelCollisionGrid grid = new LevelCollisionGrid();
+    private EnvironmentCollisionGrid grid = new EnvironmentCollisionGrid();
     /**
      * The list of level renderables.
      */
@@ -75,7 +74,7 @@ public class Level {
      * Gets the level collision grid.
      * @return The level collision grid.
      */
-    public LevelCollisionGrid getGrid() {
+    public EnvironmentCollisionGrid getGrid() {
         return grid;
     }
 
@@ -85,19 +84,19 @@ public class Level {
     public void update() {
         // Create a wrapper around this level instance that exposes functionality and information
         // that would be required as part of the update of any individual level entities.
-        InteractiveLevel interactiveLevel = new InteractiveLevel(this);
+        InteractiveEnvironment InteractiveEnvironment = new InteractiveEnvironment(this);
 
         // Update each of the players.
-        this.players.update(interactiveLevel);
+        this.players.update(InteractiveEnvironment);
 
         // Update each of the friendly NPCs.
-        this.friendlies.update(interactiveLevel);
+        this.friendlies.update(InteractiveEnvironment);
 
         // Update each of the enemy NPCs.
-        this.enemies.update(interactiveLevel);
+        this.enemies.update(InteractiveEnvironment);
 
         // Update each of the in-game objects.
-        this.objects.update(interactiveLevel);
+        this.objects.update(InteractiveEnvironment);
 
         // TODO Update projectiles.
     }

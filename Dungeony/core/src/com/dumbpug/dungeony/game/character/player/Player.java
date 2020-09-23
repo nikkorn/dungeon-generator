@@ -5,9 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.characterselection.PlayerDetails;
-import com.dumbpug.dungeony.game.Position;
 import com.dumbpug.dungeony.game.character.GameCharacter;
-import com.dumbpug.dungeony.game.level.InteractiveLevel;
 import com.dumbpug.dungeony.game.rendering.Animation;
 import com.dumbpug.dungeony.game.rendering.PlayerSprite;
 import com.dumbpug.dungeony.game.rendering.Resources;
@@ -81,7 +79,7 @@ public class Player extends GameCharacter {
      * Update the player.
      * @param level The interactive level.
      */
-    public void update(InteractiveLevel level) {
+    public void update(InteractiveEnvironment level) {
         // Get the input provider for the player.
         IPlayerInputProvider playerInputProvider = this.getDetails().getInputProvider();
 

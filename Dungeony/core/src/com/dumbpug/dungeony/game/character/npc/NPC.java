@@ -2,11 +2,8 @@ package com.dumbpug.dungeony.game.character.npc;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.dumbpug.dungeony.Constants;
-import com.dumbpug.dungeony.game.Position;
 import com.dumbpug.dungeony.game.character.GameCharacter;
 import com.dumbpug.dungeony.game.character.behaviour.INPCBehaviour;
-import com.dumbpug.dungeony.game.level.InteractiveLevel;
 import com.dumbpug.dungeony.game.rendering.Animation;
 import java.util.HashMap;
 
@@ -79,7 +76,7 @@ public abstract class NPC extends GameCharacter {
      * Update the enemy as part of a single level update.
      * @param level The interactive level.
      */
-    public void update(InteractiveLevel level) {
+    public void update(InteractiveEnvironment level) {
         // Tick the enemy behaviour if any has been defined.
         if (this.behaviour != null) {
             this.behaviour.tick(this, level);

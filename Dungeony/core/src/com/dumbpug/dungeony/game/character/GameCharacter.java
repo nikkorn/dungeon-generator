@@ -1,8 +1,6 @@
 package com.dumbpug.dungeony.game.character;
 
-import com.dumbpug.dungeony.game.Entity;
 import com.dumbpug.dungeony.game.EntityCollisionFlag;
-import com.dumbpug.dungeony.game.Position;
 
 /**
  * Represents an in-game character.

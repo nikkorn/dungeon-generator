@@ -2,8 +2,9 @@ package com.dumbpug.dungeony.game.tile.tiles;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dumbpug.dungeony.engine.InteractiveEnvironment;
+import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.EntityCollisionFlag;
-import com.dumbpug.dungeony.game.Position;
 import com.dumbpug.dungeony.game.rendering.Resources;
 import com.dumbpug.dungeony.game.rendering.TileSprite;
 import com.dumbpug.dungeony.game.tile.Tile;
@@ -35,7 +36,7 @@ public class SpawnPad extends Tile {
     }
 
     @Override
-    public int getCollisionFlag() {
+    public int getCollisionLayers() {
         return EntityCollisionFlag.NOTHING;
     }
 
@@ -44,22 +45,8 @@ public class SpawnPad extends Tile {
         return EntityCollisionFlag.NOTHING;
     }
 
-    /**
-     * Gets the list of entity spawn positions for this tile.
-     * @return The list of entity spawn positions for this tile.
-     */
     @Override
-    public ArrayList<TileSpawn> getTileSpawns() {
-        ArrayList<TileSpawn> spawns = new ArrayList<TileSpawn>();
-
-        // A spawn pad provides 4 spawn positions at each of its corners.
-        spawns.add(new TileSpawn(new Position(this.getX(), this.getY())));
-        spawns.add(new TileSpawn(new Position(this.getX() + (this.getLengthX() / 2f), this.getY())));
-        spawns.add(new TileSpawn(new Position(this.getX(), this.getY() + (this.getLengthY() / 2f))));
-        spawns.add(new TileSpawn(new Position(this.getX() + (this.getLengthX() / 2f), this.getY() + (this.getLengthY() / 2f))));
-
-        return spawns;
-    }
+    public void update(InteractiveEnvironment environment, float delta) { }
 
     /**
      * Render the renderable using the provided sprite batch.
@@ -77,6 +64,23 @@ public class SpawnPad extends Tile {
 
         // Draw the sprite.
         sprite.draw(batch);
+    }
+
+    /**
+     * Gets the list of entity spawn positions for this tile.
+     * @return The list of entity spawn positions for this tile.
+     */
+    @Override
+    public ArrayList<TileSpawn> getTileSpawns() {
+        ArrayList<TileSpawn> spawns = new ArrayList<TileSpawn>();
+
+        // A spawn pad provides 4 spawn positions at each of its corners.
+        spawns.add(new TileSpawn(new Position(this.getX(), this.getY())));
+        spawns.add(new TileSpawn(new Position(this.getX() + (this.getLengthX() / 2f), this.getY())));
+        spawns.add(new TileSpawn(new Position(this.getX(), this.getY() + (this.getLengthY() / 2f))));
+        spawns.add(new TileSpawn(new Position(this.getX() + (this.getLengthX() / 2f), this.getY() + (this.getLengthY() / 2f))));
+
+        return spawns;
     }
 }
 

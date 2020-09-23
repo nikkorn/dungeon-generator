@@ -1,6 +1,5 @@
 package com.dumbpug.dungeony.game.character.enemy;
 
-import com.dumbpug.dungeony.game.Position;
 import com.dumbpug.dungeony.game.character.enemy.enemies.Fishman;
 import org.json.JSONObject;
 

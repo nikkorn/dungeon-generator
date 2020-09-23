@@ -1,7 +1,9 @@
 package com.dumbpug.dungeony.game.projectile.projectiles;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dumbpug.dungeony.Constants;
-import com.dumbpug.dungeony.game.Position;
+import com.dumbpug.dungeony.engine.InteractiveEnvironment;
+import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.character.GameCharacter;
 import com.dumbpug.dungeony.game.object.GameObject;
 import com.dumbpug.dungeony.game.projectile.Projectile;
@@ -51,5 +53,19 @@ public class Bullet extends Projectile {
     @Override
     public void onTileCollision(Tile tile) {
         this.setState(ProjectileState.COLLIDED);
+    }
+
+    @Override
+    public void onEnvironmentEntry(InteractiveEnvironment environment) { }
+
+    @Override
+    public void onEnvironmentExit(InteractiveEnvironment environment) { }
+
+    @Override
+    public void onDestroy() { }
+
+    @Override
+    public void render(SpriteBatch spriteBatch) {
+        // TODO Render the bullet!
     }
 }

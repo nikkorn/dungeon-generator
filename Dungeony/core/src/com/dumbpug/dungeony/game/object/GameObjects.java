@@ -1,8 +1,6 @@
 package com.dumbpug.dungeony.game.object;
 
-import com.dumbpug.dungeony.game.level.InteractiveLevel;
-import com.dumbpug.dungeony.game.level.LevelCollisionGrid;
-import com.dumbpug.dungeony.game.rendering.Renderables;
+import com.dumbpug.dungeony.engine.Environment;
 import java.util.ArrayList;
 
 /**
@@ -14,30 +12,20 @@ public class GameObjects {
      */
     private ArrayList<GameObject> gameObjects;
     /**
-     * The spatial grid to use in finding game entity collisions.
+     * The game environment.
      */
-    private LevelCollisionGrid levelCollisionGrid;
-    /**
-     * The renderables list to keep updated with this list.
-     */
-    private Renderables renderables;
+    private Environment environment;
 
     /**
      * Creates an instance of the GameObjects class.
-     * @param gameObjects The list of game objects.
-     * @param levelCollisionGrid The level grid.
-     * @param renderables The renderables list to keep updated with this list.
+     * @param environment The game environment.
      */
-    public GameObjects(ArrayList<GameObject> gameObjects, LevelCollisionGrid levelCollisionGrid, Renderables renderables) {
+    public GameObjects(ArrayList<GameObject> gameObjects, Environment environment) {
         this.gameObjects = gameObjects;
-        this.levelCollisionGrid = levelCollisionGrid;
-        this.renderables = renderables;
+        this.environment = environment;
 
-        // Add the initial list of game objects to the level grid.
-        this.levelCollisionGrid.add(gameObjects);
-
-        // Add the initial list of game objects to the renderables list.
-        this.renderables.add(gameObjects);
+        // Add all of the game objects to the game environment.
+        this.environment.addEntities(gameObjects);
     }
 
     /**
@@ -53,11 +41,8 @@ public class GameObjects {
         // Add the game object to our list of game objects.
         this.gameObjects.add(gameObject);
 
-        // Add the game object to the level grid.
-        this.levelCollisionGrid.add(gameObject);
-
-        // Add the game object to the renderables list.
-        this.renderables.add(gameObject);
+        // Add the game object to the game environment.
+        this.environment.addEntity(gameObject);
     }
 
     /**
@@ -73,21 +58,7 @@ public class GameObjects {
         // Remove the game object from our list of game objects.
         this.gameObjects.remove(gameObject);
 
-        // Remove the game object from the level grid.
-        this.levelCollisionGrid.remove(gameObject);
-
-        // Remove the game object from the renderables list.
-        this.renderables.remove(gameObject);
-    }
-
-    /**
-     * Update each of the game objects sequentially.
-     * @param level The interactive level.
-     */
-    public void update(InteractiveLevel level) {
-        // Update each of the game objects sequentially.
-        for (GameObject object : this.gameObjects) {
-            object.update(level);
-        }
+        // Remove the game object from the game environment.
+        this.environment.removeEntity(gameObject);
     }
 }

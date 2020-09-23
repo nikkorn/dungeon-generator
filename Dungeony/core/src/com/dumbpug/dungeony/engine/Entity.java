@@ -80,26 +80,6 @@ public abstract class Entity<TRenderContext> implements IAABB, IRenderable<TRend
     }
 
     /**
-     * Gets the length of the box on the X axis.
-     * @return The length of the box on the X axis.
-     */
-    @Override
-    public abstract float getLengthX();
-
-    /**
-     * Gets the length of the box on the Y axis.
-     * @return The length of the box on the Y axis.
-     */
-    @Override
-    public abstract float getLengthY();
-
-    /**
-     * Gets the length of the box on the Z axis.
-     * @return The length of the box on the Z axis.
-     */
-    public abstract float getLengthZ();
-
-    /**
      * Gets the renderable layer to use in sorting.
      * The renderable layer will take precedence over the renderable index.
      * @return The renderable layer to use in sorting.
@@ -136,6 +116,36 @@ public abstract class Entity<TRenderContext> implements IAABB, IRenderable<TRend
     }
 
     /**
+     * Gets the length of the box on the Z axis.
+     * @return The length of the box on the Z axis.
+     */
+    public abstract float getLengthZ();
+
+    /**
+     * Gets the update strategy of the entity.
+     * @return The update strategy of the entity.
+     */
+    public abstract EntityUpdateStrategy getUpdateStrategy();
+
+    /**
+     * Gets the update delay of the entity which is applied if the entity update strategy type is 'DELAY'.
+     * @return The update delay of the entity which is applied if the entity update strategy type is 'DELAY'.
+     */
+    public abstract long getUpdateDelay();
+
+    /**
+     * Gets the collision layer of the entity.
+     * @return The collision layer of the entity.
+     */
+    public abstract int getCollisionLayers();
+
+    /**
+     * Gets the collision mask of the entity.
+     * @return The collision mask of the entity.
+     */
+    public abstract int getCollisionMask();
+
+    /**
      * Called when the entity is added to an environment.
      * @param environment The interactive environment.
      */
@@ -164,16 +174,4 @@ public abstract class Entity<TRenderContext> implements IAABB, IRenderable<TRend
      * @param context The render context.
      */
     public abstract void render(TRenderContext context);
-
-    /**
-     * Gets the collision layer of the entity.
-     * @return The collision layer of the entity.
-     */
-    public abstract int getCollisionLayers();
-
-    /**
-     * Gets the collision mask of the entity.
-     * @return The collision mask of the entity.
-     */
-    public abstract int getCollisionMask();
 }

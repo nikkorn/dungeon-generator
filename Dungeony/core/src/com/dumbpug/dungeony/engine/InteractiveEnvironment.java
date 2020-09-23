@@ -5,11 +5,11 @@ import java.util.ArrayList;
 /**
  * An interactivity layer that is available to entities during updates.
  */
-public class InteractiveEnvironment<TEntity extends Entity> {
+public class InteractiveEnvironment {
     /**
      * The environment.
      */
-    private Environment<TEntity, ?> environment;
+    private Environment environment;
 
     /**
      * Creates a new instance of the InteractiveEnvironment class.
@@ -28,7 +28,7 @@ public class InteractiveEnvironment<TEntity extends Entity> {
      * @param distance The distance to move the entity.
      * @param delta The delta time.
      */
-    public void moveByDirection(TEntity subject, Direction direction, float distance, float delta) {
+    public void moveByDirection(Entity subject, Direction direction, float distance, float delta) {
         this.environment.getGrid().moveByDirection(subject, direction, distance, delta);
     }
 
@@ -41,7 +41,7 @@ public class InteractiveEnvironment<TEntity extends Entity> {
      * @param distance The distance to move the entity.
      * @param delta The delta time.
      */
-    public void moveByAngle(TEntity subject, float angle, float distance, float delta) {
+    public void moveByAngle(Entity subject, float angle, float distance, float delta) {
         this.environment.getGrid().moveByAngle(subject, angle, distance, delta);
     }
 
@@ -54,7 +54,7 @@ public class InteractiveEnvironment<TEntity extends Entity> {
      * @param offsetY A value between -1 and 1 representing the movement to make to the Y position of the entity.
      * @param delta The delta time.
      */
-    public void move(TEntity subject, float offsetX, float offsetY, float delta) {
+    public void move(Entity subject, float offsetX, float offsetY, float delta) {
         this.environment.getGrid().move(subject, offsetX, offsetY, delta);
     }
 
@@ -94,7 +94,7 @@ public class InteractiveEnvironment<TEntity extends Entity> {
      * @param area The area of overlap.
      * @return A list of all level entities that overlap th specified area.
      */
-    public ArrayList<TEntity> getEntitiesInArea(Area area) {
-        return new ArrayList<TEntity>(this.environment.getGrid().getOverlapping(area));
+    public ArrayList<Entity> getEntitiesInArea(Area area) {
+        return new ArrayList<Entity>(this.environment.getGrid().getOverlapping(area));
     }
 }

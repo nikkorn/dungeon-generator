@@ -1,9 +1,8 @@
 package com.dumbpug.dungeony.game.object.objects;
 
 import com.dumbpug.dungeony.Constants;
+import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.EntityCollisionFlag;
-import com.dumbpug.dungeony.game.Position;
-import com.dumbpug.dungeony.game.level.InteractiveLevel;
 import com.dumbpug.dungeony.game.object.GameObject;
 import com.dumbpug.dungeony.game.object.GameObjectType;
 
@@ -17,16 +16,6 @@ public class PlayerSpawn extends GameObject {
      */
     public PlayerSpawn(Position origin) {
         super(origin);
-    }
-
-    @Override
-    public void update(InteractiveLevel level) {
-
-    }
-
-    @Override
-    public GameObjectType getType() {
-        return GameObjectType.PLAYER_SPAWN;
     }
 
     @Override
@@ -45,7 +34,7 @@ public class PlayerSpawn extends GameObject {
     }
 
     @Override
-    public int getCollisionFlag() {
+    public int getCollisionLayers() {
         return EntityCollisionFlag.OBJECT;
     }
 
@@ -53,5 +42,10 @@ public class PlayerSpawn extends GameObject {
     public int getCollisionMask() {
         // Nothing should collide with a player spawn.
         return EntityCollisionFlag.NOTHING;
+    }
+
+    @Override
+    public GameObjectType getType() {
+        return GameObjectType.PLAYER_SPAWN;
     }
 }

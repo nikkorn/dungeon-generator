@@ -1,6 +1,5 @@
 package com.dumbpug.dungeony.game.character.friendly;
 
-import com.dumbpug.dungeony.game.Position;
 import com.dumbpug.dungeony.game.character.friendly.friendlies.BlueJoe;
 import org.json.JSONObject;
 

@@ -1,7 +1,6 @@
 package com.dumbpug.dungeony.game.object.objects;
 
-import com.dumbpug.dungeony.game.Position;
-import com.dumbpug.dungeony.game.level.InteractiveLevel;
+import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.object.GameObject;
 import com.dumbpug.dungeony.game.object.GameObjectType;
 
@@ -12,16 +11,6 @@ public class Chest extends GameObject {
      */
     public Chest(Position origin) {
         super(origin);
-    }
-
-    @Override
-    public void update(InteractiveLevel level) {
-
-    }
-
-    @Override
-    public GameObjectType getType() {
-        return GameObjectType.CHEST;
     }
 
     @Override
@@ -37,5 +26,10 @@ public class Chest extends GameObject {
     @Override
     public float getLengthZ() {
         return 24f;
+    }
+
+    @Override
+    public GameObjectType getType() {
+        return GameObjectType.CHEST;
     }
 }

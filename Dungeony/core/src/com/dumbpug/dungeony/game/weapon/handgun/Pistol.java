@@ -1,6 +1,5 @@
 package com.dumbpug.dungeony.game.weapon.handgun;
 
-import com.dumbpug.dungeony.game.Position;
 import com.dumbpug.dungeony.game.projectile.Projectile;
 import com.dumbpug.dungeony.game.weapon.AmmunitionWeapon;
 import com.dumbpug.dungeony.game.weapon.WeaponCategory;

@@ -1,17 +1,18 @@
 package com.dumbpug.dungeony.game.projectile;
 
-import com.dumbpug.dungeony.game.Entity;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dumbpug.dungeony.engine.Entity;
+import com.dumbpug.dungeony.engine.InteractiveEnvironment;
+import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.EntityCollisionFlag;
-import com.dumbpug.dungeony.game.Position;
 import com.dumbpug.dungeony.game.character.GameCharacter;
-import com.dumbpug.dungeony.game.level.InteractiveLevel;
 import com.dumbpug.dungeony.game.object.GameObject;
 import com.dumbpug.dungeony.game.tile.Tile;
 
 /**
  * Represents an active projectile.
  */
-public abstract class Projectile extends Entity {
+public abstract class Projectile extends Entity<SpriteBatch> {
     /**
      * The projectile state, always starting with the GENERATED state.
      */
@@ -63,7 +64,7 @@ public abstract class Projectile extends Entity {
     }
 
     @Override
-    public int getCollisionFlag() {
+    public int getCollisionLayers() {
         return EntityCollisionFlag.OBJECT;
     }
 
@@ -71,18 +72,6 @@ public abstract class Projectile extends Entity {
     public int getCollisionMask() {
         // Everything should collide with an object by default.
         return EntityCollisionFlag.WALL | EntityCollisionFlag.CHARACTER | EntityCollisionFlag.PICKUP | EntityCollisionFlag.PROJECTILE | EntityCollisionFlag.OBJECT;
-    }
-
-    /**
-     * Update the projectile.
-     * @param level The interactive level.
-     */
-    public void update(InteractiveLevel level) {
-        // TODO Set animation based on state.
-        // TODO Update position of the projectile if active.
-        // TODO Check for an entity collisions and process any by calling onCharacterCollision/onGameObjectCollision.
-        // TODO Check whether the projectile has a life span and if so set the state to EXPIRED if the span is up.
-        // TODO Set state to ACTIVE if state is currently GENERATED.
     }
 
     /**
@@ -102,6 +91,15 @@ public abstract class Projectile extends Entity {
      * @return The life span of the projectile in milliseconds, or -1 if there is no life span.
      */
     public abstract float getLifeSpan();
+
+    @Override
+    public void update(InteractiveEnvironment environment, float delta) {
+        // TODO Set animation based on state.
+        // TODO Update position of the projectile if active.
+        // TODO Check for an entity collisions and process any by calling onCharacterCollision/onGameObjectCollision.
+        // TODO Check whether the projectile has a life span and if so set the state to EXPIRED if the span is up.
+        // TODO Set state to ACTIVE if state is currently GENERATED.
+    }
 
     /**
      * Handler for a character collision.

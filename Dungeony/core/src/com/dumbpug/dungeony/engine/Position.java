@@ -1,6 +1,6 @@
 package com.dumbpug.dungeony.engine;
 
-import com.dumbpug.dungeony.game.GameMath;
+import com.dumbpug.dungeony.engine.utilities.GameMath;
 
 /**
  * An in-game position.

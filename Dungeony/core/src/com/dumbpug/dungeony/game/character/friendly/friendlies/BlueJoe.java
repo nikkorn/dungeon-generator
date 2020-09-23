@@ -1,7 +1,6 @@
 package com.dumbpug.dungeony.game.character.friendly.friendlies;
 
 import com.dumbpug.dungeony.Constants;
-import com.dumbpug.dungeony.game.Position;
 import com.dumbpug.dungeony.game.character.friendly.Friendly;
 import com.dumbpug.dungeony.game.character.friendly.FriendlyType;
 

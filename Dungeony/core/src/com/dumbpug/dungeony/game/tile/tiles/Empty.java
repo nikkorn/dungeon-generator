@@ -2,6 +2,7 @@ package com.dumbpug.dungeony.game.tile.tiles;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dumbpug.dungeony.engine.InteractiveEnvironment;
 import com.dumbpug.dungeony.game.EntityCollisionFlag;
 import com.dumbpug.dungeony.game.rendering.Resources;
 import com.dumbpug.dungeony.game.rendering.TileSprite;
@@ -42,7 +43,7 @@ public class Empty extends Tile {
     }
 
     @Override
-    public int getCollisionFlag() {
+    public int getCollisionLayers() {
         return EntityCollisionFlag.NOTHING;
     }
 
@@ -50,6 +51,9 @@ public class Empty extends Tile {
     public int getCollisionMask() {
         return EntityCollisionFlag.NOTHING;
     }
+
+    @Override
+    public void update(InteractiveEnvironment environment, float delta) { }
 
     /**
      * Render the renderable using the provided sprite batch.

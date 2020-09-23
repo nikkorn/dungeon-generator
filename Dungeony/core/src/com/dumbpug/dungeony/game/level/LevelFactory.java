@@ -2,8 +2,7 @@ package com.dumbpug.dungeony.game.level;
 
 import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.characterselection.PlayerDetails;
-import com.dumbpug.dungeony.game.Entity;
-import com.dumbpug.dungeony.game.Position;
+import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.character.enemy.Enemy;
 import com.dumbpug.dungeony.game.character.enemy.EnemyFactory;
 import com.dumbpug.dungeony.game.character.enemy.EnemyType;

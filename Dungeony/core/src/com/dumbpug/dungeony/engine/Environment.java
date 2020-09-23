@@ -2,12 +2,13 @@ package com.dumbpug.dungeony.engine;
 
 import com.dumbpug.dungeony.engine.rendering.Renderables;
 
+import java.util.ArrayList;
+
 /**
  * Represents a game environment.
- * @param <TEntity> The common type of all entities within the environment.
  * @param <TRenderContext> The render context.
  */
-public class Environment<TEntity extends Entity, TRenderContext> {
+public class Environment<TRenderContext> {
     /**
      * The environment configuration.
      */
@@ -15,7 +16,7 @@ public class Environment<TEntity extends Entity, TRenderContext> {
     /**
      * The spatial grid to use in finding entity collisions.
      */
-    private EnvironmentCollisionGrid<TEntity> collisionGrid;
+    private EnvironmentCollisionGrid collisionGrid;
     /**
      * The renderables renderables collection which will handle entity render priority.
      */
@@ -23,7 +24,7 @@ public class Environment<TEntity extends Entity, TRenderContext> {
     /**
      * The collection of entities in the environment.
      */
-    private Entities entities;
+    private Entities<TRenderContext> entities;
     /**
      * The environment interactivity layer that is available to entities during updates.
      */
@@ -38,7 +39,7 @@ public class Environment<TEntity extends Entity, TRenderContext> {
         this.configuration = configuration;
 
         // Create the spatial grid to use in finding entity collisions.
-        this.collisionGrid = new EnvironmentCollisionGrid<TEntity>(configuration.gridCellSize);
+        this.collisionGrid = new EnvironmentCollisionGrid(configuration.gridCellSize);
 
         // Create the renderables collection which will handle entity render priority.
         this.renderables = new Renderables<TRenderContext>();
@@ -54,24 +55,52 @@ public class Environment<TEntity extends Entity, TRenderContext> {
      * Gets the spatial grid to use in finding entity collisions.
      * @return The spatial grid to use in finding entity collisions.
      */
-    public EnvironmentCollisionGrid<TEntity> getGrid() {
+    public EnvironmentCollisionGrid getGrid() {
         return this.collisionGrid;
+    }
+
+    /**
+     * Gets the environment interactivity layer that is available to entities during updates.
+     * @return The environment interactivity layer that is available to entities during updates.
+     */
+    public InteractiveEnvironment getInteractivityLayer() {
+        return this.interactiveEnvironment;
     }
 
     /**
      * Add an entity to the environment.
      * @param entity The entity to add.
      */
-    public void addEntity(TEntity entity) {
+    public void addEntity(Entity<TRenderContext> entity) {
         this.entities.add(entity);
+    }
+
+    /**
+     * Add a list of entities to the environment.
+     * @param list The list of entities to add.
+     */
+    public void addEntities(ArrayList<Entity<TRenderContext>> list) {
+        for (Entity<TRenderContext> entity : list) {
+            this.addEntity(entity);
+        }
     }
 
     /**
      * Remove an entity from the environment.
      * @param entity The entity to remove.
      */
-    public void removeEntity(TEntity entity) {
+    public void removeEntity(Entity<TRenderContext> entity) {
         this.entities.remove(entity);
+    }
+
+    /**
+     * Remove a list of entities from the environment.
+     * @param list The list of entities to remove.
+     */
+    public void removeEntities(ArrayList<Entity<TRenderContext>> list) {
+        for (Entity<TRenderContext> entity : list) {
+            this.removeEntity(entity);
+        }
     }
 
     /**

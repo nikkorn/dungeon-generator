@@ -1,9 +1,6 @@
 package com.dumbpug.dungeony.game.character.player;
 
 import com.dumbpug.dungeony.characterselection.PlayerDetails;
-import com.dumbpug.dungeony.game.level.InteractiveLevel;
-import com.dumbpug.dungeony.game.level.LevelCollisionGrid;
-import com.dumbpug.dungeony.game.rendering.Renderables;
 import com.dumbpug.dungeony.game.tile.TileSpawn;
 
 import java.util.ArrayList;
@@ -20,7 +17,7 @@ public class Players {
     /**
      * The spatial grid to use in finding game entity collisions.
      */
-    private LevelCollisionGrid levelCollisionGrid;
+    private EnvironmentCollisionGrid EnvironmentCollisionGrid;
     /**
      * The renderables list to keep updated with this list.
      */
@@ -29,12 +26,12 @@ public class Players {
     /**
      * Creates a new instance of the Players class.
      * @param playerDetails The list of player details.
-     * @param levelCollisionGrid The level grid
+     * @param EnvironmentCollisionGrid The level grid
      * @param renderables The renderables list to keep updated with this list.
      * @param spawns The list of available spawn positions.
      */
-    public Players(ArrayList<PlayerDetails> playerDetails, LevelCollisionGrid levelCollisionGrid, Renderables renderables, ArrayList<TileSpawn> spawns) {
-        this.levelCollisionGrid = levelCollisionGrid;
+    public Players(ArrayList<PlayerDetails> playerDetails, EnvironmentCollisionGrid EnvironmentCollisionGrid, Renderables renderables, ArrayList<TileSpawn> spawns) {
+        this.EnvironmentCollisionGrid = EnvironmentCollisionGrid;
         this.renderables = renderables;
 
         // Check that there are enough spawn positions for our players.
@@ -53,7 +50,7 @@ public class Players {
             this.players.put(playerDetail.getId(), player);
 
             // Add the new player to the level grid.
-            this.levelCollisionGrid.add(player);
+            this.EnvironmentCollisionGrid.add(player);
 
             // Add the new player to the  to the renderables list.
             this.renderables.add(player);
@@ -73,7 +70,7 @@ public class Players {
      * Update each of the players sequentially.
      * @param level The interactive level.
      */
-    public void update(InteractiveLevel level) {
+    public void update(InteractiveEnvironment level) {
         // Update each of the players sequentially.
         for (Player player : this.players.values()) {
             player.update(level);
