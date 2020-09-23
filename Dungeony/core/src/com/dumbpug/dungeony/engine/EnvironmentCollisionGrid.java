@@ -117,7 +117,7 @@ public class EnvironmentCollisionGrid<TEntity extends Entity> extends SpatialGri
             ArrayList<TEntity> collidingEntities = new ArrayList<>();
             for (TEntity collidingEntity : this.getColliding(entity)) {
                 // Even though the entities collide in our level grid, they may not actually bump into each other.
-                if (collidingEntity.collidesWith(entity)) {
+                if (canEntitiesCollide(collidingEntity, entity)) {
                     collidingEntities.add(collidingEntity);
                 }
             }
@@ -146,7 +146,7 @@ public class EnvironmentCollisionGrid<TEntity extends Entity> extends SpatialGri
             ArrayList<TEntity> collidingEntities = new ArrayList<>();
             for (TEntity collidingEntity : this.getColliding(entity)) {
                 // Even though the entities collide in our level grid, they may not actually bump into each other.
-                if (collidingEntity.collidesWith(entity)) {
+                if (canEntitiesCollide(collidingEntity, entity)) {
                     collidingEntities.add(collidingEntity);
                 }
             }
@@ -159,5 +159,15 @@ public class EnvironmentCollisionGrid<TEntity extends Entity> extends SpatialGri
                 this.update(entity);
             }
         }
+    }
+
+    /**
+     * Gets whether entity a can collide with entity b.
+     * @param a Entity a.
+     * @param b Entity b.
+     * @return Whether entity a can collide with entity b.
+     */
+    private boolean canEntitiesCollide(TEntity a, TEntity b) {
+        return (a.getCollisionMask() & b.getCollisionLayers()) > 0 || (b.getCollisionMask() & a.getCollisionLayers()) > 0;
     }
 }

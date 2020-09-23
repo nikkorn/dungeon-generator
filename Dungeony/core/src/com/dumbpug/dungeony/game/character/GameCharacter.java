@@ -9,6 +9,11 @@ import com.dumbpug.dungeony.game.Position;
  */
 public abstract class GameCharacter extends Entity {
     /**
+     * The angle at which the character is facing.
+     */
+    private float facingAngle = 0;
+
+    /**
      * Creates a new instance of the GameCharacter class.
      * @param origin The initial origin of the GameCharacter.
      */

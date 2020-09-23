@@ -16,6 +16,10 @@ public abstract class Entity<TRenderContext> implements IAABB, IRenderable<TRend
      * The bottom-left position of the entity.
      */
     private Position position;
+    /**
+     * Whether the entity has been marked as to be destroyed.
+     */
+    private boolean isMarkedForDestroy = false;
 
     /**
      * Creates a new instance of the Entity class.
@@ -102,8 +106,8 @@ public abstract class Entity<TRenderContext> implements IAABB, IRenderable<TRend
      */
     @Override
     public int getRenderLayer() {
-        // Entities should be at layer 1 be default.
-        return 1;
+        // The render layer for entities will always default to 0.
+        return 0;
     }
 
     /**
@@ -115,6 +119,38 @@ public abstract class Entity<TRenderContext> implements IAABB, IRenderable<TRend
         // The entity render order depends on its y position by default.
         return this.position.getY();
     }
+
+    /**
+     * Gets whether the entity has been marked as to be destroyed.
+     * @return Whether the entity has been marked as to be destroyed.
+     */
+    public boolean isMarkedForDestroy() {
+        return this.isMarkedForDestroy;
+    }
+
+    /**
+     * Marks the entity as needing to be destroyed and removed from an environment it may be in.
+     */
+    public void destroy() {
+        this.isMarkedForDestroy = true;
+    }
+
+    /**
+     * Called when the entity is added to an environment.
+     * @param environment The interactive environment.
+     */
+    public abstract void onEnvironmentEntry(InteractiveEnvironment environment);
+
+    /**
+     * Called when the entity is removed from an environment.
+     * @param environment The interactive environment.
+     */
+    public abstract void onEnvironmentExit(InteractiveEnvironment environment);
+
+    /**
+     * Called when the entity is destroyed.
+     */
+    public abstract void onDestroy();
 
     /**
      * Update the entity.
@@ -130,9 +166,14 @@ public abstract class Entity<TRenderContext> implements IAABB, IRenderable<TRend
     public abstract void render(TRenderContext context);
 
     /**
-     * Gets whether this entity collides with the specified entity.
-     * @param entity The other entity to check.
-     * @return Whether this entity collides with the specified entity.
+     * Gets the collision layer of the entity.
+     * @return The collision layer of the entity.
      */
-    public abstract boolean collidesWith(Entity entity);
+    public abstract int getCollisionLayers();
+
+    /**
+     * Gets the collision mask of the entity.
+     * @return The collision mask of the entity.
+     */
+    public abstract int getCollisionMask();
 }

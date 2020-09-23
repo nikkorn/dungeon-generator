@@ -38,13 +38,16 @@ public class Environment<TEntity extends Entity, TRenderContext> {
         this.configuration = configuration;
 
         // Create the spatial grid to use in finding entity collisions.
-        collisionGrid = new EnvironmentCollisionGrid<TEntity>(configuration.gridCellSize);
+        this.collisionGrid = new EnvironmentCollisionGrid<TEntity>(configuration.gridCellSize);
 
         // Create the renderables collection which will handle entity render priority.
         this.renderables = new Renderables<TRenderContext>();
 
+        // Create the environment interactivity layer that is available to entities during updates.
+        this.interactiveEnvironment = new InteractiveEnvironment(this);
+
         // Create the entities collection.
-        this.entities = new Entities(collisionGrid, renderables);
+        this.entities = new Entities(this.collisionGrid, this.renderables, this.interactiveEnvironment);
     }
 
     /**
@@ -76,7 +79,7 @@ public class Environment<TEntity extends Entity, TRenderContext> {
      * @param delta The delta time.
      */
     public void update(float delta) {
-        this.entities.update(this.interactiveEnvironment, delta);
+        this.entities.update(delta);
     }
 
     /**
