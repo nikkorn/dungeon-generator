@@ -47,9 +47,6 @@ public class Fishman extends Enemy {
     public void onEnvironmentExit(InteractiveEnvironment environment) { }
 
     @Override
-    public void onDestroy() { }
-
-    @Override
     public float getMovementSpeed() {
         // Fishman can move at 80% of the default speed of the player.
         return Constants.PLAYER_MOVEMENT_PS * 0.8f;

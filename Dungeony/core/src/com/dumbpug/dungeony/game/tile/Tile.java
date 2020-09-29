@@ -68,9 +68,6 @@ public abstract class Tile extends Entity<SpriteBatch> implements ITilePositione
     @Override
     public void onEnvironmentExit(InteractiveEnvironment environment) {}
 
-    @Override
-    public void onDestroy() {}
-
     /**
      * Gets the list of entity spawn positions for this tile.
      * @return The list of entity spawn positions for this tile.

@@ -52,9 +52,6 @@ public class PlayerSpawn extends GameObject {
     public void onEnvironmentExit(InteractiveEnvironment environment) { }
 
     @Override
-    public void onDestroy() { }
-
-    @Override
     public void update(InteractiveEnvironment environment, float delta) { }
 
     @Override

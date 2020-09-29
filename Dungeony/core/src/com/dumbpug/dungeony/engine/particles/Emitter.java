@@ -79,9 +79,6 @@ public class Emitter<TRenderContext> extends Entity<TRenderContext> {
     }
 
     @Override
-    public void onDestroy() { }
-
-    @Override
     public void update(InteractiveEnvironment environment, float delta) {
         // If the emitter is active then invoke the emitter activity.
         if (this.isActive) {

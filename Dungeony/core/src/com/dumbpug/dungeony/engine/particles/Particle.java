@@ -57,9 +57,6 @@ public abstract class Particle<TRenderContext> extends Entity<TRenderContext> {
     public void onEnvironmentExit(InteractiveEnvironment environment) { }
 
     @Override
-    public void onDestroy() { }
-
-    @Override
     public void update(InteractiveEnvironment environment, float delta) {
         // Reduce the life of the particle by the game delta.
         this.life -= delta;

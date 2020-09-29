@@ -43,9 +43,6 @@ public class BlueJoe extends Friendly {
     public void onEnvironmentExit(InteractiveEnvironment environment) { }
 
     @Override
-    public void onDestroy() { }
-
-    @Override
     public float getMovementSpeed() {
         // BlueJoe can move at the default speed of the player.
         return Constants.PLAYER_MOVEMENT_PS;

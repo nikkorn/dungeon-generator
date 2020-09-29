@@ -36,9 +36,6 @@ public class Chest extends GameObject {
     public void onEnvironmentExit(InteractiveEnvironment environment) { }
 
     @Override
-    public void onDestroy() { }
-
-    @Override
     public void update(InteractiveEnvironment environment, float delta) { }
 
     @Override

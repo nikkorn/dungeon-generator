@@ -62,9 +62,6 @@ public class Bullet extends Projectile {
     public void onEnvironmentExit(InteractiveEnvironment environment) { }
 
     @Override
-    public void onDestroy() { }
-
-    @Override
     public void render(SpriteBatch spriteBatch) {
         // TODO Render the bullet!
     }

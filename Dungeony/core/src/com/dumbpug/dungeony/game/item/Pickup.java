@@ -59,9 +59,6 @@ public class Pickup extends Entity<SpriteBatch> {
     public void onEnvironmentExit(InteractiveEnvironment environment) { }
 
     @Override
-    public void onDestroy() { }
-
-    @Override
     public void update(InteractiveEnvironment environment, float delta) { }
 
     @Override

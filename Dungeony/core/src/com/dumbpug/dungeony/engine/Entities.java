@@ -1,6 +1,8 @@
 package com.dumbpug.dungeony.engine;
 
 import com.dumbpug.dungeony.engine.rendering.Renderables;
+import com.dumbpug.dungeony.engine.utilities.Queue;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -46,6 +48,10 @@ public class Entities<TRenderContext>  {
      * Whether the list of entities is currently being updated.
      */
     private boolean areEntitiesBeingUpdated = false;
+    /**
+     * The queue of modifications to make to the entities collection populated during collection updates.
+     */
+    private Queue<EntitiesModification> pendingEntitiesModifications = new Queue<EntitiesModification>();
 
     /**
      * Creates an instance of the Entities class.
@@ -119,8 +125,10 @@ public class Entities<TRenderContext>  {
      * @param group The group to add the entity against.
      */
     public void add(Entity<TRenderContext> entity, String group) {
+        // We cannot add entities immediately if we are in an update, add them as pending collection modification to be made after the current update.
         if (this.areEntitiesBeingUpdated) {
-            throw new RuntimeException("need to handle adds on update!!!!!!");
+            this.pendingEntitiesModifications.add(new EntitiesModification(EntitiesModificationType.ADD, entity, group));
+            return;
         }
 
         // There is nothing to do if the game object is already in out list of existing game objects.
@@ -174,12 +182,9 @@ public class Entities<TRenderContext>  {
      * @param entity The entity to remove.
      */
     public void remove(Entity<TRenderContext> entity) {
-        // We cannot remove entities while a collection update is happening, if we try to just destroy it and it will be cleared up after the update.
+        // We cannot remove entities immediately if we are in an update, add them as pending collection modification to be made after the current update.
         if (this.areEntitiesBeingUpdated) {
-
-            // TODO maybe just do exactly the same as add and put these into a queue of pending add/removes.
-
-            entity.destroy();
+            this.pendingEntitiesModifications.add(new EntitiesModification(EntitiesModificationType.REMOVE, entity));
             return;
         }
 
@@ -216,9 +221,6 @@ public class Entities<TRenderContext>  {
      * @param delta The delta time.
      */
     public void update(float delta) {
-        // Create a set of all entities that must be destroyed and removed from the collection.
-        HashSet<Entity<TRenderContext>> pendingDestroy = new HashSet<Entity<TRenderContext>>();
-
         // Set the flag that says whether we are currently in an update. Any entities that are
         // added as part of the update will have to be added after the update is finished.
         this.areEntitiesBeingUpdated = true;
@@ -227,35 +229,29 @@ public class Entities<TRenderContext>  {
         for (Entity<TRenderContext> entity : this.updatableEntities) {
             // TODO: Skip here if the update strategy of the entity is 'DELAY' and we have not waited long enough for the next update.
 
-            // The entity may have already been marked for destruction, maybe via another entities update.
-            if (entity.isMarkedForDestroy()) {
-                pendingDestroy.add(entity);
-                continue;
-            }
-
             // Update the entity, passing the environment interactivity layer with which the entity can interact with the environment.
             entity.update(this.interactiveEnvironment, delta);
-
-            // The entity may have marked itself for destruction during its update.
-            if (entity.isMarkedForDestroy()) {
-                pendingDestroy.add(entity);
-            }
         }
 
         // Unset the flag that says whether we are currently in an update, any entities
         // that are added now will go straight into our entities collection.
         this.areEntitiesBeingUpdated = false;
 
-        // We process each entity destruction after the updates are all finished with.
-        for (Entity<TRenderContext> entity : pendingDestroy) {
-            // Let the entity do some 'onDestroy' logic.
-            entity.onDestroy();
+        // Process any entities that were added or removed as part of the update.
+        while (this.pendingEntitiesModifications.hasNext()) {
+            EntitiesModification modification = this.pendingEntitiesModifications.next();
 
-            // Finally, remove the entity for the collection of environment entities.
-            this.remove(entity);
+            switch (modification.getType()) {
+                case ADD:
+                    this.add(modification.getEntity(), modification.getGroup());
+                    break;
+                case REMOVE:
+                    this.remove(modification.getEntity());
+                    break;
+                default:
+                    throw new RuntimeException("unknown entity modification type: " + modification.getType());
+            }
         }
-
-        // TODO: Process any entities that were added as part of the update.
     }
 
     /**
@@ -306,7 +302,7 @@ public class Entities<TRenderContext>  {
 
         /**
          * Gets the modification type type.
-         * @ Th modification type type.
+         * @return The modification type type.
          */
         public EntitiesModificationType getType() {
             return type;

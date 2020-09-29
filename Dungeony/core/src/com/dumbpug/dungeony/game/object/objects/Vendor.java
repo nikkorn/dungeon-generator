@@ -56,9 +56,6 @@ public class Vendor extends GameObject {
     public void onEnvironmentExit(InteractiveEnvironment environment) { }
 
     @Override
-    public void onDestroy() { }
-
-    @Override
     public void update(InteractiveEnvironment environment, float delta) {
         // TODO Find all players that are in front of the machine.
         for (Entity entity : environment.getEntitiesInArea(this.areaOfInteraction)) {

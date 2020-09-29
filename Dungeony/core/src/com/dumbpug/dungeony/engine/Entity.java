@@ -171,11 +171,6 @@ public abstract class Entity<TRenderContext> implements IAABB, IRenderable<TRend
     public abstract void onEnvironmentExit(InteractiveEnvironment environment);
 
     /**
-     * Called when the entity is destroyed.
-     */
-    public abstract void onDestroy();
-
-    /**
      * Update the entity.
      * @param environment The interactive environment.
      * @param delta The delta time.
