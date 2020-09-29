@@ -42,6 +42,10 @@ public class Entities<TRenderContext>  {
      * The comparator to use in sorting entities by update order.
      */
     private Comparator<Entity<TRenderContext>> updateOrderComparator;
+    /**
+     * Whether the list of entities is currently being updated.
+     */
+    private boolean areEntitiesBeingUpdated = false;
 
     /**
      * Creates an instance of the Entities class.
@@ -115,6 +119,10 @@ public class Entities<TRenderContext>  {
      * @param group The group to add the entity against.
      */
     public void add(Entity<TRenderContext> entity, String group) {
+        if (this.areEntitiesBeingUpdated) {
+            throw new RuntimeException("need to handle adds on update!!!!!!");
+        }
+
         // There is nothing to do if the game object is already in out list of existing game objects.
         if (this.entities.contains(entity)) {
             return;
@@ -166,6 +174,15 @@ public class Entities<TRenderContext>  {
      * @param entity The entity to remove.
      */
     public void remove(Entity<TRenderContext> entity) {
+        // We cannot remove entities while a collection update is happening, if we try to just destroy it and it will be cleared up after the update.
+        if (this.areEntitiesBeingUpdated) {
+
+            // TODO maybe just do exactly the same as add and put these into a queue of pending add/removes.
+
+            entity.destroy();
+            return;
+        }
+
         // There is nothing to do if the game object is not already in out list of existing game objects.
         if (!this.entities.contains(entity)) {
             return;
@@ -202,6 +219,10 @@ public class Entities<TRenderContext>  {
         // Create a set of all entities that must be destroyed and removed from the collection.
         HashSet<Entity<TRenderContext>> pendingDestroy = new HashSet<Entity<TRenderContext>>();
 
+        // Set the flag that says whether we are currently in an update. Any entities that are
+        // added as part of the update will have to be added after the update is finished.
+        this.areEntitiesBeingUpdated = true;
+
         // Update each of the updatable entities sequentially.
         for (Entity<TRenderContext> entity : this.updatableEntities) {
             // TODO: Skip here if the update strategy of the entity is 'DELAY' and we have not waited long enough for the next update.
@@ -221,6 +242,10 @@ public class Entities<TRenderContext>  {
             }
         }
 
+        // Unset the flag that says whether we are currently in an update, any entities
+        // that are added now will go straight into our entities collection.
+        this.areEntitiesBeingUpdated = false;
+
         // We process each entity destruction after the updates are all finished with.
         for (Entity<TRenderContext> entity : pendingDestroy) {
             // Let the entity do some 'onDestroy' logic.
@@ -228,6 +253,79 @@ public class Entities<TRenderContext>  {
 
             // Finally, remove the entity for the collection of environment entities.
             this.remove(entity);
+        }
+
+        // TODO: Process any entities that were added as part of the update.
+    }
+
+    /**
+     * Enumeration of entity modification types.
+     */
+    private enum EntitiesModificationType {
+        ADD,
+        REMOVE
+    }
+
+    /**
+     * Represents a modification to make to an entities collection.
+     */
+    private class EntitiesModification {
+        /**
+         * The modification type type.
+         */
+        private EntitiesModificationType type;
+        /**
+         * The entity to add or remove.
+         */
+        private Entity<TRenderContext> entity;
+        /**
+         * The group to add the entity to if the modification type is 'ADD'.
+         */
+        private String group;
+
+        /**
+         * Creates a new instance of the EntitiesModification class.
+         * @param type The modification type type.
+         * @param entity The entity to add or remove.
+         * @param group The group to add the entity to if the modification type is 'ADD'.
+         */
+        public EntitiesModification(EntitiesModificationType type, Entity<TRenderContext> entity, String group) {
+            this.type   = type;
+            this.entity = entity;
+            this.group  = group;
+        }
+
+        /**
+         * Creates a new instance of the EntitiesModification class.
+         * @param type The modification type type.
+         * @param entity The entity to add or remove.
+         */
+        public EntitiesModification(EntitiesModificationType type, Entity<TRenderContext> entity) {
+            this(type, entity, null);
+        }
+
+        /**
+         * Gets the modification type type.
+         * @ Th modification type type.
+         */
+        public EntitiesModificationType getType() {
+            return type;
+        }
+
+        /**
+         * Gets the entity to add or remove.
+         * @return The entity to add or remove.
+         */
+        public Entity<TRenderContext> getEntity() {
+            return entity;
+        }
+
+        /**
+         * Gets the group to add the entity to if the modification type is 'ADD'.
+         * @return The group to add the entity to if the modification type is 'ADD'.
+         */
+        public String getGroup() {
+            return group;
         }
     }
 }

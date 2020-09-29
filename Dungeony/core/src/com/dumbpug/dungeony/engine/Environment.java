@@ -81,7 +81,7 @@ public class Environment<TRenderContext> {
      * @param group The group to add the entity against.
      */
     public void addEntity(Entity<TRenderContext> entity, String group) {
-        this.entities.add(entity);
+        this.entities.add(entity, group);
     }
 
     /**

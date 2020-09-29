@@ -35,4 +35,17 @@ public enum ItemType {
                 throw new RuntimeException("no name defined for item type' " + this);
         }
     }
+
+    /**
+     * Gets whether the item type is stackable withing a single inventory slot.
+     * @return Whether the item type is stackable withing a single inventory slot.
+     */
+    public boolean isStackable() {
+        switch (this) {
+            case TRUSTY_PISTOL:
+                return false;
+            default:
+                return true;
+        }
+    }
 }

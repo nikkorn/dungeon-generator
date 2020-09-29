@@ -1,20 +1,67 @@
 package com.dumbpug.dungeony.game.character;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.engine.Entity;
 import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.EntityCollisionFlag;
+import com.dumbpug.dungeony.game.inventory.Inventory;
 
 /**
  * Represents an in-game character.
  */
 public abstract class GameCharacter extends Entity<SpriteBatch> {
     /**
+     * The character health.
+     */
+    private Health health = new Health(Constants.CHARACTER_DEFAULT_HEALTH_SLOTS);
+    /**
+     * The character inventory.
+     */
+    private Inventory inventory = new Inventory(Constants.CHARACTER_INVENTORY_SLOTS);
+    /**
+     * The angle of the characters direction of view.
+     */
+    private float angleOfView;
+
+    /**
      * Creates a new instance of the GameCharacter class.
      * @param origin The initial origin of the GameCharacter.
      */
     public GameCharacter(Position origin) {
         super(origin);
+    }
+
+    /**
+     * Ges the character health.
+     * @return The character health.
+     */
+    public Health getHealth() {
+        return health;
+    }
+
+    /**
+     * Gets the character inventory.
+     * @return The character inventory.
+     */
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    /**
+     * Gets the angle of the characters direction of view.
+     * @return The angle of the characters direction of view.
+     */
+    public float getAngleOfView() {
+        return angleOfView;
+    }
+
+    /**
+     * Sets the angle of the characters direction of view.
+     * @param angleOfView The angle of the characters direction of view.
+     */
+    public void setAngleOfView(float angleOfView) {
+        this.angleOfView = angleOfView;
     }
 
     @Override

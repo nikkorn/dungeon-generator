@@ -29,6 +29,14 @@ public class Position {
     }
 
     /**
+     * Creates a new instance of the Position class with values matching the specified position.
+     * @param position The position to copy.
+     */
+    public Position(Position position) {
+        this(position.getX(), position.getY());
+    }
+
+    /**
      * Gets the x position.
      * @return The x position.
      */

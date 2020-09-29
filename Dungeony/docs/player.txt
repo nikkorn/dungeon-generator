@@ -1,0 +1,1 @@
+Players will have a backpack sprite drawn just behind them which grows in size based on how heavy the items in their inventory are.

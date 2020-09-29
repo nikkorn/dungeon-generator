@@ -7,7 +7,11 @@ import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.characterselection.PlayerDetails;
 import com.dumbpug.dungeony.engine.InteractiveEnvironment;
 import com.dumbpug.dungeony.engine.Position;
+import com.dumbpug.dungeony.engine.particles.Emitter;
 import com.dumbpug.dungeony.game.character.GameCharacter;
+import com.dumbpug.dungeony.game.character.particles.walking.WalkingDustParticle;
+import com.dumbpug.dungeony.game.character.particles.walking.WalkingDustParticleEmitterActivity;
+import com.dumbpug.dungeony.game.character.particles.walking.WalkingDustParticleGenerator;
 import com.dumbpug.dungeony.game.rendering.Animation;
 import com.dumbpug.dungeony.game.rendering.PlayerSprite;
 import com.dumbpug.dungeony.game.rendering.Resources;
@@ -30,6 +34,10 @@ public class Player extends GameCharacter {
      * The player state to animation map.
      */
     private HashMap<PlayerState, Animation> animations = new HashMap<PlayerState, Animation>();
+    /**
+     * The walking dust particle emitter for the player.
+     */
+    private Emitter<SpriteBatch> walkingDustParticleEmitter;
 
     /**
      * Creates a new instance of the Player class.
@@ -75,7 +83,13 @@ public class Player extends GameCharacter {
     }
 
     @Override
-    public void onEnvironmentEntry(InteractiveEnvironment environment) { }
+    public void onEnvironmentEntry(InteractiveEnvironment environment) {
+        // Create the emitter which will generate the dust particles shown when the player is walking.
+        this.walkingDustParticleEmitter = new Emitter(new Position(), new WalkingDustParticleEmitterActivity(), new WalkingDustParticleGenerator());
+
+        // Add the emitter to the environment.
+        environment.addEntity(this.walkingDustParticleEmitter);
+    }
 
     @Override
     public void onEnvironmentExit(InteractiveEnvironment environment) { }
@@ -119,6 +133,9 @@ public class Player extends GameCharacter {
             // We are running because we are moving on either axis, but hte X axis movement determines which way we face.
             this.state = movementAxisX < 0 ? PlayerState.RUNNING_LEFT : PlayerState.RUNNING_RIGHT;
         }
+
+        this.walkingDustParticleEmitter.setX(this.getX());
+        this.walkingDustParticleEmitter.setY(this.getY());
     }
 
     /**

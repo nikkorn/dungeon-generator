@@ -106,4 +106,29 @@ public class InteractiveEnvironment {
     public ArrayList<Entity> getEntitiesInArea(Area area) {
         return new ArrayList<Entity>(this.environment.getGrid().getOverlapping(area));
     }
+
+    /**
+     * Add an entity to the environment.
+     * @param entity The entity to add.
+     */
+    public void addEntity(Entity entity) {
+        this.addEntity(entity, null);
+    }
+
+    /**
+     * Add an entity to the environment.
+     * @param entity The entity to add.
+     * @param group The group to add the entity against.
+     */
+    public void addEntity(Entity entity, String group) {
+        this.environment.addEntity(entity, group);
+    }
+
+    /**
+     * Remove an entity from the environment.
+     * @param entity The entity to remove.
+     */
+    public void removeEntity(Entity entity) {
+        this.environment.removeEntity(entity);
+    }
 }

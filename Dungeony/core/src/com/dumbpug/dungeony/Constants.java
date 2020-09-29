@@ -28,6 +28,13 @@ public class Constants {
     public static final float LEVEL_DEFAULT_ZOOM                    = 0.35f;
 
     //==============================================================================================
+    // CHARACTER
+    //==============================================================================================
+    public static final int CHARACTER_DEFAULT_HEALTH_SLOTS          = 3;
+    public static final int CHARACTER_INVENTORY_SLOTS               = 8;
+    public static final int CHARACTER_INVENTORY_MAX_STACK_SIZE      = 40;
+
+    //==============================================================================================
     // PLAYER
     //==============================================================================================
     public static final float PLAYER_MOVEMENT_PS                    = LEVEL_TILE_SIZE * 1.6f;
