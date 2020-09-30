@@ -118,13 +118,13 @@ public class Player extends GameCharacter {
                 case RUNNING_LEFT:
                 case DODGING_LEFT:
                     this.state = PlayerState.IDLE_LEFT;
-                    return;
+                    break;
                 case RUNNING_RIGHT:
                 case DODGING_RIGHT:
                     this.state = PlayerState.IDLE_RIGHT;
-                    return;
+                    break;
                 default:
-                    return;
+                    break;
             }
         } else {
             // We are running because we are moving on either axis, but hte X axis movement determines which way we face.

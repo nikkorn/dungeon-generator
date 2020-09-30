@@ -10,32 +10,35 @@ import com.dumbpug.dungeony.engine.Position;
  */
 public abstract class Particle<TRenderContext> extends Entity<TRenderContext> {
     /**
+     * The particle state.
+     */
+    private ParticleState state = ParticleState.ACTIVE;
+    /**
      * The remaining life of this particle in seconds, defaults to a second.
      */
-    private float life = 1;
-    /**
-     * Whether the particle has expired.
-     */
-    private boolean isExpired;
-    /**
-     * The particle sprite opacity, between 0 and 1.
-     */
-    private float opacity;
+    private float life = 5f;
 
     /**
      * Creates a new instance of the Particle class.
-     * @param origin The initial origin of the particle.
      */
-    public Particle(Position origin) {
-        super(origin);
+    public Particle() {
+        super(new Position());
     }
 
     /**
-     * Gets whether the particle life has expired.
-     * @return Whether the particle life has expired.
+     * Sets the particle state.
+     * @return The particle state.
      */
-    public boolean isExpired() {
-        return isExpired;
+    public ParticleState getState() {
+        return state;
+    }
+
+    /**
+     * Sets the particle state.
+     * @param state The particle state.
+     */
+    public void setState(ParticleState state) {
+        this.state = state;
     }
 
     /**
@@ -58,18 +61,48 @@ public abstract class Particle<TRenderContext> extends Entity<TRenderContext> {
 
     @Override
     public void update(InteractiveEnvironment environment, float delta) {
+        // No update should take place for inactive particles.
+        if (this.state == ParticleState.INACTIVE) {
+            return;
+        }
+
+        this.onUpdate(environment, delta);
+
         // Reduce the life of the particle by the game delta.
         this.life -= delta;
 
         if (life <= 0) {
-            this.isExpired = true;
+            this.state = ParticleState.INACTIVE;
         }
     }
 
+    @Override
+    public void render(TRenderContext context) {
+        // No render should take place for inactive particles.
+        if (this.state == ParticleState.INACTIVE) {
+            return;
+        }
+
+        this.onRender(context);
+    }
+
     /**
-     * Called on the particle entity update.
+     * Called on the particle entity update if the particle is active.
      * @param environment The game environment.
      * @param delta The game delta.
      */
     public abstract void onUpdate(InteractiveEnvironment environment, float delta);
+
+    /**
+     * Called on the particle entity render if the particle is active.
+     * @param context The render context.
+     */
+    public abstract void onRender(TRenderContext context);
+
+    /**
+     * Called when the particle is first made active or reset due to is being reused by an emitter after it has become inactive.
+     * @param emitterPosX The x position of the emitter.
+     * @param emitterPosX The y position of the emitter.
+     */
+    public abstract void onActivate(float emitterPosX, float emitterPosY);
 }

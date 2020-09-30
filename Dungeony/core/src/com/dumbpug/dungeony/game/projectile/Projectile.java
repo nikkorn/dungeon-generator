@@ -65,7 +65,7 @@ public abstract class Projectile extends Entity<SpriteBatch> {
 
     @Override
     public int getCollisionLayers() {
-        return EntityCollisionFlag.OBJECT;
+        return EntityCollisionFlag.PROJECTILE;
     }
 
     @Override

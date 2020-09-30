@@ -10,5 +10,5 @@ public interface IParticleGenerator {
      * Generate a Particle.
      * @return A generated particle
      */
-    Particle generate(float emitterPosX, float emitterPosY);
+    Particle generate();
 }

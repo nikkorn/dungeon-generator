@@ -7,11 +7,11 @@ import com.dumbpug.dungeony.engine.particles.IEmitterActivity;
  * Emitter activity for a waling characters dust particle emitter.
  */
 public class WalkingDustParticleEmitterActivity implements IEmitterActivity {
-    private float secondsSinceLastParticle = 0.2f;
+    private float secondsSinceLastParticle = 0.02f;
 
     @Override
     public void act(Emitter emitter, float delta) {
-        if (secondsSinceLastParticle >= 0.2f) {
+        if (secondsSinceLastParticle >= 0.02f) {
             emitter.spawnParticle();
             secondsSinceLastParticle = 0;
         } else {

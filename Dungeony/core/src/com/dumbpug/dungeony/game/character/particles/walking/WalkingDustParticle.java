@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.engine.InteractiveEnvironment;
-import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.engine.particles.Particle;
 import com.dumbpug.dungeony.game.rendering.GameObjectSprite;
 import com.dumbpug.dungeony.game.rendering.Resources;
@@ -12,14 +11,6 @@ import java.util.Random;
 
 public class WalkingDustParticle extends Particle<SpriteBatch> {
     private float angle;
-    /**
-     * Creates a new instance of the WalkingDustParticle class.
-     * @param origin The initial origin of the particle.
-     */
-    public WalkingDustParticle(Position origin) {
-        super(origin);
-        this.angle = new Random().nextFloat() * 360;
-    }
 
     @Override
     public int getCollisionLayers() {
@@ -32,12 +23,21 @@ public class WalkingDustParticle extends Particle<SpriteBatch> {
     }
 
     @Override
-    public void onUpdate(InteractiveEnvironment environment, float delta) {
-        environment.moveByAngle(this, this.angle, 0.5f, delta);
+    public void onActivate(float emitterPosX, float emitterPosY) {
+        // Set the initial particle position.
+        this.setX(emitterPosX);
+        this.setY(emitterPosY);
+        // Pick an angle to move the particle.
+        this.angle = new Random().nextFloat() * 360;
     }
 
     @Override
-    public void render(SpriteBatch spriteBatch) {
+    public void onUpdate(InteractiveEnvironment environment, float delta) {
+        environment.moveByAngle(this, this.angle, 100f, delta);
+    }
+
+    @Override
+    public void onRender(SpriteBatch spriteBatch) {
         // Get the particle sprite.
         Sprite sprite = Resources.getSprite(GameObjectSprite.POT);
 
