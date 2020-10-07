@@ -156,5 +156,11 @@ public class Player extends GameCharacter {
         // Draw the player shadow and then render the players current animation frame over it.
         shadowSprite.draw(batch);
         batch.draw(currentFrame, this.getX(), this.getY(), 0, 0, this.getLengthX(), this.getLengthZ(), 1.2f, 1.2f, 0);
+
+        // Draw the player weapon.
+        // TODO: This should move to GameCharacter and no subclasses should do a render, or maybe at least they can have an onRender().
+        if (this.getWeapon() != null) {
+            this.getWeapon().render(batch, this.getOrigin(), this.getAngleOfView());
+        }
     }
 }

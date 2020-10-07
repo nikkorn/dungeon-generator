@@ -8,6 +8,9 @@ import com.dumbpug.dungeony.game.character.npc.NPCState;
 import com.dumbpug.dungeony.game.character.player.PlayerState;
 import com.dumbpug.dungeony.game.object.GameObjectState;
 import com.dumbpug.dungeony.game.object.GameObjectType;
+import com.dumbpug.dungeony.game.weapon.WeaponState;
+import com.dumbpug.dungeony.game.weapon.WeaponType;
+
 import java.util.HashMap;
 
 /**
@@ -188,5 +191,15 @@ public class Resources {
      */
     public static Animation getGameObjectAnimation(GameObjectState state, GameObjectType type) {
         return new Animation(new Texture("images/game_object/" + type  + "/" + state + ".png"), 4, 1, 1/8f);
+    }
+
+    /**
+     * Gets the animation for the specified weapon and weapon state type.
+     * @param state The weapon state type.
+     * @param type The weapon type.
+     * @return The animation for the specified weapon state and type.
+     */
+    public static Animation getWeaponAnimation(WeaponState state, WeaponType type) {
+        return new Animation(new Texture("images/weapon/" + type  + "/" + state + ".png"), 4, 1, 1/8f);
     }
 }

@@ -3,12 +3,19 @@ package com.dumbpug.dungeony.game.weapon;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.projectile.Projectile;
+import com.dumbpug.dungeony.game.rendering.Animation;
+import com.dumbpug.dungeony.game.rendering.Resources;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * A weapon equippable by a game character.
  */
 public abstract class Weapon {
+    /**
+     * The weapon state to animation map.
+     */
+    private HashMap<WeaponState, Animation> animations = new HashMap<WeaponState, Animation>();
     /**
      * The weapon quality.
      */
@@ -24,6 +31,11 @@ public abstract class Weapon {
      */
     public Weapon(WeaponQuality quality) {
         this.quality = quality;
+
+        // Populate the weapon animation map.
+        for (WeaponState state : WeaponState.values()) {
+            this.animations.put(state, Resources.getWeaponAnimation(state, this.getWeaponType()));
+        }
     }
 
     /**

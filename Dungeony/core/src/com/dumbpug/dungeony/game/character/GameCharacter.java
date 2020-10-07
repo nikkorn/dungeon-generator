@@ -6,6 +6,7 @@ import com.dumbpug.dungeony.engine.Entity;
 import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.EntityCollisionFlag;
 import com.dumbpug.dungeony.game.inventory.Inventory;
+import com.dumbpug.dungeony.game.weapon.Weapon;
 
 /**
  * Represents an in-game character.
@@ -19,6 +20,10 @@ public abstract class GameCharacter extends Entity<SpriteBatch> {
      * The character inventory.
      */
     private Inventory inventory = new Inventory(Constants.CHARACTER_INVENTORY_SLOTS);
+    /**
+     * The weapon equipped by the character, or null if no weapon is equipped.
+     */
+    private Weapon weapon = null;
     /**
      * The angle of the characters direction of view.
      */
@@ -46,6 +51,22 @@ public abstract class GameCharacter extends Entity<SpriteBatch> {
      */
     public Inventory getInventory() {
         return inventory;
+    }
+
+    /**
+     * Gets the weapon equipped by the character, or null if no weapon is equipped.
+     * @return The weapon equipped by the character, or null if no weapon is equipped.
+     */
+    public Weapon getWeapon() {
+        return weapon;
+    }
+
+    /**
+     * Sets the weapon equipped by the character, or null if no weapon is equipped.
+     * @param weapon The weapon equipped by the character, or null if no weapon is equipped.
+     */
+    public void setWeapon(Weapon weapon) {
+        this.weapon = weapon;
     }
 
     /**
