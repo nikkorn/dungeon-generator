@@ -13,13 +13,17 @@ import java.util.HashMap;
  */
 public abstract class Weapon {
     /**
-     * The weapon state to animation map.
+     * The current weapon state.
      */
-    private HashMap<WeaponState, Animation> animations = new HashMap<WeaponState, Animation>();
+    private WeaponState state = WeaponState.IDLE;
     /**
      * The weapon quality.
      */
     private WeaponQuality quality;
+    /**
+     * The weapon state to animation map.
+     */
+    protected HashMap<WeaponState, Animation> animations = new HashMap<WeaponState, Animation>();
     /**
      * The last time the weapon was used.
      */
@@ -36,6 +40,14 @@ public abstract class Weapon {
         for (WeaponState state : WeaponState.values()) {
             this.animations.put(state, Resources.getWeaponAnimation(state, this.getWeaponType()));
         }
+    }
+
+    /**
+     * Gets the weapon state.
+     * @return The weapon state.
+     */
+    public WeaponState getState() {
+        return state;
     }
 
     /**

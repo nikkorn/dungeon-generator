@@ -1,8 +1,14 @@
 package com.dumbpug.dungeony.game.weapon;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.projectile.Projectile;
+import com.dumbpug.dungeony.game.rendering.Animation;
+import com.dumbpug.dungeony.game.rendering.GameObjectSprite;
+import com.dumbpug.dungeony.game.rendering.Resources;
+
 import java.util.ArrayList;
 
 /**
@@ -62,7 +68,7 @@ public abstract class AmmunitionWeapon extends Weapon {
     }
 
     /**
-     * Reload he weapon.
+     * Reload the weapon.
      */
     public void reload() {
 
@@ -76,7 +82,14 @@ public abstract class AmmunitionWeapon extends Weapon {
      */
     @Override
     public void render(SpriteBatch batch, Position origin, float angle) {
+        // Get the relevant animation for the weapon based on their current state.
+        Animation animation = this.animations.get(this.getState());
 
+        // Get the current animation frame for the animation.
+        TextureRegion currentFrame = animation.getCurrentFrame(true);
+
+        // Draw the current animation frame.
+        batch.draw(currentFrame, origin.getX(), origin.getY());
     }
 
     /**

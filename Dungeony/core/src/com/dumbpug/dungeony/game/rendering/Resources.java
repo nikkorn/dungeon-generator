@@ -2,15 +2,14 @@ package com.dumbpug.dungeony.game.rendering;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.dumbpug.dungeony.game.character.GameCharacterState;
 import com.dumbpug.dungeony.game.character.enemy.EnemyType;
 import com.dumbpug.dungeony.game.character.friendly.FriendlyType;
-import com.dumbpug.dungeony.game.character.npc.NPCState;
-import com.dumbpug.dungeony.game.character.player.PlayerState;
+import com.dumbpug.dungeony.game.character.player.PlayerType;
 import com.dumbpug.dungeony.game.object.GameObjectState;
 import com.dumbpug.dungeony.game.object.GameObjectType;
 import com.dumbpug.dungeony.game.weapon.WeaponState;
 import com.dumbpug.dungeony.game.weapon.WeaponType;
-
 import java.util.HashMap;
 
 /**
@@ -29,10 +28,6 @@ public class Resources {
      * Game object sprite map.
      */
     private static HashMap<GameObjectSprite, Sprite> gameObjectSpriteMap;
-    /**
-     * Player sprite map.
-     */
-    private static HashMap<PlayerSprite, Sprite> playerSpriteMap;
 
     static {
         levelSpriteMap = new HashMap<LevelSprite, Sprite>() {{
@@ -45,11 +40,6 @@ public class Resources {
         }};
         gameObjectSpriteMap = new HashMap<GameObjectSprite, Sprite>() {{
             put(GameObjectSprite.POT, new Sprite(new Texture("images/game_object/POT.png")));
-        }};
-        playerSpriteMap = new HashMap<PlayerSprite, Sprite>() {{
-            for (PlayerSprite sprite : PlayerSprite.values()) {
-                put(sprite, new Sprite(new Texture("images/character/player/" + sprite + ".png")));
-            }
         }};
     }
 
@@ -81,109 +71,6 @@ public class Resources {
     }
 
     /**
-     * Gets the sprite for the specified player sprite type.
-     * @param playerSprite
-     * @return
-     */
-    public static Sprite getSprite(PlayerSprite playerSprite) {
-        return playerSpriteMap.get(playerSprite);
-    }
-
-    /**
-     * Gets the animation for the specified player state type.
-     * @param state The state type.
-     * @return The animation for the specified player state type.
-     */
-    public static Animation getPlayerAnimation(PlayerState state) {
-        // The number of animation frame columns will differ between animations.
-        int columns = 0;
-        switch (state) {
-            case IDLE_LEFT:
-            case IDLE_RIGHT:
-                columns = 4;
-                break;
-            case RUNNING_LEFT:
-            case RUNNING_RIGHT:
-            case DODGING_LEFT:
-            case DODGING_RIGHT:
-                columns = 6;
-                break;
-        }
-        // TODO Eventually take player type/colour into account.
-        return new Animation(new Texture("images/character/player/" + state + ".png"), columns, 1, 1/8f);
-    }
-
-    /**
-     * Gets the sprite for the specified enemy sprite and type.
-     * @param enemySprite The enemy sprite.
-     * @param type The enemy type.
-     * @return The sprite for the specified enemy sprite and type.
-     */
-    public static Sprite getSprite(EnemySprite enemySprite, EnemyType type) {
-        // TODO Cache these in resource sprite maps.
-        return new Sprite(new Texture("images/character/enemy/" + type  + "/" + enemySprite + ".png"));
-    }
-
-    /**
-     * Gets the animation for the specified enemy state type.
-     * @param state The state type.
-     * @param type The enemy type.
-     * @return The animation for the specified enemy state and type.
-     */
-    public static Animation getEnemyAnimation(NPCState state, EnemyType type) {
-        // The number of animation frame columns will differ between animations.
-        int columns = 0;
-        switch (state) {
-            case HIDDEN:
-                columns = 1;
-            case IDLE_LEFT:
-            case IDLE_RIGHT:
-                columns = 4;
-                break;
-            case RUNNING_LEFT:
-            case RUNNING_RIGHT:
-                columns = 6;
-                break;
-        }
-        return new Animation(new Texture("images/character/enemy/" + type  + "/" + state + ".png"), columns, 1, 1/8f);
-    }
-
-    /**
-     * Gets the sprite for the specified friendly sprite and type.
-     * @param friendlySprite The friendly sprite.
-     * @param type The friendly type.
-     * @return The sprite for the specified friendly sprite and type.
-     */
-    public static Sprite getSprite(FriendlySprite friendlySprite, FriendlyType type) {
-        // TODO Cache these in resource sprite maps.
-        return new Sprite(new Texture("images/character/friendly/" + type  + "/" + friendlySprite + ".png"));
-    }
-
-    /**
-     * Gets the animation for the specified friendly state type.
-     * @param state The state type.
-     * @param type The friendly type.
-     * @return The animation for the specified friendly state and type.
-     */
-    public static Animation getFriendlyAnimation(NPCState state, FriendlyType type) {
-        // The number of animation frame columns will differ between animations.
-        int columns = 0;
-        switch (state) {
-            case HIDDEN:
-                columns = 1;
-            case IDLE_LEFT:
-            case IDLE_RIGHT:
-                columns = 4;
-                break;
-            case RUNNING_LEFT:
-            case RUNNING_RIGHT:
-                columns = 6;
-                break;
-        }
-        return new Animation(new Texture("images/character/friendly/" + type  + "/" + state + ".png"), columns, 1, 1/8f);
-    }
-
-    /**
      * Gets the animation for the specified game object state type.
      * @param state The state type.
      * @param type The game object type.
@@ -202,4 +89,92 @@ public class Resources {
     public static Animation getWeaponAnimation(WeaponState state, WeaponType type) {
         return new Animation(new Texture("images/weapon/" + type  + "/" + state + ".png"), 4, 1, 1/8f);
     }
+
+    /**
+     * Gets the sprite for the specified game character sprite and player type.
+     * @param sprite The game character sprite type.
+     * @param type The player type.
+     * @return The sprite for the specified game character sprite and player type.
+     */
+    public static Sprite getCharacterSprite(GameCharacterSprite sprite, PlayerType type) {
+        return new Sprite(new Texture("images/character/player/" + type  + "/" + sprite + ".png"));
+    }
+
+    /**
+     * Gets the sprite for the specified game character sprite and enemy type.
+     * @param sprite The game character sprite type.
+     * @param type The enemy type.
+     * @return The sprite for the specified game character sprite and enemy type.
+     */
+    public static Sprite getCharacterSprite(GameCharacterSprite sprite, EnemyType type) {
+        return new Sprite(new Texture("images/character/enemy/" + type  + "/" + sprite + ".png"));
+    }
+
+    /**
+     * Gets the sprite for the specified game character sprite and friendly type.
+     * @param sprite The game character sprite type.
+     * @param type The friendly type.
+     * @return The sprite for the specified game character sprite and friendly type.
+     */
+    public static Sprite getCharacterSprite(GameCharacterSprite sprite, FriendlyType type) {
+        return new Sprite(new Texture("images/character/friendly/" + type  + "/" + sprite + ".png"));
+    }
+
+    /**
+     * Gets the animation for the specified player state type.
+     * @param state The state type.
+     * @param type The enemy type.
+     * @return The animation for the specified player state and type.
+     */
+    public static Animation getCharacterAnimation(GameCharacterState state, PlayerType type) {
+        return getCharacterAnimation(state, "player", type.toString());
+    }
+
+    /**
+     * Gets the animation for the specified enemy state type.
+     * @param state The state type.
+     * @param type The enemy type.
+     * @return The animation for the specified enemy state and type.
+     */
+    public static Animation getCharacterAnimation(GameCharacterState state, EnemyType type) {
+        return getCharacterAnimation(state, "enemy", type.toString());
+    }
+
+    /**
+     * Gets the animation for the specified friendly state type.
+     * @param state The state type.
+     * @param type The friendly type.
+     * @return The animation for the specified friendly state and type.
+     */
+    public static Animation getCharacterAnimation(GameCharacterState state, FriendlyType type) {
+        return getCharacterAnimation(state, "friendly", type.toString());
+    }
+
+    /**
+     * Gets the animation for the specified game character state type.
+     * @param state The state type.
+     * @param category The character category (enemy/friendly/player).
+     * @param type The character type.
+     * @return The animation for the specified game character state and type.
+     */
+    private static Animation getCharacterAnimation(GameCharacterState state, String category, String type) {
+        // The number of animation frame columns will differ between animations.
+        int columns = 0;
+        switch (state) {
+            case HIDDEN:
+                columns = 1;
+            case IDLE_LEFT:
+            case IDLE_RIGHT:
+                columns = 4;
+                break;
+            case RUNNING_LEFT:
+            case RUNNING_RIGHT:
+            case DODGING_LEFT:
+            case DODGING_RIGHT:
+                columns = 6;
+                break;
+        }
+        return new Animation(new Texture("images/character/" + category.toLowerCase() + "/" + type.toUpperCase()  + "/" + state + ".png"), columns, 1, 1/8f);
+    }
+
 }

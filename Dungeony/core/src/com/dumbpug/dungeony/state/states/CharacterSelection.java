@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dumbpug.dungeony.ApplicationModel;
 import com.dumbpug.dungeony.characterselection.PlayerDetails;
 import com.dumbpug.dungeony.game.character.player.PlayerIdentifier;
+import com.dumbpug.dungeony.game.character.player.PlayerType;
 import com.dumbpug.dungeony.input.KeyboardInputProvider;
 import com.dumbpug.dungeony.input.XboxControllerInputProvider;
 import com.dumbpug.dungeony.state.State;
@@ -41,7 +42,7 @@ public class CharacterSelection extends State {
         // e.g. Controllers.getControllers().get(0).addListener(IPlayerInputProvider);
 
         // For now, just add a single player and use keyboard input.
-        this.applicationModel.getPlayerDetails().add(new PlayerDetails(PlayerIdentifier.PLAYER_1, new XboxControllerInputProvider()));
+        this.applicationModel.getPlayerDetails().add(new PlayerDetails(PlayerIdentifier.PLAYER_1, PlayerType.GREENY, new XboxControllerInputProvider()));
 
         // Go straight to the game state state for now.
         this.changeState("GAME");

@@ -56,7 +56,7 @@ public class Wall extends Tile {
      */
     @Override
     public void render(SpriteBatch batch) {
-        // Find half our tile size, each tiel sprite will use that as its dimensions.
+        // Find half our tile size, each tile sprite will use that as its dimensions.
         float spriteSize = this.getLengthX() / 2f;
 
         // Render top-left tile.

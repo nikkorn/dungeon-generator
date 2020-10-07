@@ -2,8 +2,8 @@ package com.dumbpug.dungeony.game.character.behaviour;
 
 import com.dumbpug.dungeony.engine.Direction;
 import com.dumbpug.dungeony.engine.InteractiveEnvironment;
+import com.dumbpug.dungeony.game.character.GameCharacterState;
 import com.dumbpug.dungeony.game.character.npc.NPC;
-import com.dumbpug.dungeony.game.character.npc.NPCState;
 
 /**
  * Very basic enemy NPC behaviour.
@@ -21,6 +21,6 @@ public class BasicEnemyBehaviour<TNPC extends NPC> implements INPCBehaviour<TNPC
         environment.moveByDirection(subject, Direction.NORTH_EAST, subject.getMovementSpeed(), delta);
 
         // We are running to the right.
-        subject.setState(NPCState.RUNNING_RIGHT);
+        subject.setState(GameCharacterState.RUNNING_RIGHT);
     }
 }

@@ -3,6 +3,9 @@ package com.dumbpug.dungeony.game.character.player;
 import com.dumbpug.dungeony.characterselection.PlayerDetails;
 import com.dumbpug.dungeony.engine.Environment;
 import com.dumbpug.dungeony.game.tile.TileSpawn;
+import com.dumbpug.dungeony.game.weapon.WeaponQuality;
+import com.dumbpug.dungeony.game.weapon.handgun.Pistol;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -39,6 +42,9 @@ public class Players {
 
             // Create a new player instance based on the player details and assign them an initial spawn.
             Player player = new Player(playerDetail, spawns.get(playerDetails.indexOf(playerDetail)).getLocation());
+
+            // TODO: Remove this weapon test.
+            player.setWeapon(new Pistol(WeaponQuality.AVERAGE));
 
             // Add the player to the game environment.
             this.environment.addEntity(player, "player");
