@@ -8,6 +8,7 @@ import com.dumbpug.dungeony.game.character.GameCharacter;
 import com.dumbpug.dungeony.game.object.GameObject;
 import com.dumbpug.dungeony.game.projectile.Projectile;
 import com.dumbpug.dungeony.game.projectile.ProjectileState;
+import com.dumbpug.dungeony.game.projectile.ProjectileType;
 import com.dumbpug.dungeony.game.tile.Tile;
 
 /**
@@ -36,6 +37,11 @@ public class Bullet extends Projectile {
     @Override
     public float getLifeSpan() {
         return -1;
+    }
+
+    @Override
+    public ProjectileType getProjectileType() {
+        return ProjectileType.BULLET;
     }
 
     @Override

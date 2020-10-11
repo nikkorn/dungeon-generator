@@ -1,16 +1,28 @@
 package com.dumbpug.dungeony.game.character.particles.walking;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.engine.InteractiveEnvironment;
 import com.dumbpug.dungeony.engine.particles.Particle;
-import com.dumbpug.dungeony.game.rendering.GameObjectSprite;
+import com.dumbpug.dungeony.game.projectile.ProjectileState;
+import com.dumbpug.dungeony.game.projectile.ProjectileType;
+import com.dumbpug.dungeony.game.rendering.Animation;
 import com.dumbpug.dungeony.game.rendering.Resources;
 import java.util.Random;
 
 public class WalkingDustParticle extends Particle<SpriteBatch> {
     private float angle;
+
+    // The particle animation.
+    private Animation animation;
+
+    /**
+     * Creates a new instance of the WalkingDustParticle class.
+     */
+    public WalkingDustParticle() {
+        this.animation = Resources.getProjectileAnimation(ProjectileState.ACTIVE, ProjectileType.BULLET);
+    }
 
     @Override
     public int getCollisionLayers() {
@@ -38,17 +50,11 @@ public class WalkingDustParticle extends Particle<SpriteBatch> {
 
     @Override
     public void onRender(SpriteBatch spriteBatch) {
-        // Get the particle sprite.
-        Sprite sprite = Resources.getSprite(GameObjectSprite.POT);
+        // Get the current animation frame for the animation.
+        TextureRegion currentFrame = this.animation.getCurrentFrame(true);
 
-        // Set the width/height of the sprite to match the tile size.
-        sprite.setSize(this.getLengthX(), this.getLengthY());
-
-        // Set the x/y of the sprite to match the tile position.
-        sprite.setPosition(this.getX(), this.getY());
-
-        // Draw the sprite.
-        sprite.draw(spriteBatch);
+        // Draw the current animation frame.
+        spriteBatch.draw(currentFrame, this.getX(), this.getY(), this.getLengthX(), this.getLengthZ());
     }
 
     @Override
@@ -58,11 +64,11 @@ public class WalkingDustParticle extends Particle<SpriteBatch> {
 
     @Override
     public float getLengthY() {
-        return Constants.LEVEL_TILE_SIZE * 0.2f;
+        return Constants.LEVEL_TILE_SIZE * 0.25f;
     }
 
     @Override
     public float getLengthZ() {
-        return Constants.LEVEL_TILE_SIZE * 0.2f;
+        return Constants.LEVEL_TILE_SIZE * 0.25f;
     }
 }

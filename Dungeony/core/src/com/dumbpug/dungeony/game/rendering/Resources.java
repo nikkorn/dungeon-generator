@@ -8,6 +8,8 @@ import com.dumbpug.dungeony.game.character.friendly.FriendlyType;
 import com.dumbpug.dungeony.game.character.player.PlayerType;
 import com.dumbpug.dungeony.game.object.GameObjectState;
 import com.dumbpug.dungeony.game.object.GameObjectType;
+import com.dumbpug.dungeony.game.projectile.ProjectileState;
+import com.dumbpug.dungeony.game.projectile.ProjectileType;
 import com.dumbpug.dungeony.game.weapon.WeaponState;
 import com.dumbpug.dungeony.game.weapon.WeaponType;
 import java.util.HashMap;
@@ -88,6 +90,27 @@ public class Resources {
      */
     public static Animation getWeaponAnimation(WeaponState state, WeaponType type) {
         return new Animation(new Texture("images/weapon/" + type  + "/" + state + ".png"), 4, 1, 1/8f);
+    }
+
+    /**
+     * Gets the animation for the specified weapon and weapon state type.
+     * @param state The weapon state type.
+     * @param type The weapon type.
+     * @return The animation for the specified weapon state and type.
+     */
+    public static Animation<ProjectileState> getProjectileAnimation(ProjectileState state, ProjectileType type) {
+        // The number of animation frame columns will differ between animations.
+        int columns = 0;
+        switch (state) {
+            case GENERATED:
+            case COLLIDED:
+            case EXPIRED:
+                columns = 3;
+                break;
+            default:
+                columns = 9;
+        }
+        return new Animation<ProjectileState>(state, new Texture("images/projectile/" + type  + "/" + state + ".png"), columns, 1, 1/16f);
     }
 
     /**
