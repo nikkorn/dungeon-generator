@@ -8,7 +8,6 @@ import com.dumbpug.dungeony.game.character.friendly.FriendlyType;
 import com.dumbpug.dungeony.game.character.player.PlayerType;
 import com.dumbpug.dungeony.game.object.GameObjectState;
 import com.dumbpug.dungeony.game.object.GameObjectType;
-import com.dumbpug.dungeony.game.projectile.ProjectileState;
 import com.dumbpug.dungeony.game.projectile.ProjectileType;
 import com.dumbpug.dungeony.game.weapon.WeaponState;
 import com.dumbpug.dungeony.game.weapon.WeaponType;
@@ -30,6 +29,10 @@ public class Resources {
      * Game object sprite map.
      */
     private static HashMap<GameObjectSprite, Sprite> gameObjectSpriteMap;
+    /**
+     * Projectile texture map.
+     */
+    private static HashMap<ProjectileType, Texture> projectileTextureMap;
 
     static {
         levelSpriteMap = new HashMap<LevelSprite, Sprite>() {{
@@ -42,6 +45,11 @@ public class Resources {
         }};
         gameObjectSpriteMap = new HashMap<GameObjectSprite, Sprite>() {{
             put(GameObjectSprite.POT, new Sprite(new Texture("images/game_object/POT.png")));
+        }};
+        projectileTextureMap = new HashMap<ProjectileType, Texture>() {{
+            for (ProjectileType type : ProjectileType.values()) {
+                put(type, new Texture("images/projectile/" + type + ".png"));
+            }
         }};
     }
 
@@ -93,24 +101,12 @@ public class Resources {
     }
 
     /**
-     * Gets the animation for the specified weapon and weapon state type.
-     * @param state The weapon state type.
-     * @param type The weapon type.
-     * @return The animation for the specified weapon state and type.
+     * Gets the animation for the specified projectile type.
+     * @param type The projectile type.
+     * @return The animation for the specified projectile type.
      */
-    public static Animation<ProjectileState> getProjectileAnimation(ProjectileState state, ProjectileType type) {
-        // The number of animation frame columns will differ between animations.
-        int columns = 0;
-        switch (state) {
-            case GENERATED:
-            case COLLIDED:
-            case EXPIRED:
-                columns = 3;
-                break;
-            default:
-                columns = 9;
-        }
-        return new Animation<ProjectileState>(state, new Texture("images/projectile/" + type  + "/" + state + ".png"), columns, 1, 1/16f);
+    public static Animation getProjectileAnimation(ProjectileType type) {
+        return new Animation(projectileTextureMap.get(type), 9, 1, 1/16f);
     }
 
     /**

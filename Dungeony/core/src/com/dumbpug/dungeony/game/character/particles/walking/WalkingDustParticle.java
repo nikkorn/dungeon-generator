@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.engine.InteractiveEnvironment;
 import com.dumbpug.dungeony.engine.particles.Particle;
-import com.dumbpug.dungeony.game.projectile.ProjectileState;
 import com.dumbpug.dungeony.game.projectile.ProjectileType;
 import com.dumbpug.dungeony.game.rendering.Animation;
 import com.dumbpug.dungeony.game.rendering.Resources;
@@ -21,7 +20,7 @@ public class WalkingDustParticle extends Particle<SpriteBatch> {
      * Creates a new instance of the WalkingDustParticle class.
      */
     public WalkingDustParticle() {
-        this.animation = Resources.getProjectileAnimation(ProjectileState.ACTIVE, ProjectileType.BULLET);
+        this.animation = Resources.getProjectileAnimation(ProjectileType.BULLET);
     }
 
     @Override

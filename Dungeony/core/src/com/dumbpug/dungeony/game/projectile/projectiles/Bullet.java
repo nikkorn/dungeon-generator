@@ -1,13 +1,11 @@
 package com.dumbpug.dungeony.game.projectile.projectiles;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.engine.InteractiveEnvironment;
 import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.character.GameCharacter;
 import com.dumbpug.dungeony.game.object.GameObject;
 import com.dumbpug.dungeony.game.projectile.Projectile;
-import com.dumbpug.dungeony.game.projectile.ProjectileState;
 import com.dumbpug.dungeony.game.projectile.ProjectileType;
 import com.dumbpug.dungeony.game.tile.Tile;
 
@@ -26,7 +24,7 @@ public class Bullet extends Projectile {
 
     @Override
     public float getSize() {
-        return Constants.PROJECTILE_SIZE_MEDIUM;
+        return Constants.PROJECTILE_SIZE_SMALL;
     }
 
     @Override
@@ -47,18 +45,21 @@ public class Bullet extends Projectile {
     @Override
     public void onCharacterCollision(GameCharacter character) {
         // TODO Apply damage to character health.
-        this.setState(ProjectileState.COLLIDED);
     }
 
     @Override
     public void onGameObjectCollision(GameObject object) {
         // TODO Apply damage to object.
-        this.setState(ProjectileState.COLLIDED);
     }
 
     @Override
     public void onTileCollision(Tile tile) {
-        this.setState(ProjectileState.COLLIDED);
+        // TODO Apply damage to tile?????.
+    }
+
+    @Override
+    public void onCollided() {
+        // TODO Show an impact animation.
     }
 
     @Override
@@ -66,9 +67,4 @@ public class Bullet extends Projectile {
 
     @Override
     public void onEnvironmentExit(InteractiveEnvironment environment) { }
-
-    @Override
-    public void render(SpriteBatch spriteBatch) {
-        // TODO Render the bullet!
-    }
 }

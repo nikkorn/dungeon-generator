@@ -6,12 +6,15 @@ import com.dumbpug.dungeony.characterselection.PlayerDetails;
 import com.dumbpug.dungeony.engine.InteractiveEnvironment;
 import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.engine.particles.Emitter;
+import com.dumbpug.dungeony.engine.utilities.GameMath;
 import com.dumbpug.dungeony.game.character.GameCharacter;
 import com.dumbpug.dungeony.game.character.GameCharacterState;
 import com.dumbpug.dungeony.game.character.particles.walking.WalkingDustParticleEmitterActivity;
 import com.dumbpug.dungeony.game.character.particles.walking.WalkingDustParticleGenerator;
+import com.dumbpug.dungeony.game.projectile.projectiles.Bullet;
 import com.dumbpug.dungeony.game.rendering.GameCharacterSprite;
 import com.dumbpug.dungeony.game.rendering.Resources;
+import com.dumbpug.dungeony.input.Control;
 import com.dumbpug.dungeony.input.IPlayerInputProvider;
 
 /**
@@ -22,10 +25,6 @@ public class Player extends GameCharacter {
      * The player details.
      */
     private PlayerDetails details;
-    /**
-     * The walking dust particle emitter for the player.
-     */
-    private Emitter<SpriteBatch> walkingDustParticleEmitter;
 
     /**
      * Creates a new instance of the Player class.
@@ -74,13 +73,7 @@ public class Player extends GameCharacter {
     }
 
     @Override
-    public void onEnvironmentEntry(InteractiveEnvironment environment) {
-        // Create the emitter which will generate the dust particles shown when the player is walking.
-        this.walkingDustParticleEmitter = new Emitter(new Position(), new WalkingDustParticleEmitterActivity(), new WalkingDustParticleGenerator());
-
-        // Add the emitter to the environment.
-        environment.addEntity(this.walkingDustParticleEmitter);
-    }
+    public void onEnvironmentEntry(InteractiveEnvironment environment) { }
 
     @Override
     public void onEnvironmentExit(InteractiveEnvironment environment) { }
@@ -122,7 +115,14 @@ public class Player extends GameCharacter {
             this.setState(movementAxisX < 0 ? GameCharacterState.RUNNING_LEFT : GameCharacterState.RUNNING_RIGHT);
         }
 
-        this.walkingDustParticleEmitter.setX(this.getX());
-        this.walkingDustParticleEmitter.setY(this.getY());
+        // TODO: Remove this projectile generation test.
+        if (playerInputProvider.isControlJustPressed(Control.PRIMARY_ACTION)) {
+            float angleOfAim = GameMath.getAngle(0, 0, playerInputProvider.getAimAxisX(), playerInputProvider.getAimAxisY());
+
+            Bullet bullet = new Bullet(new Position(this.getX(), this.getY()), angleOfAim);
+
+            // TODO Does this defeat the point of having the projectiles collection???????
+            environment.addEntity(bullet);
+        }
     }
 }

@@ -125,7 +125,7 @@ public abstract class GameCharacter extends Entity<SpriteBatch> {
     @Override
     public int getCollisionMask() {
         // Everything should collide with a character by default.
-        return EntityCollisionFlag.WALL | EntityCollisionFlag.CHARACTER | EntityCollisionFlag.PICKUP | EntityCollisionFlag.OBJECT;
+        return EntityCollisionFlag.WALL | EntityCollisionFlag.CHARACTER | EntityCollisionFlag.OBJECT;
     }
 
     /**

@@ -108,6 +108,15 @@ public class InteractiveEnvironment {
     }
 
     /**
+     * Gets a list of all level entities that are currently colliding the specified entity.
+     * @param entity The entity.
+     * @return A list of all level entities that are currently colliding the specified entity.
+     */
+    public ArrayList<Entity> getColliding(Entity entity) {
+        return new ArrayList<Entity>(this.environment.getGrid().getColliding(entity));
+    }
+
+    /**
      * Add an entity to the environment.
      * @param entity The entity to add.
      */

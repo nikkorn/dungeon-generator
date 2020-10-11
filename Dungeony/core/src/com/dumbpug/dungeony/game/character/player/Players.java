@@ -5,7 +5,6 @@ import com.dumbpug.dungeony.engine.Environment;
 import com.dumbpug.dungeony.game.tile.TileSpawn;
 import com.dumbpug.dungeony.game.weapon.WeaponQuality;
 import com.dumbpug.dungeony.game.weapon.handgun.Pistol;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 

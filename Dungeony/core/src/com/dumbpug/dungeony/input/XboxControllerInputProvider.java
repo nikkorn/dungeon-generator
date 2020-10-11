@@ -30,7 +30,7 @@ public class XboxControllerInputProvider implements IPlayerInputProvider, Contro
 
     @Override
     public float getMovementAxisY() {
-        float value =  -Controllers.getControllers().get(0).getAxis(Xbox.L_STICK_VERTICAL_AXIS);
+        float value = -Controllers.getControllers().get(0).getAxis(Xbox.L_STICK_VERTICAL_AXIS);
         return (value < Constants.INPUT_CONTROLLER_AXIS_DEADZONE && value > -Constants.INPUT_CONTROLLER_AXIS_DEADZONE) ? 0 : value;
     }
 
@@ -42,31 +42,22 @@ public class XboxControllerInputProvider implements IPlayerInputProvider, Contro
 
     @Override
     public float getAimAxisY() {
-        float value =  -Controllers.getControllers().get(0).getAxis(Xbox.R_STICK_VERTICAL_AXIS);
+        float value = -Controllers.getControllers().get(0).getAxis(Xbox.R_STICK_VERTICAL_AXIS);
         return (value < Constants.INPUT_CONTROLLER_AXIS_DEADZONE && value > -Constants.INPUT_CONTROLLER_AXIS_DEADZONE) ? 0 : value;
     }
 
     @Override
     public boolean isControlPressed(Control control) {
-        // TODO
         // We can only continue if there is a controller attached.
         if (Controllers.getControllers().size > 0) {
             // Get the first available controller.
             Controller controller = Controllers.getControllers().first();
-            // Get the x axis of the left stick (movement).
-            float leftXAxis = controller.getAxis(Ouya.AXIS_LEFT_X);
             // Determine which control we are checking the state of.
             switch (control) {
                 case PRIMARY_ACTION:
-                    return controller.getButton(Ouya.BUTTON_O);
+                    return controller.getButton(Xbox.R_BUMPER);
                 case SECONDARY_ACTION:
-                    return controller.getButton(Ouya.BUTTON_R1);
-                case LEFT:
-                    // Whether we are moving left depends on the position of the stick.
-                    return leftXAxis < -0.5;
-                case RIGHT:
-                    // Whether we are moving right depends on the position of the stick.
-                    return leftXAxis > 0.5;
+                    return controller.getButton(Xbox.L_BUMPER);
                 default:
                     return false;
             }
@@ -81,7 +72,9 @@ public class XboxControllerInputProvider implements IPlayerInputProvider, Contro
         switch (control) {
             case PRIMARY_ACTION:
             case SECONDARY_ACTION:
-                return justPressedControls.contains(control);
+                boolean isPressed = justPressedControls.contains(control);
+                justPressedControls.remove(control);
+                return isPressed;
             default:
                 return this.isControlPressed(control);
         }
@@ -101,16 +94,16 @@ public class XboxControllerInputProvider implements IPlayerInputProvider, Contro
 
     @Override
     public boolean buttonDown(Controller controller, int buttonCode) {
-        // TODO
-        // We only care about handing inputs where we care about acting upon single presses.
-        switch (buttonCode) {
-            case Ouya.BUTTON_O:
-                this.justPressedControls.add(Control.PRIMARY_ACTION);
-                return true;
-            case Ouya.BUTTON_R1:
-                this.justPressedControls.add(Control.SECONDARY_ACTION);
-                return true;
+        if (buttonCode == Xbox.R_BUMPER) {
+            this.justPressedControls.add(Control.PRIMARY_ACTION);
+            return true;
         }
+
+        if (buttonCode == Xbox.L_BUMPER) {
+            this.justPressedControls.add(Control.SECONDARY_ACTION);
+            return true;
+        }
+
         return false;
     }
 

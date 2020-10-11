@@ -84,6 +84,8 @@ public class EnvironmentCollisionGrid extends SpatialGrid<Entity> {
         //       - Move Y axis second and try to find intersecting and/or colliding aabbs.
         // This way we can move a fast moving or small entity with less chance of clipping or skipping an aabb.
 
+        // TODO Could return any collidable entities that we bumped into during the move?????
+
         // Update the position of the given entity on the each axis.
         moveEntityOnAxis(subject, offsetX, Axis.X, delta);
         moveEntityOnAxis(subject, offsetY, Axis.Y, delta);

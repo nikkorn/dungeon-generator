@@ -27,7 +27,7 @@ public abstract class Entity<TRenderContext> implements IAABB, IRenderable<TRend
      */
     public Entity(Position origin) {
         // Set the entity origin.
-        this.origin = origin;
+        this.origin = new Position(origin);
         // Find the position as the bottom-left point of the entity based on its origin and size.
         this.position = new Position(
                 origin.getX() - (this.getLengthX() / 2f),
