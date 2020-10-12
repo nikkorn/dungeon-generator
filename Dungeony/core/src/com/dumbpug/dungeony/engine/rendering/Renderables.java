@@ -66,14 +66,15 @@ public class Renderables<TRenderContext> {
     /**
      * Sort and render the renderable layers.
      * @param context The render context
+     * @param window The render window.
      */
-    public void render(TRenderContext context) {
+    public void render(TRenderContext context, IRenderWindow window) {
         // Sort the renderables based on their rendering order.
         Collections.sort(this.layers, Renderables.layerOrderComparator);
 
         // Render each of the renderables.
         for (RenderablesLayer layer : this.layers) {
-            layer.render(context);
+            layer.render(context, window);
         }
     }
 

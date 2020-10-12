@@ -79,15 +79,18 @@ public class RenderablesLayer<TRenderContext> {
     /**
      * Sort and render the renderables.
      * @param context The render context
+     * @param window The render window.
      */
-    public void render(TRenderContext context) {
+    public void render(TRenderContext context, IRenderWindow window) {
         // Sort the renderables based on their rendering order.
         Collections.sort(this.renderables, RenderablesLayer.renderOrderComparator);
 
         // Render each of the renderables.
         for (IRenderable renderable : this.renderables) {
-
-            // TODO Ignore any renderable not within the current view.
+            // Ignore any renderable not within the current render window if one is defined.
+            if (window != null && !window.contains(renderable)) {
+                continue;
+            }
 
             renderable.render(context);
         }

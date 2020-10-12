@@ -52,6 +52,10 @@ public class Level {
      * The players in the level.
      */
     private Players players;
+    /**
+     * The level camera.
+     */
+    LevelCamera levelCamera;
 
     /**
      * Creates a new instance of the Level class.
@@ -68,6 +72,7 @@ public class Level {
         this.enemies     = new Enemies(enemies, this.environment);
         this.friendlies  = new Friendlies(friendlies, this.environment);
         this.players     = new Players(playerDetails, this.environment, this.tiles.getSpawns());
+        this.levelCamera = new LevelCamera(0,0, Constants.LEVEL_TILE_SIZE * 3, Constants.LEVEL_TILE_SIZE * 3);
     }
 
     /**
@@ -87,9 +92,10 @@ public class Level {
         // Update camera and sprite batch to zoom and focus on players.
         camera.zoom = Constants.LEVEL_DEFAULT_ZOOM;
 
-        // Get the camera to point at just the first player for now!
+        // Get the LIBGDX and level camera to point at just the first player for now!
         Player player = this.players.getPlayer(PlayerIdentifier.PLAYER_1);
         camera.position.set(player.getX(), player.getY(), 0);
+        this.levelCamera.set(player.getX(), player.getY(), camera.viewportWidth * Constants.LEVEL_DEFAULT_ZOOM, camera.viewportHeight * Constants.LEVEL_DEFAULT_ZOOM);
 
         camera.update();
         batch.setProjectionMatrix(camera.combined);
@@ -102,6 +108,7 @@ public class Level {
         underlay.draw(batch);
 
         // Render an empty ground sprite for every tile.
+        // TODO: Maybe add these as entities so that we can have them excluded when not in level camera?
         for (Tile tile : this.tiles.getAll()) {
             // Get the ground sprite for this tile.
             Sprite sprite = Resources.getSprite(TileSprite.GROUND_0);
@@ -116,9 +123,8 @@ public class Level {
             sprite.draw(batch);
         }
 
-        // Render the game environment.
-        // TODO Pass in a window for which we will render contained renderables.
-        this.environment.render(batch);
+        // Render the game environment, passing in the level camera to constrain which renderables are actually rendered.
+        this.environment.render(batch, this.levelCamera);
 
         // Reset the application camera to its original zoom/position.
         camera.zoom = 1f;

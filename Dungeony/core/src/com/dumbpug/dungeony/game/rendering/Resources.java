@@ -106,7 +106,7 @@ public class Resources {
      * @return The animation for the specified projectile type.
      */
     public static Animation getProjectileAnimation(ProjectileType type) {
-        return new Animation(projectileTextureMap.get(type), 9, 1, 1/16f);
+        return new Animation(projectileTextureMap.get(type), 4, 1, 1/16f);
     }
 
     /**

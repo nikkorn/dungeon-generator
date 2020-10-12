@@ -59,7 +59,7 @@ public abstract class Projectile extends Entity<SpriteBatch> {
 
     @Override
     public int getCollisionMask() {
-        return EntityCollisionFlag.WALL | EntityCollisionFlag.OBJECT;
+        return EntityCollisionFlag.NOTHING;
     }
 
     /**
@@ -91,7 +91,6 @@ public abstract class Projectile extends Entity<SpriteBatch> {
         // TODO Check whether the projectile has a life span and if so set the state to EXPIRED if the span is up.
 
         // Update position of the projectile.
-        // TODO: Have this return any entities that this actually bumped into (based on layer and mask) during the move.????
         environment.moveByAngle(this, this.angleOfFire, this.getMovementSpeed(), delta);
 
         // A flag that defines whether the projectile collided as part of this update and needs to be made inactive.

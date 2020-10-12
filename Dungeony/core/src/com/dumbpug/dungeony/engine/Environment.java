@@ -1,5 +1,6 @@
 package com.dumbpug.dungeony.engine;
 
+import com.dumbpug.dungeony.engine.rendering.IRenderWindow;
 import com.dumbpug.dungeony.engine.rendering.Renderables;
 import java.util.ArrayList;
 
@@ -138,10 +139,19 @@ public class Environment<TRenderContext> {
     }
 
     /**
+     * Render the renderable entities in the environment that lie within the given render window.
+     * @param context The render context.
+     * @param window The render window.
+     */
+    public void render(TRenderContext context, IRenderWindow window) {
+        this.renderables.render(context, window);
+    }
+
+    /**
      * Render all of the renderable entities in the environment.
      * @param context The render context.
      */
     public void render(TRenderContext context) {
-        this.renderables.render(context);
+        this.render(context, null);
     }
 }
