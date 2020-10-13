@@ -1,33 +1,36 @@
 package com.dumbpug.dungeony.game.level;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector3;
+import com.dumbpug.dungeony.engine.IEnvironmentCamera;
 import com.dumbpug.dungeony.engine.rendering.IRenderWindow;
 import com.dumbpug.dungeony.engine.rendering.IRenderable;
 
 /**
- * Represents the level camera.
+ * Represents the level camera, wrapping the orthographic game camera.
  */
-public class LevelCamera implements IRenderWindow {
+public class LevelCamera implements IRenderWindow, IEnvironmentCamera {
     /**
-     * The x/y position of the centre point of the camera.
+     * The orthographic game camera.
      */
-    private float x, y;
-    /**
-     * The x/y length of the camera view.
-     */
-    private float lengthX, lengthY;
+    private OrthographicCamera camera;
 
     /**
      * Creates a new instance of the LevelCamera class.
-     * @param x The x position of the centre point of the camera view.
-     * @param y The y position of the centre point of the camera view.
-     * @param lengthX The x length of the camera view.
-     * @param lengthY The y length of the camera view.
+     * @param camera The orthographic game camera.
      */
-    public LevelCamera(float x, float y, float lengthX, float lengthY) {
-        this.x       = x;
-        this.y       = y;
-        this.lengthX = lengthX;
-        this.lengthY = lengthY;
+    public LevelCamera(OrthographicCamera camera) {
+        this.camera = camera;
+    }
+
+    /**
+     * Sets the value of the camera zoom.
+     * @param value The value of the camera zoom.
+     */
+    public void setZoom(float value) {
+        this.camera.zoom = value;
+        this.camera.update();
     }
 
     /**
@@ -35,28 +38,50 @@ public class LevelCamera implements IRenderWindow {
      * @param x The x position of the centre point of the camera view.
      * @param y The y position of the centre point of the camera view.
      */
-    public void set(float x, float y, float lengthX, float lengthY) {
-        this.x       = x;
-        this.y       = y;
-        this.lengthX = lengthX;
-        this.lengthY = lengthY;
+    public void setPosition(float x, float y) {
+        this.camera.position.set(x, y, 0);
+        this.camera.update();
+    }
+
+    /**
+     * Sets the x/y position of the centre point of the camera with lerp.
+     * @param x The x position of the centre point of the camera view.
+     * @param y The y position of the centre point of the camera view.
+     * @param lerpAlpha The lerp alpha.
+     */
+    public void setPosition(float x, float y, float lerpAlpha) {
+        this.camera.position.lerp(new Vector3(x, y,0), lerpAlpha);
+        this.camera.update();
+    }
+
+    @Override
+    public void shake(long duration) {
+        // TODO: Shame the camera
+    }
+
+    /**
+     * Gets the combined projection and view matrix.
+     * @return The combined projection and view matrix
+     */
+    public Matrix4 getCombinedViewMatrix() {
+        return this.camera.combined;
     }
 
     @Override
     public boolean contains(IRenderable renderable) {
-        float halfCameraWidth  = this.lengthX / 2f;
-        float halfCameraHeight = this.lengthY / 2f;
+        float halfCameraWidth  = (this.camera.viewportWidth * this.camera.zoom) / 2f;
+        float halfCameraHeight = (this.camera.viewportHeight * this.camera.zoom) / 2f;
 
-        if (renderable.getX() > (this.x + halfCameraWidth)) {
+        if (renderable.getX() > (this.camera.position.x + halfCameraWidth)) {
             return false;
         }
-        if ((renderable.getX() + renderable.getLengthX()) < (this.x - halfCameraWidth)) {
+        if ((renderable.getX() + renderable.getLengthX()) < (this.camera.position.x - halfCameraWidth)) {
             return false;
         }
-        if (renderable.getY() > (this.y + halfCameraHeight)) {
+        if (renderable.getY() > (this.camera.position.y + halfCameraHeight)) {
             return false;
         }
-        if ((renderable.getY() + renderable.getLengthY()) < (this.y - halfCameraHeight)) {
+        if ((renderable.getY() + renderable.getLengthY()) < (this.camera.position.y - halfCameraHeight)) {
             return false;
         }
 

@@ -30,34 +30,37 @@ import java.util.ArrayList;
 public class LevelFactory {
     /**
      * Create the initial Level instance.
+     * @param camera The level camera.
      * @param levelGenerator The level generator to use.
      * @param playerDetails The player details.
      * @return The initial Level instance.
      */
-    public static Level createInitialLevel(ILevelGenerator levelGenerator, ArrayList<PlayerDetails> playerDetails) {
-        return createLevel(levelGenerator, playerDetails, "SPAWN.json");
+    public static Level createInitialLevel(LevelCamera camera, ILevelGenerator levelGenerator, ArrayList<PlayerDetails> playerDetails) {
+        return createLevel(camera, levelGenerator, playerDetails, "SPAWN.json");
     }
 
     /**
      * Create a Level instance.
+     * @param camera The level camera.
      * @param levelGenerator The level generator to use.
      * @param playerDetails The player details.
      * @param category The level category.
      * @param difficulty The level difficulty.
      * @return A Level instance.
      */
-    public static Level createLevel(ILevelGenerator levelGenerator, ArrayList<PlayerDetails> playerDetails, LevelCategory category, Difficulty difficulty) {
-        return createLevel(levelGenerator, playerDetails, category + "_" + difficulty + ".json");
+    public static Level createLevel(LevelCamera camera, ILevelGenerator levelGenerator, ArrayList<PlayerDetails> playerDetails, LevelCategory category, Difficulty difficulty) {
+        return createLevel(camera, levelGenerator, playerDetails, category + "_" + difficulty + ".json");
     }
 
     /**
      * Create a Level instance.
+     * @param camera The level camera.
      * @param levelGenerator The level generator to use.
      * @param playerDetails The player details.
      * @param file The file path
      * @return A Level instance.
      */
-    private static Level createLevel(ILevelGenerator levelGenerator, ArrayList<PlayerDetails> playerDetails, String file) {
+    private static Level createLevel(LevelCamera camera, ILevelGenerator levelGenerator, ArrayList<PlayerDetails> playerDetails, String file) {
         // Generate the level!
         final LevelDefinition levelDefinition = levelGenerator.generate(file);
 
@@ -120,7 +123,7 @@ public class LevelFactory {
         }
 
         // Create and return the level instance.
-        return new Level(playerDetails, tiles, gameObjects, enemies, friendlies);
+        return new Level(camera, playerDetails, tiles, gameObjects, enemies, friendlies);
     }
 
     /**

@@ -12,6 +12,7 @@ import com.dumbpug.dungeony.game.object.GameObject;
 import com.dumbpug.dungeony.game.rendering.Animation;
 import com.dumbpug.dungeony.game.rendering.Resources;
 import com.dumbpug.dungeony.game.tile.Tile;
+import com.dumbpug.dungeony.game.tile.TileType;
 
 /**
  * Represents an active projectile.
@@ -44,7 +45,7 @@ public abstract class Projectile extends Entity<SpriteBatch> {
 
     @Override
     public float getLengthY() {
-        return this.getSize() * 0.8f;
+        return this.getSize();
     }
 
     @Override
@@ -119,9 +120,16 @@ public abstract class Projectile extends Entity<SpriteBatch> {
             }
 
             if (collidingEntityGroup.equalsIgnoreCase("tile")) {
-                // TODO: We only care about colliding with wall tiles.
-                //onTileCollision((Tile)colliding);
-                //hasCollided = true;
+                // Get the colliding tile.
+                Tile tile = (Tile)colliding;
+
+                // We only care about tiles that the projectile can actually collide with, the walls.
+                if (tile.getTileType() != TileType.WALL) {
+                    continue;
+                }
+
+                onTileCollision(tile);
+                hasCollided = true;
             }
         }
 

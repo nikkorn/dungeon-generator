@@ -33,8 +33,9 @@ public class Environment<TRenderContext> {
     /**
      * Creates a new instance of the Environment class.
      * @param configuration The environment configuration.
+     * @param camera The environment camera.
      */
-    public Environment(EnvironmentConfiguration configuration) {
+    public Environment(EnvironmentConfiguration configuration, IEnvironmentCamera camera) {
         // Keep a reference to the environment configuration.
         this.configuration = configuration;
 
@@ -45,7 +46,7 @@ public class Environment<TRenderContext> {
         this.renderables = new Renderables<TRenderContext>();
 
         // Create the environment interactivity layer that is available to entities during updates.
-        this.interactiveEnvironment = new InteractiveEnvironment(this);
+        this.interactiveEnvironment = new InteractiveEnvironment(this, camera);
 
         // Create the entities collection.
         this.entities = new Entities(this.collisionGrid, this.renderables, this.interactiveEnvironment);

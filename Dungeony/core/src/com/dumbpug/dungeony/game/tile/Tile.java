@@ -76,4 +76,10 @@ public abstract class Tile extends Entity<SpriteBatch> implements ITilePositione
         // General tiles do not provide spawn positions.
         return null;
     }
+
+    /**
+     * Gets the type of the tile.
+     * @return The type of the tile.
+     */
+    public abstract TileType getTileType();
 }

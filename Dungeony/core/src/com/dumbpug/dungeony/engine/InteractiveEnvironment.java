@@ -10,13 +10,27 @@ public class InteractiveEnvironment {
      * The environment.
      */
     private Environment environment;
+    /**
+     * The environment camera.
+     */
+    private IEnvironmentCamera camera;
 
     /**
      * Creates a new instance of the InteractiveEnvironment class.
      * @param environment The environment.
+     * @param camera The environment camera.
      */
-    public InteractiveEnvironment(Environment environment) {
+    public InteractiveEnvironment(Environment environment, IEnvironmentCamera camera) {
         this.environment = environment;
+        this.camera      = camera;
+    }
+
+    /**
+     * Shake the environment camera for the specified duration in millis.
+     * @param duration The shake duration in millis.
+     */
+    public void shakeCamera(long duration) {
+        this.camera.shake(duration);
     }
 
     /**

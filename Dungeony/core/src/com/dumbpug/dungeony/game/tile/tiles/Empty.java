@@ -7,6 +7,7 @@ import com.dumbpug.dungeony.game.EntityCollisionFlag;
 import com.dumbpug.dungeony.game.rendering.Resources;
 import com.dumbpug.dungeony.game.rendering.TileSprite;
 import com.dumbpug.dungeony.game.tile.Tile;
+import com.dumbpug.dungeony.game.tile.TileType;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -125,5 +126,10 @@ public class Empty extends Tile {
 
         // Pick and return a random tile sprite.
         return allGroundSprites.get(new Random().nextInt(allGroundSprites.size()));
+    }
+
+    @Override
+    public TileType getTileType() {
+        return TileType.EMPTY;
     }
 }

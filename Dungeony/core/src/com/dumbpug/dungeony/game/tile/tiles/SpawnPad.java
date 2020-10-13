@@ -9,6 +9,7 @@ import com.dumbpug.dungeony.game.rendering.Resources;
 import com.dumbpug.dungeony.game.rendering.TileSprite;
 import com.dumbpug.dungeony.game.tile.Tile;
 import com.dumbpug.dungeony.game.tile.TileSpawn;
+import com.dumbpug.dungeony.game.tile.TileType;
 import java.util.ArrayList;
 
 /**
@@ -81,6 +82,11 @@ public class SpawnPad extends Tile {
         spawns.add(new TileSpawn(new Position(this.getX() + (this.getLengthX() / 2f), this.getY() + (this.getLengthY() / 2f))));
 
         return spawns;
+    }
+
+    @Override
+    public TileType getTileType() {
+        return TileType.SPAWN_PAD;
     }
 }
 

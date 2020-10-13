@@ -24,7 +24,7 @@ public class Bullet extends Projectile {
 
     @Override
     public float getSize() {
-        return Constants.PROJECTILE_SIZE_SMALL;
+        return Constants.PROJECTILE_SIZE_MEDIUM;
     }
 
     @Override

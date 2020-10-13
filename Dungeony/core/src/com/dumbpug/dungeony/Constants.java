@@ -23,9 +23,10 @@ public class Constants {
     //==============================================================================================
     // LEVEL
     //==============================================================================================
-    public static final float LEVEL_TILE_SIZE                       = 64f;
+    public static final float LEVEL_TILE_SIZE                       = 32f;
     public static final float LEVEL_GRID_CELL_SIZE                  = LEVEL_TILE_SIZE * 4f;
-    public static final float LEVEL_DEFAULT_ZOOM                    = 0.35f;
+    public static final float LEVEL_DEFAULT_ZOOM                    = 0.18f;
+    public static final float LEVEL_CAMERA_SHAKE_POWER              = 1;
 
     //==============================================================================================
     // CHARACTER
@@ -53,7 +54,7 @@ public class Constants {
     public static final float PROJECTILE_DEFAULT_MOVEMENT_PS         = LEVEL_TILE_SIZE * 2.2f;
     public static final float PROJECTILE_FAST_MOVEMENT_PS            = LEVEL_TILE_SIZE * 2.6f;
     public static final float PROJECTILE_VERY_FAST_MOVEMENT_PS       = LEVEL_TILE_SIZE * 3.2f;
-    public static final float PROJECTILE_SIZE_SMALL                  = LEVEL_TILE_SIZE * 0.2f;
-    public static final float PROJECTILE_SIZE_MEDIUM                 = LEVEL_TILE_SIZE * 0.3f;
-    public static final float PROJECTILE_SIZE_LARGE                  = LEVEL_TILE_SIZE * 0.4f;
+    public static final float PROJECTILE_SIZE_SMALL                  = 6f;
+    public static final float PROJECTILE_SIZE_MEDIUM                 = 8f;
+    public static final float PROJECTILE_SIZE_LARGE                  = 12f;
 }

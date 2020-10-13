@@ -44,7 +44,7 @@ public class Wall extends Tile {
 
     @Override
     public int getCollisionMask() {
-        return EntityCollisionFlag.CHARACTER | EntityCollisionFlag.PICKUP | EntityCollisionFlag.PROJECTILE | EntityCollisionFlag.OBJECT;
+        return EntityCollisionFlag.CHARACTER | EntityCollisionFlag.PICKUP | EntityCollisionFlag.OBJECT;
     }
 
     @Override
@@ -169,5 +169,10 @@ public class Wall extends Tile {
 
         this.leftLipSprite  = isWalkableLeft ? TileSprite.WALL_TOP_LEFT : TileSprite.WALL_TOP;
         this.rightLipSprite = isWalkableRight ? TileSprite.WALL_TOP_RIGHT : TileSprite.WALL_TOP;
+    }
+
+    @Override
+    public TileType getTileType() {
+        return TileType.WALL;
     }
 }
