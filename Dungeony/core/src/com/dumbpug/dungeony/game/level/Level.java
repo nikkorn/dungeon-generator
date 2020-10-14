@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dumbpug.dungeony.characterselection.PlayerDetails;
-import com.dumbpug.dungeony.engine.Environment;
 import com.dumbpug.dungeony.engine.EnvironmentConfiguration;
 import com.dumbpug.dungeony.game.character.enemy.Enemies;
 import com.dumbpug.dungeony.game.character.enemy.Enemy;
@@ -13,15 +12,13 @@ import com.dumbpug.dungeony.game.character.friendly.Friendlies;
 import com.dumbpug.dungeony.game.character.friendly.Friendly;
 import com.dumbpug.dungeony.game.character.player.PlayerIdentifier;
 import com.dumbpug.dungeony.game.character.player.Players;
-import com.dumbpug.dungeony.game.lighting.Light;
-import com.dumbpug.dungeony.game.lighting.LightType;
-import com.dumbpug.dungeony.game.lighting.Lights;
 import com.dumbpug.dungeony.game.object.GameObject;
 import com.dumbpug.dungeony.game.object.GameObjects;
 import com.dumbpug.dungeony.game.rendering.LevelSprite;
 import com.dumbpug.dungeony.game.rendering.Resources;
 import com.dumbpug.dungeony.game.rendering.TileSprite;
 import com.dumbpug.dungeony.game.tile.Tile;
+import com.dumbpug.dungeony.game.tile.TileType;
 import com.dumbpug.dungeony.game.tile.Tiles;
 import java.util.ArrayList;
 import com.dumbpug.dungeony.Constants;
@@ -33,7 +30,7 @@ public class Level {
     /**
      * The game environment.
      */
-    private Environment environment;
+    private LevelEnvironment environment;
     /**
      * The level tiles.
      */
@@ -58,10 +55,6 @@ public class Level {
      * The level camera.
      */
     private LevelCamera levelCamera;
-    /**
-     * The level lights.
-     */
-    private Lights lights;
 
     /**
      * Creates a new instance of the Level class.
@@ -78,17 +71,12 @@ public class Level {
         config.gridCellSize             = Constants.LEVEL_GRID_CELL_SIZE;
 
         this.levelCamera = camera;
-        this.lights      = new Lights();
-        this.environment = new Environment(config, camera);
+        this.environment = new LevelEnvironment(config, camera);
         this.tiles       = new Tiles(tiles, this.environment);
         this.objects     = new GameObjects(objects, this.environment);
         this.enemies     = new Enemies(enemies, this.environment);
         this.friendlies  = new Friendlies(friendlies, this.environment);
         this.players     = new Players(playerDetails, this.environment, this.tiles.getSpawns());
-
-        // Add a light to follow the first player.
-        // TODO Remove after testing!!!!!
-        this.lights.add(new Light(LightType.SPOT, this.players.getPlayer(PlayerIdentifier.PLAYER_1)));
     }
 
     /**
@@ -125,11 +113,10 @@ public class Level {
         underlay.setCenterY(camera.position.y);
         underlay.draw(batch);
 
-        // Render an empty ground sprite for every tile.
+        // Render an empty ground sprite for every wall tile.
         // TODO: Maybe add these as entities so that we can have them excluded when not in level camera?
         for (Tile tile : this.tiles.getAll()) {
-            // TODO Maybe remove?
-            if (!levelCamera.contains(tile)) {
+            if (tile.getTileType() != TileType.WALL || !levelCamera.contains(tile)) {
                 continue;
             }
 
@@ -148,9 +135,6 @@ public class Level {
 
         // Render the game environment, passing in the level camera to constrain which renderables are actually rendered.
         this.environment.render(batch, this.levelCamera);
-
-        // Render the level lights over the environment entities.
-        this.lights.render(batch, this.levelCamera);
 
         // Reset the application camera to its original level of zoom.
         this.levelCamera.setZoom(1f);

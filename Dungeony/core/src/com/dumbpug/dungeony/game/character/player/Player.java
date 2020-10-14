@@ -11,6 +11,7 @@ import com.dumbpug.dungeony.game.character.GameCharacter;
 import com.dumbpug.dungeony.game.character.GameCharacterState;
 import com.dumbpug.dungeony.game.character.particles.walking.WalkingDustParticleEmitterActivity;
 import com.dumbpug.dungeony.game.character.particles.walking.WalkingDustParticleGenerator;
+import com.dumbpug.dungeony.game.lights.SpotLight;
 import com.dumbpug.dungeony.game.projectile.projectiles.Bullet;
 import com.dumbpug.dungeony.game.rendering.GameCharacterSprite;
 import com.dumbpug.dungeony.game.rendering.Resources;
@@ -73,7 +74,9 @@ public class Player extends GameCharacter {
     }
 
     @Override
-    public void onEnvironmentEntry(InteractiveEnvironment environment) { }
+    public void onEnvironmentEntry(InteractiveEnvironment environment) {
+        environment.addLight(new SpotLight(this, 1f, 0.3f, 0.3f));
+    }
 
     @Override
     public void onEnvironmentExit(InteractiveEnvironment environment) { }

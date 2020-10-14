@@ -1,5 +1,8 @@
 package com.dumbpug.dungeony.engine;
 
+import com.dumbpug.dungeony.engine.lighting.Light;
+import com.dumbpug.dungeony.engine.lighting.Lights;
+
 import java.util.ArrayList;
 
 /**
@@ -14,15 +17,20 @@ public class InteractiveEnvironment {
      * The environment camera.
      */
     private IEnvironmentCamera camera;
+    /**
+     * The environment lights.
+     */
+    private Lights lights;
 
     /**
      * Creates a new instance of the InteractiveEnvironment class.
      * @param environment The environment.
      * @param camera The environment camera.
      */
-    public InteractiveEnvironment(Environment environment, IEnvironmentCamera camera) {
+    public InteractiveEnvironment(Environment environment, IEnvironmentCamera camera, Lights lights) {
         this.environment = environment;
         this.camera      = camera;
+        this.lights      = lights;
     }
 
     /**
@@ -153,5 +161,21 @@ public class InteractiveEnvironment {
      */
     public void removeEntity(Entity entity) {
         this.environment.removeEntity(entity);
+    }
+
+    /**
+     * Add a light to the environment.
+     * @param light The light to add.
+     */
+    public void addLight(Light light) {
+        this.lights.add(light);
+    }
+
+    /**
+     * Remove a light from the environment.
+     * @param light The light to remove.
+     */
+    public void removeLight(Light light) {
+        this.lights.remove(light);
     }
 }

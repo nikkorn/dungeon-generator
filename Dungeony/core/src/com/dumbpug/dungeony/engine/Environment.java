@@ -1,5 +1,6 @@
 package com.dumbpug.dungeony.engine;
 
+import com.dumbpug.dungeony.engine.lighting.Lights;
 import com.dumbpug.dungeony.engine.rendering.IRenderWindow;
 import com.dumbpug.dungeony.engine.rendering.Renderables;
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import java.util.ArrayList;
  * Represents a game environment.
  * @param <TRenderContext> The render context.
  */
-public class Environment<TRenderContext> {
+public abstract class Environment<TRenderContext> {
     /**
      * The environment configuration.
      */
@@ -25,6 +26,10 @@ public class Environment<TRenderContext> {
      * The collection of entities in the environment.
      */
     private Entities<TRenderContext> entities;
+    /**
+     * The collection of lights in the environment.
+     */
+    private Lights<TRenderContext> lights;
     /**
      * The environment interactivity layer that is available to entities during updates.
      */
@@ -45,8 +50,11 @@ public class Environment<TRenderContext> {
         // Create the renderables collection which will handle entity render priority.
         this.renderables = new Renderables<TRenderContext>();
 
+        // Create the lights collection.
+        this.lights = new Lights();
+
         // Create the environment interactivity layer that is available to entities during updates.
-        this.interactiveEnvironment = new InteractiveEnvironment(this, camera);
+        this.interactiveEnvironment = new InteractiveEnvironment(this, camera, lights);
 
         // Create the entities collection.
         this.entities = new Entities(this.collisionGrid, this.renderables, this.interactiveEnvironment);
@@ -145,7 +153,16 @@ public class Environment<TRenderContext> {
      * @param window The render window.
      */
     public void render(TRenderContext context, IRenderWindow window) {
+        onBeforeEntitiesRender(context);
+
         this.renderables.render(context, window);
+
+        onAfterEntitiesRender(context);
+        onBeforeLightsRender(context);
+
+        this.lights.render(context);
+
+        onAfterLightsRender(context);
     }
 
     /**
@@ -155,4 +172,12 @@ public class Environment<TRenderContext> {
     public void render(TRenderContext context) {
         this.render(context, null);
     }
+
+    public abstract void onBeforeEntitiesRender(TRenderContext context);
+
+    public abstract void onAfterEntitiesRender(TRenderContext context);
+
+    public abstract void onBeforeLightsRender(TRenderContext context);
+
+    public abstract void onAfterLightsRender(TRenderContext context);
 }

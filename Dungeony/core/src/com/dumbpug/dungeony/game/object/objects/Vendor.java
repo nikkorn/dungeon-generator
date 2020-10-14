@@ -4,6 +4,7 @@ import com.dumbpug.dungeony.engine.Area;
 import com.dumbpug.dungeony.engine.Entity;
 import com.dumbpug.dungeony.engine.InteractiveEnvironment;
 import com.dumbpug.dungeony.engine.Position;
+import com.dumbpug.dungeony.game.lights.SpotLight;
 import com.dumbpug.dungeony.game.object.GameObject;
 import com.dumbpug.dungeony.game.object.GameObjectType;
 
@@ -50,7 +51,9 @@ public class Vendor extends GameObject {
     }
 
     @Override
-    public void onEnvironmentEntry(InteractiveEnvironment environment) { }
+    public void onEnvironmentEntry(InteractiveEnvironment environment) {
+        environment.addLight(new SpotLight(this, 1f, 0.3f, 0.3f));
+    }
 
     @Override
     public void onEnvironmentExit(InteractiveEnvironment environment) { }

@@ -6,6 +6,7 @@ import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.character.behaviour.BasicEnemyBehaviour;
 import com.dumbpug.dungeony.game.character.enemy.Enemy;
 import com.dumbpug.dungeony.game.character.enemy.EnemyType;
+import com.dumbpug.dungeony.game.lights.SpotLight;
 
 /**
  * A basic fishman enemy.
@@ -41,7 +42,9 @@ public class Fishman extends Enemy {
     }
 
     @Override
-    public void onEnvironmentEntry(InteractiveEnvironment environment) { }
+    public void onEnvironmentEntry(InteractiveEnvironment environment) {
+        environment.addLight(new SpotLight(this, 1f, 0.3f, 0.3f));
+    }
 
     @Override
     public void onEnvironmentExit(InteractiveEnvironment environment) { }

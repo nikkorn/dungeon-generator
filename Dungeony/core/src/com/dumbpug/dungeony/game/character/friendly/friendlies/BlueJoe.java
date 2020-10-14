@@ -5,6 +5,7 @@ import com.dumbpug.dungeony.engine.InteractiveEnvironment;
 import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.character.friendly.Friendly;
 import com.dumbpug.dungeony.game.character.friendly.FriendlyType;
+import com.dumbpug.dungeony.game.lights.SpotLight;
 
 /**
  * Just ol' Blue Joe.
@@ -37,7 +38,9 @@ public class BlueJoe extends Friendly {
     }
 
     @Override
-    public void onEnvironmentEntry(InteractiveEnvironment environment) { }
+    public void onEnvironmentEntry(InteractiveEnvironment environment) {
+        environment.addLight(new SpotLight(this, 1f, 0.3f, 0.3f));
+    }
 
     @Override
     public void onEnvironmentExit(InteractiveEnvironment environment) { }

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dumbpug.dungeony.engine.InteractiveEnvironment;
 import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.EntityCollisionFlag;
+import com.dumbpug.dungeony.game.lights.SpotLight;
 import com.dumbpug.dungeony.game.rendering.Resources;
 import com.dumbpug.dungeony.game.rendering.TileSprite;
 import com.dumbpug.dungeony.game.tile.Tile;
@@ -45,6 +46,14 @@ public class SpawnPad extends Tile {
     public int getCollisionMask() {
         return EntityCollisionFlag.NOTHING;
     }
+
+    @Override
+    public void onEnvironmentEntry(InteractiveEnvironment environment) {
+        environment.addLight(new SpotLight(this, 0.4f, 0.4f, 1f));
+    }
+
+    @Override
+    public void onEnvironmentExit(InteractiveEnvironment environment) {}
 
     @Override
     public void update(InteractiveEnvironment environment, float delta) { }
