@@ -13,6 +13,9 @@ import com.dumbpug.dungeony.game.character.friendly.Friendlies;
 import com.dumbpug.dungeony.game.character.friendly.Friendly;
 import com.dumbpug.dungeony.game.character.player.PlayerIdentifier;
 import com.dumbpug.dungeony.game.character.player.Players;
+import com.dumbpug.dungeony.game.lighting.Light;
+import com.dumbpug.dungeony.game.lighting.LightType;
+import com.dumbpug.dungeony.game.lighting.Lights;
 import com.dumbpug.dungeony.game.object.GameObject;
 import com.dumbpug.dungeony.game.object.GameObjects;
 import com.dumbpug.dungeony.game.rendering.LevelSprite;
@@ -54,7 +57,11 @@ public class Level {
     /**
      * The level camera.
      */
-    LevelCamera levelCamera;
+    private LevelCamera levelCamera;
+    /**
+     * The level lights.
+     */
+    private Lights lights;
 
     /**
      * Creates a new instance of the Level class.
@@ -71,18 +78,26 @@ public class Level {
         config.gridCellSize             = Constants.LEVEL_GRID_CELL_SIZE;
 
         this.levelCamera = camera;
+        this.lights      = new Lights();
         this.environment = new Environment(config, camera);
         this.tiles       = new Tiles(tiles, this.environment);
         this.objects     = new GameObjects(objects, this.environment);
         this.enemies     = new Enemies(enemies, this.environment);
         this.friendlies  = new Friendlies(friendlies, this.environment);
         this.players     = new Players(playerDetails, this.environment, this.tiles.getSpawns());
+
+        // Add a light to follow the first player.
+        // TODO Remove after testing!!!!!
+        this.lights.add(new Light(LightType.SPOT, this.players.getPlayer(PlayerIdentifier.PLAYER_1)));
     }
 
     /**
      * Update the level.
      */
     public void update() {
+        // Update the level camera, passing the delta time to use for frame-independent operations.
+        this.levelCamera.update(Gdx.graphics.getDeltaTime());
+
         // Update the game environment, passing the delta time to use for frame-independent operations.
         this.environment.update(Gdx.graphics.getDeltaTime());
     }
@@ -96,9 +111,9 @@ public class Level {
         // Update the level camera zoom so that we aren't looking at the entire level and super tiny sprites.
         this.levelCamera.setZoom(Constants.LEVEL_DEFAULT_ZOOM);
 
-        // Get the level camera to point at just the first player for now using a nice smooth lerp!
+        // Get the level camera to point at just the first player for now.
         // This will eventually point to a place between all players in the level.
-        this.levelCamera.setPosition(this.players.getPlayer(PlayerIdentifier.PLAYER_1).getX(), this.players.getPlayer(PlayerIdentifier.PLAYER_1).getY(), .01f);
+        this.levelCamera.setTarget(this.players.getPlayer(PlayerIdentifier.PLAYER_1));
 
         // Update the sprite batch we are going to use in rendering the level to use the same view as our level camera.
         batch.setProjectionMatrix(this.levelCamera.getCombinedViewMatrix());
@@ -133,6 +148,9 @@ public class Level {
 
         // Render the game environment, passing in the level camera to constrain which renderables are actually rendered.
         this.environment.render(batch, this.levelCamera);
+
+        // Render the level lights over the environment entities.
+        this.lights.render(batch, this.levelCamera);
 
         // Reset the application camera to its original level of zoom.
         this.levelCamera.setZoom(1f);

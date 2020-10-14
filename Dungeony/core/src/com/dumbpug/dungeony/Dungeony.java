@@ -81,7 +81,6 @@ public class Dungeony extends ApplicationAdapter {
 	@Override
 	public void resize(int width, int height){
 		viewport.update(width, height);
-		camera.position.set(Constants.WINDOW_WIDTH / 2, Constants.WINDOW_HEIGHT / 2,0);
 	}
 	
 	@Override

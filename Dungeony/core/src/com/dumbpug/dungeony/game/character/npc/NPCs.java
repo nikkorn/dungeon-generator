@@ -6,11 +6,11 @@ import java.util.ArrayList;
 /**
  * The list of in-level NPCs.
  */
-public class NPCs {
+public class NPCs<TNPC extends NPC> {
     /**
      * The underlying list of NPCs.
      */
-    private ArrayList<? extends NPC> npcs;
+    private ArrayList<TNPC> npcs;
     /**
      * The game environment.
      */
@@ -21,8 +21,12 @@ public class NPCs {
      * @param npcs The list of NPCs.
      * @param environment The game environment.
      */
-    public NPCs(ArrayList<? extends NPC> npcs, Environment environment) {
+    public NPCs(ArrayList<TNPC> npcs, Environment environment) {
         this.npcs        = npcs;
         this.environment = environment;
+    }
+
+    public ArrayList<TNPC> get() {
+        return this.npcs;
     }
 }

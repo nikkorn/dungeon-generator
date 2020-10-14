@@ -25,7 +25,7 @@ public class Constants {
     //==============================================================================================
     public static final float LEVEL_TILE_SIZE                       = 32f;
     public static final float LEVEL_GRID_CELL_SIZE                  = LEVEL_TILE_SIZE * 4f;
-    public static final float LEVEL_DEFAULT_ZOOM                    = 0.18f;
+    public static final float LEVEL_DEFAULT_ZOOM                    = 0.18f; // 0.18f;
     public static final float LEVEL_CAMERA_SHAKE_POWER              = 1;
 
     //==============================================================================================

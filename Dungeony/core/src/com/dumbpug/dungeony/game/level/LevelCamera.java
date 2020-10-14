@@ -3,7 +3,9 @@ package com.dumbpug.dungeony.game.level;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
+import com.dumbpug.dungeony.engine.Entity;
 import com.dumbpug.dungeony.engine.IEnvironmentCamera;
+import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.engine.rendering.IRenderWindow;
 import com.dumbpug.dungeony.engine.rendering.IRenderable;
 
@@ -15,6 +17,14 @@ public class LevelCamera implements IRenderWindow, IEnvironmentCamera {
      * The orthographic game camera.
      */
     private OrthographicCamera camera;
+    /**
+     * The current target of camera focus.
+     */
+    private Entity target = null;
+    /**
+     * The x/y position that the camera will target if no target entity is defined.
+     */
+    private float x, y;
 
     /**
      * Creates a new instance of the LevelCamera class.
@@ -22,6 +32,14 @@ public class LevelCamera implements IRenderWindow, IEnvironmentCamera {
      */
     public LevelCamera(OrthographicCamera camera) {
         this.camera = camera;
+    }
+
+    public Entity getTarget() {
+        return target;
+    }
+
+    public void setTarget(Entity target) {
+        this.target = target;
     }
 
     /**
@@ -39,18 +57,29 @@ public class LevelCamera implements IRenderWindow, IEnvironmentCamera {
      * @param y The y position of the centre point of the camera view.
      */
     public void setPosition(float x, float y) {
-        this.camera.position.set(x, y, 0);
-        this.camera.update();
+        this.x = x;
+        this.y = y;
     }
 
     /**
-     * Sets the x/y position of the centre point of the camera with lerp.
-     * @param x The x position of the centre point of the camera view.
-     * @param y The y position of the centre point of the camera view.
-     * @param lerpAlpha The lerp alpha.
+     * Update the camera.
+     * @param delta The delta time.
      */
-    public void setPosition(float x, float y, float lerpAlpha) {
-        this.camera.position.lerp(new Vector3(x, y,0), lerpAlpha);
+    public void update(float delta) {
+        // TODO: Rumble any rumblies.
+
+        // We will try to lerp toward the target entity if one is defined, otherwise we will just lerp towards x/y.
+        if (this.target != null) {
+            // Get teh target origin.
+            Position targetOrigin = this.target.getOrigin();
+
+            // Lerp to the target origin.
+            this.camera.position.lerp(new Vector3(targetOrigin.getX(), targetOrigin.getY(), 0), .02f);
+        } else {
+            // Lerp to the x/y position that we have as we do not have a target entity.
+            this.camera.position.lerp(new Vector3(this.x, this.y, 0), .02f);
+        }
+
         this.camera.update();
     }
 
