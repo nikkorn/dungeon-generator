@@ -46,7 +46,7 @@ public class CharacterSelection extends State {
         controller.addListener(inputProvider);
 
         // For now, just add a single player and use keyboard input.
-        this.applicationModel.getPlayerDetails().add(new PlayerDetails(PlayerIdentifier.PLAYER_1, PlayerType.GREENY, inputProvider));
+        this.applicationModel.getPlayerDetails().add(new PlayerDetails(PlayerIdentifier.PLAYER_1, PlayerType.CLOAK, inputProvider));
 
         // Go straight to the game state state for now.
         this.changeState("GAME");

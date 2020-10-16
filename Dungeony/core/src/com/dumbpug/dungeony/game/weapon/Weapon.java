@@ -13,6 +13,14 @@ import java.util.HashMap;
  */
 public abstract class Weapon {
     /**
+     * The position of the weapon.
+     */
+    private Position position;
+    /**
+     * The angle of aim of the weapon.
+     */
+    private float angleOfAim;
+    /**
      * The current weapon state.
      */
     private WeaponState state = WeaponState.IDLE;
@@ -40,6 +48,22 @@ public abstract class Weapon {
         for (WeaponState state : WeaponState.values()) {
             this.animations.put(state, Resources.getWeaponAnimation(state, this.getWeaponType()));
         }
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    public float getAngleOfAim() {
+        return angleOfAim;
+    }
+
+    public void setAngleOfAim(float angleOfAim) {
+        this.angleOfAim = angleOfAim;
     }
 
     /**
@@ -101,8 +125,6 @@ public abstract class Weapon {
     /**
      * Render the weapon using the provided sprite batch.
      * @param batch The sprite batch to use in rendering the renderable.
-     * @param origin The origin of the player using the weapon.
-     * @param angle The angle at which the weapon is positioned.
      */
-    public abstract void render(SpriteBatch batch, Position origin, float angle);
+    public abstract void render(SpriteBatch batch);
 }

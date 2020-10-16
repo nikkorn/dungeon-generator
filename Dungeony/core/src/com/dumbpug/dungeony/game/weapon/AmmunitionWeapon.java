@@ -1,5 +1,6 @@
 package com.dumbpug.dungeony.game.weapon;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -77,11 +78,9 @@ public abstract class AmmunitionWeapon extends Weapon {
     /**
      * Render the weapon using the provided sprite batch.
      * @param batch The sprite batch to use in rendering the renderable.
-     * @param origin The origin of the player using the weapon.
-     * @param angle The angle at which the weapon is positioned.
      */
     @Override
-    public void render(SpriteBatch batch, Position origin, float angle) {
+    public void render(SpriteBatch batch) {
         // Get the relevant animation for the weapon based on their current state.
         Animation animation = this.animations.get(this.getState());
 
@@ -89,7 +88,8 @@ public abstract class AmmunitionWeapon extends Weapon {
         TextureRegion currentFrame = animation.getCurrentFrame(true);
 
         // Draw the current animation frame.
-        batch.draw(currentFrame, origin.getX(), origin.getY());
+        batch.draw(currentFrame, this.getPosition().getX(), this.getPosition().getY(), 0f, currentFrame.getRegionHeight() / 2f,
+                currentFrame.getRegionWidth(), currentFrame.getRegionHeight(), 1f, 1f, -(this.getAngleOfAim() - 90f));
     }
 
     /**

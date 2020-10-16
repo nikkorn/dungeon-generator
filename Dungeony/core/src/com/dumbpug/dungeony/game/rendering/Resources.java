@@ -182,18 +182,21 @@ public class Resources {
         switch (state) {
             case HIDDEN:
                 columns = 1;
+                break;
             case IDLE_LEFT:
             case IDLE_RIGHT:
-                columns = 4;
+                columns = category.equals("player") ? 24 : 4;
                 break;
             case RUNNING_LEFT:
             case RUNNING_RIGHT:
             case DODGING_LEFT:
             case DODGING_RIGHT:
-                columns = 6;
+                columns = category.equals("player") ? 8 : 6;
                 break;
+            default:
+                throw new RuntimeException("unknown game character state: " + state);
         }
-        return new Animation(new Texture("images/character/" + category.toLowerCase() + "/" + type.toUpperCase()  + "/" + state + ".png"), columns, 1, 1/8f);
+        return new Animation(new Texture("images/character/" + category.toLowerCase() + "/" + type.toUpperCase()  + "/" + state + ".png"), columns, 1, 1/12f);
     }
 
 }

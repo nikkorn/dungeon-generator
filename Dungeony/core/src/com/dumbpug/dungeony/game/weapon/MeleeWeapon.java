@@ -50,11 +50,9 @@ public abstract class MeleeWeapon extends Weapon {
     /**
      * Render the weapon using the provided sprite batch.
      * @param batch The sprite batch to use in rendering the renderable.
-     * @param origin The origin of the player using the weapon.
-     * @param angle The angle at which the weapon is positioned.
      */
     @Override
-    public void render(SpriteBatch batch, Position origin, float angle) {
+    public void render(SpriteBatch batch) {
         // TODO Render melee weapon.
         // The IN_USE weapon state animation should be the animation of the melee weapon swiping.
     }

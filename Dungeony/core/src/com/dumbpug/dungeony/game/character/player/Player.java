@@ -7,6 +7,7 @@ import com.dumbpug.dungeony.engine.InteractiveEnvironment;
 import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.engine.particles.Emitter;
 import com.dumbpug.dungeony.engine.utilities.GameMath;
+import com.dumbpug.dungeony.game.character.FacingDirection;
 import com.dumbpug.dungeony.game.character.GameCharacter;
 import com.dumbpug.dungeony.game.character.GameCharacterState;
 import com.dumbpug.dungeony.game.character.particles.walking.WalkingDustParticleEmitterActivity;
@@ -60,17 +61,17 @@ public class Player extends GameCharacter {
 
     @Override
     public float getLengthX() {
-        return Constants.PLAYER_SIZE;
+        return 18f;
     }
 
     @Override
     public float getLengthY() {
-        return Constants.PLAYER_SIZE * 0.5f;
+        return 12f;
     }
 
     @Override
     public float getLengthZ() {
-        return Constants.PLAYER_SIZE;
+        return 24f;
     }
 
     @Override
@@ -114,18 +115,50 @@ public class Player extends GameCharacter {
                     break;
             }
         } else {
-            // We are running because we are moving on either axis, but hte X axis movement determines which way we face.
-            this.setState(movementAxisX < 0 ? GameCharacterState.RUNNING_LEFT : GameCharacterState.RUNNING_RIGHT);
+            // We are running because we are moving on either axis, but the X axis movement determines which way we face.
+            if (movementAxisX < 0) {
+                this.setState(GameCharacterState.RUNNING_LEFT);
+                this.setFacingDirection(FacingDirection.LEFT);
+            } else if (movementAxisX > 0) {
+                this.setState(GameCharacterState.RUNNING_RIGHT);
+                this.setFacingDirection(FacingDirection.RIGHT);
+            }
         }
 
-        // TODO: Remove this projectile generation test.
-        if (playerInputProvider.isControlJustPressed(Control.PRIMARY_ACTION)) {
-            float angleOfAim = GameMath.getAngle(0, 0, playerInputProvider.getAimAxisX(), playerInputProvider.getAimAxisY());
+        if (this.getWeapon() != null) {
+            // Get the player angle of aim.
+            float angleOfAim = getPlayerAngleOfAim(playerInputProvider);
 
-            Bullet bullet = new Bullet(new Position(this.getX(), this.getY()), angleOfAim);
+            // Update the position and angle of the equipped weapon.
+            this.getWeapon().setPosition(this.getOrigin());
+            this.getWeapon().setAngleOfAim(angleOfAim);
 
-            // TODO Does this defeat the point of having the projectiles collection???????
-            environment.addEntity(bullet);
+            // TODO: Remove this projectile generation test.
+            if (playerInputProvider.isControlJustPressed(Control.PRIMARY_ACTION)) {
+                Bullet bullet = new Bullet(new Position(this.getWeapon().getPosition()), angleOfAim);
+
+                // TODO Does this defeat the point of having the projectiles collection???????
+                environment.addEntity(bullet);
+
+                // TODO: Replace this with a 'weapon.use(InteractiveEnvironment environment, float delta)'
+            }
         }
+    }
+
+    /**
+     * Gets the angle of aim for the character.
+     * @param playerInputProvider The player input provider.
+     * @return The angle of aim for the character.
+     */
+    private float getPlayerAngleOfAim(IPlayerInputProvider playerInputProvider) {
+        float aimInputOffsetX = playerInputProvider.getAimAxisX();
+        float aimInputOffsetY = playerInputProvider.getAimAxisY();
+
+        // Check whether we are even moving, if not then the player aim will just follow their facing direction.
+        if (aimInputOffsetX == 0 && aimInputOffsetY == 0) {
+            return this.getFacingDirection() == FacingDirection.LEFT ? 270 : 90;
+        }
+
+        return GameMath.getAngle(0, 0, aimInputOffsetX, aimInputOffsetY);
     }
 }

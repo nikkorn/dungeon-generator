@@ -44,6 +44,10 @@ public abstract class GameCharacter extends Entity<SpriteBatch> {
      * The game character shadow sprite.
      */
     protected Sprite shadowSprite;
+    /**
+     * The facing direction of the character.
+     */
+    protected FacingDirection facingDirection = FacingDirection.RIGHT;
 
     /**
      * Creates a new instance of the GameCharacter class.
@@ -117,6 +121,14 @@ public abstract class GameCharacter extends Entity<SpriteBatch> {
         this.angleOfView = angleOfView;
     }
 
+    public FacingDirection getFacingDirection() {
+        return facingDirection;
+    }
+
+    public void setFacingDirection(FacingDirection facingDirection) {
+        this.facingDirection = facingDirection;
+    }
+
     @Override
     public int getCollisionLayers() {
         return EntityCollisionFlag.CHARACTER;
@@ -149,17 +161,16 @@ public abstract class GameCharacter extends Entity<SpriteBatch> {
         // Draw the character shadow (if they have one).
         if (this.shadowSprite != null) {
             shadowSprite.setSize(this.getLengthX(), this.getLengthZ());
-            shadowSprite.setPosition(this.getX(), this.getY());
-            shadowSprite.setScale(1.2f,  1.2f);
+            shadowSprite.setPosition(this.getX(), this.getY() - (this.getLengthZ() * 0.1f));
             shadowSprite.draw(batch);
         }
 
         // Render the current animation frame of the character.
-        batch.draw(currentFrame, this.getX(), this.getY(), 0, 0, this.getLengthX(), this.getLengthZ(), 1.2f, 1.2f, 0);
+        batch.draw(currentFrame, this.getX(), this.getY(), 0, 0, this.getLengthX(), this.getLengthZ(), 1.0f, 1.0f, 0);
 
         // Draw the weapon of the character if they have one.
         if (this.getWeapon() != null) {
-            this.getWeapon().render(batch, this.getOrigin(), this.getAngleOfView());
+            this.getWeapon().render(batch);
         }
     }
 }
