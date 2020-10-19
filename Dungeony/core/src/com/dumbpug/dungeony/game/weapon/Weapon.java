@@ -15,7 +15,7 @@ public abstract class Weapon {
     /**
      * The position of the weapon.
      */
-    private Position position;
+    private Position position = new Position(0, 0);
     /**
      * The angle of aim of the weapon.
      */
@@ -52,10 +52,6 @@ public abstract class Weapon {
 
     public Position getPosition() {
         return position;
-    }
-
-    public void setPosition(Position position) {
-        this.position = position;
     }
 
     public float getAngleOfAim() {

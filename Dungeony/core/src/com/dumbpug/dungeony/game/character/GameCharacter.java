@@ -5,11 +5,15 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.engine.Entity;
+import com.dumbpug.dungeony.engine.InteractiveEnvironment;
 import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.EntityCollisionFlag;
 import com.dumbpug.dungeony.game.inventory.Inventory;
+import com.dumbpug.dungeony.game.projectile.projectiles.Bullet;
 import com.dumbpug.dungeony.game.rendering.Animation;
 import com.dumbpug.dungeony.game.weapon.Weapon;
+import com.dumbpug.dungeony.input.Control;
+
 import java.util.HashMap;
 
 /**
@@ -33,9 +37,13 @@ public abstract class GameCharacter extends Entity<SpriteBatch> {
      */
     private Weapon weapon = null;
     /**
-     * The angle of the characters direction of view.
+     * The facing direction of the character.
      */
-    private float angleOfView;
+    private FacingDirection facingDirection = FacingDirection.RIGHT;
+    /**
+     * The angle of view of the character.
+     */
+    private Float angleOfView = null;
     /**
      * The game character state to animation map.
      */
@@ -44,10 +52,6 @@ public abstract class GameCharacter extends Entity<SpriteBatch> {
      * The game character shadow sprite.
      */
     protected Sprite shadowSprite;
-    /**
-     * The facing direction of the character.
-     */
-    protected FacingDirection facingDirection = FacingDirection.RIGHT;
 
     /**
      * Creates a new instance of the GameCharacter class.
@@ -109,7 +113,7 @@ public abstract class GameCharacter extends Entity<SpriteBatch> {
      * Gets the angle of the characters direction of view.
      * @return The angle of the characters direction of view.
      */
-    public float getAngleOfView() {
+    public Float getAngleOfView() {
         return angleOfView;
     }
 
@@ -117,16 +121,12 @@ public abstract class GameCharacter extends Entity<SpriteBatch> {
      * Sets the angle of the characters direction of view.
      * @param angleOfView The angle of the characters direction of view.
      */
-    public void setAngleOfView(float angleOfView) {
+    public void setAngleOfView(Float angleOfView) {
         this.angleOfView = angleOfView;
     }
 
     public FacingDirection getFacingDirection() {
         return facingDirection;
-    }
-
-    public void setFacingDirection(FacingDirection facingDirection) {
-        this.facingDirection = facingDirection;
     }
 
     @Override
@@ -171,6 +171,56 @@ public abstract class GameCharacter extends Entity<SpriteBatch> {
         // Draw the weapon of the character if they have one.
         if (this.getWeapon() != null) {
             this.getWeapon().render(batch);
+        }
+    }
+
+    /**
+     * Make the character move, updating the state, facing direction and equipped weapon position of the character.
+     * @param environment
+     * @param movementAxisX
+     * @param movementAxisY
+     * @param delta
+     */
+    protected void move(InteractiveEnvironment environment, float movementAxisX, float movementAxisY, float delta) {
+        // Is the player idle and not moving in any direction?
+        if (movementAxisX == 0f && movementAxisY == 0f) {
+            // The facing direction of the character will be determined by their current angle of view if one is set.
+            if (this.angleOfView != null) {
+                this.facingDirection = FacingDirection.fromAngle(this.angleOfView);
+            }
+
+            // The player should be idle and facing whatever direction they already have been.
+            this.setState(this.facingDirection == FacingDirection.LEFT ? GameCharacterState.IDLE_LEFT: GameCharacterState.IDLE_RIGHT);
+        } else {
+            // The facing direction of the character will be determined by their current angle of view if one is
+            // set, otherwise it will be determined by whatever direction the character is currently moving in.
+            if (this.angleOfView != null) {
+                this.facingDirection = FacingDirection.fromAngle(this.angleOfView);
+            } else {
+                // We are running because we are moving on either axis, but the X axis movement determines which way we face.
+                if (movementAxisX < 0) {
+                    this.facingDirection = FacingDirection.LEFT;
+                } else if (movementAxisX > 0) {
+                    this.facingDirection = FacingDirection.RIGHT;
+                }
+            }
+
+            // The player should be running and facing whatever direction they already have been.
+            this.setState(this.facingDirection == FacingDirection.LEFT ? GameCharacterState.RUNNING_LEFT: GameCharacterState.RUNNING_RIGHT);
+        }
+
+        // Any entity movement has to be taken care of by the level grid which handles all entity collisions.
+        environment.move(this, movementAxisX, movementAxisY, delta);
+
+        // Update the position and angle of the equipped weapon.
+        if (this.getWeapon() != null) {
+            // Where the weapon is positioned in the world will depend on the facing direction and position of the character holding it.
+            float weaponPositionY = this.getOrigin().getY() - (this.getLengthY() * 0.1f);
+            float weaponPositionX = this.facingDirection == FacingDirection.LEFT ?
+                    this.getOrigin().getX() - (this.getLengthX() * 0.2f) :
+                    this.getOrigin().getX() + (this.getLengthX() * 0.2f);
+            this.getWeapon().getPosition().set(weaponPositionX, weaponPositionY);
+            this.getWeapon().setAngleOfAim(this.angleOfView == null ? this.facingDirection.getAngle() : this.angleOfView);
         }
     }
 }

@@ -69,6 +69,16 @@ public class Position {
     }
 
     /**
+     * Sets the x and y position.
+     * @param x The x position.
+     * @param y The y position.
+     */
+    public void set(float x, float y) {
+        setX(x);
+        setY(y);
+    }
+
+    /**
      * Get the angle from this position to the target position.
      * @param target The target position.
      * @return The angle from this position to the target position.
