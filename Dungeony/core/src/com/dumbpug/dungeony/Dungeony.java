@@ -21,40 +21,21 @@ public class Dungeony extends ApplicationAdapter {
 	 * The state manager.
 	 */
 	private StateManager stateManager;
-	/**
-	 * The sprite batch to use throughout the application.
-	 */
-	private SpriteBatch batch;
-	/**
-	 * The application camera.
-	 */
-	private OrthographicCamera camera;
-	/**
-	 * The application viewport.
-	 */
-	private Viewport viewport;
 
 	@Override
 	public void create () {
 		// Create the application model used to share data across application states.
 		ApplicationModel applicationModel = new ApplicationModel();
 
-		camera = new OrthographicCamera();
-		viewport = new ExtendViewport(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, camera);
-		viewport.apply();
-
 		// Create the state manager and add the application states.
 		stateManager = new StateManager();
 		stateManager.addState(new Splash());
 		stateManager.addState(new Title());
 		stateManager.addState(new CharacterSelection(applicationModel));
-		stateManager.addState(new Game(applicationModel, camera));
+		stateManager.addState(new Game(applicationModel));
 
 		// Set the initial application state.
 		stateManager.setCurrentState("SPLASH");
-
-		// Create the application sprite batch.
-		batch = new SpriteBatch();
 	}
 
 	@Override
@@ -68,23 +49,15 @@ public class Dungeony extends ApplicationAdapter {
 		// Update the current application state.
 		this.stateManager.update();
 
-		// Update the sprite batch position to match the camera.
-		camera.update();
-		batch.setProjectionMatrix(camera.combined);
-
 		// Render the current application state.
-		batch.begin();
-		this.stateManager.render(batch);
-		batch.end();
+		this.stateManager.render();
 	}
 
 	@Override
 	public void resize(int width, int height){
-		viewport.update(width, height);
+		this.stateManager.onResize(width, height);
 	}
 	
 	@Override
-	public void dispose () {
-		batch.dispose();
-	}
+	public void dispose () { }
 }

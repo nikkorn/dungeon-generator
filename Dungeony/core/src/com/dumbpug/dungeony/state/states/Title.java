@@ -1,12 +1,14 @@
 package com.dumbpug.dungeony.state.states;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dumbpug.dungeony.state.State;
 
 /**
  * The 'title' state of the application.
  */
 public class Title extends State {
+
+    // TODO Add an ExtendedViewport just for this.
+
     @Override
     public void onEntry(State state) {
     }
@@ -22,8 +24,10 @@ public class Title extends State {
     }
 
     @Override
-    public void render(SpriteBatch batch) {
-    }
+    public void render() { }
+
+    @Override
+    public void onResize(int width, int height) { }
 
     @Override
     public String getStateName() {

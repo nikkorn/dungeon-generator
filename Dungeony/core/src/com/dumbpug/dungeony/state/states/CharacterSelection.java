@@ -20,6 +20,8 @@ public class CharacterSelection extends State {
      */
     private ApplicationModel applicationModel;
 
+    // TODO Add an ExtendedViewport just for this.
+
     /**
      * Creates a new instance of the CharacterSelection class.
      * @param applicationModel The application model used to share data across application state
@@ -40,6 +42,10 @@ public class CharacterSelection extends State {
 
     @Override
     public void update() {
+        if (Controllers.getControllers().isEmpty()) {
+            return;
+        }
+
         XboxControllerInputProvider inputProvider = new XboxControllerInputProvider();
 
         Controller controller = Controllers.getControllers().get(0);
@@ -53,9 +59,10 @@ public class CharacterSelection extends State {
     }
 
     @Override
-    public void render(SpriteBatch batch) {
+    public void render() { }
 
-    }
+    @Override
+    public void onResize(int width, int height) { }
 
     @Override
     public String getStateName() {
