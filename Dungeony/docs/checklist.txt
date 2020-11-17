@@ -23,3 +23,8 @@ Enemy behaviour is limited to waiting for players to come within a range and the
 On killing an enemy, the enemy will drop a number of items.
 
 The only items to be added will be the pistol weapon, pistol ammo and the level exit key.
+
+
+Checklist
+=========
+1.

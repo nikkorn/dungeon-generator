@@ -3,7 +3,6 @@ package com.dumbpug.dungeony.engine;
 import com.dumbpug.dungeony.engine.lighting.Lights;
 import com.dumbpug.dungeony.engine.rendering.IRenderWindow;
 import com.dumbpug.dungeony.engine.rendering.Renderables;
-import java.util.ArrayList;
 
 /**
  * Represents a game environment.
@@ -61,6 +60,14 @@ public abstract class Environment<TRenderContext> {
     }
 
     /**
+     * Gets the collection of entities in the environment.
+     * @return The collection of entities in the environment.
+     */
+    public Entities<TRenderContext> getEntities() {
+        return entities;
+    }
+
+    /**
      * Gets the spatial grid to use in finding entity collisions.
      * @return The spatial grid to use in finding entity collisions.
      */
@@ -74,69 +81,6 @@ public abstract class Environment<TRenderContext> {
      */
     public InteractiveEnvironment getInteractivityLayer() {
         return this.interactiveEnvironment;
-    }
-
-    /**
-     * Gets the group that the entity resides in, or null if the entity is not in the environment or a group.
-     * @param entity The entity.
-     * @return The group that the entity resides in, or null if the entity is not in the environment or a group.
-     */
-    public String getEntityGroup(Entity entity) {
-        return this.entities.getEntityGroup(entity);
-    }
-
-    /**
-     * Add an entity to the environment.
-     * @param entity The entity to add.
-     * @param group The group to add the entity against.
-     */
-    public void addEntity(Entity<TRenderContext> entity, String group) {
-        this.entities.add(entity, group);
-    }
-
-    /**
-     * Add an entity to the environment.
-     * @param entity The entity to add.
-     */
-    public void addEntity(Entity<TRenderContext> entity) {
-        this.addEntity(entity, null);
-    }
-
-    /**
-     * Add a list of entities to the environment.
-     * @param list The list of entities to add.
-     * @param group The group to add the entities against.
-     */
-    public void addEntities(ArrayList<Entity<TRenderContext>> list, String group) {
-        for (Entity<TRenderContext> entity : list) {
-            this.addEntity(entity, group);
-        }
-    }
-
-    /**
-     * Add a list of entities to the environment.
-     * @param list The list of entities to add.
-     */
-    public void addEntities(ArrayList<Entity<TRenderContext>> list) {
-        this.addEntities(list, null);
-    }
-
-    /**
-     * Remove an entity from the environment.
-     * @param entity The entity to remove.
-     */
-    public void removeEntity(Entity<TRenderContext> entity) {
-        this.entities.remove(entity);
-    }
-
-    /**
-     * Remove a list of entities from the environment.
-     * @param list The list of entities to remove.
-     */
-    public void removeEntities(ArrayList<Entity<TRenderContext>> list) {
-        for (Entity<TRenderContext> entity : list) {
-            this.removeEntity(entity);
-        }
     }
 
     /**

@@ -2,7 +2,6 @@ package com.dumbpug.dungeony.engine;
 
 import com.dumbpug.dungeony.engine.lighting.Light;
 import com.dumbpug.dungeony.engine.lighting.Lights;
-
 import java.util.ArrayList;
 
 /**
@@ -117,7 +116,7 @@ public class InteractiveEnvironment {
      * @return The group that the entity resides in, or null if the entity is not in the environment or a group.
      */
     public String getEntityGroup(Entity entity) {
-        return this.environment.getEntityGroup(entity);
+        return this.environment.getEntities().getGroupName(entity);
     }
 
     /**
@@ -152,7 +151,7 @@ public class InteractiveEnvironment {
      * @param group The group to add the entity against.
      */
     public void addEntity(Entity entity, String group) {
-        this.environment.addEntity(entity, group);
+        this.environment.getEntities().add(entity, group);
     }
 
     /**
@@ -160,7 +159,7 @@ public class InteractiveEnvironment {
      * @param entity The entity to remove.
      */
     public void removeEntity(Entity entity) {
-        this.environment.removeEntity(entity);
+        this.environment.getEntities().remove(entity);
     }
 
     /**

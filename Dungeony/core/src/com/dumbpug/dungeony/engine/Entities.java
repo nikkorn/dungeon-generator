@@ -2,12 +2,10 @@ package com.dumbpug.dungeony.engine;
 
 import com.dumbpug.dungeony.engine.rendering.Renderables;
 import com.dumbpug.dungeony.engine.utilities.Queue;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 /**
@@ -86,7 +84,7 @@ public class Entities<TRenderContext>  {
      * @param entity The entity.
      * @return The group that the entity resides in, or null if the entity is not in the entities list or a group.
      */
-    public String getEntityGroup(Entity entity) {
+    public String getGroupName(Entity entity) {
         for (Map.Entry<String, ArrayList<Entity<TRenderContext>>> entry : this.groups.entrySet()) {
             if (entry.getValue().contains(entity)) {
                 // The entity was in the current group list.
@@ -99,24 +97,16 @@ public class Entities<TRenderContext>  {
     }
 
     /**
-     * Gets a list of all entities.
-     * @return a list of all entities.
-     */
-    public ArrayList<Entity<TRenderContext>> getEntities() {
-        return this.entities;
-    }
-
-    /**
      * Gets a list of all entities withing the specified group.
      * @return a list of all entities withing the specified group.
      */
-    public ArrayList<Entity<TRenderContext>> getEntities(String group) {
+    public <TType extends Entity<TRenderContext>> ArrayList<TType> getGroup(String group) {
         // The entity group may not exist.
         if (!this.groups.containsKey(group.toUpperCase())) {
             throw new RuntimeException("entity group '" + group + "' does not exist");
         }
 
-        return this.groups.get(group.toUpperCase());
+        return (ArrayList<TType>)this.groups.get(group.toUpperCase());
     }
 
     /**
@@ -178,6 +168,25 @@ public class Entities<TRenderContext>  {
     }
 
     /**
+     * Add a list of entities to the list of in-game entities.
+     * @param list The list of entities to add.
+     * @param group The group to add the entities against.
+     */
+    public void add(ArrayList<? extends Entity<TRenderContext>> list, String group) {
+        for (Entity<TRenderContext> entity : list) {
+            this.add(entity, group);
+        }
+    }
+
+    /**
+     * Add a list of entities to the list of in-game entities.
+     * @param list The list of entities to add.
+     */
+    public void add(ArrayList<? extends Entity<TRenderContext>> list) {
+        this.add(list, null);
+    }
+
+    /**
      * Remove an entity from the list of in-game entities.
      * @param entity The entity to remove.
      */
@@ -214,6 +223,16 @@ public class Entities<TRenderContext>  {
 
         // Let the entity do some 'onEnvironmentExit' logic.
         entity.onEnvironmentExit(this.interactiveEnvironment);
+    }
+
+    /**
+     * Remove a list of entities from the list of in-game entities.
+     * @param list The list of entities to remove.
+     */
+    public void removeEntities(ArrayList<? extends Entity<TRenderContext>> list) {
+        for (Entity<TRenderContext> entity : list) {
+            this.remove(entity);
+        }
     }
 
     /**

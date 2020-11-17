@@ -4,24 +4,22 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.characterselection.PlayerDetails;
 import com.dumbpug.dungeony.engine.EnvironmentConfiguration;
-import com.dumbpug.dungeony.game.character.enemy.Enemies;
 import com.dumbpug.dungeony.game.character.enemy.Enemy;
-import com.dumbpug.dungeony.game.character.friendly.Friendlies;
 import com.dumbpug.dungeony.game.character.friendly.Friendly;
-import com.dumbpug.dungeony.game.character.player.PlayerIdentifier;
-import com.dumbpug.dungeony.game.character.player.Players;
+import com.dumbpug.dungeony.game.character.player.Player;
 import com.dumbpug.dungeony.game.object.GameObject;
-import com.dumbpug.dungeony.game.object.GameObjects;
 import com.dumbpug.dungeony.game.rendering.LevelSprite;
 import com.dumbpug.dungeony.game.rendering.Resources;
 import com.dumbpug.dungeony.game.rendering.TileSprite;
 import com.dumbpug.dungeony.game.tile.Tile;
+import com.dumbpug.dungeony.game.tile.TileSpawn;
 import com.dumbpug.dungeony.game.tile.TileType;
-import com.dumbpug.dungeony.game.tile.Tiles;
+import com.dumbpug.dungeony.game.weapon.WeaponQuality;
+import com.dumbpug.dungeony.game.weapon.handgun.Pistol;
 import java.util.ArrayList;
-import com.dumbpug.dungeony.Constants;
 
 /**
  * An in-game level.
@@ -31,26 +29,6 @@ public class Level {
      * The game environment.
      */
     private LevelEnvironment environment;
-    /**
-     * The level tiles.
-     */
-    private Tiles tiles;
-    /**
-     * The game objects in the level.
-     */
-    private GameObjects objects;
-    /**
-     * The enemy NPCs in the level.
-     */
-    private Enemies enemies;
-    /**
-     * The friendly NPCs in the level.
-     */
-    private Friendlies friendlies;
-    /**
-     * The players in the level.
-     */
-    private Players players;
     /**
      * The level camera.
      */
@@ -72,11 +50,29 @@ public class Level {
 
         this.levelCamera = camera;
         this.environment = new LevelEnvironment(config, camera);
-        this.tiles       = new Tiles(tiles, this.environment);
-        this.objects     = new GameObjects(objects, this.environment);
-        this.enemies     = new Enemies(enemies, this.environment);
-        this.friendlies  = new Friendlies(friendlies, this.environment);
-        this.players     = new Players(playerDetails, this.environment, this.tiles.getSpawns());
+
+        // Find all of the player spawn locations defined by the specified tiles.
+        ArrayList<TileSpawn> playerSpawns = getPlayerSpawns(tiles);
+
+        // Check that there are enough spawn positions for our players.
+        if (playerDetails.size() > playerSpawns.size()) {
+            throw new RuntimeException("not enough spawns for players");
+        }
+
+        // Create and add all of the player entities to the game environment.
+        addPlayerEntities(playerDetails, playerSpawns);
+
+        // Add all of the tile entities to the game environment.
+        this.environment.getEntities().add(tiles, "tile");
+
+        // Add all of the game objects to the game environment.
+        this.environment.getEntities().add(objects, "object");
+
+        // Add all of the enemies to the game environment.
+        this.environment.getEntities().add(enemies, "enemy");
+
+        // Add all of the friendlies to the game environment.
+        this.environment.getEntities().add(friendlies, "friendly");
     }
 
     /**
@@ -101,7 +97,7 @@ public class Level {
 
         // Get the level camera to point at just the first player for now.
         // This will eventually point to a place between all players in the level.
-        this.levelCamera.setTarget(this.players.getPlayer(PlayerIdentifier.PLAYER_1));
+        this.levelCamera.setTarget(this.environment.getEntities().getGroup("player").get(0));
 
         // Update the sprite batch we are going to use in rendering the level to use the same view as our level camera.
         batch.setProjectionMatrix(this.levelCamera.getCombinedViewMatrix());
@@ -115,7 +111,7 @@ public class Level {
 
         // Render an empty ground sprite for every wall tile.
         // TODO: Maybe add these as entities so that we can have them excluded when not in level camera?
-        for (Tile tile : this.tiles.getAll()) {
+        for (Tile tile : this.environment.getEntities().<Tile>getGroup("tile")) {
             if (tile.getTileType() != TileType.WALL || !levelCamera.contains(tile)) {
                 continue;
             }
@@ -141,5 +137,43 @@ public class Level {
 
         // No that we have zoomed back out from the level we will need to update the sprite batch view.
         batch.setProjectionMatrix(this.levelCamera.getCombinedViewMatrix());
+    }
+
+    /**
+     * Add new player entities to the level environment.
+     * @param playerDetails The list of player details.
+     * @param spawns The available player spawns.
+     */
+    private void addPlayerEntities(ArrayList<PlayerDetails> playerDetails, ArrayList<TileSpawn> spawns) {
+        // Create an in-level Player instance for each player, giving them each an initial spawn position.
+        for (PlayerDetails playerDetail : playerDetails) {
+            // TODO Eventually handle the fact that a tile spawn can represent a spawn path to follow before the level begins.
+
+            // Create a new player instance based on the player details and assign them an initial spawn.
+            Player player = new Player(playerDetail, spawns.get(playerDetails.indexOf(playerDetail)).getLocation());
+
+            // TODO: Remove this weapon test.
+            player.setWeapon(new Pistol(WeaponQuality.AVERAGE));
+
+            // Add the player to the game environment.
+            this.environment.getEntities().add(player, "player");
+        }
+    }
+
+    /**
+     * Finds and returns a list of any spawn locations defined by the specified tiles.
+     * @param tiles The level tiles.
+     * @return A list of any spawn locations defined by the specified tiles.
+     */
+    private static ArrayList<TileSpawn> getPlayerSpawns(ArrayList<Tile> tiles) {
+        ArrayList<TileSpawn> spawns = new ArrayList<TileSpawn>();
+
+        for (Tile tile : tiles) {
+            if (tile.getTileSpawns() != null) {
+                spawns.addAll(tile.getTileSpawns());
+            }
+        }
+
+        return spawns;
     }
 }
