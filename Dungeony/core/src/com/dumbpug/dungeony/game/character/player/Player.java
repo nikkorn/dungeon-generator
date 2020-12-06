@@ -101,7 +101,9 @@ public class Player extends GameCharacter {
         if (this.getWeapon() != null && playerInputProvider.isControlJustPressed(Control.PRIMARY_ACTION)) {
             Bullet bullet = new Bullet(new Position(this.getWeapon().getPosition()), this.getWeapon().getAngleOfAim());
 
-            // TODO Does this defeat the point of having the projectiles collection???????
+            // TODO: Remove: Test camera shake on bullet fire.
+            environment.shakeCamera(50, 0.6f);
+
             environment.addEntity(bullet);
 
             // TODO: Replace this with a 'weapon.use(InteractiveEnvironment environment, float delta)'

@@ -35,9 +35,10 @@ public class InteractiveEnvironment {
     /**
      * Shake the environment camera for the specified duration in millis.
      * @param duration The shake duration in millis.
+     * @param power The shake power.
      */
-    public void shakeCamera(long duration) {
-        this.camera.shake(duration);
+    public void shakeCamera(long duration, float power) {
+        this.camera.shake(duration, power);
     }
 
     /**

@@ -25,6 +25,10 @@ public class LevelCamera implements IRenderWindow, IEnvironmentCamera {
      * The x/y position that the camera will target if no target entity is defined.
      */
     private float x, y;
+    /**
+     * The active camera shake
+     */
+    private LevelCameraShake activeShake = null;
 
     /**
      * Creates a new instance of the LevelCamera class.
@@ -66,26 +70,31 @@ public class LevelCamera implements IRenderWindow, IEnvironmentCamera {
      * @param delta The delta time.
      */
     public void update(float delta) {
-        // TODO: Rumble any rumblies.
+        // By default, lerp to the x/y position that we have.
+        float cameraTargetX = this.x;
+        float cameraTargetY = this.y;
 
-        // We will try to lerp toward the target entity if one is defined, otherwise we will just lerp towards x/y.
+        // We will try to lerp toward the target entity if one is defined.
         if (this.target != null) {
-            // Get teh target origin.
             Position targetOrigin = this.target.getOrigin();
+            cameraTargetX         = targetOrigin.getX();
+            cameraTargetY         = targetOrigin.getY();
+        }
 
-            // Lerp to the target origin.
-            this.camera.position.lerp(new Vector3(targetOrigin.getX(), targetOrigin.getY(), 0), .02f);
-        } else {
-            // Lerp to the x/y position that we have as we do not have a target entity.
-            this.camera.position.lerp(new Vector3(this.x, this.y, 0), .02f);
+        // Lerp towards the camera target.
+        this.camera.position.lerp(new Vector3(cameraTargetX, cameraTargetY, 0), .02f);
+
+        // If we have an active level camera shake then let us shake!
+        if (this.activeShake != null && !this.activeShake.isExpired()) {
+            this.activeShake.update(delta, this.camera, cameraTargetX, cameraTargetY);
         }
 
         this.camera.update();
     }
 
     @Override
-    public void shake(long duration) {
-        // TODO: Shame the camera
+    public void shake(long duration, float power) {
+        this.activeShake = new LevelCameraShake(duration, power);
     }
 
     /**

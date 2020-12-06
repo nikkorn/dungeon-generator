@@ -108,13 +108,13 @@ public abstract class Projectile extends Entity<SpriteBatch> {
             }
 
             if (collidingEntityGroup.equalsIgnoreCase("enemy")) {
-                onCharacterCollision((Enemy)colliding);
+                onCharacterCollision((Enemy)colliding, environment, delta);
                 hasCollided = true;
                 continue;
             }
 
             if (collidingEntityGroup.equalsIgnoreCase("object")) {
-                onGameObjectCollision((GameObject)colliding);
+                onGameObjectCollision((GameObject)colliding, environment, delta);
                 hasCollided = true;
                 continue;
             }
@@ -128,14 +128,14 @@ public abstract class Projectile extends Entity<SpriteBatch> {
                     continue;
                 }
 
-                onTileCollision(tile);
+                onWallTileCollision(tile, environment, delta);
                 hasCollided = true;
             }
         }
 
         // If the projectile has collided as part of this update it needs to become inactive.
         if (hasCollided) {
-            this.onCollided();
+            this.onCollided(environment, delta);
 
             // The projectile is no longer active and should be removed from the environment.
             environment.removeEntity(this);
@@ -155,22 +155,22 @@ public abstract class Projectile extends Entity<SpriteBatch> {
      * Handler for a character collision.
      * @param character The character that this projectile has collided with.
      */
-    public abstract void onCharacterCollision(GameCharacter character);
+    public abstract void onCharacterCollision(GameCharacter character, InteractiveEnvironment environment, float delta);
 
     /**
      * Handler for a game object collision.
      * @param object The game object that this projectile has collided with.
      */
-    public abstract void onGameObjectCollision(GameObject object);
+    public abstract void onGameObjectCollision(GameObject object, InteractiveEnvironment environment, float delta);
 
     /**
-     * Handler for a tile collision.
-     * @param tile The tile that this projectile has collided with.
+     * Handler for a wall tile collision.
+     * @param tile The wall tile that this projectile has collided with.
      */
-    public abstract void onTileCollision(Tile tile);
+    public abstract void onWallTileCollision(Tile tile, InteractiveEnvironment environment, float delta);
 
     /**
-     * Handler for a when a projectile has collided with any number of entities as part of an update and will be destroyed
+     * Handler for a when a projectile has collided with any number of entities as part of an update and will be destroyed.
      */
-    public abstract void onCollided();
+    public abstract void onCollided(InteractiveEnvironment environment, float delta);
 }

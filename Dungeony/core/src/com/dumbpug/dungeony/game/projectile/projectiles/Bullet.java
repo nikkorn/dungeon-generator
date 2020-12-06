@@ -49,24 +49,22 @@ public class Bullet extends Projectile {
     }
 
     @Override
-    public void onCharacterCollision(GameCharacter character) {
-        // TODO Apply damage to character health.
+    public void onCharacterCollision(GameCharacter character, InteractiveEnvironment environment, float delta) {
     }
 
     @Override
-    public void onGameObjectCollision(GameObject object) {
-        // TODO Apply damage to object.
+    public void onGameObjectCollision(GameObject object, InteractiveEnvironment environment, float delta) {
     }
 
     @Override
-    public void onTileCollision(Tile tile) {
-        // TODO Apply damage to tile?????.
+    public void onWallTileCollision(Tile tile, InteractiveEnvironment environment, float delta) {
     }
 
     @Override
-    public void onCollided() {
-        // TODO Show an impact animation.
+    public void onCollided(InteractiveEnvironment environment, float delta) {
+        // TODO Show projectile death animation.
     }
+
 
     @Override
     public void onEnvironmentEntry(InteractiveEnvironment environment) {

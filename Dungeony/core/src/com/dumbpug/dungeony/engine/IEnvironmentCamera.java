@@ -7,6 +7,7 @@ public interface IEnvironmentCamera {
     /**
      * Shake the environment camera.
      * @param duration The shake duration.
+     * @param power The shake power.
      */
-    void shake(long duration);
+    void shake(long duration, float power);
 }
