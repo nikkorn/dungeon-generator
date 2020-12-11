@@ -18,7 +18,7 @@ public class Pistol extends AmmunitionWeapon {
      */
     public Pistol(WeaponQuality quality) {
         super(quality);
-        this.setAmmo(50);
+        this.setAmmo(100);
     }
 
     @Override

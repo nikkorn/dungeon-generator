@@ -165,11 +165,16 @@ public abstract class GameCharacter extends Entity<SpriteBatch> {
             shadowSprite.draw(batch);
         }
 
+        // Draw the weapon of the character if they have one, but do this behind the character if they are facing right.
+        if (this.getWeapon() != null && this.facingDirection == FacingDirection.RIGHT) {
+            this.getWeapon().render(batch);
+        }
+
         // Render the current animation frame of the character.
         batch.draw(currentFrame, this.getX(), this.getY(), 0, 0, this.getLengthX(), this.getLengthZ(), 1.0f, 1.0f, 0);
 
-        // Draw the weapon of the character if they have one.
-        if (this.getWeapon() != null) {
+        // Draw the weapon of the character if they have one, but do this in front of the character if they are facing left.
+        if (this.getWeapon() != null && this.facingDirection == FacingDirection.LEFT) {
             this.getWeapon().render(batch);
         }
     }
@@ -214,11 +219,9 @@ public abstract class GameCharacter extends Entity<SpriteBatch> {
 
         // Update the position and angle of the equipped weapon.
         if (this.getWeapon() != null) {
-            // Where the weapon is positioned in the world will depend on the facing direction and position of the character holding it.
+            // Where the weapon is positioned in the world will depend on the position of the character holding it.
             float weaponPositionY = this.getOrigin().getY() - (this.getLengthY() * 0.1f);
-            float weaponPositionX = this.facingDirection == FacingDirection.LEFT ?
-                    this.getOrigin().getX() - (this.getLengthX() * 0.2f) :
-                    this.getOrigin().getX() + (this.getLengthX() * 0.2f);
+            float weaponPositionX = this.getOrigin().getX() + (this.getLengthX() * 0.2f);
             this.getWeapon().getPosition().set(weaponPositionX, weaponPositionY);
             this.getWeapon().setAngleOfAim(this.angleOfView == null ? this.facingDirection.getAngle() : this.angleOfView);
         }
