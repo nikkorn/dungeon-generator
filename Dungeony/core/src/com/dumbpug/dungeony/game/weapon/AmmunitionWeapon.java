@@ -2,10 +2,8 @@ package com.dumbpug.dungeony.game.weapon;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.dumbpug.dungeony.engine.Position;
-import com.dumbpug.dungeony.game.projectile.Projectile;
+import com.dumbpug.dungeony.engine.InteractiveEnvironment;
 import com.dumbpug.dungeony.game.rendering.Animation;
-import java.util.ArrayList;
 
 /**
  * A weapon that uses ammunition.
@@ -25,18 +23,32 @@ public abstract class AmmunitionWeapon extends Weapon {
     }
 
     /**
+     * Gets the ammo level.
+     * @return The ammo level.
+     */
+    public int getAmmo() {
+        return ammo;
+    }
+
+    /**
+     * Sets the ammo level.
+     * @param ammo The ammo level.
+     */
+    public void setAmmo(int ammo) {
+        this.ammo = ammo;
+    }
+
+    /**
      * Attempt to use the weapon.
-     * @param origin The origin of the player using the weapon.
-     * @param angleOfUse The angle at which the weapon was used.
-     * @return Any projectiles generated.
+     * @param environment The interactive environment.
+     * @param isTriggerJustPressed Whether the button pressed to use weapon has only just been pressed.
+     * @param delta The application delta time.
      */
     @Override
-    public ArrayList<Projectile> use(Position origin, float angleOfUse, boolean isTriggerJustPressed) {
-        ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
-
+    public void use(InteractiveEnvironment environment, boolean isTriggerJustPressed, float delta) {
         // If this weapon is not an automatic then it should only be used once per trigger press.
         if ((!this.isAutomatic()) && (!isTriggerJustPressed)) {
-            return projectiles;
+            return;
         }
 
         // Get the current time.
@@ -53,21 +65,19 @@ public abstract class AmmunitionWeapon extends Weapon {
                 this.lastUsed = currentTime;
 
                 // We have successfully fired our weapon!
-                return this.onUse(origin, angleOfUse);
+                this.onUse(environment, delta);
             } else {
                 // Reset the last fired time.
                 this.lastUsed = currentTime;
             }
         }
-
-        return projectiles;
     }
 
     /**
      * Reload the weapon.
      */
     public void reload() {
-
+        // TODO Add weapon clips and reload.
     }
 
     /**

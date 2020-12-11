@@ -1,6 +1,7 @@
 package com.dumbpug.dungeony.game.weapon;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dumbpug.dungeony.engine.InteractiveEnvironment;
 import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.projectile.Projectile;
 import java.util.ArrayList;
@@ -19,17 +20,15 @@ public abstract class MeleeWeapon extends Weapon {
 
     /**
      * Attempt to use the weapon.
-     * @param origin The origin of the player using the weapon.
-     * @param angleOfUse The angle at which the weapon was used.
-     * @return Any projectiles generated.
+     * @param environment The interactive environment.
+     * @param isTriggerJustPressed Whether the button pressed to use weapon has only just been pressed.
+     * @param delta The application delta time.
      */
     @Override
-    public ArrayList<Projectile> use(Position origin, float angleOfUse, boolean isTriggerJustPressed) {
-        ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
-
+    public void use(InteractiveEnvironment environment, boolean isTriggerJustPressed, float delta) {
         // A melee weapon should only be used one per trigger press.
         if (!isTriggerJustPressed) {
-            return projectiles;
+            return;
         }
 
         // Get the current time.
@@ -41,10 +40,8 @@ public abstract class MeleeWeapon extends Weapon {
             this.lastUsed = currentTime;
 
             // We have successfully used our weapon!
-            return this.onUse(origin, angleOfUse);
+            this.onUse(environment, delta);
         }
-
-        return projectiles;
     }
 
     /**

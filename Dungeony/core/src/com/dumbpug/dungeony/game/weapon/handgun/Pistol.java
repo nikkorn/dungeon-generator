@@ -1,12 +1,12 @@
 package com.dumbpug.dungeony.game.weapon.handgun;
 
+import com.dumbpug.dungeony.engine.InteractiveEnvironment;
 import com.dumbpug.dungeony.engine.Position;
-import com.dumbpug.dungeony.game.projectile.Projectile;
+import com.dumbpug.dungeony.game.projectile.projectiles.Bullet;
 import com.dumbpug.dungeony.game.weapon.AmmunitionWeapon;
 import com.dumbpug.dungeony.game.weapon.WeaponCategory;
 import com.dumbpug.dungeony.game.weapon.WeaponQuality;
 import com.dumbpug.dungeony.game.weapon.WeaponType;
-import java.util.ArrayList;
 
 /**
  * Represents a pistol weapon.
@@ -18,6 +18,7 @@ public class Pistol extends AmmunitionWeapon {
      */
     public Pistol(WeaponQuality quality) {
         super(quality);
+        this.setAmmo(50);
     }
 
     @Override
@@ -51,7 +52,11 @@ public class Pistol extends AmmunitionWeapon {
     }
 
     @Override
-    public ArrayList<Projectile> onUse(Position origin, float angleOfUse) {
-        return null;
+    public void onUse(InteractiveEnvironment environment, float delta) {
+        // Create a new bullet projectile and add it to the environment.
+        environment.addEntity(new Bullet(new Position(this.getPosition()), this.getAngleOfAim()));
+
+        // Shake camera on bullet fire!
+        environment.shakeCamera(50, 0.6f);
     }
 }

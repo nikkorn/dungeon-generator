@@ -97,16 +97,9 @@ public class Player extends GameCharacter {
 
         this.move(environment, movementAxisX, movementAxisY, delta);
 
-        // TODO: Remove: Test firing a projectile.
-        if (this.getWeapon() != null && playerInputProvider.isControlJustPressed(Control.PRIMARY_ACTION)) {
-            Bullet bullet = new Bullet(new Position(this.getWeapon().getPosition()), this.getWeapon().getAngleOfAim());
-
-            // TODO: Remove: Test camera shake on bullet fire.
-            environment.shakeCamera(50, 0.6f);
-
-            environment.addEntity(bullet);
-
-            // TODO: Replace this with a 'weapon.use(InteractiveEnvironment environment, float delta)'
+        // Are we using our equipped weapon?
+        if (this.getWeapon() != null && playerInputProvider.isControlPressed(Control.PRIMARY_ACTION)) {
+            this.getWeapon().use(environment, playerInputProvider.isControlJustPressed(Control.PRIMARY_ACTION), delta);
         }
     }
 }
