@@ -1,15 +1,10 @@
 package com.dumbpug.dungeony.game.weapon;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.projectile.Projectile;
 import com.dumbpug.dungeony.game.rendering.Animation;
-import com.dumbpug.dungeony.game.rendering.GameObjectSprite;
-import com.dumbpug.dungeony.game.rendering.Resources;
-
 import java.util.ArrayList;
 
 /**
@@ -86,6 +81,17 @@ public abstract class AmmunitionWeapon extends Weapon {
 
         // Get the current animation frame for the animation.
         TextureRegion currentFrame = animation.getCurrentFrame(true);
+
+        // Check whether we need to flip the weapon sprite based on its angle of aim.
+        if (this.getAngleOfAim() < 0 || this.getAngleOfAim() > 180) {
+            if (!currentFrame.isFlipY()) {
+                currentFrame.flip(false, true);
+            }
+        } else {
+            if (currentFrame.isFlipY()) {
+               currentFrame.flip(false, true);
+            }
+        }
 
         // Draw the current animation frame.
         batch.draw(currentFrame, this.getPosition().getX(), this.getPosition().getY(), 0f, currentFrame.getRegionHeight() / 2f,
