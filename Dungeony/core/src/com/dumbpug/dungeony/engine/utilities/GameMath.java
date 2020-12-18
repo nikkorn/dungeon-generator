@@ -1,5 +1,7 @@
 package com.dumbpug.dungeony.engine.utilities;
 
+import com.dumbpug.dungeony.engine.Position;
+
 /**
  * Game math helper functions.
  */
@@ -28,5 +30,19 @@ public class GameMath {
         float dx = bX - aX;
         float dy = bY - aY;
         return (float) Math.sqrt(dx * dx + dy * dy);
+    }
+
+    /**
+     * Gets the position defined by an origin x/y, angle and length.
+     * @param x The X position of the first point.
+     * @param y The Y position of the first point.
+     * @param angle The angle to follow.
+     * @param length The length to follow.
+     * @return The position defined by an origin x/y, angle and length
+     */
+    public static Position getPositionForAngle(float x, float y, float angle, float length) {
+        float offsetX = (float) Math.sin(angle * Math.PI / 180) * length;
+        float offsetY = (float) Math.cos(angle * Math.PI / 180) * length;
+        return new Position(x + offsetX, y + offsetY);
     }
 }

@@ -27,7 +27,7 @@ public class SpotLight extends Light<SpriteBatch> {
     @Override
     public void render(SpriteBatch spriteBatch, float x, float y) {
         this.sprite.setSize(60f, 60f);
-        this.sprite.setPosition(x - 30f, y - 30f);
+        this.sprite.setPosition(x - (this.sprite.getWidth() / 2f), y - (this.sprite.getHeight() / 2f));
         this.sprite.setColor(this.r, this.g, this.b, 1f);
         this.sprite.draw(spriteBatch);
     }

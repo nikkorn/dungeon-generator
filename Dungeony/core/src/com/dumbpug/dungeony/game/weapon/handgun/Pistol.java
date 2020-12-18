@@ -32,6 +32,11 @@ public class Pistol extends AmmunitionWeapon {
     }
 
     @Override
+    public float getLength() {
+        return 9f;
+    }
+
+    @Override
     public long getCoolDown() {
         return 0;
     }

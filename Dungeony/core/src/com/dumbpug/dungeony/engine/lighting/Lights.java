@@ -16,7 +16,9 @@ public class Lights<TRenderContext> {
      * @param light
      */
     public void add(Light light) {
-        this.lights.add(light);
+        if (!this.lights.contains(light)) {
+            this.lights.add(light);
+        }
     }
 
     /**
@@ -33,6 +35,12 @@ public class Lights<TRenderContext> {
      */
     public void render(TRenderContext context) {
         for (Light light : this.lights) {
+            // Skip rendering a light it if is not enabled.
+            if (!light.isEnabled()) {
+                continue;
+            }
+
+            // Render the light.
             light.callRender(context);
         }
     }

@@ -1,8 +1,16 @@
 package com.dumbpug.dungeony.game.weapon;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.engine.InteractiveEnvironment;
+import com.dumbpug.dungeony.engine.Position;
+import com.dumbpug.dungeony.engine.lighting.Light;
+import com.dumbpug.dungeony.engine.utilities.GameMath;
+import com.dumbpug.dungeony.game.lights.SmallSpotLight;
+import com.dumbpug.dungeony.game.lights.SpotLight;
 import com.dumbpug.dungeony.game.rendering.Animation;
 
 /**
@@ -13,6 +21,14 @@ public abstract class AmmunitionWeapon extends Weapon {
      * The ammo level of the weapon.
      */
     private int ammo;
+    /**
+     * The muzzle flash sprite.
+     */
+    private Sprite muzzleFlashSprite;
+    /**
+     * The muzzle flash light.
+     */
+    private Light muzzleFlashLight;
 
     /**
      * Creates a new instance of the AmmunitionWeapon class.
@@ -20,6 +36,14 @@ public abstract class AmmunitionWeapon extends Weapon {
      */
     public AmmunitionWeapon(WeaponQuality quality) {
         super(quality);
+
+        // Create the muzzle flash sprite for this weapon.
+        muzzleFlashSprite = new Sprite(new Texture("images/weapon/" + this.getWeaponType()  + "/MUZZLE_FLASH.png"));
+        muzzleFlashSprite.setOrigin(0, muzzleFlashSprite.getRegionHeight() / 2f);
+
+        // Create the muzzle flash light for this weapon and initially disable it.
+        muzzleFlashLight = new SpotLight(0, 0, 0.6f, 0.6f, 0.6f);
+        muzzleFlashLight.setEnabled(false);
     }
 
     /**
@@ -46,6 +70,10 @@ public abstract class AmmunitionWeapon extends Weapon {
      */
     @Override
     public void use(InteractiveEnvironment environment, boolean isTriggerJustPressed, float delta) {
+        // Add the muzzle flash light to the environment if it hasn't already been added.
+        // TODO Only do once!
+        environment.addLight(this.muzzleFlashLight);
+
         // If this weapon is not an automatic then it should only be used once per trigger press.
         if ((!this.isAutomatic()) && (!isTriggerJustPressed)) {
             return;
@@ -106,6 +134,30 @@ public abstract class AmmunitionWeapon extends Weapon {
         // Draw the current animation frame.
         batch.draw(currentFrame, this.getPosition().getX(), this.getPosition().getY(), 0f, currentFrame.getRegionHeight() / 2f,
                 currentFrame.getRegionWidth(), currentFrame.getRegionHeight(), 1f, 1f, -(this.getAngleOfAim() - 90f));
+
+        // Check whether we are in the duration after last firing where we would render a muzzle flash.
+        boolean renderMuzzleFlash = this.lastUsed >= System.currentTimeMillis() - Constants.WEAPON_MUZZLE_FLASH_DURATION_MS;
+
+        // Draw the muzzle flash animation if we are in the duration after last firing where we would render a muzzle flash.
+        if (renderMuzzleFlash) {
+            // Get the position we need to place our muzzle flash sprite at, which is at the end of the length of the weapon.
+            Position muzzleFlashSpritePosition = GameMath.getPositionForAngle(this.getPosition().getX(), this.getPosition().getY(), this.getAngleOfAim(), this.getLength() * 0.8f);
+
+            // Draw the current muzzle flash animation frame.
+            muzzleFlashSprite.setPosition(muzzleFlashSpritePosition.getX(), muzzleFlashSpritePosition.getY());
+            muzzleFlashSprite.setRotation(-(this.getAngleOfAim() - 90f));
+            muzzleFlashSprite.draw(batch);
+
+            // Get the position we need to place our muzzle flash light at, which is at the end of the length of the weapon.
+            Position muzzleFlashLightPosition = GameMath.getPositionForAngle(this.getPosition().getX(),
+                    this.getPosition().getY() + (currentFrame.getRegionHeight() * 0.7f), this.getAngleOfAim(), this.getLength() * 1.4f);
+
+            // Update the position of the muzzle flash light.
+            this.muzzleFlashLight.setPosition(muzzleFlashLightPosition.getX(), muzzleFlashLightPosition.getY());
+        }
+
+        // Enable or disable the muzzle flash light depending on whether we are in the duration after last firing where we would render a muzzle flash.
+        this.muzzleFlashLight.setEnabled(renderMuzzleFlash);
     }
 
     /**
@@ -119,4 +171,10 @@ public abstract class AmmunitionWeapon extends Weapon {
      * @return The effective spread of the weapon.
      */
     public abstract double getSpread();
+
+    /**
+     * Gets the length of the weapon.
+     * @return The length of the weapon.
+     */
+    public abstract float getLength();
 }

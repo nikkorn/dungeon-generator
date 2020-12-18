@@ -3,10 +3,8 @@ package com.dumbpug.dungeony.game.weapon;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dumbpug.dungeony.engine.InteractiveEnvironment;
 import com.dumbpug.dungeony.engine.Position;
-import com.dumbpug.dungeony.game.projectile.Projectile;
 import com.dumbpug.dungeony.game.rendering.Animation;
 import com.dumbpug.dungeony.game.rendering.Resources;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**

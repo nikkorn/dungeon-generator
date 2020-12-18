@@ -47,7 +47,7 @@ public class Constants {
     public static final float PICKUP_SIZE = 32f;
 
     //==============================================================================================
-    // PROJECTILE
+    // PROJECTILES
     //==============================================================================================
     public static final float PROJECTILE_VERY_SLOW_MOVEMENT_PS       = LEVEL_TILE_SIZE * 1.2f;
     public static final float PROJECTILE_SLOW_MOVEMENT_PS            = LEVEL_TILE_SIZE * 1.8f;
@@ -57,4 +57,10 @@ public class Constants {
     public static final float PROJECTILE_SIZE_SMALL                  = 6f;
     public static final float PROJECTILE_SIZE_MEDIUM                 = 8f;
     public static final float PROJECTILE_SIZE_LARGE                  = 12f;
+
+    //==============================================================================================
+    // WEAPONS
+    //==============================================================================================
+    public static final long WEAPON_MUZZLE_FLASH_DURATION_MS         = 150l;
+
 }
