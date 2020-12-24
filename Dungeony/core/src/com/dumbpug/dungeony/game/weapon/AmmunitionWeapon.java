@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.dumbpug.dungeony.Constants;
+import com.dumbpug.dungeony.audio.AudioProvider;
+import com.dumbpug.dungeony.audio.SoundEffect;
 import com.dumbpug.dungeony.engine.InteractiveEnvironment;
 import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.engine.lighting.Light;
@@ -94,6 +96,9 @@ public abstract class AmmunitionWeapon extends Weapon {
 
                 // We have successfully fired our weapon!
                 this.onUse(environment, delta);
+
+                // We hit a static object, play a noise.
+                AudioProvider.getSoundEffect(SoundEffect.HANDGUN_FIRE).play();
             } else {
                 // Reset the last fired time.
                 this.lastUsed = currentTime;
