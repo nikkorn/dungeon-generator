@@ -49,11 +49,11 @@ public class Constants {
     //==============================================================================================
     // PROJECTILES
     //==============================================================================================
-    public static final float PROJECTILE_VERY_SLOW_MOVEMENT_PS       = LEVEL_TILE_SIZE * 1.2f;
-    public static final float PROJECTILE_SLOW_MOVEMENT_PS            = LEVEL_TILE_SIZE * 1.8f;
-    public static final float PROJECTILE_DEFAULT_MOVEMENT_PS         = LEVEL_TILE_SIZE * 2.6f;
-    public static final float PROJECTILE_FAST_MOVEMENT_PS            = LEVEL_TILE_SIZE * 3.0f;
-    public static final float PROJECTILE_VERY_FAST_MOVEMENT_PS       = LEVEL_TILE_SIZE * 4.0f;
+    public static final float PROJECTILE_VERY_SLOW_MOVEMENT_PS       = LEVEL_TILE_SIZE * 1.4f;
+    public static final float PROJECTILE_SLOW_MOVEMENT_PS            = LEVEL_TILE_SIZE * 2f;
+    public static final float PROJECTILE_DEFAULT_MOVEMENT_PS         = LEVEL_TILE_SIZE * 3f;
+    public static final float PROJECTILE_FAST_MOVEMENT_PS            = LEVEL_TILE_SIZE * 3.6f;
+    public static final float PROJECTILE_VERY_FAST_MOVEMENT_PS       = LEVEL_TILE_SIZE * 4.6f;
     public static final float PROJECTILE_SIZE_SMALL                  = 6f;
     public static final float PROJECTILE_SIZE_MEDIUM                 = 8f;
     public static final float PROJECTILE_SIZE_LARGE                  = 12f;

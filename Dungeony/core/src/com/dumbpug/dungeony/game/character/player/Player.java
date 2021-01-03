@@ -4,6 +4,7 @@ import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.characterselection.PlayerDetails;
 import com.dumbpug.dungeony.engine.InteractiveEnvironment;
 import com.dumbpug.dungeony.engine.Position;
+import com.dumbpug.dungeony.engine.dialog.Dialog;
 import com.dumbpug.dungeony.engine.utilities.GameMath;
 import com.dumbpug.dungeony.game.character.FacingDirection;
 import com.dumbpug.dungeony.game.character.GameCharacter;
@@ -82,6 +83,10 @@ public class Player extends GameCharacter {
     public void update(InteractiveEnvironment environment, float delta) {
         // Get the input provider for the player.
         IPlayerInputProvider playerInputProvider = this.getDetails().getInputProvider();
+
+        // TODO: Check environment for any dialogs that this player entity is the interacting entity of.
+        // Based on the dialog type, some input may be used
+        Dialog interactingDialog = environment.getActiveDialog(this);
 
         // Set the player angle of view, or null if not aiming.
         float aimInputOffsetX = playerInputProvider.getAimAxisX();

@@ -9,11 +9,8 @@ import com.dumbpug.dungeony.engine.InteractiveEnvironment;
 import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.EntityCollisionFlag;
 import com.dumbpug.dungeony.game.inventory.Inventory;
-import com.dumbpug.dungeony.game.projectile.projectiles.Bullet;
 import com.dumbpug.dungeony.game.rendering.Animation;
 import com.dumbpug.dungeony.game.weapon.Weapon;
-import com.dumbpug.dungeony.input.Control;
-
 import java.util.HashMap;
 
 /**

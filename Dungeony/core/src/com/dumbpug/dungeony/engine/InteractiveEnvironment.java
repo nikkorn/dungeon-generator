@@ -1,5 +1,6 @@
 package com.dumbpug.dungeony.engine;
 
+import com.dumbpug.dungeony.engine.dialog.Dialog;
 import com.dumbpug.dungeony.engine.lighting.Light;
 import com.dumbpug.dungeony.engine.lighting.Lights;
 import java.util.ArrayList;
@@ -16,20 +17,15 @@ public class InteractiveEnvironment {
      * The environment camera.
      */
     private IEnvironmentCamera camera;
-    /**
-     * The environment lights.
-     */
-    private Lights lights;
 
     /**
      * Creates a new instance of the InteractiveEnvironment class.
      * @param environment The environment.
      * @param camera The environment camera.
      */
-    public InteractiveEnvironment(Environment environment, IEnvironmentCamera camera, Lights lights) {
+    public InteractiveEnvironment(Environment environment, IEnvironmentCamera camera) {
         this.environment = environment;
         this.camera      = camera;
-        this.lights      = lights;
     }
 
     /**
@@ -168,7 +164,7 @@ public class InteractiveEnvironment {
      * @param light The light to add.
      */
     public void addLight(Light light) {
-        this.lights.add(light);
+        this.environment.getLights().add(light);
     }
 
     /**
@@ -176,6 +172,35 @@ public class InteractiveEnvironment {
      * @param light The light to remove.
      */
     public void removeLight(Light light) {
-        this.lights.remove(light);
+        this.environment.getLights().remove(light);
+    }
+
+    /**
+     * Add a dialog to the environment.
+     * @param dialog The dialog to add.
+     */
+    public void addDialog(Dialog dialog) {
+        this.environment.getDialogs().add(dialog);
+    }
+
+    /**
+     * Remove a dialog from the environment.
+     * @param dialog The dialog to remove.
+     */
+    public void removeDialog(Dialog dialog) {
+        this.environment.getDialogs().remove(dialog);
+    }
+
+    /**
+     * Gets the active dialog for the given entity, or null if the entity has no associated dialog.
+     * @param entity The entity.
+     * @return The active dialog for the given entity, or null if the entity has no associated dialog.
+     */
+    public Dialog getActiveDialog(Entity entity) {
+        // Get a list off all dialogs in the environment where the entity is the interacting entity.
+        ArrayList<Dialog> activeDialogs = this.environment.getDialogs().getDialogsWithInteractingEntity(entity);
+
+        // Return the first dialog where the entity is the interacting entity.
+        return activeDialogs.isEmpty() ? null : activeDialogs.get(0);
     }
 }

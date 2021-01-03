@@ -1,5 +1,6 @@
 package com.dumbpug.dungeony.engine;
 
+import com.dumbpug.dungeony.engine.dialog.Dialogs;
 import com.dumbpug.dungeony.engine.lighting.Lights;
 import com.dumbpug.dungeony.engine.rendering.IRenderWindow;
 import com.dumbpug.dungeony.engine.rendering.Renderables;
@@ -30,6 +31,10 @@ public abstract class Environment<TRenderContext> {
      */
     private Lights<TRenderContext> lights;
     /**
+     * The collection of dialogs in the environment.
+     */
+    private Dialogs<TRenderContext> dialogs;
+    /**
      * The environment interactivity layer that is available to entities during updates.
      */
     private InteractiveEnvironment interactiveEnvironment;
@@ -52,8 +57,11 @@ public abstract class Environment<TRenderContext> {
         // Create the lights collection.
         this.lights = new Lights();
 
+        // Create the dialogs collection.
+        this.dialogs = new Dialogs();
+
         // Create the environment interactivity layer that is available to entities during updates.
-        this.interactiveEnvironment = new InteractiveEnvironment(this, camera, lights);
+        this.interactiveEnvironment = new InteractiveEnvironment(this, camera);
 
         // Create the entities collection.
         this.entities = new Entities(this.collisionGrid, this.renderables, this.interactiveEnvironment);
@@ -65,6 +73,22 @@ public abstract class Environment<TRenderContext> {
      */
     public Entities<TRenderContext> getEntities() {
         return entities;
+    }
+
+    /**
+     * Gets the collection of lights in the environment.
+     * @return The collection of lights in the environment.
+     */
+    public Lights<TRenderContext> getLights() {
+        return lights;
+    }
+
+    /**
+     * Gets the collection of dialogs in the environment.
+     * @return The collection of dialogs in the environment.
+     */
+    public Dialogs<TRenderContext> getDialogs() {
+        return dialogs;
     }
 
     /**
@@ -89,6 +113,8 @@ public abstract class Environment<TRenderContext> {
      */
     public void update(float delta) {
         this.entities.update(delta);
+
+        // TODO: Add update for dialogs to handle adding or removing of interacting entities.
     }
 
     /**
@@ -107,6 +133,11 @@ public abstract class Environment<TRenderContext> {
         this.lights.render(context);
 
         onAfterLightsRender(context);
+        onBeforeDialogsRender(context);
+
+        this.dialogs.render(context);
+
+        onAfterDialogsRender(context);
     }
 
     /**
@@ -124,4 +155,8 @@ public abstract class Environment<TRenderContext> {
     public abstract void onBeforeLightsRender(TRenderContext context);
 
     public abstract void onAfterLightsRender(TRenderContext context);
+
+    public abstract void onBeforeDialogsRender(TRenderContext context);
+
+    public abstract void onAfterDialogsRender(TRenderContext context);
 }

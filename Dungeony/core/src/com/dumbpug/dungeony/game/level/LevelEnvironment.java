@@ -72,4 +72,10 @@ public class LevelEnvironment extends Environment<SpriteBatch> {
         spriteBatch.setBlendFunction(GL20.GL_SRC_ALPHA,GL20.GL_ONE_MINUS_SRC_ALPHA);
         spriteBatch.begin();
     }
+
+    @Override
+    public void onBeforeDialogsRender(SpriteBatch spriteBatch) { }
+
+    @Override
+    public void onAfterDialogsRender(SpriteBatch spriteBatch) { }
 }

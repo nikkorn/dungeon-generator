@@ -3,7 +3,7 @@ package com.dumbpug.dungeony.engine.lighting;
 import java.util.ArrayList;
 
 /**
- * The collection of level lights.
+ * The collection of environment lights.
  */
 public class Lights<TRenderContext> {
     /**
@@ -12,8 +12,8 @@ public class Lights<TRenderContext> {
     private ArrayList<Light<TRenderContext>> lights = new ArrayList<Light<TRenderContext>>();
 
     /**
-     *
-     * @param light
+     * Add a light to the collection of environment lights.
+     * @param light The light to add.
      */
     public void add(Light light) {
         if (!this.lights.contains(light)) {
@@ -22,15 +22,15 @@ public class Lights<TRenderContext> {
     }
 
     /**
-     *
-     * @param light
+     * Remove a light from the collection of environment lights.
+     * @param light The light to remove.
      */
     public void remove(Light light) {
         this.lights.remove(light);
     }
 
     /**
-     *
+     * Render the collection of environment lights.
      * @param context The render context
      */
     public void render(TRenderContext context) {
