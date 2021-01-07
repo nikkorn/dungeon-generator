@@ -1,5 +1,9 @@
 package com.dumbpug.dungeony.game.object.objects;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dumbpug.dungeony.engine.Area;
 import com.dumbpug.dungeony.engine.Entity;
 import com.dumbpug.dungeony.engine.InteractiveEnvironment;
@@ -7,6 +11,10 @@ import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.lights.SpotLight;
 import com.dumbpug.dungeony.game.object.GameObject;
 import com.dumbpug.dungeony.game.object.GameObjectType;
+import com.dumbpug.dungeony.text.FontProvider;
+import com.dumbpug.dungeony.text.FontSize;
+import com.dumbpug.dungeony.text.FontType;
+import com.badlogic.gdx.utils.Align;
 
 /**
  * A vending machine that items can be purchased from.
@@ -17,12 +25,17 @@ public class Vendor extends GameObject {
      */
     private Area areaOfInteraction;
 
+    BitmapFont font;
+
     /**
      * Creates a new instance of the Vendor class.
      * @param origin The initial origin of the Vendor.
      */
     public Vendor(Position origin) {
         super(origin);
+
+        font = FontProvider.getFont(FontType.MAIN_FONT, FontSize.MEDIUM);
+        font.setColor(Color.WHITE);
     }
 
     @Override
@@ -69,6 +82,17 @@ public class Vendor extends GameObject {
                 System.out.println(entity.getClass().getName());
             }
         }
+    }
+
+    /**
+     * Render the renderable using the provided sprite batch.
+     * @param batch The sprite batch to use in rendering the renderable.
+     */
+    @Override
+    public void render(SpriteBatch batch) {
+        super.render(batch);
+
+        font.draw(batch, "I'm a vendor bitch!", this.getX(), this.getY(), Gdx.graphics.getWidth(), Align.left, true);
     }
 
     @Override

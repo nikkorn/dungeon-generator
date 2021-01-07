@@ -5,6 +5,14 @@ package com.dumbpug.dungeony;
  */
 public class Constants {
     //==============================================================================================
+    // FONT
+    //==============================================================================================
+    public static final String FONT_TYPE_MAIN                       = "Boxy-Bold.ttf";
+    public static final int FONT_SIZE_SMALL                         = 4;
+    public static final int FONT_SIZE_MEDIUM                        = 8;
+    public static final int FONT_SIZE_LARGE                         = 12;
+
+    //==============================================================================================
     // DISPLAY
     //==============================================================================================
     public static final int WINDOW_HEIGHT 	                        = 1000;
