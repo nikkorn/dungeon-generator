@@ -1,0 +1,83 @@
+The following are just some ideas for potential items.
+
+=========================================================================================================================================================================
+MISC
+=========================================================================================================================================================================
+Gold
+======
+Adds a single piece of gold to a player gold amount.
+
+Ruby/Sapphire/Emerald
+======
+Adds 50 pieces of gold to a player gold amount.
+
+Diamond
+======
+Adds 100 pieces of gold to a player gold amount.
+
+
+
+=========================================================================================================================================================================
+CONSUMABLES
+=========================================================================================================================================================================
+Consumables are single use items that are removed from the player inventory when used.
+
+Pellet (Common)
+======
+Restores 3HP of health immediately.
+
+Bitter Pellet (Common)
+======
+Restores 0HP immediately and then a small amount but over a period of time as a status effect.
+
+Spicy Pellet (Uncommon)
+======
+Restores full health but reduces the total health by 2HP.
+
+Sour Pellet (Uncommon)
+======
+Restores 5HP of health.
+
+Sweet Pellet (Rare)
+======
+Restores full health and increases the total health by 1HP.
+
+Smelling Salts (Uncommon)
+==============
+An expensive/rare consumable that is only available when there is more than one player and can be used to revive a knocked out player (in coop) and leave them 1HP.
+
+Shard Powder Pouch (Uncommon)
+==============
+Restores 3MP.
+
+Shard Powder Vial (Rare)
+==============
+Restores 6MP.
+
+White Shard Powder Vial (Very Rare)
+==============
+Restores 6MP and increases total MP by 2.
+
+Black Shard Powder Vial (Uncommon)
+==============
+Restores 4MP but reduces total MP by 2.
+
+Bread (Common)
+=====
+Restores 1HP of health immediately.
+
+Apple (Common)
+=====
+Restores 1HP of health immediately.
+
+Sugar Ball (Uncommon)
+=====
+Temporarily reduces negative effects of equipment load. Maybe allows you to move faster or carry more?
+
+
+
+=========================================================================================================================================================================
+Gems
+=========================================================================================================================================================================
+Gems are items that can give players or weapons buffs. They can be equipped/unequipped to player gem slots with the help of a Mage at camp,
+or can be equipped/unequipped to weapon gem slots with the help of a WeaponSmith at camp.
