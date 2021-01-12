@@ -217,7 +217,7 @@ public abstract class GameCharacter extends Entity<SpriteBatch> {
         // Update the position and angle of the equipped weapon.
         if (this.getWeapon() != null) {
             // Where the weapon is positioned in the world will depend on the position of the character holding it.
-            float weaponPositionY = this.getOrigin().getY() - (this.getLengthY() * 0.1f);
+            float weaponPositionY = this.getOrigin().getY() - (this.getLengthY() * 0.3f);
             float weaponPositionX = this.getOrigin().getX() + (this.getLengthX() * 0.2f);
             this.getWeapon().getPosition().set(weaponPositionX, weaponPositionY);
             this.getWeapon().setAngleOfAim(this.angleOfView == null ? this.facingDirection.getAngle() : this.angleOfView);

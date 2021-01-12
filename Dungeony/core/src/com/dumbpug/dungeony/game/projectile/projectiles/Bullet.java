@@ -18,6 +18,7 @@ public class Bullet extends Projectile {
      * The bullet spotlight.
      */
     private SmallSpotLight light;
+    
     /**
      * Creates a new instance of the Bullet class.
      * @param origin      The initial origin of the Projectile.
