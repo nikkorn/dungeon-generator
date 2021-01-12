@@ -1,9 +1,10 @@
 package com.dumbpug.dungeony.game.character.enemy;
 
-import com.dumbpug.dungeony.game.Position;
+import com.dumbpug.dungeony.engine.Position;
+import com.dumbpug.dungeony.game.character.GameCharacterState;
 import com.dumbpug.dungeony.game.character.npc.NPC;
-import com.dumbpug.dungeony.game.character.npc.NPCState;
 import com.dumbpug.dungeony.game.character.npc.NPCType;
+import com.dumbpug.dungeony.game.rendering.GameCharacterSprite;
 import com.dumbpug.dungeony.game.rendering.Resources;
 
 /**
@@ -18,9 +19,12 @@ public abstract class Enemy extends NPC {
         super(origin);
 
         // Populate the enemy animation map.
-        for (NPCState state : NPCState.values()) {
-            this.animations.put(state, Resources.getEnemyAnimation(state, this.getEnemyType()));
+        for (GameCharacterState state : GameCharacterState.values()) {
+            this.animations.put(state, Resources.getCharacterAnimation(state, this.getEnemyType()));
         }
+
+        // Set the enemy shadow sprite.
+        this.shadowSprite = Resources.getCharacterSprite(GameCharacterSprite.SHADOW, this.getEnemyType());
     }
 
     /**

@@ -7,8 +7,8 @@ import com.dumbpug.dungeony.Dungeony;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.backgroundFPS = 500;
-		config.foregroundFPS = 500;
+		config.backgroundFPS = 1000;
+		config.foregroundFPS = 1000;
 		config.vSyncEnabled  = false;
 		// config.fullscreen    = true;
 		new LwjglApplication(new Dungeony(), config);

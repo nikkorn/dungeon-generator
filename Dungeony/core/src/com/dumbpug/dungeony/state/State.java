@@ -45,9 +45,15 @@ public abstract class State {
 
     /**
      * Render the state.
-     * @param batch The sprite batch.
      */
-    public abstract void render(SpriteBatch batch);
+    public abstract void render();
+
+    /**
+     * Called when the window is resized.
+     * @param width The new width of the window.
+     * @param height The new height of the window.
+     */
+    public abstract void onResize(int width, int height);
 
     /**
      * Get the name of this state.

@@ -1,10 +1,11 @@
 package com.dumbpug.dungeony.game.object;
 
-import com.dumbpug.dungeony.game.Position;
+import com.dumbpug.dungeony.engine.Position;
+import com.dumbpug.dungeony.game.object.objects.Vendor;
 import org.json.JSONObject;
 
 /**
- * Factory for creating Level instances.
+ * Factory for creating game object instances.
  */
 public class GameObjectFactory {
     /**
@@ -15,6 +16,11 @@ public class GameObjectFactory {
      * @return A GameObject instance of the given type and position.
      */
     public static GameObject create(GameObjectType type, Position position, JSONObject details) {
-        return null;
+        switch (type) {
+            case VENDOR:
+                return new Vendor(position);
+            default:
+                throw new RuntimeException("cannot create GameObject instance for unknown type: " + type);
+        }
     }
 }

@@ -2,6 +2,7 @@ package com.dumbpug.dungeony.game.tile.tiles;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dumbpug.dungeony.engine.InteractiveEnvironment;
 import com.dumbpug.dungeony.game.EntityCollisionFlag;
 import com.dumbpug.dungeony.game.rendering.Resources;
 import com.dumbpug.dungeony.game.rendering.TileSprite;
@@ -32,20 +33,22 @@ public class Wall extends Tile {
     public Wall(int x, int y, ITileFinder tileFinder) {
         super(x, y);
 
-        getWallSprites(tileFinder);
-        getLipSprites(tileFinder);
+        setWallSprites(tileFinder);
+        setLipSprites(tileFinder);
     }
 
     @Override
-    public int getCollisionFlag() {
+    public int getCollisionLayers() {
         return EntityCollisionFlag.WALL;
     }
 
     @Override
     public int getCollisionMask() {
-        // Everything bumps into a wall!
-        return EntityCollisionFlag.CHARACTER | EntityCollisionFlag.PICKUP | EntityCollisionFlag.PROJECTILE | EntityCollisionFlag.OBJECT;
+        return EntityCollisionFlag.CHARACTER | EntityCollisionFlag.PICKUP | EntityCollisionFlag.OBJECT;
     }
+
+    @Override
+    public void update(InteractiveEnvironment environment, float delta) { }
 
     /**
      * Render the renderable using the provided sprite batch.
@@ -53,8 +56,8 @@ public class Wall extends Tile {
      */
     @Override
     public void render(SpriteBatch batch) {
-        // Find half our tile size, each tiel sprite will use that as its dimensions.
-        float spriteSize = this.getWidth() / 2f;
+        // Find half our tile size, each tile sprite will use that as its dimensions.
+        float spriteSize = this.getLengthX() / 2f;
 
         // Render top-left tile.
         Sprite sprite = Resources.getSprite(this.topLeftSprite);
@@ -85,18 +88,22 @@ public class Wall extends Tile {
             // Render left lip tile.
             sprite = Resources.getSprite(this.leftLipSprite);
             sprite.setSize(spriteSize, spriteSize);
-            sprite.setPosition(this.getX(), this.getY() + getHeight());
+            sprite.setPosition(this.getX(), this.getY() + getLengthY());
             sprite.draw(batch);
 
             // Render right lip tile.
             sprite = Resources.getSprite(this.rightLipSprite);
             sprite.setSize(spriteSize, spriteSize);
-            sprite.setPosition(this.getX() + spriteSize, this.getY() + getHeight());
+            sprite.setPosition(this.getX() + spriteSize, this.getY() + getLengthY());
             sprite.draw(batch);
         }
     }
 
-    private void getWallSprites(ITileFinder tileFinder) {
+    /**
+     * Sets the wall sprites for this tile.
+     * @param tileFinder The tile finder.
+     */
+    private void setWallSprites(ITileFinder tileFinder) {
         // Find whether the tiles around the wall tile we are about to make are empty tiles.
         boolean isWalkableBelow      = tileFinder.find(this, TileOffset.BELOW).isWalkable();
         boolean isWalkableAbove      = tileFinder.find(this, TileOffset.ABOVE).isWalkable();
@@ -145,7 +152,11 @@ public class Wall extends Tile {
         }
     }
 
-    private void getLipSprites(ITileFinder tileFinder) {
+    /**
+     * Sets the wall lip sprites for this tile.
+     * @param tileFinder The tile finder.
+     */
+    private void setLipSprites(ITileFinder tileFinder) {
         // Find whether the tiles around the wall tile we are about to make are empty tiles.
         boolean isWalkableAbove = tileFinder.find(this, TileOffset.ABOVE) == TileType.EMPTY;
         boolean isWalkableLeft  = tileFinder.find(this, TileOffset.LEFT) == TileType.EMPTY;
@@ -158,5 +169,10 @@ public class Wall extends Tile {
 
         this.leftLipSprite  = isWalkableLeft ? TileSprite.WALL_TOP_LEFT : TileSprite.WALL_TOP;
         this.rightLipSprite = isWalkableRight ? TileSprite.WALL_TOP_RIGHT : TileSprite.WALL_TOP;
+    }
+
+    @Override
+    public TileType getTileType() {
+        return TileType.WALL;
     }
 }

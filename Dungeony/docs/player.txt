@@ -1,0 +1,9 @@
+Players will have a backpack sprite drawn just behind them which grows in size based on how heavy the items in their inventory are.
+
+Players have:
+ - Gold amount.
+ - HP points (8 by default?)
+ - MP points which allow the player to use magical weapons.
+ - Equipment load, The more stuff the player is carrying in their inventory the slower they move and can effect roll ability.
+ - Active status effects. E.g. health increase over time after taking bitter pellet.
+ - Gem slots

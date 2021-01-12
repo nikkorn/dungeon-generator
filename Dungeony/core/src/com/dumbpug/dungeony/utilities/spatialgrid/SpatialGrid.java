@@ -105,9 +105,9 @@ public class SpatialGrid<TAABB extends IAABB> {
 
         // Get the cell bounds of the AABB.
         int xStartCell = this.getCellPosition(aabb.getX());
-        int xEndCell   = this.getCellPosition(aabb.getX() + aabb.getWidth());
+        int xEndCell   = this.getCellPosition(aabb.getX() + aabb.getLengthX());
         int yStartCell = this.getCellPosition(aabb.getY());
-        int yEndCell   = this.getCellPosition(aabb.getY() + aabb.getHeight());
+        int yEndCell   = this.getCellPosition(aabb.getY() + aabb.getLengthY());
 
         // Find all cells that the AABB intersects and record the AABB against each one.
         for (int cellX = xStartCell; cellX <= xEndCell; cellX++) {
@@ -216,6 +216,42 @@ public class SpatialGrid<TAABB extends IAABB> {
     }
 
     /**
+     * Get a set of AABBs that overlap the specified area.
+     * @param area The AABB for which to find a set of AABBs that overlap it.
+     * @return A set of AABBs that overlap the specified area.
+     */
+    public HashSet<TAABB> getOverlapping(IAABB area) {
+        // Get the cell bounds of the area.
+        int xStartCell = this.getCellPosition(area.getX());
+        int xEndCell   = this.getCellPosition(area.getX() + area.getLengthX());
+        int yStartCell = this.getCellPosition(area.getY());
+        int yEndCell   = this.getCellPosition(area.getY() + area.getLengthY());
+
+        // Create an empty set in which to add all neighbouring AABBs.
+        HashSet<TAABB> neighbouringAABBs = new HashSet<TAABB>();
+
+        // Find all cells that the area intersects and grab the AABBs that intersect them.
+        for (int cellX = xStartCell; cellX <= xEndCell; cellX++) {
+            for (int cellY = yStartCell; cellY <= yEndCell; cellY++) {
+                this.getCell(cellX, cellY).collect(neighbouringAABBs);
+            }
+        }
+
+        // Create an empty set in which to add all overlapping AABBs.
+        HashSet<TAABB> overlappingAABBs = new HashSet<TAABB>();
+
+        // Find all AABBs that actually overlap the area.
+        for (TAABB neighbouringAABB: neighbouringAABBs) {
+            if (areColliding(neighbouringAABB, area)) {
+                overlappingAABBs.add(neighbouringAABB);
+            }
+        }
+
+        // Return the set of all AABBs that overlap the area.
+        return overlappingAABBs;
+    }
+
+    /**
      * Get the existing cell at the specified position.
      * @param x The x position of the cell.
      * @param y The y position of the cell.
@@ -282,10 +318,10 @@ public class SpatialGrid<TAABB extends IAABB> {
      * @return Whether AABB a is currently colliding with AABB b.
      */
     public static boolean areColliding(IAABB a, IAABB b) {
-        return a.getX() < (b.getX() + b.getWidth()) &&
-                (a.getX() + a.getWidth()) > b.getX() &&
-                a.getY() < (b.getY() + b.getHeight()) &&
-                (a.getY() + a.getHeight()) > b.getY();
+        return a.getX() < (b.getX() + b.getLengthX()) &&
+                (a.getX() + a.getLengthX()) > b.getX() &&
+                a.getY() < (b.getY() + b.getLengthY()) &&
+                (a.getY() + a.getLengthY()) > b.getY();
     }
 }
 

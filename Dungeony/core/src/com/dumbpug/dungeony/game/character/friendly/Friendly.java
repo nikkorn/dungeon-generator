@@ -1,9 +1,10 @@
 package com.dumbpug.dungeony.game.character.friendly;
 
-import com.dumbpug.dungeony.game.Position;
+import com.dumbpug.dungeony.engine.Position;
+import com.dumbpug.dungeony.game.character.GameCharacterState;
 import com.dumbpug.dungeony.game.character.npc.NPC;
-import com.dumbpug.dungeony.game.character.npc.NPCState;
 import com.dumbpug.dungeony.game.character.npc.NPCType;
+import com.dumbpug.dungeony.game.rendering.GameCharacterSprite;
 import com.dumbpug.dungeony.game.rendering.Resources;
 
 /**
@@ -18,10 +19,19 @@ public abstract class Friendly extends NPC {
         super(origin);
 
         // Populate the enemy animation map.
-        for (NPCState state : NPCState.values()) {
-            this.animations.put(state, Resources.getFriendlyAnimation(state, this.getFriendlyType()));
+        for (GameCharacterState state : GameCharacterState.values()) {
+            this.animations.put(state, Resources.getCharacterAnimation(state, this.getFriendlyType()));
         }
+
+        // Set the friendly shadow sprite.
+        this.shadowSprite = Resources.getCharacterSprite(GameCharacterSprite.SHADOW, this.getFriendlyType());
     }
+
+    /**
+     * Gets the friendly type.
+     * @return The friendly type.
+     */
+    public abstract FriendlyType getFriendlyType();
 
     /**
      * Gets the NPC type.
@@ -31,10 +41,4 @@ public abstract class Friendly extends NPC {
     public NPCType getNPCType() {
         return NPCType.FRIENDLY;
     }
-
-    /**
-     * Gets the friendly type.
-     * @return The friendly type.
-     */
-    public abstract FriendlyType getFriendlyType();
 }

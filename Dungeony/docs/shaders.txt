@@ -1,0 +1,16 @@
+Use ShaderProvider like:
+
+
+batch.end();
+
+
+//Render the textures with the shader
+batch.setShader(ShaderProvider.getShader(ShaderType.SOLID_WHITE));
+batch.begin();
+// Render the current animation frame of the character.
+batch.draw(currentFrame, this.getX(), this.getY(), 0, 0, this.getLengthX(), this.getLengthZ(), 1.0f, 1.0f, 0);
+batch.end();
+batch.setShader(ShaderProvider.getDefault());
+
+
+batch.begin();

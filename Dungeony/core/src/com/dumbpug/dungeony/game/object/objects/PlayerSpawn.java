@@ -1,8 +1,9 @@
 package com.dumbpug.dungeony.game.object.objects;
 
 import com.dumbpug.dungeony.Constants;
+import com.dumbpug.dungeony.engine.InteractiveEnvironment;
+import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.EntityCollisionFlag;
-import com.dumbpug.dungeony.game.Position;
 import com.dumbpug.dungeony.game.object.GameObject;
 import com.dumbpug.dungeony.game.object.GameObjectType;
 
@@ -19,22 +20,22 @@ public class PlayerSpawn extends GameObject {
     }
 
     @Override
-    public GameObjectType getType() {
-        return GameObjectType.PLAYER_SPAWN;
+    public float getLengthX() {
+        return Constants.LEVEL_TILE_SIZE * 0.5f;
     }
 
     @Override
-    public float getWidth() {
-        return Constants.GAME_TILE_SIZE * 0.5f;
+    public float getLengthY() {
+        return Constants.LEVEL_TILE_SIZE * 0.5f;
     }
 
     @Override
-    public float getHeight() {
-        return Constants.GAME_TILE_SIZE * 0.5f;
+    public float getLengthZ() {
+        return Constants.LEVEL_TILE_SIZE * 0.5f;
     }
 
     @Override
-    public int getCollisionFlag() {
+    public int getCollisionLayers() {
         return EntityCollisionFlag.OBJECT;
     }
 
@@ -42,5 +43,19 @@ public class PlayerSpawn extends GameObject {
     public int getCollisionMask() {
         // Nothing should collide with a player spawn.
         return EntityCollisionFlag.NOTHING;
+    }
+
+    @Override
+    public void onEnvironmentEntry(InteractiveEnvironment environment) { }
+
+    @Override
+    public void onEnvironmentExit(InteractiveEnvironment environment) { }
+
+    @Override
+    public void update(InteractiveEnvironment environment, float delta) { }
+
+    @Override
+    public GameObjectType getType() {
+        return GameObjectType.PLAYER_SPAWN;
     }
 }

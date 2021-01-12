@@ -124,15 +124,25 @@ public class StateManager {
 
     /**
      * Renders the current state
-     * @param batch The sprite batch.
      */
-    public void render(SpriteBatch batch) {
+    public void render() {
         // There is nothing to do if there is no state to rendering.
         if (this.currentState == null) {
             throw new RuntimeException("error: no state to rendering.");
         }
 
         // Render the current state.
-        currentState.render(batch);
+        currentState.render();
+    }
+
+    /**
+     * Should be called when the window is resized.
+     * @param width The new width of the window.
+     * @param height The new height of the window.
+     */
+    public void onResize(int width, int height) {
+        for (State state : this.states) {
+            state.onResize(width, height);
+        }
     }
 }

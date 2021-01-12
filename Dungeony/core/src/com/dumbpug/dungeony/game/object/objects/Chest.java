@@ -1,6 +1,7 @@
 package com.dumbpug.dungeony.game.object.objects;
 
-import com.dumbpug.dungeony.game.Position;
+import com.dumbpug.dungeony.engine.InteractiveEnvironment;
+import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.object.GameObject;
 import com.dumbpug.dungeony.game.object.GameObjectType;
 
@@ -14,17 +15,31 @@ public class Chest extends GameObject {
     }
 
     @Override
+    public float getLengthX() {
+        return 24f;
+    }
+
+    @Override
+    public float getLengthY() {
+        return 24f;
+    }
+
+    @Override
+    public float getLengthZ() {
+        return 24f;
+    }
+
+    @Override
+    public void onEnvironmentEntry(InteractiveEnvironment environment) { }
+
+    @Override
+    public void onEnvironmentExit(InteractiveEnvironment environment) { }
+
+    @Override
+    public void update(InteractiveEnvironment environment, float delta) { }
+
+    @Override
     public GameObjectType getType() {
         return GameObjectType.CHEST;
-    }
-
-    @Override
-    public float getWidth() {
-        return 24f;
-    }
-
-    @Override
-    public float getHeight() {
-        return 24f;
     }
 }

@@ -1,10 +1,12 @@
 package com.dumbpug.dungeony.game.character.enemy.enemies;
 
 import com.dumbpug.dungeony.Constants;
-import com.dumbpug.dungeony.game.Position;
+import com.dumbpug.dungeony.engine.InteractiveEnvironment;
+import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.character.behaviour.BasicEnemyBehaviour;
 import com.dumbpug.dungeony.game.character.enemy.Enemy;
 import com.dumbpug.dungeony.game.character.enemy.EnemyType;
+import com.dumbpug.dungeony.game.lights.SpotLight;
 
 /**
  * A basic fishman enemy.
@@ -22,21 +24,35 @@ public class Fishman extends Enemy {
     }
 
     @Override
-    public float getWidth() {
+    public float getLengthX() {
         // Fishman is the same width as the player.
-        return Constants.GAME_PLAYER_SIZE;
+        return Constants.PLAYER_SIZE;
     }
 
     @Override
-    public float getHeight() {
+    public float getLengthY() {
         // Fishman is the same height as the player.
-        return Constants.GAME_PLAYER_SIZE;
+        return Constants.PLAYER_SIZE;
     }
+
+    @Override
+    public float getLengthZ() {
+        // Fishman is the same height as the player.
+        return Constants.PLAYER_SIZE;
+    }
+
+    @Override
+    public void onEnvironmentEntry(InteractiveEnvironment environment) {
+        environment.addLight(new SpotLight(this, 1f, 0.3f, 0.3f));
+    }
+
+    @Override
+    public void onEnvironmentExit(InteractiveEnvironment environment) { }
 
     @Override
     public float getMovementSpeed() {
         // Fishman can move at 80% of the default speed of the player.
-        return Constants.GAME_PLAYER_MOVEMENT_PS * 0.8f;
+        return Constants.PLAYER_MOVEMENT_PS * 0.8f;
     }
 
     @Override

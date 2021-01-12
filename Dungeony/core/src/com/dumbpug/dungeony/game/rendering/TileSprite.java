@@ -21,7 +21,23 @@ public enum TileSprite {
     WALL_CORNER_BOTTOM_RIGHT,
     WALL_CORNER_TOP_LEFT,
     WALL_CORNER_TOP_RIGHT,
-    GROUND,
+
+    /**
+     * GROUND
+     */
+    GROUND_0,
+    GROUND_1,
+    GROUND_2,
+    GROUND_3,
+    GROUND_4,
+    GROUND_5,
+    GROUND_6,
+    GROUND_7,
+    GROUND_8,
+    GROUND_9,
+    GROUND_10,
+    GROUND_11,
+    GROUND_12,
 
     /**
      * SPECIAL

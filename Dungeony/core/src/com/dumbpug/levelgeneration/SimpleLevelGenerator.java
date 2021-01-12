@@ -14,7 +14,34 @@ public class SimpleLevelGenerator implements ILevelGenerator {
     @Override
     public LevelDefinition generate(String file) {
         // Create a few tile definitions.
-        ArrayList<TileDefinition> tiles = new ArrayList<TileDefinition>() {{
+        ArrayList<TileDefinition> tiles = createTiles();
+
+        // Add a vendor game object.
+        EntityDefinition vendor = new EntityDefinition("VENDOR", EntityOffset.TOP);
+        vendor.setProperty("item_rarity", "0");
+        addTileEntity(tiles, vendor, 5, 16);
+
+        // Add a fishman enemy.
+        EntityDefinition fishman = new EntityDefinition("FISHMAN");
+        vendor.setProperty("skillz", "amazing");
+        addTileEntity(tiles, fishman, 3, 14);
+
+        // Add good ol' blue joe.
+        EntityDefinition blueJoe = new EntityDefinition("BLUEJOE");
+        vendor.setProperty("banter", "terrific");
+        addTileEntity(tiles, blueJoe, 3, 16);
+
+        // Return the level definition.
+        return new LevelDefinition("Simple", tiles);
+    }
+
+    /**
+     * Creates the test tiles.
+     * @return The test tiles.
+     */
+    private ArrayList<TileDefinition> createTiles() {
+        return new ArrayList<TileDefinition>() {{
+            add(new TileDefinition("EMPTY", 5, 16));
             add(new TileDefinition("EMPTY", 5, 17));
             add(new TileDefinition("EMPTY", 5, 18));
             add(new TileDefinition("EMPTY", 6, 17));
@@ -63,7 +90,6 @@ public class SimpleLevelGenerator implements ILevelGenerator {
             add(new TileDefinition("EMPTY", 5, 15));
             add(new TileDefinition("EMPTY", 6, 14));
             add(new TileDefinition("EMPTY", 6, 15));
-            add(new TileDefinition("EMPTY", 5, 16));
             add(new TileDefinition("EMPTY", 6, 16));
             add(new TileDefinition("EMPTY", 13, 7));
             add(new TileDefinition("EMPTY", 13, 8));
@@ -1570,8 +1596,30 @@ public class SimpleLevelGenerator implements ILevelGenerator {
             add(new TileDefinition("WALL", 47, 34));
             add(new TileDefinition("WALL", 47, 35));
         }};
+    }
 
-        // Return the level definition.
-        return new LevelDefinition("Simple", tiles);
+    /**
+     * Add teh tile entity at tile x/y.
+     * @param tiles
+     * @param entity
+     * @param x
+     * @param y
+     */
+    private void addTileEntity(ArrayList<TileDefinition> tiles, EntityDefinition entity, int x, int y) {
+        // Find the target tile.
+        TileDefinition tile = null;
+
+        for (TileDefinition currentTile : tiles) {
+            if (currentTile.getX() == x && currentTile.getY() == y) {
+                tile = currentTile;
+                break;
+            }
+        }
+
+        if (tile == null) {
+            throw new RuntimeException("no tile at x: " + x + " y: " + y);
+        }
+
+        tile.getEntities().add(entity);
     }
 }

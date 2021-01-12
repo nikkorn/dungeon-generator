@@ -1,9 +1,9 @@
 package com.dumbpug.dungeony.game.character.behaviour;
 
-import com.dumbpug.dungeony.game.Direction;
+import com.dumbpug.dungeony.engine.Direction;
+import com.dumbpug.dungeony.engine.InteractiveEnvironment;
+import com.dumbpug.dungeony.game.character.GameCharacterState;
 import com.dumbpug.dungeony.game.character.npc.NPC;
-import com.dumbpug.dungeony.game.character.npc.NPCState;
-import com.dumbpug.dungeony.game.level.InteractiveLevel;
 
 /**
  * Very basic enemy NPC behaviour.
@@ -13,13 +13,14 @@ public class BasicEnemyBehaviour<TNPC extends NPC> implements INPCBehaviour<TNPC
     /**
      * Tick the NPC behaviour.
      * @param subject The NPC.
-     * @param level The interactive level.
+     * @param environment The game environment.
+     * @param delta The delta time.
      */
-    public void tick (TNPC subject, InteractiveLevel level) {
+    public void tick (TNPC subject, InteractiveEnvironment environment, float delta) {
         // Move the NPC north-east at their normal movement speed.
-        level.moveByDirection(subject, Direction.NORTH_EAST, subject.getMovementSpeed());
+        environment.moveByDirection(subject, Direction.NORTH_EAST, subject.getMovementSpeed(), delta);
 
         // We are running to the right.
-        subject.setState(NPCState.RUNNING_RIGHT);
+        subject.setState(GameCharacterState.RUNNING_RIGHT);
     }
 }
