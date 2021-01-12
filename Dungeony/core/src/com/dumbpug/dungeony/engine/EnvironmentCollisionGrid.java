@@ -1,7 +1,7 @@
 package com.dumbpug.dungeony.engine;
 
 import com.dumbpug.dungeony.engine.utilities.spatialgrid.SpatialGrid;
-import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * A spatial grid that handles the movement and collisions of entities in an environment.
@@ -23,9 +23,10 @@ public class EnvironmentCollisionGrid extends SpatialGrid<Entity> {
      * @param direction The direction to move in.
      * @param distance The distance to move the entity.
      * @param delta The delta time.
+     * @return The set of entities that the subject entity collided with during the movement update.
      */
-    public void moveByDirection(Entity subject, Direction direction, float distance, float delta) {
-        this.moveByAngle(subject, direction.getAngle(), distance, delta);
+    public HashSet<Entity> moveByDirection(Entity subject, Direction direction, float distance, float delta) {
+        return this.moveByAngle(subject, direction.getAngle(), distance, delta);
     }
 
     /**
@@ -36,11 +37,12 @@ public class EnvironmentCollisionGrid extends SpatialGrid<Entity> {
      * @param angle A value between 0 and 360 representing the angle of movement.
      * @param distance The distance to move the entity.
      * @param delta The delta time.
+     * @return The set of entities that the subject entity collided with during the movement update.
      */
-    public void moveByAngle(Entity subject, float angle, float distance, float delta) {
+    public HashSet<Entity> moveByAngle(Entity subject, float angle, float distance, float delta) {
         // The entity must have already been added to the grid.
         if (!this.contains(subject)) {
-            return;
+            return null;
         }
 
         // Calculate the new position of the entity to move based on the amount to move and the entity movement speed.
@@ -48,7 +50,7 @@ public class EnvironmentCollisionGrid extends SpatialGrid<Entity> {
         float offsetY = (float) Math.cos(angle * Math.PI / 180) * distance;
 
         // Move the subject entity by finding the x/y offsets.
-        this.moveEntity(subject, offsetX, offsetY, delta);
+        return this.moveEntity(subject, offsetX, offsetY, delta);
     }
 
     /**
@@ -59,14 +61,15 @@ public class EnvironmentCollisionGrid extends SpatialGrid<Entity> {
      * @param offsetX The offset to apply on the X axis.
      * @param offsetY The offset to apply on the Y axis.
      * @param delta The delta time.
+     * @return The set of entities that the subject entity collided with during the movement update.
      */
-    public void move(Entity subject, float offsetX, float offsetY, float delta) {
+    public HashSet<Entity> move(Entity subject, float offsetX, float offsetY, float delta) {
         // The entity must have already been added to the grid.
         if (!this.contains(subject)) {
-            return;
+            return null;
         }
 
-        this.moveEntity(subject, offsetX, offsetY, delta);
+        return this.moveEntity(subject, offsetX, offsetY, delta);
     }
 
     /**
@@ -76,19 +79,27 @@ public class EnvironmentCollisionGrid extends SpatialGrid<Entity> {
      * @param offsetX The offset to apply on the X axis.
      * @param offsetY The offset to apply on the Y axis.
      * @param delta The delta time.
+     * @return The set of entities that the subject entity collided with during the movement update.
      */
-    private void moveEntity(Entity subject, float offsetX, float offsetY, float delta) {
+    private HashSet<Entity> moveEntity(Entity subject, float offsetX, float offsetY, float delta) {
         // TODO Break up or movement into small maximum x/y segments if the x/y offset is really big.
         // TODO For each x/y segment:
         //       - Move X axis first and try to find intersecting and/or colliding aabbs.
         //       - Move Y axis second and try to find intersecting and/or colliding aabbs.
         // This way we can move a fast moving or small entity with less chance of clipping or skipping an aabb.
 
-        // TODO Could return any collidable entities that we bumped into during the move?????
+        // Get the set of entities that the subject is already colliding with before the movement update happens.
+        HashSet<Entity> existingCollisions = this.getColliding(subject);
+
+        // Create a set of all entities that the moving entity has collided with during the entire movement
+        // update, this includes the entities that the subject is colliding with before the movement is made.
+        HashSet<Entity> allCollisions = new HashSet<Entity>(existingCollisions);
 
         // Update the position of the given entity on the each axis.
-        moveEntityOnAxis(subject, offsetX, Axis.X, delta);
-        moveEntityOnAxis(subject, offsetY, Axis.Y, delta);
+        moveEntityOnAxis(subject, offsetX, Axis.X, delta, allCollisions, existingCollisions);
+        moveEntityOnAxis(subject, offsetY, Axis.Y, delta, allCollisions, existingCollisions);
+
+        return allCollisions;
     }
 
     /**
@@ -97,9 +108,13 @@ public class EnvironmentCollisionGrid extends SpatialGrid<Entity> {
      * @param offset The offset to be applied.
      * @param axis The axis on which to update the entity position.
      * @param delta The delta time.
+     * @param allCollisions The set to populate with all entities that were collided with this movement update.
+     * @param existingCollisions The set of entities that the subject is already colliding with before the movement update happens.
      */
-    private void moveEntityOnAxis(Entity entity, float offset, Axis axis, float delta) {
+    private void moveEntityOnAxis(Entity entity, float offset, Axis axis, float delta, HashSet<Entity> allCollisions, HashSet<Entity> existingCollisions) {
         // TODO We should chop up large movements into smaller increments.
+
+        boolean collisionFound = false;
 
         // How the entity position is updated depends on the axis.
         if (axis == Axis.X) {
@@ -116,16 +131,18 @@ public class EnvironmentCollisionGrid extends SpatialGrid<Entity> {
             this.update(entity);
 
             // Find any level entities that the entity may now be colliding with.
-            ArrayList<Entity> collidingEntities = new ArrayList<>();
             for (Entity collidingEntity : this.getColliding(entity)) {
                 // Even though the entities collide in our level grid, they may not actually bump into each other.
-                if (canEntitiesCollide(collidingEntity, entity)) {
-                    collidingEntities.add(collidingEntity);
+                // We also want to exclude an entities that the subject was already colliding with before the
+                // update, this allows already colliding entities to move away from each other.
+                if (canEntitiesCollide(collidingEntity, entity) && !existingCollisions.contains(collidingEntity)) {
+                    allCollisions.add(collidingEntity);
+                    collisionFound = true;
                 }
             }
 
             // Check whether the entity is now bumping into any others.
-            if (collidingEntities.size() > 0) {
+            if (collisionFound) {
                 // TODO Move the entity to the position it would be in at the point it collided with the closest entity.
                 // TODO For now just move the entity back to its original position.
                 entity.setX(origin);
@@ -145,16 +162,18 @@ public class EnvironmentCollisionGrid extends SpatialGrid<Entity> {
             this.update(entity);
 
             // Find any level entities that the entity may now be colliding with.
-            ArrayList<Entity> collidingEntities = new ArrayList<>();
             for (Entity collidingEntity : this.getColliding(entity)) {
                 // Even though the entities collide in our level grid, they may not actually bump into each other.
-                if (canEntitiesCollide(collidingEntity, entity)) {
-                    collidingEntities.add(collidingEntity);
+                // We also want to exclude an entities that the subject was already colliding with before the
+                // update, this allows already colliding entities to move away from each other.
+                if (canEntitiesCollide(collidingEntity, entity) && !existingCollisions.contains(collidingEntity)) {
+                    allCollisions.add(collidingEntity);
+                    collisionFound = true;
                 }
             }
 
             // Check whether the entity is now bumping into any others.
-            if (collidingEntities.size() > 0) {
+            if (collisionFound) {
                 // TODO Move the entity to the position it would be in at the point it collided with the closest entity.
                 // TODO For now just move the entity back to its original position.
                 entity.setY(origin);

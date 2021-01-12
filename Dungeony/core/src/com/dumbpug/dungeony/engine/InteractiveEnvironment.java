@@ -2,8 +2,8 @@ package com.dumbpug.dungeony.engine;
 
 import com.dumbpug.dungeony.engine.dialog.Dialog;
 import com.dumbpug.dungeony.engine.lighting.Light;
-import com.dumbpug.dungeony.engine.lighting.Lights;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * An interactivity layer that is available to entities during updates.
@@ -45,9 +45,10 @@ public class InteractiveEnvironment {
      * @param direction The direction to move in.
      * @param distance The distance to move the entity.
      * @param delta The delta time.
+     * @return The set of entities that the subject entity collided with during the movement update.
      */
-    public void moveByDirection(Entity subject, Direction direction, float distance, float delta) {
-        this.environment.getGrid().moveByDirection(subject, direction, distance, delta);
+    public HashSet<Entity> moveByDirection(Entity subject, Direction direction, float distance, float delta) {
+        return this.environment.getGrid().moveByDirection(subject, direction, distance, delta);
     }
 
     /**
@@ -58,9 +59,10 @@ public class InteractiveEnvironment {
      * @param angle A value between 0 and 360 representing the angle of movement.
      * @param distance The distance to move the entity.
      * @param delta The delta time.
+     * @return The set of entities that the subject entity collided with during the movement update.
      */
-    public void moveByAngle(Entity subject, float angle, float distance, float delta) {
-        this.environment.getGrid().moveByAngle(subject, angle, distance, delta);
+    public HashSet<Entity> moveByAngle(Entity subject, float angle, float distance, float delta) {
+        return this.environment.getGrid().moveByAngle(subject, angle, distance, delta);
     }
 
     /**
@@ -71,9 +73,10 @@ public class InteractiveEnvironment {
      * @param offsetX A value between -1 and 1 representing the movement to make to the X position of the entity.
      * @param offsetY A value between -1 and 1 representing the movement to make to the Y position of the entity.
      * @param delta The delta time.
+     * @return The set of entities that the subject entity collided with during the movement update.
      */
-    public void move(Entity subject, float offsetX, float offsetY, float delta) {
-        this.environment.getGrid().move(subject, offsetX, offsetY, delta);
+    public HashSet<Entity> move(Entity subject, float offsetX, float offsetY, float delta) {
+        return this.environment.getGrid().move(subject, offsetX, offsetY, delta);
     }
 
     /**

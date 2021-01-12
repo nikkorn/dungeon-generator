@@ -14,6 +14,8 @@ import com.dumbpug.dungeony.game.rendering.Resources;
 import com.dumbpug.dungeony.game.tile.Tile;
 import com.dumbpug.dungeony.game.tile.TileType;
 
+import java.util.HashSet;
+
 /**
  * Represents an active projectile.
  */
@@ -60,7 +62,7 @@ public abstract class Projectile extends Entity<SpriteBatch> {
 
     @Override
     public int getCollisionMask() {
-        return EntityCollisionFlag.NOTHING;
+        return EntityCollisionFlag.WALL | EntityCollisionFlag.CHARACTER | EntityCollisionFlag.OBJECT;
     }
 
     /**
@@ -91,16 +93,16 @@ public abstract class Projectile extends Entity<SpriteBatch> {
     public void update(InteractiveEnvironment environment, float delta) {
         // TODO Check whether the projectile has a life span and if so set the state to EXPIRED if the span is up.
 
-        // Update position of the projectile.
-        environment.moveByAngle(this, this.angleOfFire, this.getMovementSpeed(), delta);
+        // Update position of the projectile and get any entities that we collide with in the process.
+        HashSet<Entity> collisions = environment.moveByAngle(this, this.angleOfFire, this.getMovementSpeed(), delta);
 
         // A flag that defines whether the projectile collided as part of this update and needs to be made inactive.
         boolean hasCollided = false;
 
         // Check for an entity collisions and process any by calling onCharacterCollision/onGameObjectCollision.
-        for (Entity colliding : environment.getColliding(this)) {
+        for (Entity collision : collisions) {
             // Get the group of the colliding entity.
-            String collidingEntityGroup = environment.getEntityGroup(colliding);
+            String collidingEntityGroup = environment.getEntityGroup(collision);
 
             // TODO: If colliding with a player then do nothing atm, eventually this wont work as enemies can fire these.
             if (collidingEntityGroup == null || collidingEntityGroup.equalsIgnoreCase("player")) {
@@ -108,20 +110,20 @@ public abstract class Projectile extends Entity<SpriteBatch> {
             }
 
             if (collidingEntityGroup.equalsIgnoreCase("enemy")) {
-                onCharacterCollision((Enemy)colliding, environment, delta);
+                onCharacterCollision((Enemy)collision, environment, delta);
                 hasCollided = true;
                 continue;
             }
 
             if (collidingEntityGroup.equalsIgnoreCase("object")) {
-                onGameObjectCollision((GameObject)colliding, environment, delta);
+                onGameObjectCollision((GameObject)collision, environment, delta);
                 hasCollided = true;
                 continue;
             }
 
             if (collidingEntityGroup.equalsIgnoreCase("tile")) {
                 // Get the colliding tile.
-                Tile tile = (Tile)colliding;
+                Tile tile = (Tile)collision;
 
                 // We only care about tiles that the projectile can actually collide with, the walls.
                 if (tile.getTileType() != TileType.WALL) {
