@@ -39,9 +39,10 @@ public class Constants {
     //==============================================================================================
     // CHARACTER
     //==============================================================================================
-    public static final int CHARACTER_DEFAULT_HEALTH_SLOTS          = 3;
+    public static final int CHARACTER_DEFAULT_HEALTH_SLOTS          = 5;
     public static final int CHARACTER_INVENTORY_SLOTS               = 8;
     public static final int CHARACTER_INVENTORY_MAX_STACK_SIZE      = 40;
+    public static final long CHARACTER_DAMAGE_OVERLAY_DURATION_MS   = 100l;
 
     //==============================================================================================
     // PLAYER

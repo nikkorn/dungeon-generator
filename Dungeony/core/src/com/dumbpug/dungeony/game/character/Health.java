@@ -5,13 +5,13 @@ package com.dumbpug.dungeony.game.character;
  */
 public class Health {
     /**
-     * The base health slots that the character has.
-     */
-    private int healthSlots;
-    /**
      * The current amount of health that a character has, out of all available health slots.
      */
     private int healthPoints;
+    /**
+     * The base health slots that the character has.
+     */
+    private int healthSlots;
     /**
      * The additional health slots that the character has.
      */
@@ -27,7 +27,7 @@ public class Health {
 
     /**
      * Creates a new instance of the Health class.
-     * @param healthSlots The
+     * @param healthSlots The number of standard health slots.
      */
     public Health(int healthSlots) {
         this.healthSlots  = healthSlots;
@@ -64,6 +64,11 @@ public class Health {
      */
     public void setHealthPoints(int healthPoints) {
         this.healthPoints = healthPoints;
+
+        // Prevent health points from going below 0.
+        if (this.healthPoints < 0) {
+            this.healthPoints = 0;
+        }
     }
 
     /**
@@ -115,10 +120,10 @@ public class Health {
     }
 
     /**
-     * Gets whether the player is dead.
-     * @return Whether the player is dead.
+     * Gets whether the health is depleted.
+     * @return Whether the health is depleted.
      */
-    public boolean isDead() {
+    public boolean isHealthDepleted() {
         return healthPoints == 0;
     }
 }

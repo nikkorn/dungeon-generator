@@ -10,5 +10,7 @@ public enum GameCharacterState {
     RUNNING_LEFT,
     RUNNING_RIGHT,
     DODGING_LEFT,
-    DODGING_RIGHT
+    DODGING_RIGHT,
+    DEAD_LEFT,
+    DEAD_RIGHT
 }

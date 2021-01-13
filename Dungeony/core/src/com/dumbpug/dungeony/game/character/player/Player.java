@@ -78,6 +78,12 @@ public class Player extends GameCharacter {
     public void onEnvironmentExit(InteractiveEnvironment environment) { }
 
     @Override
+    public void onDamageTaken(InteractiveEnvironment environment, float delta, int points) { }
+
+    @Override
+    public void onHealthDepleted(InteractiveEnvironment environment, float delta) { }
+
+    @Override
     public void update(InteractiveEnvironment environment, float delta) {
         // Get the input provider for the player.
         IPlayerInputProvider playerInputProvider = this.getDetails().getInputProvider();

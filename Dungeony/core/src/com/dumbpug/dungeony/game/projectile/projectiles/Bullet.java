@@ -51,6 +51,8 @@ public class Bullet extends Projectile {
 
     @Override
     public void onCharacterCollision(GameCharacter character, InteractiveEnvironment environment, float delta) {
+        // A default bullet will do 1 damage to a character.
+        character.applyDamage(environment, delta, 1);
     }
 
     @Override

@@ -52,6 +52,12 @@ public class BlueJoe extends Friendly {
     }
 
     @Override
+    public void onDamageTaken(InteractiveEnvironment environment, float delta, int points) { }
+
+    @Override
+    public void onHealthDepleted(InteractiveEnvironment environment, float delta) { }
+
+    @Override
     public FriendlyType getFriendlyType() {
         return FriendlyType.BLUEJOE;
     }

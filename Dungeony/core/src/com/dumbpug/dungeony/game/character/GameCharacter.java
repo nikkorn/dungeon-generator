@@ -11,6 +11,8 @@ import com.dumbpug.dungeony.game.EntityCollisionFlag;
 import com.dumbpug.dungeony.game.inventory.Inventory;
 import com.dumbpug.dungeony.game.rendering.Animation;
 import com.dumbpug.dungeony.game.weapon.Weapon;
+import com.dumbpug.dungeony.utilities.shaders.ShaderProvider;
+import com.dumbpug.dungeony.utilities.shaders.ShaderType;
 import java.util.HashMap;
 
 /**
@@ -41,6 +43,10 @@ public abstract class GameCharacter extends Entity<SpriteBatch> {
      * The angle of view of the character.
      */
     private Float angleOfView = null;
+    /**
+     * The time that the character last received damage.
+     */
+    private long lastDamagedReceivedTime = 0l;
     /**
      * The game character state to animation map.
      */
@@ -138,10 +144,33 @@ public abstract class GameCharacter extends Entity<SpriteBatch> {
     }
 
     /**
-     * Gets the character movements speed per second.
-     * @return The character movements speed per second.
+     * Applies damage to the game character.
+     * @param points The points of damage to apply to the game character.
      */
-    public abstract float getMovementSpeed();
+    public void applyDamage(InteractiveEnvironment environment, float delta, int points) {
+        // We can only apply damage to a character if they aren't invincible and their health isn't already depleted.
+        if (this.health.isInvincible() || this.health.isHealthDepleted()) {
+            return;
+        }
+
+        // Reduce the characters health points by the amount specified.
+        this.health.setHealthPoints(this.health.getHealthPoints() - points);
+
+        this.lastDamagedReceivedTime = System.currentTimeMillis();
+
+        this.onDamageTaken(environment, delta, points);
+
+        if (this.health.isHealthDepleted()) {
+            this.onHealthDepleted(environment, delta);
+        }
+    }
+
+    /**
+     * Applies a status effect to the game character.
+     */
+    public void applyStatusEffect() {
+        // TODO Apply a status effect to the character.
+    }
 
     /**
      * Render the renderable using the provided sprite batch.
@@ -167,8 +196,23 @@ public abstract class GameCharacter extends Entity<SpriteBatch> {
             this.getWeapon().render(batch);
         }
 
-        // Render the current animation frame of the character.
-        batch.draw(currentFrame, this.getX(), this.getY(), 0, 0, this.getLengthX(), this.getLengthZ(), 1.0f, 1.0f, 0);
+        // How we render the actual game character sprite depends on how recently they took damage. For a small period
+        // after a character takes damage they will be rendered with a solid white sprite instead of the standard one.
+        if (this.lastDamagedReceivedTime > (System.currentTimeMillis() - Constants.CHARACTER_DAMAGE_OVERLAY_DURATION_MS)) {
+            batch.end();
+
+            // Render the current animation frame of the character using the solid white shader as damage feedback.
+            batch.setShader(ShaderProvider.getShader(ShaderType.SOLID_WHITE));
+            batch.begin();
+            batch.draw(currentFrame, this.getX(), this.getY(), 0, 0, this.getLengthX(), this.getLengthZ(), 1.0f, 1.0f, 0);
+            batch.end();
+
+            batch.setShader(ShaderProvider.getDefault());
+            batch.begin();
+        } else {
+            // Render the current animation frame of the character.
+            batch.draw(currentFrame, this.getX(), this.getY(), 0, 0, this.getLengthX(), this.getLengthZ(), 1.0f, 1.0f, 0);
+        }
 
         // Draw the weapon of the character if they have one, but do this in front of the character if they are facing left.
         if (this.getWeapon() != null && this.facingDirection == FacingDirection.LEFT) {
@@ -223,4 +267,25 @@ public abstract class GameCharacter extends Entity<SpriteBatch> {
             this.getWeapon().setAngleOfAim(this.angleOfView == null ? this.facingDirection.getAngle() : this.angleOfView);
         }
     }
+
+    /**
+     * Gets the character movements speed per second.
+     * @return The character movements speed per second.
+     */
+    public abstract float getMovementSpeed();
+
+    /**
+     * Called when the character takes damage.
+     * @param environment The interactive environment.
+     * @param delta The delta time.
+     * @param points The points of damage taken.
+     */
+    public abstract void onDamageTaken(InteractiveEnvironment environment, float delta, int points);
+
+    /**
+     * Called when the characters health is depleted.
+     * @param environment The interactive environment.
+     * @param delta The delta time.
+     */
+    public abstract void onHealthDepleted(InteractiveEnvironment environment, float delta);
 }

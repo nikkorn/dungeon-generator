@@ -2,7 +2,9 @@ package com.dumbpug.dungeony.game.character.npc;
 
 import com.dumbpug.dungeony.engine.InteractiveEnvironment;
 import com.dumbpug.dungeony.engine.Position;
+import com.dumbpug.dungeony.game.EntityCollisionFlag;
 import com.dumbpug.dungeony.game.character.GameCharacter;
+import com.dumbpug.dungeony.game.character.GameCharacterState;
 import com.dumbpug.dungeony.game.character.behaviour.INPCBehaviour;
 
 /**
@@ -20,6 +22,16 @@ public abstract class NPC extends GameCharacter {
      */
     public NPC(Position origin) {
         super(origin);
+    }
+
+    @Override
+    public int getCollisionMask() {
+        // An NPC should not collide with anything if they are dead.
+        if (this.getState() == GameCharacterState.DEAD_LEFT || this.getState() == GameCharacterState.DEAD_RIGHT) {
+            return EntityCollisionFlag.NOTHING;
+        }
+
+        return super.getCollisionMask();
     }
 
     /**

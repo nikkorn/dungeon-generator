@@ -193,6 +193,10 @@ public class Resources {
             case DODGING_RIGHT:
                 columns = category.equals("player") ? 8 : 6;
                 break;
+            case DEAD_LEFT:
+            case DEAD_RIGHT:
+                columns = 4;
+                break;
             default:
                 throw new RuntimeException("unknown game character state: " + state);
         }
