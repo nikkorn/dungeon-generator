@@ -22,7 +22,7 @@ public abstract class GameCharacter extends Entity<SpriteBatch> {
     /**
      * The current game character state.
      */
-    private GameCharacterState state = GameCharacterState.IDLE_LEFT;
+    private GameCharacterState state = GameCharacterState.IDLE;
     /**
      * The character health.
      */
@@ -48,9 +48,9 @@ public abstract class GameCharacter extends Entity<SpriteBatch> {
      */
     private long lastDamagedReceivedTime = 0l;
     /**
-     * The game character state to animation map.
+     * The mappings of character facing directions to state and animation mappings.
      */
-    protected HashMap<GameCharacterState, Animation> animations = new HashMap<GameCharacterState, Animation>();
+    private HashMap<FacingDirection, HashMap<GameCharacterState, Animation>> animations;
     /**
      * The game character shadow sprite.
      */
@@ -62,6 +62,12 @@ public abstract class GameCharacter extends Entity<SpriteBatch> {
      */
     public GameCharacter(Position origin) {
         super(origin);
+
+        // Create the mappings of character facing directions to state and animation mappings.
+        this.animations = new HashMap<FacingDirection, HashMap<GameCharacterState, Animation>>() {{
+            put(FacingDirection.LEFT, new HashMap<GameCharacterState, Animation>());
+            put(FacingDirection.RIGHT, new HashMap<GameCharacterState, Animation>());
+        }};
     }
 
     /**
@@ -144,6 +150,26 @@ public abstract class GameCharacter extends Entity<SpriteBatch> {
     }
 
     /**
+     * Gets the character animation for the given state and facing direction.
+     * @param state The character state.
+     * @param direction The facing direction of the character.
+     * @return The character animation for the given state and facing direction.
+     */
+    protected Animation getAnimation(GameCharacterState state, FacingDirection direction) {
+        return this.animations.get(direction).get(state);
+    }
+
+    /**
+     * Sets the character animation for the given state and facing direction.
+     * @param state The character state.
+     * @param direction The facing direction of the character.
+     * @param animation The animation.
+     */
+    protected void setAnimation(GameCharacterState state, FacingDirection direction, Animation animation) {
+        this.animations.get(direction).put(state, animation);
+    }
+
+    /**
      * Applies damage to the game character.
      * @param points The points of damage to apply to the game character.
      */
@@ -178,8 +204,8 @@ public abstract class GameCharacter extends Entity<SpriteBatch> {
      */
     @Override
     public void render(SpriteBatch batch) {
-        // Get the relevant animation for the character based on their current state.
-        Animation animation = animations.get(this.state);
+        // Get the relevant animation for the character based on their current state and facing direction.
+        Animation animation = animations.get(this.facingDirection).get(this.state);
 
         // Get the current animation frame for the animation.
         TextureRegion currentFrame = animation.getCurrentFrame(true);
@@ -236,7 +262,7 @@ public abstract class GameCharacter extends Entity<SpriteBatch> {
             }
 
             // The player should be idle and facing whatever direction they already have been.
-            this.setState(this.facingDirection == FacingDirection.LEFT ? GameCharacterState.IDLE_LEFT: GameCharacterState.IDLE_RIGHT);
+            this.setState(GameCharacterState.IDLE);
         } else {
             // The facing direction of the character will be determined by their current angle of view if one is
             // set, otherwise it will be determined by whatever direction the character is currently moving in.
@@ -252,7 +278,7 @@ public abstract class GameCharacter extends Entity<SpriteBatch> {
             }
 
             // The player should be running and facing whatever direction they already have been.
-            this.setState(this.facingDirection == FacingDirection.LEFT ? GameCharacterState.RUNNING_LEFT: GameCharacterState.RUNNING_RIGHT);
+            this.setState(GameCharacterState.RUNNING);
         }
 
         // Any entity movement has to be taken care of by the level grid which handles all entity collisions.

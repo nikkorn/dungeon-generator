@@ -5,12 +5,8 @@ package com.dumbpug.dungeony.game.character;
  */
 public enum GameCharacterState {
     HIDDEN,
-    IDLE_LEFT,
-    IDLE_RIGHT,
-    RUNNING_LEFT,
-    RUNNING_RIGHT,
-    DODGING_LEFT,
-    DODGING_RIGHT,
-    DEAD_LEFT,
-    DEAD_RIGHT
+    IDLE,
+    RUNNING,
+    DODGING,
+    DEAD
 }

@@ -44,9 +44,7 @@ public class Fishman extends Enemy {
     }
 
     @Override
-    public void onEnvironmentEntry(InteractiveEnvironment environment) {
-        environment.addLight(new SpotLight(this, 1f, 0.3f, 0.3f));
-    }
+    public void onEnvironmentEntry(InteractiveEnvironment environment) { }
 
     @Override
     public void onEnvironmentExit(InteractiveEnvironment environment) { }
@@ -65,7 +63,7 @@ public class Fishman extends Enemy {
     @Override
     public void onHealthDepleted(InteractiveEnvironment environment, float delta) {
         // TODO: Set the character state to be DEAD.
-        this.setState(this.getFacingDirection() == FacingDirection.LEFT ? GameCharacterState.DEAD_LEFT : GameCharacterState.DEAD_RIGHT);
+        this.setState(GameCharacterState.DEAD);
     }
 
     @Override

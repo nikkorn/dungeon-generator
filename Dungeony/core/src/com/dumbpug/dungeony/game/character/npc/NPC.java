@@ -25,13 +25,23 @@ public abstract class NPC extends GameCharacter {
     }
 
     @Override
-    public int getCollisionMask() {
+    public int getCollisionLayers() {
         // An NPC should not collide with anything if they are dead.
-        if (this.getState() == GameCharacterState.DEAD_LEFT || this.getState() == GameCharacterState.DEAD_RIGHT) {
+        if (this.getState() == GameCharacterState.DEAD) {
             return EntityCollisionFlag.NOTHING;
+        } else {
+            return super.getCollisionLayers();
         }
+    }
 
-        return super.getCollisionMask();
+    @Override
+    public int getCollisionMask() {
+        // An NPC should not be collidable they are dead.
+        if (this.getState() == GameCharacterState.DEAD) {
+            return EntityCollisionFlag.NOTHING;
+        } else {
+            return super.getCollisionMask();
+        }
     }
 
     /**

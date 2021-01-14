@@ -2,6 +2,7 @@ package com.dumbpug.dungeony.game.rendering;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.dumbpug.dungeony.game.character.FacingDirection;
 import com.dumbpug.dungeony.game.character.GameCharacterState;
 import com.dumbpug.dungeony.game.character.enemy.EnemyType;
 import com.dumbpug.dungeony.game.character.friendly.FriendlyType;
@@ -143,64 +144,67 @@ public class Resources {
      * Gets the animation for the specified player state type.
      * @param state The state type.
      * @param type The enemy type.
+     * @param direction The character facing direction.
      * @return The animation for the specified player state and type.
      */
-    public static Animation getCharacterAnimation(GameCharacterState state, PlayerType type) {
-        return getCharacterAnimation(state, "player", type.toString());
+    public static Animation getCharacterAnimation(GameCharacterState state, PlayerType type, FacingDirection direction) {
+        return getCharacterAnimation(state, direction, "player", type.toString());
     }
 
     /**
      * Gets the animation for the specified enemy state type.
      * @param state The state type.
      * @param type The enemy type.
+     * @param direction The character facing direction.
      * @return The animation for the specified enemy state and type.
      */
-    public static Animation getCharacterAnimation(GameCharacterState state, EnemyType type) {
-        return getCharacterAnimation(state, "enemy", type.toString());
+    public static Animation getCharacterAnimation(GameCharacterState state, EnemyType type, FacingDirection direction) {
+        return getCharacterAnimation(state, direction, "enemy", type.toString());
     }
 
     /**
      * Gets the animation for the specified friendly state type.
      * @param state The state type.
      * @param type The friendly type.
+     * @param direction The character facing direction.
      * @return The animation for the specified friendly state and type.
      */
-    public static Animation getCharacterAnimation(GameCharacterState state, FriendlyType type) {
-        return getCharacterAnimation(state, "friendly", type.toString());
+    public static Animation getCharacterAnimation(GameCharacterState state, FriendlyType type, FacingDirection direction) {
+        return getCharacterAnimation(state, direction, "friendly", type.toString());
     }
 
     /**
      * Gets the animation for the specified game character state type.
      * @param state The state type.
+     * @param direction The character facing direction.
      * @param category The character category (enemy/friendly/player).
      * @param type The character type.
      * @return The animation for the specified game character state and type.
      */
-    private static Animation getCharacterAnimation(GameCharacterState state, String category, String type) {
+    private static Animation getCharacterAnimation(GameCharacterState state, FacingDirection direction, String category, String type) {
+
+        // TODO Should have a 'loop' flag that Animation takes as an argument, as the death animation shouldn't loop.
+
         // The number of animation frame columns will differ between animations.
         int columns = 0;
         switch (state) {
             case HIDDEN:
                 columns = 1;
                 break;
-            case IDLE_LEFT:
-            case IDLE_RIGHT:
+            case IDLE:
                 columns = category.equals("player") ? 24 : 4;
                 break;
-            case RUNNING_LEFT:
-            case RUNNING_RIGHT:
-            case DODGING_LEFT:
-            case DODGING_RIGHT:
+            case RUNNING:
+            case DODGING:
                 columns = category.equals("player") ? 8 : 6;
                 break;
-            case DEAD_LEFT:
-            case DEAD_RIGHT:
+            case DEAD:
                 columns = 4;
                 break;
             default:
                 throw new RuntimeException("unknown game character state: " + state);
         }
-        return new Animation(new Texture("images/character/" + category.toLowerCase() + "/" + type.toUpperCase()  + "/" + state + ".png"), columns, 1, 1/12f);
+        return new Animation(new Texture("images/character/" + category.toLowerCase() + "/" + type.toUpperCase()  + "/" + state +  "_" + direction +".png"), columns, 1, 1/12f);
     }
 
 }

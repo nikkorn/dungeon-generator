@@ -1,6 +1,7 @@
 package com.dumbpug.dungeony.game.character.friendly;
 
 import com.dumbpug.dungeony.engine.Position;
+import com.dumbpug.dungeony.game.character.FacingDirection;
 import com.dumbpug.dungeony.game.character.GameCharacterState;
 import com.dumbpug.dungeony.game.character.npc.NPC;
 import com.dumbpug.dungeony.game.character.npc.NPCType;
@@ -20,7 +21,8 @@ public abstract class Friendly extends NPC {
 
         // Populate the enemy animation map.
         for (GameCharacterState state : GameCharacterState.values()) {
-            this.animations.put(state, Resources.getCharacterAnimation(state, this.getFriendlyType()));
+            this.setAnimation(state, FacingDirection.LEFT, Resources.getCharacterAnimation(state, this.getFriendlyType(), FacingDirection.LEFT));
+            this.setAnimation(state, FacingDirection.RIGHT, Resources.getCharacterAnimation(state, this.getFriendlyType(), FacingDirection.RIGHT));
         }
 
         // Set the friendly shadow sprite.

@@ -26,6 +26,6 @@ public class BasicEnemyBehaviour<TNPC extends NPC> implements INPCBehaviour<TNPC
         environment.moveByDirection(subject, Direction.NORTH_EAST, subject.getMovementSpeed(), delta);
 
         // We are running to the right.
-        subject.setState(GameCharacterState.RUNNING_RIGHT);
+        subject.setState(GameCharacterState.RUNNING);
     }
 }
