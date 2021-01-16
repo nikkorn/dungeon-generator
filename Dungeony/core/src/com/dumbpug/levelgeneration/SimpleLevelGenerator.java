@@ -22,7 +22,7 @@ public class SimpleLevelGenerator implements ILevelGenerator {
         addTileEntity(tiles, vendor, 5, 16);
 
         // Add a fishman enemy.
-        EntityDefinition fishman = new EntityDefinition("FISHMAN");
+        EntityDefinition fishman = new EntityDefinition("GRUNT");
         vendor.setProperty("skillz", "amazing");
         addTileEntity(tiles, fishman, 3, 14);
 

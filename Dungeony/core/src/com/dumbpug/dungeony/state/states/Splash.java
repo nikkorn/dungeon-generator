@@ -12,10 +12,6 @@ public class Splash extends State {
      * The time since the state was last entered.
      */
     private long startTime;
-    /**
-     * The splash logo sprite.
-     */
-    private Texture texture;
 
     // TODO Add an ExtendedViewport just for this.
 
@@ -23,8 +19,6 @@ public class Splash extends State {
      * Create a new instance of the Splash class.
      */
     public Splash() {
-        // Create the test texture.
-        this.texture = new Texture("badlogic.jpg");
     }
 
     @Override
@@ -47,7 +41,7 @@ public class Splash extends State {
 
     @Override
     public void render() {
-        // batch.draw(this.texture, 0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
+
     }
 
     @Override

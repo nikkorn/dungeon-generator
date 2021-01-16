@@ -25,6 +25,10 @@ public class Animation<TState extends Enum> {
      * The optional entity state associated with the animation.
      */
     private TState state = null;
+    /**
+     * Whether the animation should loop.
+     */
+    private boolean loop = true;
 
     /**
      * Creates a new instance of the Animation class that is associated with some entity state.
@@ -34,7 +38,7 @@ public class Animation<TState extends Enum> {
      * @param rows The number of rows in the texture.
      * @param step The time step for the animation.
      */
-    public Animation(TState state, Texture texture, int columns, int rows, float step){
+    public Animation(TState state, Texture texture, int columns, int rows, float step) {
         TextureRegion[][] tempRegion = TextureRegion.split(texture, texture.getWidth()/columns, texture.getHeight()/rows);
         frames = new TextureRegion[rows*columns];
         int index = 0;
@@ -47,14 +51,40 @@ public class Animation<TState extends Enum> {
     }
 
     /**
+     * Creates a new instance of the Animation class that is associated with some entity state.
+     * @param state The entity state.
+     * @param texture The animation texture.
+     * @param columns The number of columns in the texture.
+     * @param rows The number of rows in the texture.
+     * @param step The time step for the animation.
+     * @param loop Whether the animation should loop.
+     */
+    public Animation(TState state, Texture texture, int columns, int rows, float step, boolean loop) {
+        this(state, texture, columns, rows, step);
+        this.loop = loop;
+    }
+
+    /**
      * Creates a new instance of the Animation class that is associates.
      * @param texture The animation texture.
      * @param columns The number of columns in the texture.
      * @param rows The number of rows in the texture.
      * @param step The time step for the animation.
      */
-    public Animation(Texture texture, int columns, int rows, float step){
+    public Animation(Texture texture, int columns, int rows, float step) {
         this(null, texture, columns, rows, step);
+    }
+
+    /**
+     * Creates a new instance of the Animation class that is associates.
+     * @param texture The animation texture.
+     * @param columns The number of columns in the texture.
+     * @param rows The number of rows in the texture.
+     * @param step The time step for the animation.
+     * @param loop Whether the animation should loop.
+     */
+    public Animation(Texture texture, int columns, int rows, float step, boolean loop) {
+        this(null, texture, columns, rows, step, loop);
     }
 
     /**
@@ -67,10 +97,9 @@ public class Animation<TState extends Enum> {
 
     /**
      * Gets the current animation frame.
-     * @param loop Whether the animation is looping.
      * @return The current animation frame.
      */
-    public TextureRegion getCurrentFrame(boolean loop){
+    public TextureRegion getCurrentFrame() {
         stateTime += Gdx.graphics.getDeltaTime();
         return animation.getKeyFrame(stateTime, loop);
     }

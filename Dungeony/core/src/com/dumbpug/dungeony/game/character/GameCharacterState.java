@@ -5,6 +5,7 @@ package com.dumbpug.dungeony.game.character;
  */
 public enum GameCharacterState {
     HIDDEN,
+    SLEEPING,
     IDLE,
     RUNNING,
     DODGING,

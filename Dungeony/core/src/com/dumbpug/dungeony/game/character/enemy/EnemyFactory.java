@@ -1,6 +1,7 @@
 package com.dumbpug.dungeony.game.character.enemy;
 
 import com.dumbpug.dungeony.engine.Position;
+import com.dumbpug.dungeony.game.character.enemy.enemies.Grunt;
 
 import org.json.JSONObject;
 
@@ -18,7 +19,7 @@ public class EnemyFactory {
     public static Enemy create(EnemyType type, Position position, JSONObject details) {
         switch (type) {
             case GRUNT:
-                return new Fishman(position);
+                return new Grunt(position);
             default:
                 throw new RuntimeException("cannot create Enemy instance for unknown type: " + type);
         }

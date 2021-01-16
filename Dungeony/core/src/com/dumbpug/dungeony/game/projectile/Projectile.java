@@ -147,7 +147,7 @@ public abstract class Projectile extends Entity<SpriteBatch> {
     @Override
     public void render(SpriteBatch spriteBatch) {
         // Get the current animation frame for the animation.
-        TextureRegion currentFrame = this.animation.getCurrentFrame(true);
+        TextureRegion currentFrame = this.animation.getCurrentFrame();
 
         // Draw the current animation frame.
         spriteBatch.draw(currentFrame, this.getX(), this.getY(), this.getLengthX(), this.getLengthZ());

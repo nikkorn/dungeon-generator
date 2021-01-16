@@ -7,6 +7,7 @@ import com.dumbpug.dungeony.game.character.GameCharacterState;
 import com.dumbpug.dungeony.game.character.behaviour.BasicEnemyBehaviour;
 import com.dumbpug.dungeony.game.character.enemy.Enemy;
 import com.dumbpug.dungeony.game.character.enemy.EnemyType;
+import com.dumbpug.dungeony.game.lights.SpotLight;
 
 /**
  * A standard grunt enemy.
@@ -35,11 +36,13 @@ public class Grunt extends Enemy {
 
     @Override
     public float getLengthZ() {
-        return 18f;
+        return 24f;
     }
 
     @Override
-    public void onEnvironmentEntry(InteractiveEnvironment environment) { }
+    public void onEnvironmentEntry(InteractiveEnvironment environment) {
+        environment.addLight(new SpotLight(this, 1f, 0.3f, 0.3f));
+    }
 
     @Override
     public void onEnvironmentExit(InteractiveEnvironment environment) { }

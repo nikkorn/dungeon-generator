@@ -182,29 +182,41 @@ public class Resources {
      * @return The animation for the specified game character state and type.
      */
     private static Animation getCharacterAnimation(GameCharacterState state, FacingDirection direction, String category, String type) {
-
-        // TODO Should have a 'loop' flag that Animation takes as an argument, as the death animation shouldn't loop.
-
         // The number of animation frame columns will differ between animations.
         int columns = 0;
+
+        // Whether the animation should loop.
+        boolean loop = true;
+
+        // The speed of the animation.
+        // TODO Find a nicer way to do this at a later time.
+        float speed = 1/12f;
+
         switch (state) {
             case HIDDEN:
                 columns = 1;
                 break;
             case IDLE:
-                columns = category.equals("player") ? 24 : 4;
+                speed = category.equals("player") ? 1/12f : 1/2f;
+                columns = category.equals("player") ? 24 : 16;
                 break;
             case RUNNING:
             case DODGING:
-                columns = category.equals("player") ? 8 : 6;
+                speed = category.equals("player") ? 1/12f : 1/8f;
+                columns = category.equals("player") ? 8 : 16;
                 break;
             case DEAD:
+                loop = false;
                 columns = 4;
+                break;
+            case SLEEPING:
+                speed = 1/2f;
+                columns = 2;
                 break;
             default:
                 throw new RuntimeException("unknown game character state: " + state);
         }
-        return new Animation(new Texture("images/character/" + category.toLowerCase() + "/" + type.toUpperCase()  + "/" + state +  "_" + direction +".png"), columns, 1, 1/12f);
+        return new Animation(new Texture("images/character/" + category.toLowerCase() + "/" + type.toUpperCase()  + "/" + state +  "_" + direction +".png"), columns, 1, speed, loop);
     }
 
 }

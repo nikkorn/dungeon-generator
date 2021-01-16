@@ -62,7 +62,7 @@ public abstract class GameObject extends Entity<SpriteBatch> {
         Animation animation = animations.get(this.state);
 
         // Get the current animation frame for the animation.
-        TextureRegion currentFrame = animation.getCurrentFrame(true);
+        TextureRegion currentFrame = animation.getCurrentFrame();
 
         // Draw the current animation frame.
         batch.draw(currentFrame, this.getX(), this.getY(), this.getLengthX(), this.getLengthZ());

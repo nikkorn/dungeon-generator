@@ -208,12 +208,15 @@ public abstract class GameCharacter extends Entity<SpriteBatch> {
         Animation animation = animations.get(this.facingDirection).get(this.state);
 
         // Get the current animation frame for the animation.
-        TextureRegion currentFrame = animation.getCurrentFrame(true);
+        TextureRegion currentFrame = animation.getCurrentFrame();
 
         // Draw the character shadow (if they have one).
         if (this.shadowSprite != null) {
-            shadowSprite.setSize(this.getLengthX(), this.getLengthZ());
-            shadowSprite.setPosition(this.getX(), this.getY() - (this.getLengthZ() * 0.1f));
+
+            float width = this.getLengthX();
+            float height = shadowSprite.getRegionHeight() * (this.getLengthX()/shadowSprite.getRegionWidth());
+            shadowSprite.setSize(width, height);
+            shadowSprite.setPosition(this.getX(), this.getY() - (height / 2f));
             shadowSprite.draw(batch);
         }
 
