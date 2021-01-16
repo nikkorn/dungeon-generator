@@ -3,44 +3,39 @@ package com.dumbpug.dungeony.game.character.enemy.enemies;
 import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.engine.InteractiveEnvironment;
 import com.dumbpug.dungeony.engine.Position;
-import com.dumbpug.dungeony.game.character.FacingDirection;
 import com.dumbpug.dungeony.game.character.GameCharacterState;
 import com.dumbpug.dungeony.game.character.behaviour.BasicEnemyBehaviour;
 import com.dumbpug.dungeony.game.character.enemy.Enemy;
 import com.dumbpug.dungeony.game.character.enemy.EnemyType;
-import com.dumbpug.dungeony.game.lights.SpotLight;
 
 /**
- * A basic fishman enemy.
+ * A standard grunt enemy.
  */
-public class Fishman extends Enemy {
+public class Grunt extends Enemy {
     /**
-     * Creates a new instance of the Fishman class.
-     * @param origin The initial origin of the Fishman.
+     * Creates a new instance of the Grunt class.
+     * @param origin The initial origin of the Grunt.
      */
-    public Fishman(Position origin) {
+    public Grunt(Position origin) {
         super(origin);
 
-        // Give the Fishman some basic enemy behaviour.
+        // Give the Grunt some basic enemy behaviour.
         this.setBehaviour(new BasicEnemyBehaviour());
     }
 
     @Override
     public float getLengthX() {
-        // Fishman is the same width as the player.
-        return Constants.PLAYER_SIZE;
+        return 18f;
     }
 
     @Override
     public float getLengthY() {
-        // Fishman is the same height as the player.
-        return Constants.PLAYER_SIZE;
+        return 10f;
     }
 
     @Override
     public float getLengthZ() {
-        // Fishman is the same height as the player.
-        return Constants.PLAYER_SIZE;
+        return 18f;
     }
 
     @Override
@@ -51,13 +46,13 @@ public class Fishman extends Enemy {
 
     @Override
     public float getMovementSpeed() {
-        // Fishman can move at 80% of the default speed of the player.
+        // A grunt can move at 80% of the default speed of the player.
         return Constants.PLAYER_MOVEMENT_PS * 0.8f;
     }
 
     @Override
     public void onDamageTaken(InteractiveEnvironment environment, float delta, int points) {
-
+        // TODO Do a groan!
     }
 
     @Override
@@ -68,6 +63,6 @@ public class Fishman extends Enemy {
 
     @Override
     public EnemyType getEnemyType() {
-        return EnemyType.FISHMAN;
+        return EnemyType.GRUNT;
     }
 }
