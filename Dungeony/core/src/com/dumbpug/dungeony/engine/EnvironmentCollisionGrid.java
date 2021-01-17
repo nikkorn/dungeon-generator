@@ -2,6 +2,7 @@ package com.dumbpug.dungeony.engine;
 
 import com.dumbpug.dungeony.engine.utilities.spatialgrid.SpatialGrid;
 import java.util.HashSet;
+import java.util.Iterator;
 
 /**
  * A spatial grid that handles the movement and collisions of entities in an environment.
@@ -90,6 +91,15 @@ public class EnvironmentCollisionGrid extends SpatialGrid<Entity> {
 
         // Get the set of entities that the subject is already colliding with before the movement update happens.
         HashSet<Entity> existingCollisions = this.getColliding(subject);
+
+        // We need to exclude any existing collisions that don't actually collide based on entity collision mask/layers.
+        Iterator<Entity> iterator = existingCollisions.iterator();
+        while (iterator.hasNext()) {
+            Entity existingCollision = iterator.next();
+            if (!canEntitiesCollide(subject, existingCollision)) {
+                iterator.remove();
+            }
+        }
 
         // Create a set of all entities that the moving entity has collided with during the entire movement
         // update, this includes the entities that the subject is colliding with before the movement is made.
@@ -188,7 +198,7 @@ public class EnvironmentCollisionGrid extends SpatialGrid<Entity> {
      * @param b Entity b.
      * @return Whether entity a can collide with entity b.
      */
-    private boolean canEntitiesCollide(Entity a, Entity b) {
+    public static boolean canEntitiesCollide(Entity a, Entity b) {
         return (a.getCollisionMask() & b.getCollisionLayers()) > 0 || (b.getCollisionMask() & a.getCollisionLayers()) > 0;
     }
 }
