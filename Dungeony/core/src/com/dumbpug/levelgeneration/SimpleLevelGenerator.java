@@ -21,10 +21,10 @@ public class SimpleLevelGenerator implements ILevelGenerator {
         vendor.setProperty("item_rarity", "0");
         addTileEntity(tiles, vendor, 5, 16);
 
-        // Add a fishman enemy.
-        EntityDefinition fishman = new EntityDefinition("GRUNT");
-        vendor.setProperty("skillz", "amazing");
-        addTileEntity(tiles, fishman, 3, 14);
+        // Add a sleeping grunt enemy.
+        EntityDefinition grunt = new EntityDefinition("GRUNT");
+        vendor.setProperty("state", "sleeping");
+        addTileEntity(tiles, grunt, 3, 14);
 
         // Add good ol' blue joe.
         EntityDefinition blueJoe = new EntityDefinition("BLUEJOE");

@@ -22,6 +22,9 @@ public class Grunt extends Enemy {
     public Grunt(Position origin) {
         super(origin);
 
+        // TODO REMOVE!
+        this.setState(GameCharacterState.SLEEPING);
+
         // Give the Grunt some basic enemy behaviour.
         this.setBehaviour(new BasicEnemyBehaviour());
     }
@@ -57,6 +60,17 @@ public class Grunt extends Enemy {
 
     @Override
     public void onDamageTaken(InteractiveEnvironment environment, float delta, int points) {
+        // If the grunt is sleeping then taking damage will wake it.
+        if (this.getState() == GameCharacterState.SLEEPING) {
+            // Play a sound of the grunt waking up.
+            AudioProvider.getSoundEffect(SoundEffect.GRUNT_WAKING).play();
+
+            // The grunt is no longer sleeping, make it idle.
+            this.setState(GameCharacterState.IDLE);
+
+            return;
+        }
+
         // Do a groan!
         AudioProvider.getSoundEffect(SoundEffect.GRUNT_GROAN).play();
     }

@@ -18,5 +18,6 @@ public enum SoundEffect {
     LEVEL_UP,
     HANDGUN_FIRE,
     GRUNT_GROAN,
+    GRUNT_WAKING,
     GRUNT_DEAD
 }

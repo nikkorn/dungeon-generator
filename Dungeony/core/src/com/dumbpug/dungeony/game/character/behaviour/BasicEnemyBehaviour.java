@@ -22,6 +22,11 @@ public class BasicEnemyBehaviour<TNPC extends NPC> implements INPCBehaviour<TNPC
             return;
         }
 
+        // Do nothing if the subject is sleeping.
+        if (subject.getState() == GameCharacterState.SLEEPING) {
+            return;
+        }
+
         // Move the NPC north-east at their normal movement speed.
         environment.moveByDirection(subject, Direction.NORTH_EAST, subject.getMovementSpeed(), delta);
 
