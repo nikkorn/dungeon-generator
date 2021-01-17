@@ -28,7 +28,12 @@ public class BasicEnemyBehaviour<TNPC extends NPC> implements INPCBehaviour<TNPC
         }
 
         // Move the NPC north-east at their normal movement speed.
-        environment.moveByDirection(subject, Direction.NORTH_EAST, subject.getMovementSpeed(), delta);
+        // environment.moveByDirection(subject, Direction.NORTH_EAST, subject.getMovementSpeed(), delta);
+
+        // TODO The Environment methods that move an entity don't handle character state. Options:
+        // Add an onMove(float xOffset, float yOffset) to all entities and set running state here for GameCharacter.
+        // Call a walk()/walkTowards()/walkInDirection() on GameCharacter that calls environment move methods but handles running/idle state and facing direction changes.
+        subject.walk(environment, -20f, -20f, delta);
 
         // We are running to the right.
         subject.setState(GameCharacterState.RUNNING);

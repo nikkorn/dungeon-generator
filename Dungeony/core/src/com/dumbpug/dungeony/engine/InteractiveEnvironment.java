@@ -2,6 +2,8 @@ package com.dumbpug.dungeony.engine;
 
 import com.dumbpug.dungeony.engine.dialog.Dialog;
 import com.dumbpug.dungeony.engine.lighting.Light;
+import com.dumbpug.dungeony.engine.utilities.GameMath;
+import com.dumbpug.dungeony.engine.utilities.spatialgrid.IAABB;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -93,11 +95,37 @@ public class InteractiveEnvironment {
      * Gets whether the subject entity has a line of sight to the target entity.
      * @param subject The subject entity.
      * @param target The target entity.
-     * @param distance The max line of sight distance.
+     * @param maxDistance The max line of sight distance.
      * @returns Whether the subject entity has a line of sight to the target entity.
      */
-    public boolean canSee(Entity subject, Entity target, float distance) {
-        throw new UnsupportedOperationException();
+    public boolean canSee(Entity subject, Entity target, float maxDistance) {
+        // Initially, get the distance between thw two entities.
+        float distanceBetweenEntities = this.getDistanceBetween(subject, target);
+
+        // Check whether the target is simply too far away for the subject to see.
+        if (distanceBetweenEntities > maxDistance) {
+            return false;
+        }
+
+        float minX = Math.min(subject.getX(), target.getX());
+        float maxX = Math.max(subject.getX(), target.getX());
+        float minY = Math.min(subject.getY(), target.getY());
+        float maxY = Math.max(subject.getY(), target.getY());
+
+        // Get the area between the two entities.
+        Area areaBetween = new Area(minX, minY, maxX - minX, maxY - minY);
+
+        // Find any entities that overlap the area between the two entities. Any of these
+        // could be blocking the line of sight between the subject and the target.
+        for (Entity overlap : this.environment.getGrid().getOverlapping(areaBetween)) {
+            if (!overlap.canObstructView()) {
+                continue;
+            }
+
+            // TODO Check if line of sight is obsructed by overlap.
+        }
+
+        return true;
     }
 
     /**
@@ -107,7 +135,9 @@ public class InteractiveEnvironment {
      * @returns The distance between the subject and target entity.
      */
     public float getDistanceBetween(Entity subject, Entity target) {
-        throw new UnsupportedOperationException();
+        // Get the distance between the two origins of the two entities.
+        // TODO Eventually this should be between the two closest edges of the entities.
+        return GameMath.getLength(subject.getX(), subject.getY(), target.getX(), target.getY());
     }
 
     /**

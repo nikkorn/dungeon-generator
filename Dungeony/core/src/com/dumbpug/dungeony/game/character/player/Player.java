@@ -106,7 +106,7 @@ public class Player extends GameCharacter {
         float movementAxisX = playerInputProvider.getMovementAxisX() * this.getMovementSpeed();
         float movementAxisY = playerInputProvider.getMovementAxisY() * this.getMovementSpeed();
 
-        this.move(environment, movementAxisX, movementAxisY, delta);
+        this.walk(environment, movementAxisX, movementAxisY, delta);
 
         // Are we using our equipped weapon?
         if (this.getWeapon() != null && playerInputProvider.isControlPressed(Control.PRIMARY_ACTION)) {

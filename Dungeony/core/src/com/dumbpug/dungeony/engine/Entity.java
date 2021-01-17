@@ -80,6 +80,15 @@ public abstract class Entity<TRenderContext> implements IAABB, IRenderable<TRend
     }
 
     /**
+     * Gets whether the entity can block the line of sight between entities.
+     * @return Whether the entity can block the line of sight between entities.
+     */
+    public boolean canObstructView() {
+        // An entity will never block a line of sight by default.
+        return false;
+    }
+
+    /**
      * Gets the renderable layer to use in sorting.
      * The renderable layer will take precedence over the renderable index.
      * @return The renderable layer to use in sorting.

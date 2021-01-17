@@ -2,6 +2,8 @@ package com.dumbpug.dungeony.game.character.enemy;
 
 import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.character.enemy.enemies.Grunt;
+import com.dumbpug.dungeony.game.weapon.WeaponQuality;
+import com.dumbpug.dungeony.game.weapon.handgun.Pistol;
 import com.dumbpug.levelgeneration.IEntityProperties;
 
 /**
@@ -18,7 +20,9 @@ public class EnemyFactory {
     public static Enemy create(EnemyType type, Position position, IEntityProperties properties) {
         switch (type) {
             case GRUNT:
-                return new Grunt(position, properties);
+                Grunt grunt = new Grunt(position, properties);
+                grunt.setWeapon(new Pistol(WeaponQuality.AVERAGE));
+                return grunt;
             default:
                 throw new RuntimeException("cannot create Enemy instance for unknown type: " + type);
         }
