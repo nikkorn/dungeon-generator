@@ -16,5 +16,7 @@ public enum SoundEffect {
     SWAP,
     EXPLOSION,
     LEVEL_UP,
-    HANDGUN_FIRE
+    HANDGUN_FIRE,
+    GRUNT_GROAN,
+    GRUNT_DEAD
 }

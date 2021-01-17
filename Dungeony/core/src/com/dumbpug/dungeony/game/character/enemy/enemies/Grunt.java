@@ -1,6 +1,8 @@
 package com.dumbpug.dungeony.game.character.enemy.enemies;
 
 import com.dumbpug.dungeony.Constants;
+import com.dumbpug.dungeony.audio.AudioProvider;
+import com.dumbpug.dungeony.audio.SoundEffect;
 import com.dumbpug.dungeony.engine.InteractiveEnvironment;
 import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.character.GameCharacterState;
@@ -55,12 +57,16 @@ public class Grunt extends Enemy {
 
     @Override
     public void onDamageTaken(InteractiveEnvironment environment, float delta, int points) {
-        // TODO Do a groan!
+        // Do a groan!
+        AudioProvider.getSoundEffect(SoundEffect.GRUNT_GROAN).play();
     }
 
     @Override
     public void onHealthDepleted(InteractiveEnvironment environment, float delta) {
-        // TODO: Set the character state to be DEAD.
+        // Do a groan of death!
+        AudioProvider.getSoundEffect(SoundEffect.GRUNT_DEAD).play();
+
+        // Set the character state to be DEAD.
         this.setState(GameCharacterState.DEAD);
     }
 

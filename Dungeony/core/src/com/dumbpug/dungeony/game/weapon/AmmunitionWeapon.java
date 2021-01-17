@@ -97,7 +97,7 @@ public abstract class AmmunitionWeapon extends Weapon {
                 // We have successfully fired our weapon!
                 this.onUse(environment, delta);
 
-                // We hit a static object, play a noise.
+                // Play a noise.
                 AudioProvider.getSoundEffect(SoundEffect.HANDGUN_FIRE).play();
             } else {
                 // Reset the last fired time.
