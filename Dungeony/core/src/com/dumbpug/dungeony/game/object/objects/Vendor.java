@@ -15,6 +15,7 @@ import com.dumbpug.dungeony.text.FontProvider;
 import com.dumbpug.dungeony.text.FontSize;
 import com.dumbpug.dungeony.text.FontType;
 import com.badlogic.gdx.utils.Align;
+import com.dumbpug.levelgeneration.IEntityProperties;
 
 /**
  * A vending machine that items can be purchased from.
@@ -31,8 +32,8 @@ public class Vendor extends GameObject {
      * Creates a new instance of the Vendor class.
      * @param origin The initial origin of the Vendor.
      */
-    public Vendor(Position origin) {
-        super(origin);
+    public Vendor(Position origin, IEntityProperties properties) {
+        super(origin, properties);
 
         font = FontProvider.getFont(FontType.MAIN_FONT, FontSize.MEDIUM);
         font.setColor(Color.WHITE);

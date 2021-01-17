@@ -39,7 +39,7 @@ public class Uzi extends AmmunitionWeapon {
 
     @Override
     public long getCoolDown() {
-        return 100l;
+        return 120l;
     }
 
     @Override

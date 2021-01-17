@@ -1,8 +1,5 @@
 package com.dumbpug.levelgeneration;
 
-import java.util.Collection;
-import java.util.HashMap;
-
 /**
  * A tile-positioned entity.
  */
@@ -12,9 +9,9 @@ public class EntityDefinition {
      */
     private String name;
     /**
-     * The entity properties.
+     * The entity properties collection.
      */
-    private HashMap<String, EntityProperty> properties = new HashMap<String, EntityProperty>();
+    private EntityProperties properties = new EntityProperties();
     /**
      * The entity offset defining the entity position relative to the parent tile position.
      */
@@ -47,21 +44,20 @@ public class EntityDefinition {
     }
 
     /**
-     * Set a property for the entity.
+     * Gets the collection of all entity properties.
+     * @return The collection of all entity properties.
+     */
+    public IEntityProperties getProperties() {
+        return properties;
+    }
+
+    /**
+     * Sets an entity property value.
      * @param name The property name.
      * @param value The property value.
      */
     public void setProperty(String name, String value) {
-        properties.put(name, new EntityProperty(name, value));
-    }
-
-    /**
-     * Get the value of the specified property, or null if no property exists.
-     * @param name The property name.
-     * @return The value of the specified property, or null if no property exists.
-     */
-    public String getProperty(String name) {
-        return properties.containsKey(name) ? properties.get(name).getValue() : null;
+        this.properties.add(name, value);
     }
 
     /**
@@ -70,13 +66,5 @@ public class EntityDefinition {
      */
     public EntityOffset getOffset() {
         return offset;
-    }
-
-    /**
-     * Gets the collection of all entity properties.
-     * @return The collection of all entity properties.
-     */
-    public Collection<EntityProperty> getProperties() {
-        return properties.values();
     }
 }

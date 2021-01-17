@@ -6,6 +6,7 @@ import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.character.friendly.Friendly;
 import com.dumbpug.dungeony.game.character.friendly.FriendlyType;
 import com.dumbpug.dungeony.game.lights.SpotLight;
+import com.dumbpug.levelgeneration.IEntityProperties;
 
 /**
  * Just ol' Blue Joe.
@@ -15,8 +16,8 @@ public class BlueJoe extends Friendly {
      * Creates a new instance of the GameCharacter class.
      * @param origin The initial origin of the GameCharacter.
      */
-    public BlueJoe(Position origin) {
-        super(origin);
+    public BlueJoe(Position origin, IEntityProperties properties) {
+        super(origin, properties);
     }
 
     @Override
@@ -50,6 +51,12 @@ public class BlueJoe extends Friendly {
         // BlueJoe can move at the default speed of the player.
         return Constants.PLAYER_MOVEMENT_PS;
     }
+
+    @Override
+    public void onDamageTaken(InteractiveEnvironment environment, float delta, int points) { }
+
+    @Override
+    public void onHealthDepleted(InteractiveEnvironment environment, float delta) { }
 
     @Override
     public FriendlyType getFriendlyType() {

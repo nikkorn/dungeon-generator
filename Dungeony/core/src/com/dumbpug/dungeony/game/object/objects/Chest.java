@@ -4,14 +4,15 @@ import com.dumbpug.dungeony.engine.InteractiveEnvironment;
 import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.object.GameObject;
 import com.dumbpug.dungeony.game.object.GameObjectType;
+import com.dumbpug.levelgeneration.IEntityProperties;
 
 public class Chest extends GameObject {
     /**
      * Creates a new instance of the Chest class.
      * @param origin The initial origin of the GameObject.
      */
-    public Chest(Position origin) {
-        super(origin);
+    public Chest(Position origin, IEntityProperties properties) {
+        super(origin, properties);
     }
 
     @Override

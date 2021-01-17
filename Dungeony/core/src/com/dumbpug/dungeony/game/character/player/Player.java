@@ -6,6 +6,7 @@ import com.dumbpug.dungeony.engine.InteractiveEnvironment;
 import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.engine.dialog.Dialog;
 import com.dumbpug.dungeony.engine.utilities.GameMath;
+import com.dumbpug.dungeony.game.character.FacingDirection;
 import com.dumbpug.dungeony.game.character.GameCharacter;
 import com.dumbpug.dungeony.game.character.GameCharacterState;
 import com.dumbpug.dungeony.game.lights.SpotLight;
@@ -34,7 +35,8 @@ public class Player extends GameCharacter {
 
         // Populate the player animation map.
         for (GameCharacterState state : GameCharacterState.values()) {
-            this.animations.put(state, Resources.getCharacterAnimation(state, details.getType()));
+            this.setAnimation(state, FacingDirection.LEFT, Resources.getCharacterAnimation(state, details.getType(), FacingDirection.LEFT));
+            this.setAnimation(state, FacingDirection.RIGHT, Resources.getCharacterAnimation(state, details.getType(), FacingDirection.RIGHT));
         }
 
         // Set the player shadow sprite.
@@ -76,6 +78,12 @@ public class Player extends GameCharacter {
 
     @Override
     public void onEnvironmentExit(InteractiveEnvironment environment) { }
+
+    @Override
+    public void onDamageTaken(InteractiveEnvironment environment, float delta, int points) { }
+
+    @Override
+    public void onHealthDepleted(InteractiveEnvironment environment, float delta) { }
 
     @Override
     public void update(InteractiveEnvironment environment, float delta) {

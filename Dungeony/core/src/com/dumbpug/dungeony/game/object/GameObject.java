@@ -7,6 +7,7 @@ import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.EntityCollisionFlag;
 import com.dumbpug.dungeony.game.rendering.Animation;
 import com.dumbpug.dungeony.game.rendering.Resources;
+import com.dumbpug.levelgeneration.IEntityProperties;
 import java.util.HashMap;
 
 /**
@@ -25,8 +26,9 @@ public abstract class GameObject extends Entity<SpriteBatch> {
     /**
      * Creates a new instance of the GameObject class.
      * @param origin The initial origin of the GameObject.
+     * @param properties The entity properties.
      */
-    public GameObject(Position origin) {
+    public GameObject(Position origin, IEntityProperties properties) {
         super(origin);
 
         // Populate the game object animation map.
@@ -62,7 +64,7 @@ public abstract class GameObject extends Entity<SpriteBatch> {
         Animation animation = animations.get(this.state);
 
         // Get the current animation frame for the animation.
-        TextureRegion currentFrame = animation.getCurrentFrame(true);
+        TextureRegion currentFrame = animation.getCurrentFrame();
 
         // Draw the current animation frame.
         batch.draw(currentFrame, this.getX(), this.getY(), this.getLengthX(), this.getLengthZ());

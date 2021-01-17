@@ -97,7 +97,7 @@ public abstract class AmmunitionWeapon extends Weapon {
                 // We have successfully fired our weapon!
                 this.onUse(environment, delta);
 
-                // We hit a static object, play a noise.
+                // Play a noise.
                 AudioProvider.getSoundEffect(SoundEffect.HANDGUN_FIRE).play();
             } else {
                 // Reset the last fired time.
@@ -123,7 +123,7 @@ public abstract class AmmunitionWeapon extends Weapon {
         Animation animation = this.animations.get(this.getState());
 
         // Get the current animation frame for the animation.
-        TextureRegion currentFrame = animation.getCurrentFrame(true);
+        TextureRegion currentFrame = animation.getCurrentFrame();
 
         // Check whether we need to flip the weapon sprite based on its angle of aim.
         if (this.getAngleOfAim() < 0 || this.getAngleOfAim() > 180) {

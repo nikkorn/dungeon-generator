@@ -17,10 +17,20 @@ public class BasicEnemyBehaviour<TNPC extends NPC> implements INPCBehaviour<TNPC
      * @param delta The delta time.
      */
     public void tick (TNPC subject, InteractiveEnvironment environment, float delta) {
+        // There is nothing to do if the enemy is dead.
+        if (subject.getState() == GameCharacterState.DEAD) {
+            return;
+        }
+
+        // Do nothing if the subject is sleeping.
+        if (subject.getState() == GameCharacterState.SLEEPING) {
+            return;
+        }
+
         // Move the NPC north-east at their normal movement speed.
         environment.moveByDirection(subject, Direction.NORTH_EAST, subject.getMovementSpeed(), delta);
 
         // We are running to the right.
-        subject.setState(GameCharacterState.RUNNING_RIGHT);
+        subject.setState(GameCharacterState.RUNNING);
     }
 }
