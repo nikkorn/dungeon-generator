@@ -6,6 +6,7 @@ import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.EntityCollisionFlag;
 import com.dumbpug.dungeony.game.object.GameObject;
 import com.dumbpug.dungeony.game.object.GameObjectType;
+import com.dumbpug.levelgeneration.IEntityProperties;
 
 /**
  * An object representing a player spawn.
@@ -15,8 +16,8 @@ public class PlayerSpawn extends GameObject {
      * Creates a new instance of the PlayerSpawn class.
      * @param origin The initial origin of the PlayerSpawn.
      */
-    public PlayerSpawn(Position origin) {
-        super(origin);
+    public PlayerSpawn(Position origin, IEntityProperties properties) {
+        super(origin, properties);
     }
 
     @Override

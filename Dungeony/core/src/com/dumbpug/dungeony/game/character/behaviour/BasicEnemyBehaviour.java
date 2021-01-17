@@ -18,7 +18,7 @@ public class BasicEnemyBehaviour<TNPC extends NPC> implements INPCBehaviour<TNPC
      */
     public void tick (TNPC subject, InteractiveEnvironment environment, float delta) {
         // There is nothing to do if the enemy is dead.
-        if (subject.getHealth().isHealthDepleted()) {
+        if (subject.getState() == GameCharacterState.DEAD) {
             return;
         }
 

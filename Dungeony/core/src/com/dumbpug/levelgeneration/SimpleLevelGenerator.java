@@ -23,7 +23,7 @@ public class SimpleLevelGenerator implements ILevelGenerator {
 
         // Add a sleeping grunt enemy.
         EntityDefinition grunt = new EntityDefinition("GRUNT");
-        vendor.setProperty("state", "sleeping");
+        grunt.setProperty("state", "sleeping");
         addTileEntity(tiles, grunt, 3, 14);
 
         // Add good ol' blue joe.

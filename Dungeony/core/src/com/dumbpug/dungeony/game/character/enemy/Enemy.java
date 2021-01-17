@@ -7,6 +7,7 @@ import com.dumbpug.dungeony.game.character.npc.NPC;
 import com.dumbpug.dungeony.game.character.npc.NPCType;
 import com.dumbpug.dungeony.game.rendering.GameCharacterSprite;
 import com.dumbpug.dungeony.game.rendering.Resources;
+import com.dumbpug.levelgeneration.IEntityProperties;
 
 /**
  * An enemy NPC.
@@ -16,8 +17,8 @@ public abstract class Enemy extends NPC {
      * Creates a new instance of the Enemy class.
      * @param origin The initial origin of the Enemy.
      */
-    public Enemy(Position origin) {
-        super(origin);
+    public Enemy(Position origin, IEntityProperties properties) {
+        super(origin, properties);
 
         // Populate the enemy animation map.
         for (GameCharacterState state : GameCharacterState.values()) {

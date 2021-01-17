@@ -10,6 +10,7 @@ import com.dumbpug.dungeony.game.character.behaviour.BasicEnemyBehaviour;
 import com.dumbpug.dungeony.game.character.enemy.Enemy;
 import com.dumbpug.dungeony.game.character.enemy.EnemyType;
 import com.dumbpug.dungeony.game.lights.SpotLight;
+import com.dumbpug.levelgeneration.IEntityProperties;
 
 /**
  * A standard grunt enemy.
@@ -19,11 +20,13 @@ public class Grunt extends Enemy {
      * Creates a new instance of the Grunt class.
      * @param origin The initial origin of the Grunt.
      */
-    public Grunt(Position origin) {
-        super(origin);
+    public Grunt(Position origin, IEntityProperties properties) {
+        super(origin, properties);
 
-        // TODO REMOVE!
-        this.setState(GameCharacterState.SLEEPING);
+        // Check for a character state override in the provided details.
+        if (properties.has("state")) {
+            this.setState(GameCharacterState.valueOf(properties.getString("state").toUpperCase()));
+        }
 
         // Give the Grunt some basic enemy behaviour.
         this.setBehaviour(new BasicEnemyBehaviour());

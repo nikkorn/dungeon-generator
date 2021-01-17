@@ -7,6 +7,7 @@ import com.dumbpug.dungeony.game.character.npc.NPC;
 import com.dumbpug.dungeony.game.character.npc.NPCType;
 import com.dumbpug.dungeony.game.rendering.GameCharacterSprite;
 import com.dumbpug.dungeony.game.rendering.Resources;
+import com.dumbpug.levelgeneration.IEntityProperties;
 
 /**
  * A friendly NPC.
@@ -16,8 +17,8 @@ public abstract class Friendly extends NPC {
      * Creates a new instance of the NPC class.
      * @param origin The initial origin of the NPC.
      */
-    public Friendly(Position origin) {
-        super(origin);
+    public Friendly(Position origin, IEntityProperties properties) {
+        super(origin, properties);
 
         // Populate the enemy animation map.
         for (GameCharacterState state : GameCharacterState.values()) {

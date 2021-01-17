@@ -88,7 +88,7 @@ public class LevelFactory {
 
                 if (GameObjectType.isValue(entity.getName())) {
                     // Create the game object.
-                    GameObject gameObject = GameObjectFactory.create(GameObjectType.valueOf(entity.getName().toUpperCase()), entityPosition, null);
+                    GameObject gameObject = GameObjectFactory.create(GameObjectType.valueOf(entity.getName().toUpperCase()), entityPosition, entity.getProperties());
 
                     // Apply the positional offset of the entity relative to the tile position.
                     applyEntityPositionOffset(gameObject, entity.getOffset());
@@ -100,7 +100,7 @@ public class LevelFactory {
                     gameObjects.add(gameObject);
                 } else if (EnemyType.isValue(entity.getName())) {
                     // Create the enemy.
-                    Enemy enemy = EnemyFactory.create(EnemyType.valueOf(entity.getName().toUpperCase()), entityPosition, null);
+                    Enemy enemy = EnemyFactory.create(EnemyType.valueOf(entity.getName().toUpperCase()), entityPosition, entity.getProperties());
 
                     // Apply the positional offset of the entity relative to the tile position.
                     applyEntityPositionOffset(enemy, entity.getOffset());
@@ -109,7 +109,7 @@ public class LevelFactory {
                     enemies.add(enemy);
                 } else if (FriendlyType.isValue(entity.getName())) {
                     // Create the friendly.
-                    Friendly friendly = FriendlyFactory.create(FriendlyType.valueOf(entity.getName().toUpperCase()), entityPosition, null);
+                    Friendly friendly = FriendlyFactory.create(FriendlyType.valueOf(entity.getName().toUpperCase()), entityPosition, entity.getProperties());
 
                     // Apply the positional offset of the entity relative to the tile position.
                     applyEntityPositionOffset(friendly, entity.getOffset());

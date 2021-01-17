@@ -6,6 +6,7 @@ import com.dumbpug.dungeony.game.EntityCollisionFlag;
 import com.dumbpug.dungeony.game.character.GameCharacter;
 import com.dumbpug.dungeony.game.character.GameCharacterState;
 import com.dumbpug.dungeony.game.character.behaviour.INPCBehaviour;
+import com.dumbpug.levelgeneration.IEntityProperties;
 
 /**
  * An NPC character.
@@ -20,8 +21,13 @@ public abstract class NPC extends GameCharacter {
      * Creates a new instance of the NPC class.
      * @param origin The initial origin of the NPC.
      */
-    public NPC(Position origin) {
+    public NPC(Position origin, IEntityProperties properties) {
         super(origin);
+
+        // Check for a character state override in the provided details.
+        if (properties.has("state")) {
+            this.setState(GameCharacterState.valueOf(properties.getString("state").toUpperCase()));
+        }
     }
 
     @Override
