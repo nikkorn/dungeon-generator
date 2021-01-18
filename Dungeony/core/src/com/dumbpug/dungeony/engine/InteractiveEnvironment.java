@@ -2,8 +2,6 @@ package com.dumbpug.dungeony.engine;
 
 import com.dumbpug.dungeony.engine.dialog.Dialog;
 import com.dumbpug.dungeony.engine.lighting.Light;
-import com.dumbpug.dungeony.engine.utilities.GameMath;
-import com.dumbpug.dungeony.engine.utilities.spatialgrid.IAABB;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -37,6 +35,34 @@ public class InteractiveEnvironment {
      */
     public void shakeCamera(long duration, float power) {
         this.camera.shake(duration, power);
+    }
+
+    /**
+     * Attempt to update the position of the specified by moving them towards the target position.
+     * Entity movements are shortened or prevented entirely if a full movement
+     * would cause the entity to overlap another entity that it collides with.
+     * @param subject The subject entity to move.
+     * @param target The target position.
+     * @param distance The distance to move the entity.
+     * @param delta The delta time.
+     * @return The set of entities that the subject entity collided with during the movement update.
+     */
+    public HashSet<Entity> moveTowards(Entity subject, Position target, float distance, float delta) {
+        return this.environment.getGrid().moveTowards(subject, target, distance, delta);
+    }
+
+    /**
+     * Attempt to update the position of the specified by moving them towards the target entity.
+     * Entity movements are shortened or prevented entirely if a full movement
+     * would cause the entity to overlap another entity that it collides with.
+     * @param subject The subject entity to move.
+     * @param target The target entity.
+     * @param distance The distance to move the entity.
+     * @param delta The delta time.
+     * @return The set of entities that the subject entity collided with during the movement update.
+     */
+    public HashSet<Entity> moveTowards(Entity subject, Entity target, float distance, float delta) {
+        return this.environment.getGrid().moveTowards(subject, target, distance, delta);
     }
 
     /**
@@ -100,7 +126,7 @@ public class InteractiveEnvironment {
      */
     public boolean canSee(Entity subject, Entity target, float maxDistance) {
         // Initially, get the distance between thw two entities.
-        float distanceBetweenEntities = this.getDistanceBetween(subject, target);
+        float distanceBetweenEntities = subject.distanceTo(target);
 
         // Check whether the target is simply too far away for the subject to see.
         if (distanceBetweenEntities > maxDistance) {
@@ -129,24 +155,21 @@ public class InteractiveEnvironment {
     }
 
     /**
-     * Gets the distance between the subject and target entity.
-     * @param subject The subject entity.
-     * @param target The target entity.
-     * @returns The distance between the subject and target entity.
-     */
-    public float getDistanceBetween(Entity subject, Entity target) {
-        // Get the distance between the two origins of the two entities.
-        // TODO Eventually this should be between the two closest edges of the entities.
-        return GameMath.getLength(subject.getX(), subject.getY(), target.getX(), target.getY());
-    }
-
-    /**
      * Gets the group that the entity resides in, or null if the entity is not in the environment or a group.
      * @param entity The entity.
      * @return The group that the entity resides in, or null if the entity is not in the environment or a group.
      */
     public String getEntityGroup(Entity entity) {
         return this.environment.getEntities().getGroupName(entity);
+    }
+
+    /**
+     * Gets a list of all level entities that are withing the specified entity group.
+     * @param group The entity group.
+     * @return A list of all level entities that are withing the specified entity group.
+     */
+    public ArrayList<Entity> getEntitiesInGroup(String group) {
+        return this.environment.getEntities().getGroup(group);
     }
 
     /**

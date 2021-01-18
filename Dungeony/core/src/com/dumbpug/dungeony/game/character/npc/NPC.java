@@ -60,6 +60,12 @@ public abstract class NPC extends GameCharacter {
 
     @Override
     public void update(InteractiveEnvironment environment, float delta) {
+        // If the character is running then stop.
+        if (this.getState() == GameCharacterState.RUNNING) {
+            // TODO: Should we do this? Come back to this after writing a few different behaviours.
+            // this.setState(GameCharacterState.IDLE);
+        }
+
         // Tick the enemy behaviour if any has been defined.
         if (this.behaviour != null) {
             this.behaviour.tick(this, environment, delta);

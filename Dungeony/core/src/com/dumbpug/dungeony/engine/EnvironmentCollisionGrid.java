@@ -1,5 +1,6 @@
 package com.dumbpug.dungeony.engine;
 
+import com.dumbpug.dungeony.engine.utilities.GameMath;
 import com.dumbpug.dungeony.engine.utilities.spatialgrid.SpatialGrid;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -14,6 +15,34 @@ public class EnvironmentCollisionGrid extends SpatialGrid<Entity> {
      */
     public EnvironmentCollisionGrid(float cellSize) {
         super(cellSize);
+    }
+
+    /**
+     * Attempt to update the position of the specified by moving them towards the target position.
+     * Entity movements are shortened or prevented entirely if a full movement
+     * would cause the entity to overlap another entity that it collides with.
+     * @param subject The subject entity to move.
+     * @param target The target position.
+     * @param distance The distance to move the entity.
+     * @param delta The delta time.
+     * @return The set of entities that the subject entity collided with during the movement update.
+     */
+    public HashSet<Entity> moveTowards(Entity subject, Position target, float distance, float delta) {
+        return this.moveByAngle(subject, GameMath.getAngle(subject.getX(), subject.getY(), target.getX(), target.getY()), distance, delta);
+    }
+
+    /**
+     * Attempt to update the position of the specified by moving them towards the target entity.
+     * Entity movements are shortened or prevented entirely if a full movement
+     * would cause the entity to overlap another entity that it collides with.
+     * @param subject The subject entity to move.
+     * @param target The target entity.
+     * @param distance The distance to move the entity.
+     * @param delta The delta time.
+     * @return The set of entities that the subject entity collided with during the movement update.
+     */
+    public HashSet<Entity> moveTowards(Entity subject, Entity target, float distance, float delta) {
+        return this.moveByAngle(subject, GameMath.getAngle(subject.getX(), subject.getY(), target.getX(), target.getY()), distance, delta);
     }
 
     /**

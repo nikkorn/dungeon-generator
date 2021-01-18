@@ -155,7 +155,9 @@ public abstract class GameCharacter extends Entity<SpriteBatch> {
      */
     public void setAngleOfView(Float angleOfView) {
         this.angleOfView = angleOfView;
-        this.updateWeaponPosition();
+        if (angleOfView != null) {
+            setFacingDirection(FacingDirection.fromAngle(this.angleOfView));
+        }
     }
 
     /**
@@ -236,39 +238,50 @@ public abstract class GameCharacter extends Entity<SpriteBatch> {
     }
 
     /**
-     * Make the character move, updating the state, facing direction and equipped weapon position of the character.
+     * Make the character walk by applying an angle and distance.
+     * @param environment
+     * @param angle
+     * @param distance
+     * @param delta
+     */
+    public void walkByAngle(InteractiveEnvironment environment, float angle, float distance, float delta) {
+        // Is the character idle and not moving in any direction?
+        if (distance == 0f) {
+            return;
+        }
+
+        // Calculate the new position of the character to move based on the amount to move and the entity movement speed.
+        float offsetX = (float) Math.sin(angle * Math.PI / 180) * distance;
+        float offsetY = (float) Math.cos(angle * Math.PI / 180) * distance;
+
+        this.walk(environment, offsetX, offsetY, delta);
+    }
+
+    /**
+     * Make the character walk by applying an x/y offset.
      * @param environment
      * @param movementAxisX
      * @param movementAxisY
      * @param delta
      */
     public void walk(InteractiveEnvironment environment, float movementAxisX, float movementAxisY, float delta) {
-        // Is the player idle and not moving in any direction?
+        // Is the character idle and not moving in any direction?
         if (movementAxisX == 0f && movementAxisY == 0f) {
-            // The facing direction of the character will be determined by their current angle of view if one is set.
-            if (this.angleOfView != null) {
-                setFacingDirection(FacingDirection.fromAngle(this.angleOfView));
-            }
-
-            // The player should be idle and facing whatever direction they already have been.
-            this.setState(GameCharacterState.IDLE);
-        } else {
-            // The facing direction of the character will be determined by their current angle of view if one is
-            // set, otherwise it will be determined by whatever direction the character is currently moving in.
-            if (this.angleOfView != null) {
-                setFacingDirection(FacingDirection.fromAngle(this.angleOfView));
-            } else {
-                // We are running because we are moving on either axis, but the X axis movement determines which way we face.
-                if (movementAxisX < 0) {
-                    setFacingDirection(FacingDirection.LEFT);
-                } else if (movementAxisX > 0) {
-                    setFacingDirection(FacingDirection.RIGHT);
-                }
-            }
-
-            // The player should be running and facing whatever direction they already have been.
-            this.setState(GameCharacterState.RUNNING);
+            return;
         }
+
+        // If the character has no defined angle of view, then the direction they are moving on the x axis will determine their new facing direction.
+        if (this.angleOfView == null) {
+            // We are running because we are moving on either axis, but the X axis movement determines which way we face.
+            if (movementAxisX < 0) {
+                setFacingDirection(FacingDirection.LEFT);
+            } else if (movementAxisX > 0) {
+                setFacingDirection(FacingDirection.RIGHT);
+            }
+        }
+
+        // The character will be moving, so set the character state to 'RUNNING'.
+        this.setState(GameCharacterState.RUNNING);
 
         // Any entity movement has to be taken care of by the level grid which handles all entity collisions.
         environment.move(this, movementAxisX, movementAxisY, delta);

@@ -1,6 +1,7 @@
 package com.dumbpug.dungeony.engine;
 
 import com.dumbpug.dungeony.engine.rendering.IRenderable;
+import com.dumbpug.dungeony.engine.utilities.GameMath;
 import com.dumbpug.dungeony.engine.utilities.spatialgrid.IAABB;
 
 /**
@@ -132,6 +133,17 @@ public abstract class Entity<TRenderContext> implements IAABB, IRenderable<TRend
     public int getUpdateOrder() {
         // By default all entities will have an update order of 0.
         return 0;
+    }
+
+    /**
+     * Gets the distance between this entity and the target entity.
+     * @param target The target entity.
+     * @return The distance between this entity and the target entity.
+     */
+    public float distanceTo(Entity target) {
+        // Get the distance between the two origins of the two entities.
+        // TODO Eventually this should be between the two closest edges of the entities.
+        return GameMath.getLength(this.getX(), this.getY(), target.getX(), target.getY());
     }
 
     /**

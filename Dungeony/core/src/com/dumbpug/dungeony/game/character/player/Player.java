@@ -106,7 +106,13 @@ public class Player extends GameCharacter {
         float movementAxisX = playerInputProvider.getMovementAxisX() * this.getMovementSpeed();
         float movementAxisY = playerInputProvider.getMovementAxisY() * this.getMovementSpeed();
 
-        this.walk(environment, movementAxisX, movementAxisY, delta);
+        // If there is player input for the player to move on either axis then make the character walk.
+        // Otherwise, the player will not be moving this update so just set them to be idle.
+        if (movementAxisX != 0 || movementAxisY != 0) {
+            this.walk(environment, movementAxisX, movementAxisY, delta);
+        } else {
+            this.setState(GameCharacterState.IDLE);
+        }
 
         // Are we using our equipped weapon?
         if (this.getWeapon() != null && playerInputProvider.isControlPressed(Control.PRIMARY_ACTION)) {
