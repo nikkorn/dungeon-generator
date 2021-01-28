@@ -1,5 +1,6 @@
 package com.dumbpug.dungeony.engine;
 
+import com.dumbpug.dungeony.engine.audio.IAudioPlayer;
 import com.dumbpug.dungeony.engine.dialog.Dialog;
 import com.dumbpug.dungeony.engine.lighting.Light;
 import java.util.ArrayList;
@@ -17,15 +18,21 @@ public class InteractiveEnvironment {
      * The environment camera.
      */
     private IEnvironmentCamera camera;
+    /**
+     * The environment audio player.
+     */
+    private IAudioPlayer audioPlayer;
 
     /**
      * Creates a new instance of the InteractiveEnvironment class.
      * @param environment The environment.
      * @param camera The environment camera.
+     * @param audioPlayer The audio player.
      */
-    public InteractiveEnvironment(Environment environment, IEnvironmentCamera camera) {
+    public InteractiveEnvironment(Environment environment, IEnvironmentCamera camera, IAudioPlayer audioPlayer) {
         this.environment = environment;
         this.camera      = camera;
+        this.audioPlayer = audioPlayer;
     }
 
     /**
@@ -258,5 +265,22 @@ public class InteractiveEnvironment {
 
         // Return the first dialog where the entity is the interacting entity.
         return activeDialogs.isEmpty() ? null : activeDialogs.get(0);
+    }
+
+    /**
+     *
+     * @param sound
+     * @param source
+     */
+    public void playSound(String sound, Position source) {
+        // TODO
+    }
+
+    /**
+     *
+     * @param sound
+     */
+    public void playSound(String sound) {
+        this.audioPlayer.playSound(sound, 1.0f);
     }
 }

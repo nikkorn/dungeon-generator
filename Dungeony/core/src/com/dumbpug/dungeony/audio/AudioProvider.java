@@ -1,7 +1,10 @@
 package com.dumbpug.dungeony.audio;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.dumbpug.dungeony.Constants;
+
 import java.util.HashMap;
 
 /**
@@ -15,18 +18,22 @@ public class AudioProvider {
     /**
      * All cached music.
      */
-    private static HashMap<Music, Sound> cachedMusic = new HashMap<Music, Sound>();
+    private static HashMap<MusicTrack, Music> cachedMusic = new HashMap<MusicTrack, Music>();
 
     static {
         // Populate our sound effect map.
         for(SoundEffect soundEffect : SoundEffect.values()) {
             String soundEffectPath = "audio/sounds/" + soundEffect + ".wav";
-            cachedSoundEffects.put(soundEffect, Gdx.audio.newSound(Gdx.files.internal(soundEffectPath)));
+            Sound sound = Gdx.audio.newSound(Gdx.files.internal(soundEffectPath));
+            cachedSoundEffects.put(soundEffect, sound);
         }
         // Populate our music map.
-        for(Music music : Music.values()) {
-            String musicPath = "audio/music/" + music + ".wav";
-            cachedMusic.put(music, Gdx.audio.newSound(Gdx.files.internal(musicPath)));
+        for(MusicTrack musicTrack : MusicTrack.values()) {
+            String musicPath = "audio/music/" + musicTrack + ".wav";
+            Music music = Gdx.audio.newMusic(Gdx.files.internal(musicPath));
+            music.setLooping(true);
+            music.setVolume(Constants.AUDIO_MUSIC_VOLUME);
+            cachedMusic.put(musicTrack, music);
         }
     }
 
@@ -42,7 +49,7 @@ public class AudioProvider {
      * Get music track.
      * @return music track.
      */
-    public static Sound getMusic(Music music) {
+    public static Music getMusic(MusicTrack music) {
         return cachedMusic.get(music);
     }
 }

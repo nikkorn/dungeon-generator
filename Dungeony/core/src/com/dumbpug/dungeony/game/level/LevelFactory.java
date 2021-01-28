@@ -1,6 +1,7 @@
 package com.dumbpug.dungeony.game.level;
 
 import com.dumbpug.dungeony.Constants;
+import com.dumbpug.dungeony.audio.MusicTrack;
 import com.dumbpug.dungeony.characterselection.PlayerDetails;
 import com.dumbpug.dungeony.engine.Entity;
 import com.dumbpug.dungeony.engine.Position;
@@ -35,7 +36,7 @@ public class LevelFactory {
      * @param playerDetails The player details.
      * @return The initial Level instance.
      */
-    public static Level createInitialLevel(LevelCamera camera, ILevelGenerator levelGenerator, ArrayList<PlayerDetails> playerDetails) {
+    public static Level createInitialLevel(LevelEnvironmentCamera camera, ILevelGenerator levelGenerator, ArrayList<PlayerDetails> playerDetails) {
         return createLevel(camera, levelGenerator, playerDetails, "SPAWN.json");
     }
 
@@ -48,7 +49,7 @@ public class LevelFactory {
      * @param difficulty The level difficulty.
      * @return A Level instance.
      */
-    public static Level createLevel(LevelCamera camera, ILevelGenerator levelGenerator, ArrayList<PlayerDetails> playerDetails, LevelCategory category, Difficulty difficulty) {
+    public static Level createLevel(LevelEnvironmentCamera camera, ILevelGenerator levelGenerator, ArrayList<PlayerDetails> playerDetails, LevelCategory category, Difficulty difficulty) {
         return createLevel(camera, levelGenerator, playerDetails, category + "_" + difficulty + ".json");
     }
 
@@ -60,7 +61,7 @@ public class LevelFactory {
      * @param file The file path
      * @return A Level instance.
      */
-    private static Level createLevel(LevelCamera camera, ILevelGenerator levelGenerator, ArrayList<PlayerDetails> playerDetails, String file) {
+    private static Level createLevel(LevelEnvironmentCamera camera, ILevelGenerator levelGenerator, ArrayList<PlayerDetails> playerDetails, String file) {
         // Generate the level!
         final LevelDefinition levelDefinition = levelGenerator.generate(file);
 
@@ -123,7 +124,7 @@ public class LevelFactory {
         }
 
         // Create and return the level instance.
-        return new Level(camera, playerDetails, tiles, gameObjects, enemies, friendlies);
+        return new Level(camera, playerDetails, tiles, gameObjects, enemies, friendlies, MusicTrack.MAIN_THEME);
     }
 
     /**

@@ -1,10 +1,13 @@
 package com.dumbpug.dungeony.game.level;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dumbpug.dungeony.Constants;
+import com.dumbpug.dungeony.audio.AudioProvider;
+import com.dumbpug.dungeony.audio.MusicTrack;
 import com.dumbpug.dungeony.characterselection.PlayerDetails;
 import com.dumbpug.dungeony.engine.EnvironmentConfiguration;
 import com.dumbpug.dungeony.game.character.enemy.Enemy;
@@ -18,9 +21,7 @@ import com.dumbpug.dungeony.game.tile.Tile;
 import com.dumbpug.dungeony.game.tile.TileSpawn;
 import com.dumbpug.dungeony.game.tile.TileType;
 import com.dumbpug.dungeony.game.weapon.WeaponQuality;
-import com.dumbpug.dungeony.game.weapon.handgun.Pistol;
 import com.dumbpug.dungeony.game.weapon.rifle.Uzi;
-
 import java.util.ArrayList;
 
 /**
@@ -34,7 +35,11 @@ public class Level {
     /**
      * The level camera.
      */
-    private LevelCamera levelCamera;
+    private LevelEnvironmentCamera levelCamera;
+    /**
+     * The music to play on loop while the level is active.
+     */
+    private Music backgroundMusic;
 
     /**
      * Creates a new instance of the Level class.
@@ -44,14 +49,15 @@ public class Level {
      * @param objects The level objects.
      * @param enemies The level enemy NPCs.
      * @param friendlies The level friendly NPCs.
+     * @param backgroundMusic The music track to play in the background while the level is active.
      */
-    public Level(LevelCamera camera, ArrayList<PlayerDetails> playerDetails, ArrayList<Tile> tiles, ArrayList<GameObject> objects, ArrayList<Enemy> enemies, ArrayList<Friendly> friendlies) {
+    public Level(LevelEnvironmentCamera camera, ArrayList<PlayerDetails> playerDetails, ArrayList<Tile> tiles, ArrayList<GameObject> objects, ArrayList<Enemy> enemies, ArrayList<Friendly> friendlies, MusicTrack backgroundMusic) {
         // Create the environment config.
         EnvironmentConfiguration config = new EnvironmentConfiguration();
         config.gridCellSize             = Constants.LEVEL_GRID_CELL_SIZE;
 
         this.levelCamera = camera;
-        this.environment = new LevelEnvironment(config, camera);
+        this.environment = new LevelEnvironment(config, camera, new LevelEnvironmentAudioPlayer());
 
         // Find all of the player spawn locations defined by the specified tiles.
         ArrayList<TileSpawn> playerSpawns = getPlayerSpawns(tiles);
@@ -75,6 +81,25 @@ public class Level {
 
         // Add all of the friendlies to the game environment.
         this.environment.getEntities().add(friendlies, "friendly");
+
+        // Get the music track that will be played in the background while the level is active.
+        this.backgroundMusic = AudioProvider.getMusic(backgroundMusic);
+    }
+
+    /**
+     * Called when the level begins, before the first level update.
+     */
+    public void onBegin() {
+        // Start playing the background music.
+        this.backgroundMusic.play();
+    }
+
+    /**
+     * Called when the level ends, after the last level update.
+     */
+    public void onEnd() {
+        // Stop playing the background music.
+        this.backgroundMusic.stop();
     }
 
     /**

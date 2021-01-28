@@ -8,6 +8,9 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.dumbpug.dungeony.engine.Environment;
 import com.dumbpug.dungeony.engine.EnvironmentConfiguration;
 
+/**
+ * The level environment.
+ */
 public class LevelEnvironment extends Environment<SpriteBatch> {
     /**
      * The frame buffer to use in rendering the environment lights.
@@ -16,15 +19,16 @@ public class LevelEnvironment extends Environment<SpriteBatch> {
     /**
      * The level camera.
      */
-    private LevelCamera levelCamera;
+    private LevelEnvironmentCamera levelCamera;
 
     /**
      * Creates a new instance of the LevelEnvironment class.
      * @param configuration The environment configuration.
-     * @param camera        The environment camera.
+     * @param camera        The level environment camera.
+     * @param camera        The level environment audio player.
      */
-    public LevelEnvironment(EnvironmentConfiguration configuration, LevelCamera camera) {
-        super(configuration, camera);
+    public LevelEnvironment(EnvironmentConfiguration configuration, LevelEnvironmentCamera camera, LevelEnvironmentAudioPlayer audioPlayer) {
+        super(configuration, camera, audioPlayer);
         this.levelCamera = camera;
         frameBuffer      = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
     }

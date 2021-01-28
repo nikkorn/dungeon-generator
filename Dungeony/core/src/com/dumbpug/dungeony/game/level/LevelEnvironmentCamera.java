@@ -12,7 +12,7 @@ import com.dumbpug.dungeony.engine.rendering.IRenderable;
 /**
  * Represents the level camera, wrapping the orthographic game camera.
  */
-public class LevelCamera implements IRenderWindow, IEnvironmentCamera {
+public class LevelEnvironmentCamera implements IRenderWindow, IEnvironmentCamera {
     /**
      * The orthographic game camera.
      */
@@ -31,10 +31,10 @@ public class LevelCamera implements IRenderWindow, IEnvironmentCamera {
     private LevelCameraShake activeShake = null;
 
     /**
-     * Creates a new instance of the LevelCamera class.
+     * Creates a new instance of the LevelEnvironmentCamera class.
      * @param camera The orthographic game camera.
      */
-    public LevelCamera(OrthographicCamera camera) {
+    public LevelEnvironmentCamera(OrthographicCamera camera) {
         this.camera = camera;
     }
 

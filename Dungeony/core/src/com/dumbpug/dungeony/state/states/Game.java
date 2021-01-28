@@ -6,7 +6,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.dumbpug.dungeony.ApplicationModel;
 import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.game.level.Level;
-import com.dumbpug.dungeony.game.level.LevelCamera;
+import com.dumbpug.dungeony.game.level.LevelEnvironmentCamera;
 import com.dumbpug.dungeony.game.level.LevelFactory;
 import com.dumbpug.dungeony.state.State;
 import com.dumbpug.levelgeneration.SimpleLevelGenerator;
@@ -63,15 +63,19 @@ public class Game extends State {
         // Moving to this state means that we are starting a new game from the initial level so ...
 
         // ... create a level camera that wraps our game camera and ...
-        LevelCamera levelCamera = new LevelCamera(this.camera);
+        LevelEnvironmentCamera levelCamera = new LevelEnvironmentCamera(this.camera);
 
-        // ... create the initial level.
+        // ... create the initial level ...
         this.level = LevelFactory.createInitialLevel(levelCamera, new SimpleLevelGenerator(), this.applicationModel.getPlayerDetails());
+
+        // ... and let the level take care of some 'onBegin' logic.
+        this.level.onBegin();
     }
 
     @Override
     public void onExit() {
-
+        // Let the level take care of some 'onEnd' logic.
+        this.level.onEnd();
     }
 
     @Override

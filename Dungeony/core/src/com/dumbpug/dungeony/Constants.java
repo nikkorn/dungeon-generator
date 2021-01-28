@@ -19,6 +19,12 @@ public class Constants {
     public static final int WINDOW_WIDTH	                        = 1200;
 
     //==============================================================================================
+    // AUDIO
+    //==============================================================================================
+    public static final float AUDIO_SOUND_EFFECT_VOLUME	            = 0.8f;
+    public static final float AUDIO_MUSIC_VOLUME	                = 0.1f;
+
+    //==============================================================================================
     // INPUT
     //==============================================================================================
     public static final float INPUT_CONTROLLER_AXIS_DEADZONE 	    = 0.1f;

@@ -1,5 +1,6 @@
 package com.dumbpug.dungeony.engine;
 
+import com.dumbpug.dungeony.engine.audio.IAudioPlayer;
 import com.dumbpug.dungeony.engine.dialog.Dialogs;
 import com.dumbpug.dungeony.engine.lighting.Lights;
 import com.dumbpug.dungeony.engine.rendering.IRenderWindow;
@@ -43,8 +44,9 @@ public abstract class Environment<TRenderContext> {
      * Creates a new instance of the Environment class.
      * @param configuration The environment configuration.
      * @param camera The environment camera.
+     * @param audioPlayer The audio player.
      */
-    public Environment(EnvironmentConfiguration configuration, IEnvironmentCamera camera) {
+    public Environment(EnvironmentConfiguration configuration, IEnvironmentCamera camera, IAudioPlayer audioPlayer) {
         // Keep a reference to the environment configuration.
         this.configuration = configuration;
 
@@ -61,7 +63,7 @@ public abstract class Environment<TRenderContext> {
         this.dialogs = new Dialogs();
 
         // Create the environment interactivity layer that is available to entities during updates.
-        this.interactiveEnvironment = new InteractiveEnvironment(this, camera);
+        this.interactiveEnvironment = new InteractiveEnvironment(this, camera, audioPlayer);
 
         // Create the entities collection.
         this.entities = new Entities(this.collisionGrid, this.renderables, this.interactiveEnvironment);
