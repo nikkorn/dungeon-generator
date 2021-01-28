@@ -6,13 +6,12 @@ import com.badlogic.gdx.math.Vector3;
 import com.dumbpug.dungeony.engine.Entity;
 import com.dumbpug.dungeony.engine.IEnvironmentCamera;
 import com.dumbpug.dungeony.engine.Position;
-import com.dumbpug.dungeony.engine.rendering.IRenderWindow;
 import com.dumbpug.dungeony.engine.rendering.IRenderable;
 
 /**
  * Represents the level camera, wrapping the orthographic game camera.
  */
-public class LevelEnvironmentCamera implements IRenderWindow, IEnvironmentCamera {
+public class LevelEnvironmentCamera implements IEnvironmentCamera {
     /**
      * The orthographic game camera.
      */
@@ -38,10 +37,18 @@ public class LevelEnvironmentCamera implements IRenderWindow, IEnvironmentCamera
         this.camera = camera;
     }
 
+    /**
+     * Gets the current target of camera focus.
+     * @return The current target of camera focus.
+     */
     public Entity getTarget() {
         return target;
     }
 
+    /**
+     * Sets the current target of camera focus.
+     * @param target The current target of camera focus.
+     */
     public void setTarget(Entity target) {
         this.target = target;
     }

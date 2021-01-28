@@ -156,8 +156,8 @@ public class Level {
             sprite.draw(batch);
         }
 
-        // Render the game environment, passing in the level camera to constrain which renderables are actually rendered.
-        this.environment.render(batch, this.levelCamera);
+        // Render the game environment.
+        this.environment.render(batch);
 
         // Reset the application camera to its original level of zoom.
         this.levelCamera.setZoom(1f);

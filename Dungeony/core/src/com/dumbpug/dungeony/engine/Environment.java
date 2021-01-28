@@ -16,6 +16,10 @@ public abstract class Environment<TRenderContext> {
      */
     private EnvironmentConfiguration configuration;
     /**
+     * The environment camera.
+     */
+    private IEnvironmentCamera camera;
+    /**
      * The spatial grid to use in finding entity collisions.
      */
     private EnvironmentCollisionGrid collisionGrid;
@@ -49,6 +53,9 @@ public abstract class Environment<TRenderContext> {
     public Environment(EnvironmentConfiguration configuration, IEnvironmentCamera camera, IAudioPlayer audioPlayer) {
         // Keep a reference to the environment configuration.
         this.configuration = configuration;
+
+        // Keep a reference to the environment camera.
+        this.camera = camera;
 
         // Create the spatial grid to use in finding entity collisions.
         this.collisionGrid = new EnvironmentCollisionGrid(configuration.gridCellSize);
@@ -120,14 +127,13 @@ public abstract class Environment<TRenderContext> {
     }
 
     /**
-     * Render the renderable entities in the environment that lie within the given render window.
+     * Render the renderable entities in the environment that lie within the environment camera view.
      * @param context The render context.
-     * @param window The render window.
      */
-    public void render(TRenderContext context, IRenderWindow window) {
+    public void render(TRenderContext context) {
         onBeforeEntitiesRender(context);
 
-        this.renderables.render(context, window);
+        this.renderables.render(context, this.camera);
 
         onAfterEntitiesRender(context);
         onBeforeLightsRender(context);
@@ -140,14 +146,6 @@ public abstract class Environment<TRenderContext> {
         this.dialogs.render(context);
 
         onAfterDialogsRender(context);
-    }
-
-    /**
-     * Render all of the renderable entities in the environment.
-     * @param context The render context.
-     */
-    public void render(TRenderContext context) {
-        this.render(context, null);
     }
 
     public abstract void onBeforeEntitiesRender(TRenderContext context);
