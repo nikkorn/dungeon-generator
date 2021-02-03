@@ -272,8 +272,36 @@ public class InteractiveEnvironment {
      * @param sound
      * @param source
      */
+    public void playSound(String sound, Position source, float volume) {
+        float cameraXMin = this.camera.getX() - (this.camera.getWidth() / 2f);
+        float cameraXMax = this.camera.getX() + (this.camera.getWidth() / 2f);
+        float cameraYMin = this.camera.getY() - (this.camera.getHeight() / 2f);
+        float cameraYMax = this.camera.getY() + (this.camera.getHeight() / 2f);
+
+        // Is the source of the sound actually within the camera bounds then the volume should not be modified.
+        if (source.getX() >= cameraXMin && source.getX() <= cameraXMax && source.getY() >= cameraYMin && source.getY() <= cameraYMax) {
+            this.audioPlayer.playSound(sound, volume);
+            return;
+        }
+
+        // TODO Modify volume based on distance to camera bounds.
+    }
+
+    /**
+     *
+     * @param sound
+     * @param source
+     */
     public void playSound(String sound, Position source) {
-        // TODO
+        this.playSound(sound, source, 1f);
+    }
+
+    /**
+     *
+     * @param sound
+     */
+    public void playSound(String sound, float volume) {
+        this.audioPlayer.playSound(sound, volume);
     }
 
     /**
@@ -281,6 +309,6 @@ public class InteractiveEnvironment {
      * @param sound
      */
     public void playSound(String sound) {
-        this.audioPlayer.playSound(sound, 1.0f);
+        this.playSound(sound, 1f);
     }
 }

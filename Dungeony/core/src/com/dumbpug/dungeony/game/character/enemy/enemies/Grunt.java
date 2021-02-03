@@ -66,7 +66,7 @@ public class Grunt extends Enemy {
         // If the grunt is sleeping then taking damage will wake it.
         if (this.getState() == GameCharacterState.SLEEPING) {
             // Play a sound of the grunt waking up.
-            AudioProvider.getSoundEffect(SoundEffect.GRUNT_WAKING).play();
+            environment.playSound(SoundEffect.GRUNT_WAKING.toString(), this.getOrigin(), 1f);
 
             // The grunt is no longer sleeping, make it idle.
             this.setState(GameCharacterState.IDLE);
@@ -75,13 +75,13 @@ public class Grunt extends Enemy {
         }
 
         // Do a groan!
-        AudioProvider.getSoundEffect(SoundEffect.GRUNT_GROAN).play();
+        environment.playSound(SoundEffect.GRUNT_GROAN.toString(), this.getOrigin(), 1f);
     }
 
     @Override
     public void onHealthDepleted(InteractiveEnvironment environment, float delta) {
         // Do a groan of death!
-        AudioProvider.getSoundEffect(SoundEffect.GRUNT_DEAD).play();
+        environment.playSound(SoundEffect.GRUNT_DEAD.toString(), this.getOrigin(), 1f);
 
         // Set the character state to be DEAD.
         this.setState(GameCharacterState.DEAD);

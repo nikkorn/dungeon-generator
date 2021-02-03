@@ -1,6 +1,8 @@
 package com.dumbpug.dungeony.game.projectile.projectiles;
 
 import com.dumbpug.dungeony.Constants;
+import com.dumbpug.dungeony.audio.AudioProvider;
+import com.dumbpug.dungeony.audio.SoundEffect;
 import com.dumbpug.dungeony.engine.InteractiveEnvironment;
 import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.character.GameCharacter;
@@ -66,6 +68,10 @@ public class Bullet extends Projectile {
     @Override
     public void onCollided(InteractiveEnvironment environment, float delta) {
         // TODO Show projectile death animation.
+
+        // Make a bullet impact sound!
+        // TODO This should eventually differ based on the type of entity that it collided with,
+        AudioProvider.getSoundEffect(SoundEffect.PROJECTILE_THUD).play();
     }
 
 

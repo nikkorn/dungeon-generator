@@ -25,6 +25,10 @@ public class LevelEnvironmentCamera implements IEnvironmentCamera {
      */
     private float x, y;
     /**
+     * The default level of zoom for the level camera.
+     */
+    private float defaultLevelZoom;
+    /**
      * The active camera shake
      */
     private LevelCameraShake activeShake = null;
@@ -32,9 +36,43 @@ public class LevelEnvironmentCamera implements IEnvironmentCamera {
     /**
      * Creates a new instance of the LevelEnvironmentCamera class.
      * @param camera The orthographic game camera.
+     * @param defaultLevelZoom The default level of zoom for the level camera.
      */
-    public LevelEnvironmentCamera(OrthographicCamera camera) {
-        this.camera = camera;
+    public LevelEnvironmentCamera(OrthographicCamera camera, float defaultLevelZoom) {
+        this.camera           = camera;
+        this.defaultLevelZoom = defaultLevelZoom;
+    }
+
+    /**
+     * Gets the camera viewport width.
+     * @return The camera viewport width.
+     */
+    public float getWidth() {
+        return this.camera.viewportWidth * this.camera.zoom;
+    }
+
+    /**
+     * Gets the camera viewport height.
+     * @return The camera viewport height.
+     */
+    public float getHeight() {
+        return this.camera.viewportHeight * this.camera.zoom;
+    }
+
+    /**
+     * Gets the camera X position.
+     * @return The camera X position.
+     */
+    public float getX() {
+        return this.camera.position.x;
+    }
+
+    /**
+     * Gets the camera Y position.
+     * @return The camera Y position.
+     */
+    public float getY() {
+        return this.camera.position.y;
     }
 
     /**
@@ -114,19 +152,19 @@ public class LevelEnvironmentCamera implements IEnvironmentCamera {
 
     @Override
     public boolean contains(IRenderable renderable) {
-        float halfCameraWidth  = (this.camera.viewportWidth * this.camera.zoom) / 2f;
-        float halfCameraHeight = (this.camera.viewportHeight * this.camera.zoom) / 2f;
+        float halfCameraWidth  = this.getWidth() / 2f;
+        float halfCameraHeight = this.getHeight() / 2f;
 
-        if (renderable.getX() > (this.camera.position.x + halfCameraWidth)) {
+        if (renderable.getX() > (this.getX() + halfCameraWidth)) {
             return false;
         }
-        if ((renderable.getX() + renderable.getLengthX()) < (this.camera.position.x - halfCameraWidth)) {
+        if ((renderable.getX() + renderable.getLengthX()) < (this.getX() - halfCameraWidth)) {
             return false;
         }
-        if (renderable.getY() > (this.camera.position.y + halfCameraHeight)) {
+        if (renderable.getY() > (this.getY() + halfCameraHeight)) {
             return false;
         }
-        if ((renderable.getY() + renderable.getLengthY()) < (this.camera.position.y - halfCameraHeight)) {
+        if ((renderable.getY() + renderable.getLengthY()) < (this.getY() - halfCameraHeight)) {
             return false;
         }
 
