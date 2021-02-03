@@ -76,9 +76,7 @@ public class Game extends State {
     @Override
     public void render() {
         // Render the collection of level renderables.
-        batch.begin();
         this.level.render(batch);
-        batch.end();
 
         // TODO Render the HUD.
         // TODO Render any game dialogs.

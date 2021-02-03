@@ -126,15 +126,18 @@ public class Level {
      * @param batch The sprite batch to use in rendering the level.
      */
     public void render(SpriteBatch batch) {
-        // Grab the current batch projection matrix to reapply after the level render.
-        Matrix4 batchProjectionMatrix = batch.getProjectionMatrix();
-
         // Get the level camera to point at just the first player for now.
         // This will eventually point to a place between all players in the level.
         this.levelCamera.setTarget(this.environment.getEntities().getGroup("player").get(0));
 
+        // Grab the current batch projection matrix to reapply after the level render.
+        Matrix4 batchProjectionMatrix = batch.getProjectionMatrix();
+
         // Update the sprite batch we are going to use in rendering the level to use the same view as our level camera.
         batch.setProjectionMatrix(this.levelCamera.getCombinedViewMatrix());
+
+        // Start drawing the level to the sprite batch.
+        batch.begin();
 
         // Render a level underlay sprite matching the colour at the top of walls across the entire window.
         Sprite underlay = Resources.getSprite(LevelSprite.UNDERLAY);
@@ -165,6 +168,9 @@ public class Level {
 
         // Render the game environment.
         this.environment.render(batch);
+
+        // Stop drawing the level to the sprite batch.
+        batch.end();
 
         // Reapply the original batch projection matrix.
         batch.setProjectionMatrix(batchProjectionMatrix);
