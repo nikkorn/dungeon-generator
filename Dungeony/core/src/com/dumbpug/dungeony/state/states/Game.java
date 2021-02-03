@@ -1,6 +1,5 @@
 package com.dumbpug.dungeony.state.states;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.dumbpug.dungeony.ApplicationModel;
@@ -24,17 +23,13 @@ public class Game extends State {
      */
     private Level level;
     /**
-     * The application camera.
+     * The sprite batch to use in rendering the game state.
      */
-    private OrthographicCamera camera;
+    private SpriteBatch batch = new SpriteBatch();
     /**
-     * The sprite batch to use in rendering the level.
+     * The viewports to use in rendering the game state.
      */
-    private SpriteBatch batch;
-    /**
-     * The viewport to use in rendering the level.
-     */
-    private ExtendViewport viewport;
+    private ExtendViewport levelViewport, hudViewport;
 
     /**
      * Creates a new instance of the Game class.
@@ -43,15 +38,9 @@ public class Game extends State {
     public Game(ApplicationModel applicationModel) {
         this.applicationModel = applicationModel;
 
-        // Create the game camera that we will use in drawing portions of the level.
-        this.camera = new OrthographicCamera();
-
-        // Create the viewport to use in rendering the level.
-        this.viewport = new ExtendViewport(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, camera);
-        this.viewport.apply();
-
-        // Create the sprite batch to use in rendering the level.
-        this.batch = new SpriteBatch();
+        // Create the viewport to use in rendering the level and the HUD.
+        this.levelViewport = new ExtendViewport(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
+        this.hudViewport   = new ExtendViewport(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
     }
 
     /**
@@ -63,7 +52,7 @@ public class Game extends State {
         // Moving to this state means that we are starting a new game from the initial level so ...
 
         // ... create a level camera that wraps our game camera and ...
-        LevelEnvironmentCamera levelCamera = new LevelEnvironmentCamera(this.camera, Constants.LEVEL_DEFAULT_ZOOM);
+        LevelEnvironmentCamera levelCamera = new LevelEnvironmentCamera(this.levelViewport, Constants.LEVEL_DEFAULT_ZOOM);
 
         // ... create the initial level ...
         this.level = LevelFactory.createInitialLevel(levelCamera, new SimpleLevelGenerator(), this.applicationModel.getPlayerDetails());
@@ -86,13 +75,9 @@ public class Game extends State {
 
     @Override
     public void render() {
-        // We are going to render the level first, so update the sprite batch position to match the camera.
-        camera.update();
-        batch.setProjectionMatrix(camera.combined);
-
         // Render the collection of level renderables.
         batch.begin();
-        this.level.render(batch, camera);
+        this.level.render(batch);
         batch.end();
 
         // TODO Render the HUD.
@@ -101,7 +86,8 @@ public class Game extends State {
 
     @Override
     public void onResize(int width, int height) {
-        this.viewport.update(width, height);
+        this.levelViewport.update(width, height);
+        this.hudViewport.update(width, height);
     }
 
     @Override

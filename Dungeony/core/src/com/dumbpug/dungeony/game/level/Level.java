@@ -2,9 +2,9 @@ package com.dumbpug.dungeony.game.level;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Matrix4;
 import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.audio.AudioProvider;
 import com.dumbpug.dungeony.audio.MusicTrack;
@@ -87,6 +87,14 @@ public class Level {
     }
 
     /**
+     * Gets the level camera.
+     * @return The level camera.
+     */
+    public LevelEnvironmentCamera getCamera() {
+        return this.levelCamera;
+    }
+
+    /**
      * Called when the level begins, before the first level update.
      */
     public void onBegin() {
@@ -116,11 +124,10 @@ public class Level {
     /**
      * Render the level.
      * @param batch The sprite batch to use in rendering the level.
-     * @param camera The application camera.
      */
-    public void render(SpriteBatch batch, OrthographicCamera camera) {
-        // Update the level camera zoom so that we aren't looking at the entire level and super tiny sprites.
-        this.levelCamera.setZoom(Constants.LEVEL_DEFAULT_ZOOM);
+    public void render(SpriteBatch batch) {
+        // Grab the current batch projection matrix to reapply after the level render.
+        Matrix4 batchProjectionMatrix = batch.getProjectionMatrix();
 
         // Get the level camera to point at just the first player for now.
         // This will eventually point to a place between all players in the level.
@@ -132,8 +139,8 @@ public class Level {
         // Render a level underlay sprite matching the colour at the top of walls across the entire window.
         Sprite underlay = Resources.getSprite(LevelSprite.UNDERLAY);
         underlay.setSize(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
-        underlay.setCenterX(camera.position.x);
-        underlay.setCenterY(camera.position.y);
+        underlay.setCenterX(this.levelCamera.getX());
+        underlay.setCenterY(this.levelCamera.getY());
         underlay.draw(batch);
 
         // Render an empty ground sprite for every wall tile.
@@ -159,11 +166,8 @@ public class Level {
         // Render the game environment.
         this.environment.render(batch);
 
-        // Reset the application camera to its original level of zoom.
-        this.levelCamera.setZoom(1f);
-
-        // No that we have zoomed back out from the level we will need to update the sprite batch view.
-        batch.setProjectionMatrix(this.levelCamera.getCombinedViewMatrix());
+        // Reapply the original batch projection matrix.
+        batch.setProjectionMatrix(batchProjectionMatrix);
     }
 
     /**

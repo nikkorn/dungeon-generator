@@ -3,6 +3,7 @@ package com.dumbpug.dungeony.game.level;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dumbpug.dungeony.engine.Entity;
 import com.dumbpug.dungeony.engine.IEnvironmentCamera;
 import com.dumbpug.dungeony.engine.Position;
@@ -35,12 +36,20 @@ public class LevelEnvironmentCamera implements IEnvironmentCamera {
 
     /**
      * Creates a new instance of the LevelEnvironmentCamera class.
-     * @param camera The orthographic game camera.
      * @param defaultLevelZoom The default level of zoom for the level camera.
      */
-    public LevelEnvironmentCamera(OrthographicCamera camera, float defaultLevelZoom) {
-        this.camera           = camera;
+    public LevelEnvironmentCamera(Viewport levelViewport, float defaultLevelZoom) {
         this.defaultLevelZoom = defaultLevelZoom;
+
+        // Create the game camera that we will use in drawing portions of the level.
+        this.camera = new OrthographicCamera();
+
+        // Apply the default level zoom to our camera.
+        this.camera.zoom = defaultLevelZoom;
+
+        // Set the level camera on the level viewport.
+        levelViewport.setCamera(this.camera);
+        levelViewport.apply();
     }
 
     /**
@@ -110,6 +119,10 @@ public class LevelEnvironmentCamera implements IEnvironmentCamera {
         this.y = y;
     }
 
+    public OrthographicCamera getCamera() {
+        return this.camera;
+    }
+
     /**
      * Update the camera.
      * @param delta The delta time.
@@ -147,6 +160,7 @@ public class LevelEnvironmentCamera implements IEnvironmentCamera {
      * @return The combined projection and view matrix
      */
     public Matrix4 getCombinedViewMatrix() {
+        this.camera.update();
         return this.camera.combined;
     }
 
