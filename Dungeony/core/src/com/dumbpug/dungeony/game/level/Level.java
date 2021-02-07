@@ -21,6 +21,7 @@ import com.dumbpug.dungeony.game.tile.Tile;
 import com.dumbpug.dungeony.game.tile.TileSpawn;
 import com.dumbpug.dungeony.game.tile.TileType;
 import com.dumbpug.dungeony.game.weapon.WeaponQuality;
+import com.dumbpug.dungeony.game.weapon.handgun.Pistol;
 import com.dumbpug.dungeony.game.weapon.rifle.Uzi;
 import java.util.ArrayList;
 
@@ -170,7 +171,7 @@ public class Level {
             Player player = new Player(playerDetail, spawns.get(playerDetails.indexOf(playerDetail)).getLocation());
 
             // TODO: Remove this weapon test.
-            player.setWeapon(new Uzi(WeaponQuality.AVERAGE));
+            player.setWeapon(new Pistol(WeaponQuality.AVERAGE));
 
             // Add the player to the game environment.
             this.environment.getEntities().add(player, "player");

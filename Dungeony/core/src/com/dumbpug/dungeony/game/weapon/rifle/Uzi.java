@@ -1,5 +1,6 @@
 package com.dumbpug.dungeony.game.weapon.rifle;
 
+import com.dumbpug.dungeony.engine.Entity;
 import com.dumbpug.dungeony.engine.InteractiveEnvironment;
 import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.engine.utilities.GameMath;
@@ -58,12 +59,12 @@ public class Uzi extends AmmunitionWeapon {
     }
 
     @Override
-    public void onUse(InteractiveEnvironment environment, float delta) {
+    public void onUse(InteractiveEnvironment environment, Entity user, float delta) {
         // Get the position at which projectiles will be generated.
         Position positionOfFire = GameMath.getPositionForAngle(this.getPosition().getX(), this.getPosition().getY(), this.getAngleOfAim(), this.getLength());
 
         // Create a new bullet projectile and add it to the environment.
-        environment.addEntity(new Bullet(positionOfFire, this.getAngleOfAim()));
+        environment.addEntity(new Bullet(positionOfFire, this.getAngleOfAim(), user));
 
         // Shake camera on bullet fire!
         environment.shakeCamera(50, 0.6f);

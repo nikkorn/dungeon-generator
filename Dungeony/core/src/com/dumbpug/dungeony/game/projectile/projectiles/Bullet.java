@@ -3,6 +3,7 @@ package com.dumbpug.dungeony.game.projectile.projectiles;
 import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.audio.AudioProvider;
 import com.dumbpug.dungeony.audio.SoundEffect;
+import com.dumbpug.dungeony.engine.Entity;
 import com.dumbpug.dungeony.engine.InteractiveEnvironment;
 import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.character.GameCharacter;
@@ -25,9 +26,10 @@ public class Bullet extends Projectile {
      * Creates a new instance of the Bullet class.
      * @param origin      The initial origin of the Projectile.
      * @param angleOfFire The angle at which the projectile was fired.
+     * @param owner The owner of the projectile.
      */
-    public Bullet(Position origin, float angleOfFire) {
-        super(origin, angleOfFire);
+    public Bullet(Position origin, float angleOfFire, Entity owner) {
+        super(origin, angleOfFire, owner);
         light = new SmallSpotLight(this, 1f, 1f, 1f);
     }
 

@@ -37,6 +37,11 @@ public class BasicEnemyBehaviour<TNPC extends NPC> implements INPCBehaviour<TNPC
             // Aim at the player.
             subject.setAngleOfView(subject.angleTo(closestPlayer));
 
+            // Attack the player using our weapon if we can.
+            if (BehaviourUtilities.canAttackWithWeapon(subject.getWeapon(), closestPlayer)) {
+                subject.getWeapon().use(environment, subject, true, delta);
+            }
+
             // Move towards the closest player.
             subject.walkByAngle(environment, subject.angleTo(closestPlayer), subject.getMovementSpeed(), delta);
             return;

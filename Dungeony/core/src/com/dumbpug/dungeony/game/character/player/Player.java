@@ -116,7 +116,7 @@ public class Player extends GameCharacter {
 
         // Are we using our equipped weapon?
         if (this.getWeapon() != null && playerInputProvider.isControlPressed(Control.PRIMARY_ACTION)) {
-            this.getWeapon().use(environment, playerInputProvider.isControlJustPressed(Control.PRIMARY_ACTION), delta);
+            this.getWeapon().use(environment, this, playerInputProvider.isControlJustPressed(Control.PRIMARY_ACTION), delta);
         }
     }
 }

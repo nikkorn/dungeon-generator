@@ -13,7 +13,6 @@ import com.dumbpug.dungeony.game.rendering.Animation;
 import com.dumbpug.dungeony.game.rendering.Resources;
 import com.dumbpug.dungeony.game.tile.Tile;
 import com.dumbpug.dungeony.game.tile.TileType;
-
 import java.util.HashSet;
 
 /**
@@ -28,16 +27,22 @@ public abstract class Projectile extends Entity<SpriteBatch> {
      * The projectile animation.
      */
     private Animation animation;
+    /**
+     * The projectile owner.
+     */
+    private Entity owner;
 
     /**
      * Creates a new instance of the Projectile class.
      * @param origin The initial origin of the Projectile.
      * @param angleOfFire The angle at which the projectile was fired.
+     * @param owner The owner of the projectile.
      */
-    public Projectile(Position origin, float angleOfFire) {
+    public Projectile(Position origin, float angleOfFire, Entity owner) {
         super(origin);
         this.angleOfFire = angleOfFire;
         this.animation   = Resources.getProjectileAnimation(this.getProjectileType());
+        this.owner       = owner;
     }
 
     @Override
@@ -104,13 +109,19 @@ public abstract class Projectile extends Entity<SpriteBatch> {
             // Get the group of the colliding entity.
             String collidingEntityGroup = environment.getEntityGroup(collision);
 
-            // TODO: If colliding with a player then do nothing atm, eventually this wont work as enemies can fire these.
-            if (collidingEntityGroup == null || collidingEntityGroup.equalsIgnoreCase("player")) {
+            // A projectile should never collide with its owner.
+            if (collision == this.owner) {
                 continue;
             }
 
-            if (collidingEntityGroup.equalsIgnoreCase("enemy")) {
-                onCharacterCollision((Enemy)collision, environment, delta);
+            // Do nothing if the colliding entity is not part of a known entity group.
+            if (collidingEntityGroup == null) {
+                continue;
+            }
+
+            // Is the colliding entity an enemy or player?
+            if (collidingEntityGroup.equalsIgnoreCase("enemy") || collidingEntityGroup.equalsIgnoreCase("player")) {
+                onCharacterCollision((GameCharacter) collision, environment, delta);
                 hasCollided = true;
                 continue;
             }

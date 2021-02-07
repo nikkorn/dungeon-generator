@@ -1,6 +1,7 @@
 package com.dumbpug.dungeony.game.weapon;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dumbpug.dungeony.engine.Entity;
 import com.dumbpug.dungeony.engine.InteractiveEnvironment;
 import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.rendering.Animation;
@@ -78,19 +79,37 @@ public abstract class Weapon {
     }
 
     /**
+     * Gets the time at which the weapon was last used successfully.
+     * @return The time at which the weapon was last used successfully.
+     */
+    public long getLastUsedTime() {
+        return this.lastUsed;
+    }
+
+    /**
+     * Gets whether the weapon is currently in cooldown.
+     * @return Whether the weapon is currently in cooldown.
+     */
+    public boolean isInCoolDown() {
+        return System.currentTimeMillis() < (lastUsed + this.getCoolDown());
+    }
+
+    /**
      * Attempt to use the weapon.
      * @param environment The interactive environment.
+     * @param user The user of the weapon.
      * @param isTriggerJustPressed Whether the button pressed to use weapon has only just been pressed.
      * @param delta The application delta time.
      */
-    public abstract void use(InteractiveEnvironment environment, boolean isTriggerJustPressed, float delta);
+    public abstract void use(InteractiveEnvironment environment, Entity user, boolean isTriggerJustPressed, float delta);
 
     /**
      * Handles a use of the weapon.
      * @param environment The interactive environment.
+     * @param user The user of the weapon.
      * @param delta The application delta time.
      */
-    public abstract void onUse(InteractiveEnvironment environment, float delta);
+    public abstract void onUse(InteractiveEnvironment environment, Entity user, float delta);
 
     /**
      * Gets the name of the weapon.

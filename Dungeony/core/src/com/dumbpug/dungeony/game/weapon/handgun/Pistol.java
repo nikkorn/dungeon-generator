@@ -1,5 +1,6 @@
 package com.dumbpug.dungeony.game.weapon.handgun;
 
+import com.dumbpug.dungeony.engine.Entity;
 import com.dumbpug.dungeony.engine.InteractiveEnvironment;
 import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.projectile.projectiles.Bullet;
@@ -38,7 +39,7 @@ public class Pistol extends AmmunitionWeapon {
 
     @Override
     public long getCoolDown() {
-        return 0;
+        return 100l;
     }
 
     @Override
@@ -57,9 +58,9 @@ public class Pistol extends AmmunitionWeapon {
     }
 
     @Override
-    public void onUse(InteractiveEnvironment environment, float delta) {
+    public void onUse(InteractiveEnvironment environment, Entity user, float delta) {
         // Create a new bullet projectile and add it to the environment.
-        environment.addEntity(new Bullet(new Position(this.getPosition()), this.getAngleOfAim()));
+        environment.addEntity(new Bullet(new Position(this.getPosition()), this.getAngleOfAim(), user));
 
         // Shake camera on bullet fire!
         environment.shakeCamera(50, 0.6f);

@@ -1,10 +1,8 @@
 package com.dumbpug.dungeony.game.weapon;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dumbpug.dungeony.engine.Entity;
 import com.dumbpug.dungeony.engine.InteractiveEnvironment;
-import com.dumbpug.dungeony.engine.Position;
-import com.dumbpug.dungeony.game.projectile.Projectile;
-import java.util.ArrayList;
 
 /**
  * A melee weapon that does not use ammunition.
@@ -21,11 +19,12 @@ public abstract class MeleeWeapon extends Weapon {
     /**
      * Attempt to use the weapon.
      * @param environment The interactive environment.
+     * @param user The user of the weapon.
      * @param isTriggerJustPressed Whether the button pressed to use weapon has only just been pressed.
      * @param delta The application delta time.
      */
     @Override
-    public void use(InteractiveEnvironment environment, boolean isTriggerJustPressed, float delta) {
+    public void use(InteractiveEnvironment environment, Entity user, boolean isTriggerJustPressed, float delta) {
         // A melee weapon should only be used one per trigger press.
         if (!isTriggerJustPressed) {
             return;
@@ -35,12 +34,12 @@ public abstract class MeleeWeapon extends Weapon {
         long currentTime = System.currentTimeMillis();
 
         // Have we waited long enough since we last used this weapon?
-        if (System.currentTimeMillis() >= (lastUsed + this.getCoolDown())) {
+        if (!this.isInCoolDown()) {
             // Reset the last used time.
             this.lastUsed = currentTime;
 
             // We have successfully used our weapon!
-            this.onUse(environment, delta);
+            this.onUse(environment, user, delta);
         }
     }
 
@@ -53,4 +52,10 @@ public abstract class MeleeWeapon extends Weapon {
         // TODO Render melee weapon.
         // The IN_USE weapon state animation should be the animation of the melee weapon swiping.
     }
+
+    /**
+     * Gets the range of the weapon.
+     * @return The range of the weapon.
+     */
+    public abstract long getRange();
 }

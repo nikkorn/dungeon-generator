@@ -3,7 +3,11 @@ package com.dumbpug.dungeony.game.character.behaviour;
 import com.dumbpug.dungeony.engine.Area;
 import com.dumbpug.dungeony.engine.Entity;
 import com.dumbpug.dungeony.engine.InteractiveEnvironment;
+import com.dumbpug.dungeony.engine.utilities.GameMath;
 import com.dumbpug.dungeony.game.character.npc.NPC;
+import com.dumbpug.dungeony.game.weapon.AmmunitionWeapon;
+import com.dumbpug.dungeony.game.weapon.MeleeWeapon;
+import com.dumbpug.dungeony.game.weapon.Weapon;
 import java.util.ArrayList;
 
 /**
@@ -75,6 +79,45 @@ public class BehaviourUtilities {
         }
 
         return true;
+    }
 
+    /**
+     * Gets whether the specified weapon can be used to attack the target entity.
+     * @param weapon The weapon.
+     * @param target The target entity.
+     * @return Whether the specified weapon can be used to attack the target entity.
+     */
+    public static boolean canAttackWithWeapon(Weapon weapon, Entity target) {
+        // We 100% cant attack if we have no weapon to attack with.
+        if (weapon == null) {
+            return false;
+        }
+
+        // No weapon can be used if it is currently in cool-down.
+        if (weapon.isInCoolDown()) {
+            return false;
+        }
+
+        switch (weapon.getWeaponCategory()) {
+            case MELEE:
+            case BAT:
+                // Melee weapons can be used if the target is close enough.
+                return ((MeleeWeapon)weapon).getRange() >= GameMath.getLength(weapon.getPosition().getX(), weapon.getPosition().getY(), target.getOrigin().getX(), target.getOrigin().getY());
+
+            case HANDGUN:
+            case RIFLE:
+            case AUTO_RIFLE:
+            case SHOTGUN:
+            case ROCKET:
+
+                // TODO Handle cases where weapons have a super low cooldown and are not auto (like pisols).
+                // Enemies should have their own larger cooldown between weapon uses!
+
+                // Ammunition weapons can be used if there is enough ammo to do so.
+                return ((AmmunitionWeapon)weapon).getAmmo() > 0;
+
+            default:
+                return true;
+        }
     }
 }

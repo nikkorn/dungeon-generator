@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.audio.AudioProvider;
 import com.dumbpug.dungeony.audio.SoundEffect;
+import com.dumbpug.dungeony.engine.Entity;
 import com.dumbpug.dungeony.engine.InteractiveEnvironment;
 import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.engine.lighting.Light;
@@ -67,11 +68,12 @@ public abstract class AmmunitionWeapon extends Weapon {
     /**
      * Attempt to use the weapon.
      * @param environment The interactive environment.
+     * @param user The user of the weapon.
      * @param isTriggerJustPressed Whether the button pressed to use weapon has only just been pressed.
      * @param delta The application delta time.
      */
     @Override
-    public void use(InteractiveEnvironment environment, boolean isTriggerJustPressed, float delta) {
+    public void use(InteractiveEnvironment environment, Entity user, boolean isTriggerJustPressed, float delta) {
         // Add the muzzle flash light to the environment if it hasn't already been added.
         // TODO Only do once!
         environment.addLight(this.muzzleFlashLight);
@@ -85,7 +87,7 @@ public abstract class AmmunitionWeapon extends Weapon {
         long currentTime = System.currentTimeMillis();
 
         // Have we waited long enough since we last used this weapon?
-        if (System.currentTimeMillis() >= (lastUsed + this.getCoolDown())) {
+        if (!this.isInCoolDown()) {
             // Do we have enough ammo to fire or do we have infinite ammo?
             if (ammo > 0) {
                 // Use a unit of ammo.
@@ -95,7 +97,7 @@ public abstract class AmmunitionWeapon extends Weapon {
                 this.lastUsed = currentTime;
 
                 // We have successfully fired our weapon!
-                this.onUse(environment, delta);
+                this.onUse(environment, user, delta);
 
                 // Play a noise.
                 AudioProvider.getSoundEffect(SoundEffect.HANDGUN_FIRE).play();
