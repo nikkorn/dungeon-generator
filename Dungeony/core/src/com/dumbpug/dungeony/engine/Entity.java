@@ -147,6 +147,16 @@ public abstract class Entity<TRenderContext> implements IAABB, IRenderable<TRend
     }
 
     /**
+     * Gets the angle between this entity and the target entity.
+     * @param target The target entity.
+     * @return The angle between this entity and the target entity.
+     */
+    public float angleTo(Entity target) {
+        // Get the angle between the two origins of the two entities.
+        return GameMath.getAngle(this.getX(), this.getY(), target.getX(), target.getY());
+    }
+
+    /**
      * Gets whether the entity has been marked as to be destroyed.
      * @return Whether the entity has been marked as to be destroyed.
      */

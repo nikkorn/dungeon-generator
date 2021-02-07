@@ -1,10 +1,10 @@
 package com.dumbpug.dungeony.game.character.behaviour;
 
+import com.badlogic.gdx.ai.btree.utils.BehaviorTreeReader;
 import com.dumbpug.dungeony.engine.Entity;
 import com.dumbpug.dungeony.engine.InteractiveEnvironment;
 import com.dumbpug.dungeony.game.character.GameCharacterState;
 import com.dumbpug.dungeony.game.character.npc.NPC;
-import java.util.ArrayList;
 
 /**
  * Very basic enemy NPC behaviour.
@@ -28,49 +28,24 @@ public class BasicEnemyBehaviour<TNPC extends NPC> implements INPCBehaviour<TNPC
             return;
         }
 
-        // Get all of teh player entities.
-        ArrayList<Entity> players = environment.getEntitiesInGroup("player");
-
-        // TODO Find the closest player entity.
+        // Find the closest player entity.
+        Entity closestPlayer = BehaviourUtilities.getClosestPlayerEntity(subject, environment);
 
         // TODO Is closest player entity within range? If not then set idle and return here.
+        // TODO Replace with BehaviourUtilities.hasLineOfSightTo()!!!!!!!!!
+        if (subject.distanceTo(closestPlayer) < subject.getMaxVisibilityDistance()) {
+            // Aim at the player.
+            subject.setAngleOfView(subject.angleTo(closestPlayer));
 
-        // Move the NPC north-east at their normal movement speed.
-        // environment.moveByDirection(subject, Direction.NORTH_EAST, subject.getMovementSpeed(), delta);
-
-        // Move towards the closest player.
-        // subject.walkByAngle(environment, 25f, subject.getMovementSpeed(), delta);
-
-        environment.moveTowards(subject, getClosestPlayerEntity(subject, environment), subject.getMovementSpeed(), delta);
-    }
-
-    /**
-     * Get the closest player entity to the subject.
-     * @param subject The NPC.
-     * @param environment The game environment.
-     * @return The closest player entity to the subject.
-     */
-    private Entity getClosestPlayerEntity(TNPC subject, InteractiveEnvironment environment) {
-        // Get all of the player entities.
-        ArrayList<Entity> players = environment.getEntitiesInGroup("player");
-
-        Entity closest = null;
-
-        for (Entity currentPlayer : players) {
-            if (closest == null) {
-                closest = currentPlayer;
-                continue;
-            }
-
-            // Get the distances between the subject and the closest/current player.
-            float distanceToClosest       = subject.distanceTo(closest);
-            float distanceToCurrentPlayer = subject.distanceTo(currentPlayer);
-
-            if (distanceToCurrentPlayer < distanceToClosest) {
-                closest = currentPlayer;
-            }
+            // Move towards the closest player.
+            subject.walkByAngle(environment, subject.angleTo(closestPlayer), subject.getMovementSpeed(), delta);
+            return;
         }
 
-        return closest;
+        // We are not aiming at anything.
+        subject.setAngleOfView(null);
+
+        // We fall back to the IDLE state.
+        subject.setState(GameCharacterState.IDLE);
     }
 }

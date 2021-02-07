@@ -7,14 +7,10 @@ import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.engine.Entity;
 import com.dumbpug.dungeony.engine.InteractiveEnvironment;
 import com.dumbpug.dungeony.engine.Position;
-import com.dumbpug.dungeony.engine.dialog.Dialog;
-import com.dumbpug.dungeony.engine.utilities.GameMath;
 import com.dumbpug.dungeony.game.EntityCollisionFlag;
 import com.dumbpug.dungeony.game.inventory.Inventory;
 import com.dumbpug.dungeony.game.rendering.Animation;
 import com.dumbpug.dungeony.game.weapon.Weapon;
-import com.dumbpug.dungeony.input.Control;
-import com.dumbpug.dungeony.input.IPlayerInputProvider;
 import com.dumbpug.dungeony.utilities.shaders.ShaderProvider;
 import com.dumbpug.dungeony.utilities.shaders.ShaderType;
 import java.util.HashMap;
@@ -158,6 +154,7 @@ public abstract class GameCharacter extends Entity<SpriteBatch> {
         if (angleOfView != null) {
             setFacingDirection(FacingDirection.fromAngle(this.angleOfView));
         }
+        this.updateWeaponPosition();
     }
 
     /**

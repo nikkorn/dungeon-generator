@@ -51,6 +51,13 @@ public class Constants {
     public static final long CHARACTER_DAMAGE_OVERLAY_DURATION_MS   = 100l;
 
     //==============================================================================================
+    // NPC
+    //==============================================================================================
+    public static final float NPC_DEFAULT_MAX_VISIBILITY            = 100f;
+    public static final float NPC_SHORT_MAX_VISIBILITY              = NPC_DEFAULT_MAX_VISIBILITY * 0.5f;
+    public static final float NPC_FAR_MAX_VISIBILITY                = NPC_DEFAULT_MAX_VISIBILITY * 2f;
+
+    //==============================================================================================
     // PLAYER
     //==============================================================================================
     public static final float PLAYER_MOVEMENT_PS                    = LEVEL_TILE_SIZE * 2.6f;

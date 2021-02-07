@@ -125,43 +125,6 @@ public class InteractiveEnvironment {
     }
 
     /**
-     * Gets whether the subject entity has a line of sight to the target entity.
-     * @param subject The subject entity.
-     * @param target The target entity.
-     * @param maxDistance The max line of sight distance.
-     * @returns Whether the subject entity has a line of sight to the target entity.
-     */
-    public boolean canSee(Entity subject, Entity target, float maxDistance) {
-        // Initially, get the distance between thw two entities.
-        float distanceBetweenEntities = subject.distanceTo(target);
-
-        // Check whether the target is simply too far away for the subject to see.
-        if (distanceBetweenEntities > maxDistance) {
-            return false;
-        }
-
-        float minX = Math.min(subject.getX(), target.getX());
-        float maxX = Math.max(subject.getX(), target.getX());
-        float minY = Math.min(subject.getY(), target.getY());
-        float maxY = Math.max(subject.getY(), target.getY());
-
-        // Get the area between the two entities.
-        Area areaBetween = new Area(minX, minY, maxX - minX, maxY - minY);
-
-        // Find any entities that overlap the area between the two entities. Any of these
-        // could be blocking the line of sight between the subject and the target.
-        for (Entity overlap : this.environment.getGrid().getOverlapping(areaBetween)) {
-            if (!overlap.canObstructView()) {
-                continue;
-            }
-
-            // TODO Check if line of sight is obsructed by overlap.
-        }
-
-        return true;
-    }
-
-    /**
      * Gets the group that the entity resides in, or null if the entity is not in the environment or a group.
      * @param entity The entity.
      * @return The group that the entity resides in, or null if the entity is not in the environment or a group.

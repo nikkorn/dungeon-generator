@@ -1,5 +1,6 @@
 package com.dumbpug.dungeony.game.character.npc;
 
+import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.engine.InteractiveEnvironment;
 import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.EntityCollisionFlag;
@@ -48,6 +49,14 @@ public abstract class NPC extends GameCharacter {
         } else {
             return super.getCollisionMask();
         }
+    }
+
+    /**
+     * Gets the maximum visibility distance for the NPC.
+     * @return The maximum visibility distance for the NPC.
+     */
+    public float getMaxVisibilityDistance() {
+        return Constants.NPC_DEFAULT_MAX_VISIBILITY;
     }
 
     /**
