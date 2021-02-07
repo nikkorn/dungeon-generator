@@ -8,7 +8,8 @@ public enum TileType {
     EMPTY,
     WALL,
     SPAWN_PAD,
-    SPAWN_DOOR;
+    SPAWN_DOOR,
+    UNDERLAY;
 
     /**
      * Gets whether the tile is walkable.

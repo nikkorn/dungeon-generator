@@ -146,26 +146,6 @@ public class Level {
         underlay.setCenterY(this.levelCamera.getY());
         underlay.draw(batch);
 
-        // Render an empty ground sprite for every wall tile.
-        // TODO: Maybe add these as entities so that we can have them excluded when not in level camera?
-        for (Tile tile : this.environment.getEntities().<Tile>getGroup("tile")) {
-            if (tile.getTileType() != TileType.WALL || !levelCamera.contains(tile)) {
-                continue;
-            }
-
-            // Get the ground sprite for this tile.
-            Sprite sprite = Resources.getSprite(TileSprite.GROUND_0);
-
-            // Set the width/height of the sprite to match the tile size.
-            sprite.setSize(tile.getLengthX(), tile.getLengthY());
-
-            // Set the x/y of the sprite to match the tile position.
-            sprite.setPosition(tile.getX(), tile.getY());
-
-            // Draw the sprite.
-            sprite.draw(batch);
-        }
-
         // Render the game environment.
         this.environment.render(batch);
 

@@ -18,6 +18,7 @@ import com.dumbpug.dungeony.game.tile.ITileFinder;
 import com.dumbpug.dungeony.game.tile.Tile;
 import com.dumbpug.dungeony.game.tile.TileFactory;
 import com.dumbpug.dungeony.game.tile.TileType;
+import com.dumbpug.dungeony.game.tile.tiles.Underlay;
 import com.dumbpug.levelgeneration.EntityDefinition;
 import com.dumbpug.levelgeneration.EntityOffset;
 import com.dumbpug.levelgeneration.ILevelGenerator;
@@ -78,6 +79,12 @@ public class LevelFactory {
         for (TileDefinition tileDefinition : levelDefinition.getTileDefinitions()) {
             // Create the actual tile.
             Tile tile = TileFactory.createTile(TileType.valueOf(tileDefinition.getType()), tileDefinition.getX(), tileDefinition.getY(), tileFinder);
+
+            // If the tile is a wall it will need an underlay.
+            // TODO Eventually we need to remove this as it seems dirty, i think.
+            if (tile.getTileType() == TileType.WALL) {
+                tiles.add(new Underlay(tileDefinition.getX(), tileDefinition.getY()));
+            }
 
             // Add the tile to the list of all tiles.
             tiles.add(tile);
