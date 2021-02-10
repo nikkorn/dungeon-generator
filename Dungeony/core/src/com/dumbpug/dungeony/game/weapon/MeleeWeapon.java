@@ -1,6 +1,7 @@
 package com.dumbpug.dungeony.game.weapon;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.engine.Entity;
 import com.dumbpug.dungeony.engine.InteractiveEnvironment;
 
@@ -14,6 +15,11 @@ public abstract class MeleeWeapon extends Weapon {
      */
     public MeleeWeapon(WeaponQuality quality) {
         super(quality);
+    }
+
+    @Override
+    public long getRange() {
+        return Constants.WEAPON_RANGE_MEELE;
     }
 
     /**
@@ -52,10 +58,4 @@ public abstract class MeleeWeapon extends Weapon {
         // TODO Render melee weapon.
         // The IN_USE weapon state animation should be the animation of the melee weapon swiping.
     }
-
-    /**
-     * Gets the range of the weapon.
-     * @return The range of the weapon.
-     */
-    public abstract long getRange();
 }

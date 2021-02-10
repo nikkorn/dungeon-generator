@@ -84,5 +84,10 @@ public class Constants {
     // WEAPONS
     //==============================================================================================
     public static final long WEAPON_MUZZLE_FLASH_DURATION_MS         = 150l;
-
+    public static final long WEAPON_RANGE_PISTOL                     = 1000l;
+    public static final long WEAPON_RANGE_SMALL_RIFLE                = 1000l;
+    public static final long WEAPON_RANGE_RIFLE                      = 1500l;
+    public static final long WEAPON_RANGE_SHOTGUN                    = 300l;
+    public static final long WEAPON_RANGE_SNIPER                     = 5000l;
+    public static final long WEAPON_RANGE_MEELE                      = 50l;
 }

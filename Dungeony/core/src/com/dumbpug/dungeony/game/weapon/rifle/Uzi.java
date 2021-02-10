@@ -1,5 +1,6 @@
 package com.dumbpug.dungeony.game.weapon.rifle;
 
+import com.dumbpug.dungeony.Constants;
 import com.dumbpug.dungeony.engine.Entity;
 import com.dumbpug.dungeony.engine.InteractiveEnvironment;
 import com.dumbpug.dungeony.engine.Position;
@@ -41,6 +42,11 @@ public class Uzi extends AmmunitionWeapon {
     @Override
     public long getCoolDown() {
         return 120l;
+    }
+
+    @Override
+    public long getRange() {
+        return Constants.WEAPON_RANGE_SMALL_RIFLE;
     }
 
     @Override

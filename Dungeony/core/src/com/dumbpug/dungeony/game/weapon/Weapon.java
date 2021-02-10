@@ -124,6 +124,12 @@ public abstract class Weapon {
     public abstract long getCoolDown();
 
     /**
+     * Gets the effective range of the weapon.
+     * @return The effective range of the weapon.
+     */
+    public abstract long getRange();
+
+    /**
      * Gets the type of the weapon.
      * @return The type of the weapon.
      */
