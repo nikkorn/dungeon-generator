@@ -11,16 +11,36 @@ import com.dumbpug.dungeony.game.weapon.Weapon;
 import java.util.ArrayList;
 
 /**
- * Utilities for use by behaviour classes.
+ * Base class for NPC behaviours.
  */
-public class BehaviourUtilities {
+public abstract class NPCBehaviour<TNPC extends NPC> {
+    /**
+     * Called just before 'tick'.
+     * @param subject The NPC.
+     * @param environment The game environment.
+     * @param delta The delta time.
+     */
+    public void onBeforeTick(TNPC subject, InteractiveEnvironment environment, float delta) {
+        // ...
+    }
+
+    /**
+     * Called just after 'tick'.
+     * @param subject The NPC.
+     * @param environment The game environment.
+     * @param delta The delta time.
+     */
+    public void onAfterTick(TNPC subject, InteractiveEnvironment environment, float delta) {
+        // ...
+    }
+
     /**
      * Get the closest player entity to the subject.
      * @param subject The NPC.
      * @param environment The game environment.
      * @return The closest player entity to the subject.
      */
-    public static <TNPC extends NPC> Entity getClosestPlayerEntity(TNPC subject, InteractiveEnvironment environment) {
+    protected Entity getClosestPlayerEntity(TNPC subject, InteractiveEnvironment environment) {
         // Get all of the player entities.
         ArrayList<Entity> players = environment.getEntitiesInGroup("player");
 
@@ -51,7 +71,7 @@ public class BehaviourUtilities {
      * @param environment The game environment.
      * @return Whether the subject has a lne of sight to the target entity.
      */
-    public static <TNPC extends NPC> boolean hasLineOfSightTo(TNPC subject, Entity target, InteractiveEnvironment environment) {
+    protected boolean hasLineOfSightTo(TNPC subject, Entity target, InteractiveEnvironment environment) {
         // Initially, get the distance between thw two entities.
         float distanceBetweenEntities = subject.distanceTo(target);
 
@@ -87,7 +107,7 @@ public class BehaviourUtilities {
      * @param target The target entity.
      * @return Whether the specified weapon can be used to attack the target entity.
      */
-    public static boolean canAttackWithWeapon(Weapon weapon, Entity target) {
+    protected boolean canAttackWithWeapon(Weapon weapon, Entity target) {
         // We 100% cant attack if we have no weapon to attack with.
         if (weapon == null) {
             return false;
@@ -110,7 +130,7 @@ public class BehaviourUtilities {
             case SHOTGUN:
             case ROCKET:
 
-                // TODO Handle cases where weapons have a super low cooldown and are not auto (like pisols).
+                // TODO Handle cases where weapons have a super low cooldown and are not auto (like pistols).
                 // Enemies should have their own larger cooldown between weapon uses!
 
                 // Ammunition weapons can be used if there is enough ammo to do so.
@@ -120,4 +140,39 @@ public class BehaviourUtilities {
                 return true;
         }
     }
+
+    protected long getNPCWeaponCoolDown(Weapon weapon) {
+
+        // TODO Use RNG to return a cooldown in a ranger for some weapons for extra randomness???
+
+        switch (weapon.getWeaponCategory()) {
+            case MELEE:
+            case BAT:
+                return 2000l;
+
+            case HANDGUN:
+            case RIFLE:
+                return 1000l;
+
+            case AUTO_RIFLE:
+                return 0l;
+
+            case SHOTGUN:
+                return 3000l;
+
+            case ROCKET:
+                return 5000l;
+
+            default:
+                return 10000l;
+        }
+    }
+
+    /**
+     * Tick the NPC behaviour.
+     * @param subject The NPC.
+     * @param environment The game environment.
+     * @param delta The delta time.
+     */
+    public abstract void onTick(TNPC subject, InteractiveEnvironment environment, float delta);
 }

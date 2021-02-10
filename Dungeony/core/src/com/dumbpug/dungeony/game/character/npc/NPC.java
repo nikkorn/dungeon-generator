@@ -6,7 +6,7 @@ import com.dumbpug.dungeony.engine.Position;
 import com.dumbpug.dungeony.game.EntityCollisionFlag;
 import com.dumbpug.dungeony.game.character.GameCharacter;
 import com.dumbpug.dungeony.game.character.GameCharacterState;
-import com.dumbpug.dungeony.game.character.behaviour.INPCBehaviour;
+import com.dumbpug.dungeony.game.character.behaviour.NPCBehaviour;
 import com.dumbpug.levelgeneration.IEntityProperties;
 
 /**
@@ -16,7 +16,7 @@ public abstract class NPC extends GameCharacter {
     /**
      * The NPC behaviour.
      */
-    private INPCBehaviour behaviour = null;
+    private NPCBehaviour behaviour = null;
 
     /**
      * Creates a new instance of the NPC class.
@@ -63,21 +63,17 @@ public abstract class NPC extends GameCharacter {
      * Sets the NPC behaviour.
      * @param behaviour The NPC behaviour.
      */
-    protected void setBehaviour(INPCBehaviour behaviour) {
+    protected void setBehaviour(NPCBehaviour behaviour) {
         this.behaviour = behaviour;
     }
 
     @Override
     public void update(InteractiveEnvironment environment, float delta) {
-        // If the character is running then stop.
-        if (this.getState() == GameCharacterState.RUNNING) {
-            // TODO: Should we do this? Come back to this after writing a few different behaviours.
-            // this.setState(GameCharacterState.IDLE);
-        }
-
         // Tick the enemy behaviour if any has been defined.
         if (this.behaviour != null) {
-            this.behaviour.tick(this, environment, delta);
+            this.behaviour.onBeforeTick(this, environment, delta);
+            this.behaviour.onTick(this, environment, delta);
+            this.behaviour.onAfterTick(this, environment, delta);
         }
     }
 
