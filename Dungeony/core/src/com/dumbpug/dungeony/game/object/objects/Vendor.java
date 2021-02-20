@@ -51,17 +51,17 @@ public class Vendor extends GameObject {
 
     @Override
     public float getLengthX() {
-        return 20f;
+        return 24f;
     }
 
     @Override
     public float getLengthY() {
-        return 10f;
+        return 12f;
     }
 
     @Override
     public float getLengthZ() {
-        return 31f;
+        return 37f;
     }
 
     @Override

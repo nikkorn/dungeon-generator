@@ -16,13 +16,10 @@ import com.dumbpug.dungeony.game.character.player.Player;
 import com.dumbpug.dungeony.game.object.GameObject;
 import com.dumbpug.dungeony.game.rendering.LevelSprite;
 import com.dumbpug.dungeony.game.rendering.Resources;
-import com.dumbpug.dungeony.game.rendering.TileSprite;
 import com.dumbpug.dungeony.game.tile.Tile;
 import com.dumbpug.dungeony.game.tile.TileSpawn;
-import com.dumbpug.dungeony.game.tile.TileType;
 import com.dumbpug.dungeony.game.weapon.WeaponQuality;
 import com.dumbpug.dungeony.game.weapon.handgun.Pistol;
-import com.dumbpug.dungeony.game.weapon.rifle.Uzi;
 import java.util.ArrayList;
 
 /**
